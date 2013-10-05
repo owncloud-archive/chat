@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<info>
+	<id>chat</id>
+	<name>Chat</name>
+	<description>An Chat application for OwnCloud. </description>
+	<licence>AGPL</licence>
+	<author>Tobia De Koninck</author>
+	<version>0.1</version>
+	<require>5.0.6</require>
+</info>

@@ -1,0 +1,82 @@
+/**
+* ownCloud - Chat app
+*
+* @author Tobia De Koninck (LEDfan)
+* @copyright 2013 Tobia De Koninck tobia@ledfan.be
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+* License as published by the Free Software Foundation; either
+* version 3 of the License, or any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+*
+* You should have received a copy of the GNU Affero General Public
+* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+.conversation {
+	padding:10px;
+}
+
+#users{
+    width:350px !important; 
+}
+
+#chatText{
+    width:500px;
+    margin:auto 0;
+    height:500px;
+    border:1px solid #cecece;
+}
+#message {
+    width:400px;
+}
+#send{
+    width:80px;
+}
+#chat{
+    display:none;
+}
+
+#room, #createRoom, #password{
+    width:240px !important;
+    padding:6px;
+}
+
+.chatContainer section {
+    -moz-box-sizing: border-box;
+}
+.chatContainer {
+    background-color: white;
+    color: rgb(51, 51, 51);
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0px 0px 10px rgb(136, 136, 136);
+    padding: 10px;
+    margin-top: 1em;
+    margin-left: 1em;
+    width: 490px;
+    float:left;
+    display:none;
+}
+
+
+.chatContainer h3{
+    font-size: 1.4em;
+}
+.chatText{
+    width:450px;
+    overflow-y:scroll;
+    height:350px;
+}
+
+.messagefield{
+    width:430px !important;
+}
+
+.chatContainer footer{
+    clear:left;
+}

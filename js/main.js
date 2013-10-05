@@ -6,7 +6,7 @@ function throwError(msg){
     $('#status').append('<li class="status-error">' + msg + '</li>');
 }
 $(document).ready(function(){
-	$.websocket('ws://192.168.0.184:8080', function(server){
+	$.websocket('ws://'+window.location.hostname+':8080', function(server){
         console.log('Connection Established'); 
       
         // When the users log in, we have to greet the server

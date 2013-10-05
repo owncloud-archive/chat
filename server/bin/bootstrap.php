@@ -27,7 +27,10 @@ use Ratchet\Tutorials\Chat;
  * @TODO 
  */
 include ('/var/www/owncloud/lib/base.php');
-OC::autoLoad('OCP\User');
+// Not needed/available in OC6
+if (is_callable("OC::autoLoad")) {
+        OC::autoLoad('OCP\User');
+}
 $user = new OC_user;
 
 /*

@@ -26,7 +26,7 @@ use Ratchet\Tutorials\Chat;
  * @Brief Create a $user object so we can insert it into the Chat Class
  * @TODO 
  */
-include ('../../../../../lib/base.php');
+include dirname(__DIR__).'/../../../lib/base.php';
 OC::autoLoad('OCP\User');
 $user = new OC_user;
 

@@ -26,10 +26,10 @@ use Ratchet\Tutorials\Chat;
  * @Brief Create a $user object so we can insert it into the Chat Class
  * @TODO 
  */
-include ('/var/www/owncloud/lib/base.php');
+include dirname(__DIR__).'/../../../lib/base.php';
 // Not needed/available in OC6
 if (is_callable("OC::autoLoad")) {
-        OC::autoLoad('OCP\User');
+	OC::autoLoad('OCP\User');
 }
 $user = new OC_user;
 
@@ -46,10 +46,10 @@ echo $pid;
  */
 require dirname(__DIR__) . '/vendor/autoload.php';
 $server = IoServer::factory(
-    new WsServer(
-        new Chat($user)
-   )
-  , 8080
+	new WsServer(
+		new Chat($user)
+	)
+	, 8080
 );
 
 $server->run();

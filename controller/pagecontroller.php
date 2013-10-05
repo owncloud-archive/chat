@@ -40,17 +40,17 @@ class PageController extends Controller {
 	 * @CSRFExemption
 	 */
 	public function index() {
-        $params = array(
-           'users' =>  \OCP\User::getUsers()
-        );
+		$params = array(
+			'users' =>  \OCP\User::getUsers()
+		);
 		return $this->render('main', $params);
-      
-        }
 
-        public function debug() {
+	}
 
-        	return $this->render('debug');
-        
-        }
-        
+	public function debug() {
+
+		return $this->render('debug');
+
+	}
+
 }

@@ -37,9 +37,9 @@ if(\OCP\App::isEnabled('appframework')){
 
 		'href' => $api->linkToRoute('chat_index'),
 
-//		'icon' => $api->imagePath('news.svg'),
+		'icon' => $api->imagePath('chat.png'),
 
-		'name' => $api->getTrans()->t('chat')
+		'name' => $api->getTrans()->t('Chat')
 
 	));
 

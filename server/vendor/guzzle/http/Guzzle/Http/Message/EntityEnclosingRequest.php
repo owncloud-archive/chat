@@ -52,7 +52,7 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
             $this->setHeader('Content-Length', 0)->removeHeader('Transfer-Encoding');
         }
 
-        return $this;
+        return $this->state;
     }
 
     public function setBody($body, $contentType = null)
@@ -61,7 +61,7 @@ class EntityEnclosingRequest extends Request implements EntityEnclosingRequestIn
 
         // Auto detect the Content-Type from the path of the request if possible
         if ($contentType === null && !$this->hasHeader('Content-Type')) {
-            $contentType = $this->body->getContentType() ?: Mimetypes::getInstance()->fromFilename($this->getPath());
+            $contentType = $this->body->getContentType();
         }
 
         if ($contentType) {

@@ -45,18 +45,18 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
             throw new InvalidArgumentException('$context must be an array or resource');
         }
 
-        $this->setUrl($request);
-        $this->addDefaultContextOptions($request);
-        $this->addSslOptions($request);
-        $this->addBodyOptions($request);
-        $this->addProxyOptions($request);
-
         // Dispatch the before send event
         $request->dispatch('request.before_send', array(
             'request'         => $request,
             'context'         => $this->context,
             'context_options' => $this->contextOptions
         ));
+
+        $this->setUrl($request);
+        $this->addDefaultContextOptions($request);
+        $this->addSslOptions($request);
+        $this->addBodyOptions($request);
+        $this->addProxyOptions($request);
 
         // Create the file handle but silence errors
         return $this->createStream($params)
@@ -211,15 +211,34 @@ class PhpStreamRequestFactory implements StreamRequestFactoryInterface
             return fopen((string) $url, 'r', false, $context);
         });
 
-        // Track the response headers of the request
-        if (isset($http_response_header)) {
-            $this->lastResponseHeaders = $http_response_header;
-        }
-
         // Determine the class to instantiate
         $className = isset($params['stream_class']) ? $params['stream_class'] : __NAMESPACE__ . '\\Stream';
 
-        return new $className($fp);
+        /** @var $stream StreamInterface */
+        $stream = new $className($fp);
+
+        // Track the response headers of the request
+        if (isset($http_response_header)) {
+            $this->lastResponseHeaders = $http_response_header;
+            $this->processResponseHeaders($stream);
+        }
+
+        return $stream;
+    }
+
+    /**
+     * Process response headers
+     *
+     * @param StreamInterface $stream
+     */
+    protected function processResponseHeaders(StreamInterface $stream)
+    {
+        // Set the size on the stream if it was returned in the response
+        foreach ($this->lastResponseHeaders as $header) {
+            if (($pos = stripos($header, 'Content-Length:')) === 0) {
+                $stream->setSize(trim(substr($header, 15)));
+            }
+        }
     }
 
     /**

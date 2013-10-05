@@ -2,6 +2,7 @@
 
 namespace Guzzle\Http\Message;
 
+use Guzzle\Common\Version;
 use Guzzle\Common\Event;
 use Guzzle\Common\Collection;
 use Guzzle\Common\Exception\RuntimeException;
@@ -134,8 +135,7 @@ class Request extends AbstractMessage implements RequestInterface
     }
 
     /**
-     * Default method that will throw exceptions if an unsuccessful response
-     * is received.
+     * Default method that will throw exceptions if an unsuccessful response is received.
      *
      * @param Event $event Received
      * @throws BadResponseException if the response is not successful
@@ -143,12 +143,7 @@ class Request extends AbstractMessage implements RequestInterface
     public static function onRequestError(Event $event)
     {
         $e = BadResponseException::factory($event['request'], $event['response']);
-        $event['request']->dispatch('request.exception', array(
-            'request'   => $event['request'],
-            'response'  => $event['response'],
-            'exception' => $e
-        ));
-
+        $event['request']->setState(self::STATE_ERROR, array('exception' => $e) + $event->toArray());
         throw $e;
     }
 
@@ -301,23 +296,40 @@ class Request extends AbstractMessage implements RequestInterface
 
     public function setAuth($user, $password = '', $scheme = CURLAUTH_BASIC)
     {
+        static $authMap = array(
+            'basic'  => CURLAUTH_BASIC,
+            'digest' => CURLAUTH_DIGEST,
+            'ntlm'   => CURLAUTH_NTLM,
+            'any'    => CURLAUTH_ANY
+        );
+
         // If we got false or null, disable authentication
         if (!$user) {
             $this->password = $this->username = null;
             $this->removeHeader('Authorization');
             $this->getCurlOptions()->remove(CURLOPT_HTTPAUTH);
-        } else {
-            $this->username = $user;
-            $this->password = $password;
-            // Bypass CURL when using basic auth to promote connection reuse
-            if ($scheme == CURLAUTH_BASIC) {
-                $this->getCurlOptions()->remove(CURLOPT_HTTPAUTH);
-                $this->setHeader('Authorization', 'Basic ' . base64_encode($this->username . ':' . $this->password));
-            } else {
-                $this->getCurlOptions()
-                    ->set(CURLOPT_HTTPAUTH, $scheme)
-                    ->set(CURLOPT_USERPWD, $this->username . ':' . $this->password);
+            return $this;
+        }
+
+        if (!is_numeric($scheme)) {
+            $scheme = strtolower($scheme);
+            if (!isset($authMap[$scheme])) {
+                throw new InvalidArgumentException($scheme . ' is not a valid authentication type');
             }
+            $scheme = $authMap[$scheme];
+        }
+
+        $this->username = $user;
+        $this->password = $password;
+
+        // Bypass CURL when using basic auth to promote connection reuse
+        if ($scheme == CURLAUTH_BASIC) {
+            $this->getCurlOptions()->remove(CURLOPT_HTTPAUTH);
+            $this->setHeader('Authorization', 'Basic ' . base64_encode($this->username . ':' . $this->password));
+        } else {
+            $this->getCurlOptions()
+                ->set(CURLOPT_HTTPAUTH, $scheme)
+                ->set(CURLOPT_USERPWD, $this->username . ':' . $this->password);
         }
 
         return $this;
@@ -348,14 +360,36 @@ class Request extends AbstractMessage implements RequestInterface
         $oldState = $this->state;
         $this->state = $state;
 
-        if ($state == self::STATE_NEW) {
-            $this->response = null;
-        } elseif ($state == self::STATE_COMPLETE && $oldState !== self::STATE_COMPLETE) {
-            $this->processResponse($context);
-            $this->responseBody = null;
+        switch ($state) {
+            case self::STATE_NEW:
+                $this->response = null;
+                break;
+            case self::STATE_TRANSFER:
+                if ($oldState !== $state) {
+                    // Fix Content-Length and Transfer-Encoding collisions
+                    if ($this->hasHeader('Transfer-Encoding') && $this->hasHeader('Content-Length')) {
+                        $this->removeHeader('Transfer-Encoding');
+                    }
+                    $this->dispatch('request.before_send', array('request' => $this));
+                }
+                break;
+            case self::STATE_COMPLETE:
+                if ($oldState !== $state) {
+                    $this->processResponse($context);
+                    $this->responseBody = null;
+                }
+                break;
+            case self::STATE_ERROR:
+                if (isset($context['exception'])) {
+                    $this->dispatch('request.exception', array(
+                        'request'   => $this,
+                        'response'  => isset($context['response']) ? $context['response'] : $this->response,
+                        'exception' => isset($context['exception']) ? $context['exception'] : null
+                    ));
+                }
         }
 
-        return $this;
+        return $this->state;
     }
 
     public function getCurlOptions()
@@ -425,10 +459,13 @@ class Request extends AbstractMessage implements RequestInterface
      * Determine if the response body is repeatable (readable + seekable)
      *
      * @return bool
+     * @deprecated Use getResponseBody()->isSeekable()
+     * @codeCoverageIgnore
      */
     public function isResponseBodyRepeatable()
     {
-        return !$this->responseBody ? true : $this->responseBody->isSeekable() && $this->responseBody->isReadable();
+        Version::warn(__METHOD__ . ' is deprecated. Use $request->getResponseBody()->isRepeatable()');
+        return !$this->responseBody ? true : $this->responseBody->isRepeatable();
     }
 
     public function getCookies()
@@ -475,21 +512,6 @@ class Request extends AbstractMessage implements RequestInterface
         return $this;
     }
 
-    public function canCache()
-    {
-        // Only GET and HEAD requests can be cached
-        if ($this->method != RequestInterface::GET && $this->method != RequestInterface::HEAD) {
-            return false;
-        }
-
-        // Never cache requests when using no-store
-        if ($this->getHeader('Cache-Control') && $this->getHeader('Cache-Control')->hasDirective('no-store')) {
-            return false;
-        }
-
-        return true;
-    }
-
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -510,39 +532,13 @@ class Request extends AbstractMessage implements RequestInterface
     public function dispatch($eventName, array $context = array())
     {
         $context['request'] = $this;
-        $this->getEventDispatcher()->dispatch($eventName, new Event($context));
+
+        return $this->getEventDispatcher()->dispatch($eventName, new Event($context));
     }
 
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
         $this->getEventDispatcher()->addSubscriber($subscriber);
-
-        return $this;
-    }
-
-    public function setIsRedirect($isRedirect)
-    {
-        $this->isRedirect = $isRedirect;
-
-        return $this;
-    }
-
-    public function isRedirect()
-    {
-        return $this->isRedirect;
-    }
-
-    /**
-     * {@inheritdoc}
-     * Adds a check for Host header changes
-     */
-    public function addHeader($header, $value)
-    {
-        parent::addHeader($header, $value);
-
-        if ($header == 'host' || $header == 'Host') {
-            $this->setHost((string) $this->getHeader('Host'));
-        }
 
         return $this;
     }
@@ -602,5 +598,41 @@ class Request extends AbstractMessage implements RequestInterface
                 $this->dispatch('request.success', $this->getEventArray());
             }
         }
+    }
+
+    /**
+     * @deprecated Use Guzzle\Plugin\Cache\DefaultCanCacheStrategy
+     * @codeCoverageIgnore
+     */
+    public function canCache()
+    {
+        Version::warn(__METHOD__ . ' is deprecated. Use Guzzle\Plugin\Cache\DefaultCanCacheStrategy.');
+        if (class_exists('Guzzle\Plugin\Cache\DefaultCanCacheStrategy')) {
+            $canCache = new \Guzzle\Plugin\Cache\DefaultCanCacheStrategy();
+            return $canCache->canCacheRequest($this);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @deprecated Use the history plugin (not emitting a warning as this is built-into the RedirectPlugin for now)
+     * @codeCoverageIgnore
+     */
+    public function setIsRedirect($isRedirect)
+    {
+        $this->isRedirect = $isRedirect;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Use the history plugin
+     * @codeCoverageIgnore
+     */
+    public function isRedirect()
+    {
+        Version::warn(__METHOD__ . ' is deprecated. Use the HistoryPlugin to track this.');
+        return $this->isRedirect;
     }
 }

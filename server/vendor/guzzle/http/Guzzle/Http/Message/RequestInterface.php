@@ -36,6 +36,14 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
     public function __toString();
 
     /**
+     * Send the request
+     *
+     * @return Response
+     * @throws RequestException on a request error
+     */
+    public function send();
+
+    /**
      * Set the client used to transport the request
      *
      * @param ClientInterface $client
@@ -61,19 +69,20 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
     public function setUrl($url);
 
     /**
-     * Send the request
+     * Get the full URL of the request (e.g. 'http://www.guzzle-project.com/')
      *
-     * @return Response
-     * @throws RequestException on a request error
+     * @param bool $asObject Set to TRUE to retrieve the URL as a clone of the URL object owned by the request.
+     *
+     * @return string|Url
      */
-    public function send();
+    public function getUrl($asObject = false);
 
     /**
-     * Get the previously received {@see Response} or NULL if the request has not been sent
+     * Get the resource part of the the request, including the path, query string, and fragment
      *
-     * @return Response|null
+     * @return string
      */
-    public function getResponse();
+    public function getResource();
 
     /**
      * Get the collection of key value pairs that will be used as the query string in the request
@@ -122,22 +131,6 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
     public function setHost($host);
 
     /**
-     * Get the HTTP protocol version of the request
-     *
-     * @return string
-     */
-    public function getProtocolVersion();
-
-    /**
-     * Set the HTTP protocol version of the request (e.g. 1.1 or 1.0)
-     *
-     * @param string $protocol HTTP protocol version to use with the request
-     *
-     * @return self
-     */
-    public function setProtocolVersion($protocol);
-
-    /**
      * Get the path of the request (e.g. '/', '/index.html')
      *
      * @return string
@@ -177,11 +170,18 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
     public function getUsername();
 
     /**
+     * Get the password to pass in the URL if set
+     *
+     * @return string|null
+     */
+    public function getPassword();
+
+    /**
      * Set HTTP authorization parameters
      *
      * @param string|bool $user     User name or false disable authentication
      * @param string      $password Password
-     * @param string      $scheme   Authentication scheme to use (CURLAUTH_BASIC, CURLAUTH_DIGEST, etc)
+     * @param string      $scheme   Authentication scheme ('Basic', 'Digest', or a CURLAUTH_* constant (deprecated))
      *
      * @return self
      * @link http://www.ietf.org/rfc/rfc2617.txt
@@ -191,51 +191,41 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
     public function setAuth($user, $password = '', $scheme = 'Basic');
 
     /**
-     * Get the password to pass in the URL if set
-     *
-     * @return string|null
-     */
-    public function getPassword();
-
-    /**
-     * Get the resource part of the the request, including the path, query string, and fragment
+     * Get the HTTP protocol version of the request
      *
      * @return string
      */
-    public function getResource();
+    public function getProtocolVersion();
 
     /**
-     * Get the full URL of the request (e.g. 'http://www.guzzle-project.com/')
+     * Set the HTTP protocol version of the request (e.g. 1.1 or 1.0)
      *
-     * @param bool $asObject Set to TRUE to retrieve the URL as a clone of the URL object owned by the request.
-     *
-     * @return string|Url
-     */
-    public function getUrl($asObject = false);
-
-    /**
-     * Get the state of the request. One of 'complete', 'transfer', 'new', 'error'
-     *
-     * @return string
-     */
-    public function getState();
-
-    /**
-     * Set the state of the request
-     *
-     * @param string $state   State of the request ('complete', 'transfer', 'new', 'error')
-     * @param array  $context Contextual information about the state change
+     * @param string $protocol HTTP protocol version to use with the request
      *
      * @return self
      */
-    public function setState($state, array $context = array());
+    public function setProtocolVersion($protocol);
 
     /**
-     * Get the cURL options that will be applied when the cURL handle is created
+     * Get the previously received {@see Response} or NULL if the request has not been sent
      *
-     * @return Collection
+     * @return Response|null
      */
-    public function getCurlOptions();
+    public function getResponse();
+
+    /**
+     * Manually set a response for the request.
+     *
+     * This method is useful for specifying a mock response for the request or setting the response using a cache.
+     * Manually setting a response will bypass the actual sending of a request.
+     *
+     * @param Response $response Response object to set
+     * @param bool     $queued   Set to TRUE to keep the request in a state of not having been sent, but queue the
+     *                           response for send()
+     *
+     * @return self Returns a reference to the object.
+     */
+    public function setResponse(Response $response, $queued = false);
 
     /**
      * The start of a response has been received for a request and the request is still in progress
@@ -268,18 +258,28 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
     public function getResponseBody();
 
     /**
-     * Manually set a response for the request.
+     * Get the state of the request. One of 'complete', 'transfer', 'new', 'error'
      *
-     * This method is useful for specifying a mock response for the request or setting the response using a cache.
-     * Manually setting a response will bypass the actual sending of a request.
-     *
-     * @param Response $response Response object to set
-     * @param bool     $queued   Set to TRUE to keep the request in a state of not having been sent, but queue the
-     *                           response for send()
-     *
-     * @return self Returns a reference to the object.
+     * @return string
      */
-    public function setResponse(Response $response, $queued = false);
+    public function getState();
+
+    /**
+     * Set the state of the request
+     *
+     * @param string $state   State of the request ('complete', 'transfer', 'new', 'error')
+     * @param array  $context Contextual information about the state change
+     *
+     * @return string Returns the current state of the request (which may have changed due to events being fired)
+     */
+    public function setState($state, array $context = array());
+
+    /**
+     * Get the cURL options that will be applied when the cURL handle is created
+     *
+     * @return Collection
+     */
+    public function getCurlOptions();
 
     /**
      * Get an array of Cookies
@@ -315,27 +315,4 @@ interface RequestInterface extends MessageInterface, HasDispatcherInterface
      * @return self
      */
     public function removeCookie($name);
-
-    /**
-     * Returns whether or not the request can be cached based on the request headers
-     *
-     * @return bool
-     */
-    public function canCache();
-
-    /**
-     * Set whether or not the request is a request that resulted from a redirect
-     *
-     * @param bool $isRedirect
-     *
-     * @return self
-     */
-    public function setIsRedirect($isRedirect);
-
-    /**
-     * Check whether or not the request is a request that resulted from a redirect
-     *
-     * @return bool
-     */
-    public function isRedirect();
 }

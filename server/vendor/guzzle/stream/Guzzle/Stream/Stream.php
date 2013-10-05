@@ -169,28 +169,30 @@ class Stream implements StreamInterface
         }
 
         // If the stream is a file based stream and local, then use fstat
-        if ($this->isLocal()) {
-            clearstatcache(true, $this->getUri());
-            $stats = fstat($this->stream);
-            if (isset($stats['size'])) {
-                return $stats['size'];
-            }
-        }
-
-        // Only get the size based on the content if the the stream is readable and seekable
-        if (!$this->cache[self::IS_READABLE] || !$this->cache[self::SEEKABLE]) {
-            return false;
-        } else {
+        clearstatcache(true, $this->cache['uri']);
+        $stats = fstat($this->stream);
+        if (isset($stats['size'])) {
+            $this->size = $stats['size'];
+            return $this->size;
+        } elseif ($this->cache[self::IS_READABLE] && $this->cache[self::SEEKABLE]) {
+            // Only get the size based on the content if the the stream is readable and seekable
             $pos = $this->ftell();
             $this->size = strlen((string) $this);
             $this->seek($pos);
             return $this->size;
         }
+
+        return false;
     }
 
     public function isReadable()
     {
         return $this->cache[self::IS_READABLE];
+    }
+
+    public function isRepeatable()
+    {
+        return $this->cache[self::IS_READABLE] && $this->cache[self::SEEKABLE];
     }
 
     public function isWritable()
@@ -232,23 +234,15 @@ class Stream implements StreamInterface
 
     public function read($length)
     {
-        return $this->cache[self::IS_READABLE] ? fread($this->stream, $length) : false;
+        return fread($this->stream, $length);
     }
 
     public function write($string)
     {
-        if (!$this->cache[self::IS_WRITABLE]) {
-            return 0;
-        }
+        // We can't know the size after writing anything
+        $this->size = null;
 
-        $bytes = fwrite($this->stream, $string);
-
-        // We can't know the size after writing if any bytes were written
-        if ($bytes) {
-            $this->size = null;
-        }
-
-        return $bytes;
+        return fwrite($this->stream, $string);
     }
 
     public function ftell()
@@ -281,7 +275,6 @@ class Stream implements StreamInterface
     {
         return isset($this->customData[$key]) ? $this->customData[$key] : null;
     }
-
 
     /**
      * Reprocess stream metadata

@@ -2,6 +2,8 @@
 
 namespace React\EventLoop;
 
+use React\EventLoop\Timer\Timer;
+use React\EventLoop\Timer\TimerInterface;
 use React\EventLoop\Timer\Timers;
 
 class StreamSelectLoop implements LoopInterface
@@ -17,7 +19,7 @@ class StreamSelectLoop implements LoopInterface
 
     public function __construct()
     {
-        $this->timers = new Timers($this);
+        $this->timers = new Timers();
     }
 
     public function addReadStream($stream, $listener)
@@ -68,17 +70,28 @@ class StreamSelectLoop implements LoopInterface
 
     public function addTimer($interval, $callback)
     {
-        return $this->timers->add($interval, $callback);
+        $timer = new Timer($this, $interval, $callback, false);
+        $this->timers->add($timer);
+
+        return $timer;
     }
 
     public function addPeriodicTimer($interval, $callback)
     {
-        return $this->timers->add($interval, $callback, true);
+        $timer = new Timer($this, $interval, $callback, true);
+        $this->timers->add($timer);
+
+        return $timer;
     }
 
-    public function cancelTimer($signature)
+    public function cancelTimer(TimerInterface $timer)
     {
-        $this->timers->cancel($signature);
+        $this->timers->cancel($timer);
+    }
+
+    public function isTimerActive(TimerInterface $timer)
+    {
+        return $this->timers->contains($timer);
     }
 
     protected function getNextEventTimeInMicroSeconds()
@@ -124,10 +137,12 @@ class StreamSelectLoop implements LoopInterface
         if (stream_select($read, $write, $except, 0, $this->getNextEventTimeInMicroSeconds()) > 0) {
             if ($read) {
                 foreach ($read as $stream) {
-                    $listener = $this->readListeners[(int) $stream];
-                    if (call_user_func($listener, $stream, $this) === false) {
-                        $this->removeReadStream($stream);
+                    if (!isset($this->readListeners[(int) $stream])) {
+                        continue;
                     }
+
+                    $listener = $this->readListeners[(int) $stream];
+                    call_user_func($listener, $stream, $this);
                 }
             }
 
@@ -138,9 +153,7 @@ class StreamSelectLoop implements LoopInterface
                     }
 
                     $listener = $this->writeListeners[(int) $stream];
-                    if (call_user_func($listener, $stream, $this) === false) {
-                        $this->removeWriteStream($stream);
-                    }
+                    call_user_func($listener, $stream, $this);
                 }
             }
         }

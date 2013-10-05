@@ -2,7 +2,8 @@
 
 namespace Guzzle\Http\Message;
 
-use Guzzle\Common\Collection;
+use Guzzle\Common\Version;
+use Guzzle\Common\ToArrayInterface;
 use Guzzle\Common\Exception\RuntimeException;
 use Guzzle\Http\EntityBodyInterface;
 use Guzzle\Http\EntityBody;
@@ -13,7 +14,7 @@ use Guzzle\Parser\ParserRegistry;
 /**
  * Guzzle HTTP response object
  */
-class Response extends AbstractMessage
+class Response extends AbstractMessage implements \Serializable
 {
     /**
      * @var array Array of reason phrases and their corresponding status codes
@@ -91,11 +92,11 @@ class Response extends AbstractMessage
     /** @var array Information about the request */
     protected $info = array();
 
-    /** @var array Cacheable response codes (see RFC 2616:13.4) */
-    protected $cacheResponseCodes = array(200, 203, 206, 300, 301, 410);
-
     /** @var string The effective URL that returned this response */
     protected $effectiveUrl;
+
+    /** @var array Cacheable response codes (see RFC 2616:13.4) */
+    protected static $cacheResponseCodes = array(200, 203, 206, 300, 301, 410);
 
     /**
      * Create a new Response based on a raw response message
@@ -129,7 +130,7 @@ class Response extends AbstractMessage
      * Construct the response
      *
      * @param string                              $statusCode The response status code (e.g. 200, 404, etc)
-     * @param Collection|array                    $headers    The response headers
+     * @param ToArrayInterface|array              $headers    The response headers
      * @param string|resource|EntityBodyInterface $body       The body of the response
      *
      * @throws BadResponseException if an invalid response code is given
@@ -143,7 +144,7 @@ class Response extends AbstractMessage
         if ($headers) {
             if (is_array($headers)) {
                 $this->setHeaders($headers);
-            } elseif ($headers instanceof Collection) {
+            } elseif ($headers instanceof ToArrayInterface) {
                 $this->setHeaders($headers->toArray());
             } else {
                 throw new BadResponseException('Invalid headers argument received');
@@ -157,6 +158,21 @@ class Response extends AbstractMessage
     public function __toString()
     {
         return $this->getMessage();
+    }
+
+    public function serialize()
+    {
+        return json_encode(array(
+            'status'  => $this->statusCode,
+            'body'    => (string) $this->body,
+            'headers' => $this->headers->toArray()
+        ));
+    }
+
+    public function unserialize($serialize)
+    {
+        $data = json_decode($serialize, true);
+        $this->__construct($data['status'], $data['headers'], $data['body']);
     }
 
     /**
@@ -746,7 +762,7 @@ class Response extends AbstractMessage
     public function canCache()
     {
         // Check if the response is cacheable based on the code
-        if (!in_array((int) $this->getStatusCode(), $this->cacheResponseCodes)) {
+        if (!in_array((int) $this->getStatusCode(), self::$cacheResponseCodes)) {
             return false;
         }
 
@@ -902,25 +918,31 @@ class Response extends AbstractMessage
 
     /**
      * @deprecated
+     * @codeCoverageIgnore
      */
     public function getPreviousResponse()
     {
+        Version::warn(__METHOD__ . ' is deprecated. Use the HistoryPlugin.');
         return null;
     }
 
     /**
      * @deprecated
+     * @codeCoverageIgnore
      */
     public function setRequest($request)
     {
+        Version::warn(__METHOD__ . ' is deprecated');
         return $this;
     }
 
     /**
      * @deprecated
+     * @codeCoverageIgnore
      */
     public function getRequest()
     {
+        Version::warn(__METHOD__ . ' is deprecated');
         return null;
     }
 }

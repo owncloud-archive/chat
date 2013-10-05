@@ -18,6 +18,11 @@ class Server extends EventEmitter implements ServerInterface
 
     public function listen($port, $host = '127.0.0.1')
     {
+        if (strpos($host, ':') !== false) {
+            // enclose IPv6 addresses in square brackets before appending port
+            $host = '[' . $host . ']';
+        }
+
         $this->master = @stream_socket_server("tcp://$host:$port", $errno, $errstr);
         if (false === $this->master) {
             $message = "Could not bind to tcp://$host:$port: $errstr";
@@ -58,6 +63,7 @@ class Server extends EventEmitter implements ServerInterface
     {
         $this->loop->removeStream($this->master);
         fclose($this->master);
+        $this->removeAllListeners();
     }
 
     public function createConnection($socket)

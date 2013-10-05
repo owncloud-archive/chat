@@ -3,6 +3,7 @@
 namespace Guzzle\Common;
 
 use Guzzle\Common\Exception\InvalidArgumentException;
+use Guzzle\Common\Exception\RuntimeException;
 
 /**
  * Key value pair collection object
@@ -15,9 +16,9 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
     /**
      * @param array $data Associative array of data to set
      */
-    public function __construct(array $data = null)
+    public function __construct(array $data = array())
     {
-        $this->data = $data ?: array();
+        $this->data = $data;
     }
 
     /**
@@ -32,19 +33,13 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
      */
     public static function fromConfig(array $config = array(), array $defaults = array(), array $required = array())
     {
-        $collection = new self($defaults);
+        $data = $config + $defaults;
 
-        foreach ($config as $key => $value) {
-            $collection->set($key, $value);
+        if ($missing = array_diff($required, array_keys($data))) {
+            throw new InvalidArgumentException('Config is missing the following keys: ' . implode(', ', $missing));
         }
 
-        foreach ($required as $key) {
-            if (!isset($collection[$key])) {
-                throw new InvalidArgumentException("Config must contain a '{$key}' key");
-            }
-        }
-
-        return $collection;
+        return new self($data);
     }
 
     public function count()
@@ -224,16 +219,8 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
      */
     public function merge($data)
     {
-        if ($data instanceof self) {
-            $data = $data->getAll();
-        }
-
-        if (!$this->data) {
-            $this->data = $data;
-        } else {
-            foreach ($data as $key => $value) {
-                $this->add($key, $value);
-            }
+        foreach ($data as $key => $value) {
+            $this->add($key, $value);
         }
 
         return $this;
@@ -248,8 +235,14 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
      */
     public function overwriteWith($data)
     {
-        foreach ($data as $k => $v) {
-            $this->set($k, $v);
+        if (is_array($data)) {
+            $this->data = $data + $this->data;
+        } elseif ($data instanceof Collection) {
+            $this->data = $data->toArray() + $this->data;
+        } else {
+            foreach ($data as $key => $value) {
+                $this->data[$key] = $value;
+            }
         }
 
         return $this;
@@ -319,20 +312,32 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
     }
 
     /**
-     * Inject configuration settings into an input string
+     * Set a value into a nested array key. Keys will be created as needed to set the value.
      *
-     * @param string $input  Input to inject
+     * @param string $path  Path to set
+     * @param mixed  $value Value to set at the key
      *
-     * @return string
+     * @return self
+     * @throws RuntimeException when trying to setPath using a nested path that travels through a scalar value
      */
-    public function inject($input)
+    public function setPath($path, $value)
     {
-        $replace = array();
-        foreach ($this->data as $key => $val) {
-            $replace['{' . $key . '}'] = $val;
+        $current =& $this->data;
+        $queue = explode('/', $path);
+        while (null !== ($key = array_shift($queue))) {
+            if (!is_array($current)) {
+                throw new RuntimeException("Trying to setPath {$path}, but {$key} is set and is not an array");
+            } elseif (!$queue) {
+                $current[$key] = $value;
+            } elseif (isset($current[$key])) {
+                $current =& $current[$key];
+            } else {
+                $current[$key] = array();
+                $current =& $current[$key];
+            }
         }
 
-        return strtr($input, $replace);
+        return $this;
     }
 
     /**
@@ -348,51 +353,51 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable, ToArra
      */
     public function getPath($path, $separator = '/', $data = null)
     {
-        // Assume the data of the collection if no data was passed into the method
         if ($data === null) {
-            $data = &$this->data;
+            $data =& $this->data;
         }
 
-        // Break the path into an array if needed
-        if (!is_array($path)) {
-            $path = explode($separator, $path);
-        }
-
-        // Using an iterative approach rather than recursion for speed
+        $path = is_array($path) ? $path : explode($separator, $path);
         while (null !== ($part = array_shift($path))) {
-
             if (!is_array($data)) {
                 return null;
-            }
-
-            // The value does not exist in the array or the path has more but the value is not an array
-            if (!isset($data[$part])) {
-
-                // Not using a wildcard and the key was not found, so return null
-                if ($part != '*') {
-                    return null;
-                }
-
-                // If using a wildcard search, then diverge and combine paths
+            } elseif (isset($data[$part])) {
+                $data =& $data[$part];
+            } elseif ($part != '*') {
+                return null;
+            } else {
+                // Perform a wildcard search by diverging and merging paths
                 $result = array();
                 foreach ($data as $value) {
                     if (!$path) {
                         $result = array_merge_recursive($result, (array) $value);
-                    } else {
-                        $test = $this->getPath($path, $separator, $value);
-                        if ($test !== null) {
-                            $result = array_merge_recursive($result, (array) $test);
-                        }
+                    } elseif (null !== ($test = $this->getPath($path, $separator, $value))) {
+                        $result = array_merge_recursive($result, (array) $test);
                     }
                 }
-
                 return $result;
             }
-
-            // Descend deeper into the data
-            $data = &$data[$part];
         }
 
         return $data;
+    }
+
+    /**
+     * Inject configuration settings into an input string
+     *
+     * @param string $input Input to inject
+     *
+     * @return string
+     * @deprecated
+     */
+    public function inject($input)
+    {
+        Version::warn(__METHOD__ . ' is deprecated');
+        $replace = array();
+        foreach ($this->data as $key => $val) {
+            $replace['{' . $key . '}'] = $val;
+        }
+
+        return strtr($input, $replace);
     }
 }

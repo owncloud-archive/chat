@@ -27,13 +27,21 @@ class Url
      * @param string $url Full URL used to create a Url object
      *
      * @return Url
+     * @throws InvalidArgumentException
      */
     public static function factory($url)
     {
-        $parts = ParserRegistry::getInstance()->getParser('url')->parseUrl($url);
+        static $defaults = array('scheme' => null, 'host' => null, 'path' => null, 'port' => null, 'query' => null,
+            'user' => null, 'pass' => null, 'fragment' => null);
+
+        if (false === ($parts = parse_url($url))) {
+            throw new InvalidArgumentException('Was unable to parse malformed url: ' . $url);
+        }
+
+        $parts += $defaults;
 
         // Convert the query string into a QueryString object
-        if (0 !== strlen($parts['query'])) {
+        if ($parts['query'] || 0 !== strlen($parts['query'])) {
             $parts['query'] = QueryString::fromString($parts['query']);
         }
 
@@ -260,11 +268,12 @@ class Url
      */
     public function setPath($path)
     {
+        static $pathReplace = array(' ' => '%20', '?' => '%3F');
         if (is_array($path)) {
-            $this->path = '/' . implode('/', $path);
-        } else {
-            $this->path = (string) $path;
+            $path = '/' . implode('/', $path);
         }
+
+        $this->path = strtr($path, $pathReplace);
 
         return $this;
     }

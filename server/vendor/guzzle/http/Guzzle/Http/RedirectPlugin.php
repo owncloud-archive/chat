@@ -33,8 +33,8 @@ class RedirectPlugin implements EventSubscriberInterface
     {
         return array(
             'request.sent'        => array('onRequestSent', 100),
-            'request.clone'       => 'onRequestClone',
-            'request.before_send' => 'onRequestClone'
+            'request.clone'       => 'cleanupRequest',
+            'request.before_send' => 'cleanupRequest'
         );
     }
 
@@ -43,9 +43,11 @@ class RedirectPlugin implements EventSubscriberInterface
      *
      * @param Event $event Event emitted
      */
-    public function onRequestClone(Event $event)
+    public function cleanupRequest(Event $event)
     {
-        $event['request']->getParams()->remove(self::REDIRECT_COUNT)->remove(self::PARENT_REQUEST);
+        $params = $event['request']->getParams();
+        unset($params[self::REDIRECT_COUNT]);
+        unset($params[self::PARENT_REQUEST]);
     }
 
     /**
@@ -182,13 +184,10 @@ class RedirectPlugin implements EventSubscriberInterface
     {
         $params = $original->getParams();
         // This is a new redirect, so increment the redirect counter
-        $current = $params->get(self::REDIRECT_COUNT) + 1;
-        $params->set(self::REDIRECT_COUNT, $current);
-
+        $current = $params[self::REDIRECT_COUNT] + 1;
+        $params[self::REDIRECT_COUNT] = $current;
         // Use a provided maximum value or default to a max redirect count of 5
-        $max = $params->hasKey(self::MAX_REDIRECTS)
-            ? $params->get(self::MAX_REDIRECTS)
-            : $this->defaultMaxRedirects;
+        $max = isset($params[self::MAX_REDIRECTS]) ? $params[self::MAX_REDIRECTS] : $this->defaultMaxRedirects;
 
         // Throw an exception if the redirect count is exceeded
         if ($current > $max) {
@@ -199,7 +198,7 @@ class RedirectPlugin implements EventSubscriberInterface
             return $this->createRedirectRequest(
                 $request,
                 $response->getStatusCode(),
-                trim($response->getHeader('Location')),
+                trim($response->getLocation()),
                 $original
             );
         }

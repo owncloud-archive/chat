@@ -14,8 +14,6 @@ return array(
     'Ratchet\\Tutorials' => array($baseDir . '/src'),
     'Ratchet\\Tests' => array($vendorDir . '/cboden/ratchet/tests'),
     'Ratchet' => array($vendorDir . '/cboden/ratchet/src'),
-    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
-    'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Guzzle\\Stream' => array($vendorDir . '/guzzle/stream'),
     'Guzzle\\Parser' => array($vendorDir . '/guzzle/parser'),
     'Guzzle\\Http' => array($vendorDir . '/guzzle/http'),

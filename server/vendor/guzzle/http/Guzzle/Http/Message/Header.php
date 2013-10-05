@@ -2,6 +2,7 @@
 
 namespace Guzzle\Http\Message;
 
+use Guzzle\Common\Version;
 use Guzzle\Http\Message\Header\HeaderInterface;
 
 /**
@@ -80,7 +81,8 @@ class Header implements HeaderInterface
 
         for ($i = 0, $total = count($values); $i < $total; $i++) {
             if (strpos($values[$i], $this->glue) !== false) {
-                foreach (explode($this->glue, $values[$i]) as $v) {
+                // Explode on glue when the glue is not inside of a comma
+                foreach (preg_split('/' . preg_quote($this->glue) . '(?=([^"]*"[^"]*")*[^"]*$)/', $values[$i]) as $v) {
                     $values[] = trim($v);
                 }
                 unset($values[$i]);
@@ -121,20 +123,17 @@ class Header implements HeaderInterface
         return new \ArrayIterator($this->toArray());
     }
 
-    /**
-     * {@inheritdoc}
-     * @todo Do not split semicolons when enclosed in quotes (e.g. foo="baz;bar")
-     */
     public function parseParams()
     {
-        $params = array();
+        $params = $matches = array();
         $callback = array($this, 'trimHeader');
 
         // Normalize the header into a single array and iterate over all values
         foreach ($this->normalize()->toArray() as $val) {
             $part = array();
-            foreach (explode(';', $val) as $kvp) {
-                $pieces = array_map($callback, explode('=', $kvp, 2));
+            foreach (preg_split('/;(?=([^"]*"[^"]*")*[^"]*$)/', $val) as $kvp) {
+                preg_match_all('/<[^>]+>|[^=]+/', $kvp, $matches);
+                $pieces = array_map($callback, $matches[0]);
                 $part[$pieces[0]] = isset($pieces[1]) ? $pieces[1] : '';
             }
             $params[] = $part;
@@ -145,17 +144,21 @@ class Header implements HeaderInterface
 
     /**
      * @deprecated
+     * @codeCoverageIgnore
      */
     public function hasExactHeader($header)
     {
+        Version::warn(__METHOD__ . ' is deprecated');
         return $this->header == $header;
     }
 
     /**
-     * {@deprecated}
+     * @deprecated
+     * @codeCoverageIgnore
      */
     public function raw()
     {
+        Version::warn(__METHOD__ . ' is deprecated. Use toArray()');
         return $this->toArray();
     }
 

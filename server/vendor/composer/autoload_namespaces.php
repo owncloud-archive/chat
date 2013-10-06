@@ -11,7 +11,6 @@ return array(
     'React\\Stream' => array($vendorDir . '/react/stream'),
     'React\\Socket' => array($vendorDir . '/react/socket'),
     'React\\EventLoop' => array($vendorDir . '/react/event-loop'),
-    'Ratchet\\Tutorials' => array($baseDir . '/src'),
     'Ratchet\\Tests' => array($vendorDir . '/cboden/ratchet/tests'),
     'Ratchet' => array($vendorDir . '/cboden/ratchet/src'),
     'Guzzle\\Stream' => array($vendorDir . '/guzzle/stream'),

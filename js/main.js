@@ -19,22 +19,22 @@ $(document).ready(function(){
 					onInvite(server, msg.data.param);
 				} else if (msg.data.type === "send"){
 					onChatMessage(msg.data.param);                        
-				} else if (msg.data.type === "left"){
-					var conservationID = msg.data.param.conservationID;
-					getUsers(server, conservationID, function(msg){
+				} else if (msg.data.type == "left"){
+					var conversationID = msg.data.param.conversationID;
+					getUsers(server, conversationID, function(msg){
 						if (msg.data.param.users.length <= 1){
-							deleteConservation(conservationID);
+							deleteConversation(conversationID);
 						} 
 					});
 				}
 			}
 			// We greeted the server, the real game starts here :)
 			$('#createConverstation').click(function(){
-				initConservation(server);   
+				initConversation(server);   
 			});
 
 			$("body").on("click", ".conversation", function(event){
-				$('#' + $(this).data('conservationid')).fadeIn();
+				$('#' + $(this).data('conversationid')).fadeIn();
 			});
 
 			$("body").on("keypress", ".messagefield", function(e){
@@ -46,26 +46,26 @@ $(document).ready(function(){
 			});
 
 			$('body').on("click", ".hide", function(){
-				hideConservation($(this).data('conservationid')); 
+				hideConversation($(this).data('conversationid')); 
 			});
 
 			$('body').on('click', '.leave', function(){
-				console.log($(this).data('conservationid'))
-				var conservationID = $(this).data('conservationid');
-				leave(server, conservationID, OC.currentUser, function(msg){
-					$('#' + conservationID).remove();
-					$('#conservation' + conservationID).remove();
+				console.log($(this).data('conversationid'))
+				var conversationID = $(this).data('conversationid');
+				leave(server, conversationID, OC.currentUser, function(msg){
+					$('#' + conversationID).remove();
+					$('#conversation' + conversationID).remove();
 				});
 			});
 
 			$('#user').keypress(function(e){
-				if (e.which === 13){
-					initConservation(server)
+				if (e.which == 13){
+					initConversation(server)
 				}
 			});
 
 			$('body').on('keypress', '.invitefield', function(event){
-				if(event.which === 13){
+				if(event.which == 13){
 					invite(server, $(this).val(), $(this).data('conservationid'), function(msg){
 					});
 					$(this).val('');
@@ -79,31 +79,31 @@ $(document).ready(function(){
 	});
 });
 
-function initConservation(server){
+function initConversation(server){
 	if($('#user').val() !== ''){
 		if($('#user').val() === OC.currentUser){
-			throwError('You can\'t stat a conservation with yourself');
+			throwError('You can\'t stat a conversation with yourself');
 			$('#user').val('');
 		} else {
 			$('#error').text('');
 			var userToInvite = $('#user').val();
 			$('#user').val('');
-			var timestamp = "conservation" + (new Date).getTime()
-			var conservationID = CryptoJS.MD5(timestamp);
-			conservationID = conservationID.toString();
+			var timestamp = "conversation" + (new Date).getTime()
+			var conversationID = CryptoJS.MD5(timestamp);
+			conversationID = conversationID.toString();
 
-			join(server, conservationID, function(msg){
+			join(server, conversationID, function(msg){
 			console.log('joined');
 			if (msg.status === "success"){
-				// Conservation created and joined
-				invite(server, userToInvite, conservationID,  function(msg){
+				// Conversation created and joined
+				invite(server, userToInvite, conversationID,  function(msg){
 					// User invited
 					// Chat can div can be created and displayed
 					// TODO use octemplate here to make this more readable
-					var chat_template = '<section id="*CONSERVATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONSERVATIONID*"></div><input class="messagefield" data-CONSERVATIONID="*CONSERVATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conservationID="*CONSERVATIONID*" type="text" ><button class="leave" data-CONSERVATIONID="*CONSERVATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conservationID="*CONSERVATIONID*" title="Hide this window">Hide</button></footer> ';
-					var chat = chat_template.replace('*USER*', userToInvite).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID);
+					var chat_template = '<section id="*CONVERSATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONVERSATIONID*"></div><input class="messagefield" data-CONVERSATIONID="*CONVERSATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conversationID="*CONVERSATIONID*" type="text" ><button class="leave" data-CONVERSATIONID="*CONVERSATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conversationID="*CONVERSATIONID*" title="Hide this window">Hide</button></footer> ';
+					var chat = chat_template.replace('*USER*', userToInvite).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID);
 					$('#chats').append(chat);
-					$('#conversations').append('<li id="conservation' + conservationID +'" data-displayed="true" data-conservationID="' + conservationID + '" data-user="' + userToInvite + '" class="conversation">'  + userToInvite + '</li>');
+					$('#conversations').append('<li id="conversation' + conversationID +'" data-displayed="true" data-conversationID="' + conversationID + '" data-user="' + userToInvite + '" class="conversation">'  + userToInvite + '</li>');
 
 
 				});
@@ -118,36 +118,36 @@ function initConservation(server){
 	}
 }
 
-function joinConservation(server, conservationID, conservationName){
-	join(server, conservationID, function(msg){
+function joinConversation(server, conversationID, conversationName){
+	join(server, conversationID, function(msg){
 	console.log('joined');
-	if (msg.status === "success"){
+	if (msg.status == "success"){
 		// TODO use octemplate here to make this more readable
-		var chat_template = '<section id="*CONSERVATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONSERVATIONID*"></div><input class="messagefield" data-CONSERVATIONID="*CONSERVATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conservationID="*CONSERVATIONID*" type="text" ><button class="leave" data-CONSERVATIONID="*CONSERVATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conservationID="*CONSERVATIONID*" title="Hide this window">Hide</button></footer> ';
-		var chat = chat_template.replace('*USER*', conservationName).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID);
+		var chat_template = '<section id="*CONVERSATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONVERSATIONID*"></div><input class="messagefield" data-CONVERSATIONID="*CONVERSATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conversationID="*CONVERSATIONID*" type="text" ><button class="leave" data-CONVERSATIONID="*CONVERSATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conversationID="*CONVERSATIONID*" title="Hide this window">Hide</button></footer> ';
+		var chat = chat_template.replace('*USER*', conversationName).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID);
 		$('#chats').append(chat);
-		$('#conversations').append('<li id="conservation' + conservationID +'" data-displayed="true" data-conservationID="' + conservationID + '" data-user="' + conservationName + '" class="conversation">'  + conservationName + '</li>');
+		$('#conversations').append('<li id="conversation' + conversationID +'" data-displayed="true" data-conversationID="' + conversationID + '" data-user="' + conversationName + '" class="conversation">'  + conversationName + '</li>');
 	}
 	});
 }
 
-function sendChatMessage(server, message, conservationID, callback){
-	server.sendMSG(server.generateJSONcommand('send',{conservationID : conservationID, msg : message, user: OC.currentUser}), function(msg){
+function sendChatMessage(server, message, conversationID, callback){
+	server.sendMSG(server.generateJSONcommand('send',{conversationID : conversationID, msg : message, user: OC.currentUser}), function(msg){
 		console.log(' sendchatmessage callbak' + msg);
 		console.log(msg);
-		if (msg.status === "success"){
+		if (msg.status == "success"){
 			callback(msg);
-		} else if (msg.status === "error") {
+		} else if (msg.status == "error") {
 			throwError('Can\'t send message: ' + message );        
 		} else {
-			onChatMessage({conservationID : conservationID, msg : message, user: OC.currentUser}); // Add message to the chat window
+			onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); // Add message to the chat window
 		}
 	});
 }
 
-function deleteConservation(conservationID){
-	$('#' + conservationID).remove();
-	$('#conservation' + conservationID).remove();
+function deleteConversation(conversationID){
+	$('#' + conversationID).remove();
+	$('#conversation' + conversationID).remove();
 }
 function hideConservation(conservationID){
 	$('#' + conservationID).fadeOut();
@@ -156,9 +156,9 @@ function hideConservation(conservationID){
 
 function getUsers(server, conservationID, callback){
 	server.sendMSG(server.generateJSONcommand('getusers', {conservationID : conservationID}), function(msg){
-		if(msg.status === "success"){
+		if(msg.status == "success"){
 			callback(msg);
-		} else if (msg.status === "error"){
+		} else if (msg.status == "error"){
 			throwError('Can\'t get user list because ' + msg.data.msg); 
 		}
 	});
@@ -174,9 +174,9 @@ function join(server, conservationID, callback){
 
 function invite(server, userToInvite, conservationID, callback){
 	server.sendMSG(server.generateJSONcommand('invite', {user : OC.currentUser, conservationID : conservationID, timestamp : (new Date).getTime(), userToInvite : userToInvite}), function(msg){
-		if (msg.status === "success"){
+		if (msg.status == "success"){
 			callback(msg);
-		} else if(msg.status === "error"){
+		} else if(msg.status == "error"){
 			throwError('Can\'t ivnite user: ' + userToInvite + 'because : ' + msg.data.msg);
 		}
 	});
@@ -184,7 +184,7 @@ function invite(server, userToInvite, conservationID, callback){
 
 function leave(server, conservationID, user, callback){
 	server.sendMSG(server.generateJSONcommand('leave', {user: OC.currentUser, conservationID : conservationID}), function(msg){
-		if (msg.status === "success"){
+		if (msg.status == "success"){
 			callback(msg);
 		} else {
 			throwError('Can\'t leave room because ' + msg.data.msg);

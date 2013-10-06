@@ -2,11 +2,6 @@
     "name": "owncloud/chat"
   	, "type": "library"
   	, "minimum-stability": "dev"
-  	, "autoload": {
-        "psr-0": {
-          "Ratchet\\Tutorials": "src"
-    	}
-    }
   	, "require": {
         "php": ">=5.3.3"
     	, "cboden/Ratchet": "master"

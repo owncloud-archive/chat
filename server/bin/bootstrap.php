@@ -21,7 +21,6 @@
  */
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
-use Ratchet\Tutorials\Chat;
 /*
  * @Brief Create a $user object so we can insert it into the Chat Class
  * @TODO 
@@ -42,9 +41,10 @@ echo $pid;
  * @Brief boot the Chat Server 
  */
 require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__).'/src/chat.php';
 $server = IoServer::factory(
 	new WsServer(
-		new Chat($user)
+		new \OCA\Chat\Chat($user)
 	)
 	, 8080
 );

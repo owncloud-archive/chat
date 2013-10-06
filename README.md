@@ -10,5 +10,5 @@ Have chats in your ownCloud!
 4.	Launch server/bin/bootstrap.php via php from the commandline
 5. 	Go to the chat app in owncloud. You should see 'Connected to the server'
 6. 	Fill in the username of an other user
-7. 	Click on the left bar on the conservation 
+7. 	Click on the left bar on the conversation
 8. 	Start chatting!

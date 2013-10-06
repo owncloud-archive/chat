@@ -19,11 +19,9 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace Ratchet\Tutorials;
+namespace OCA\Chat;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-
-
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -91,7 +89,7 @@ class Chat implements MessageComponentInterface {
     }
 
     /** 
-     * @brief Called when the user leaves a conservation
+     * @brief Called when the user leaves a conversation
      * @param ConnectionInterface $from object which stores the connection with the client
      * @param array $param array with all the paramters given in the JSON message send by the user
      * @param JSON $raw Originally message send by the user
@@ -99,23 +97,23 @@ class Chat implements MessageComponentInterface {
      * */
     private function leave($from, $param, $raw, $id){
 
-        $key = array_search($param['user'], $this->rooms[$param['conservationID']]['users'] );
-        unset($this->rooms[$param['conservationID']]['users'][$key]);
-        $key = array_search($from, $this->rooms[$param['conservationID']]['contacts']); 
-        unset($this->rooms[$param['conservationID']]['contacts'][$key]);
+        $key = array_search($param['user'], $this->rooms[$param['conversationID']]['users'] );
+        unset($this->rooms[$param['conversationID']]['users'][$key]);
+        $key = array_search($from, $this->rooms[$param['conversationID']]['contacts']); 
+        unset($this->rooms[$param['conversationID']]['contacts'][$key]);
         
-        //If there is only one user left in the conservation, the conservation has to be deleted
-        if(count($this->rooms[$param['conservationID']]['contacts']) <= 1){
-            unset($this->rooms[$param['conservationID']]);
+        //If there is only one user left in the conversation, the conversation has to be deleted
+        if(count($this->rooms[$param['conversationID']]['contacts']) <= 1){
+            unset($this->rooms[$param['conversationID']]);
         }
-        foreach($this->rooms[$param['conservationID']]['contacts'] as $user){
+        foreach($this->rooms[$param['conversationID']]['contacts'] as $user){
             $user->send(json_encode(array(
                                                 "status" => "command",
                 								"data" => array(
                 										"type" => "left",
                 										"param" => array(
                 												"user" => $param['user'],
-                												"conservationID" => $param['conservationID'],
+                												"conversationID" => $param['conversationID'],
                                                                 "deleteRoom" => $deleteRoom
                 												)))));
         }          
@@ -148,14 +146,14 @@ class Chat implements MessageComponentInterface {
     }
     
     /**
-     * @brief Invites a user to a conservation
+     * @brief Invites a user to a conversation
      * @param ConnectionInterface $from object which stores the connection with the client
      * @param array $param array with all the paramters given in the JSON message send by the user
      * @param JSON $raw Originally message send by the user
      * @param string $id the id of the message send by the user
      * */
     private function invite($from, $param, $raw, $id){
-    // TODO: check if user is already in a conservation
+    // TODO: check if user is already in a conversation
     
     
     // First check if the userToInvite is a real OC username
@@ -191,14 +189,14 @@ class Chat implements MessageComponentInterface {
      * @param string $id the id of the message send by the user
      * */
     private function getusers($from, $param, $raw, $id){
-        $users = $this->rooms[$param['conservationID']]['users'];
+        $users = $this->rooms[$param['conversationID']]['users'];
         
         $send = array(
                 "status" => "success",
                 "data" => array(
                         "type" => "getusers",
                         "param" => array (
-                            "room" => $param['conservationID'],
+                            "room" => $param['conversationID'],
                             "users" => array_values($users)
                             )
                 ), 
@@ -213,17 +211,16 @@ class Chat implements MessageComponentInterface {
     
     private function send($from, $param, $raw, $id){
         // All the users are stored in a array as objects, this aray is stored in the $this->rooms array, the key of this array is the name of the room
-        
-        // TODO check if $param['user'] (the sender of the message) is in the conservation, and if it's a real owncloud user
+        // TODO check if $param['user'] (the sender of the message) is in the conversation, and if it's a real owncloud user
         if(in_array($param['user'], $this->OC_user->getUsers())){
-             if(in_array($param['user'], $this->rooms[$param['conservationID']]['users'])){ 
-                foreach ($this->rooms[$param['conservationID']]['contacts'] as $contact) {
+             if(in_array($param['user'], $this->rooms[$param['conversationID']]['users'])){ 
+                foreach ($this->rooms[$param['conversationID']]['contacts'] as $contact) {
                     $contact->send($raw);
                     echo $raw . "\n";
                 }
                 $from->send(json_encode(array("status"=>"success", "id" =>$id)));
             } else {
-                $from->send(json_encode(array("status"=>"error", "id" => $id, "data" => array("msg" => "USERNOTINCONSERVATION"))));
+                $from->send(json_encode(array("status"=>"error", "id" => $id, "data" => array("msg" => "USERNOTINCONVERSATION"))));
             } 
         } else {
            $from->send(json_encode(array("status"=>"error", "id" => $id, "data" => array("msg" => "USERNOTREALUSER"))));
@@ -234,7 +231,7 @@ class Chat implements MessageComponentInterface {
     
     
     private function join($from, $param, $raw, $id){      
-        if (empty($this->rooms[$param['conservationID']])){
+        if (empty($this->rooms[$param['conversationID']])){
             
             // Conversation doesn't exists
             
@@ -243,7 +240,7 @@ class Chat implements MessageComponentInterface {
             
             array_push($contacts, $from); // Add the currently joined user to the array with contacts
             $users[] = $param['user'];
-            $this->rooms[$param['conservationID']] = array('contacts' => $contacts,
+            $this->rooms[$param['conversationID']] = array('contacts' => $contacts,
                                                  'users' => $users );
             
             $from->send(json_encode(array("status"=>"success", "id" =>$id)));
@@ -255,22 +252,17 @@ class Chat implements MessageComponentInterface {
             // Conversation already exists
          
             // This is a public conversation
-            $contacts = $this->rooms[$param['conservationID']]['contacts'];
-            $users = $this->rooms[$param['conservationID']]['users'];
+            $contacts = $this->rooms[$param['conversationID']]['contacts'];
+            $users = $this->rooms[$param['conversationID']]['users'];
 
             $users[] = $param['user'];
 
             array_push($contacts, $from); // Add the currently joined user to the array with contacts
             
-            $this->rooms[$param['conservationID']]['contacts'] = $contacts; // Updat array with users
-            $this->rooms[$param['conservationID']]['users'] = $users; 
+            $this->rooms[$param['conversationID']]['contacts'] = $contacts; // Updat array with users
+            $this->rooms[$param['conversationID']]['users'] = $users; 
 
             $from->send(json_encode(array("status"=>"success", "id" =>$id)));
-                
-            
-        
-    
-           
         }       
 
     }

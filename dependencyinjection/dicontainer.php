@@ -22,10 +22,9 @@
 
 namespace OCA\Chat\DependencyInjection;
 
-use \OCA\AppFramework\DependencyInjection\DIContainer as BaseContainer;
+use OC\AppFramework\DependencyInjection\DIContainer as BaseContainer;
 
-use \OCA\Chat\Controller\PageController;
-use \OCA\Chat\Controller\SettingsController;
+use OCA\Chat\Controller\PageController;
 
 class DIContainer extends BaseContainer {
 
@@ -37,9 +36,5 @@ class DIContainer extends BaseContainer {
 			return new PageController($c['API'], $c['Request']);
 		});
 
-
-		$this['SettingsController'] = $this->share(function($c){
-			return new SettingsController($c['API'], $c['Request']);
-		});
 	}
 }

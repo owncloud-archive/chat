@@ -22,16 +22,16 @@
 
 namespace OCA\Chat;
 
-use \OCA\AppFramework\Core\API;
+use OC\AppFramework\Core\API;
+use OCP\App;
 
-
-if(\OCP\App::isEnabled('appframework')){
+//if(\OCP\App::isEnabled('appframework')){
 
 	$api = new API('chat');
 
-	$api->addNavigationEntry(array(
+	app::addNavigationEntry(array(
 
-		'id' => $api->getAppName(),
+		'id' => 'chat',
 
 		'order' => 10,
 
@@ -44,7 +44,7 @@ if(\OCP\App::isEnabled('appframework')){
 	));
 
 	
-} else {
-	$msg = 'Can not enable the Chat app because the App Framework App is disabled';
-	\OCP\Util::writeLog('chat', $msg, \OCP\Util::ERROR);
-}
+//} else {
+//	$msg = 'Can not enable the Chat app because the App Framework App is disabled';
+//	\OCP\Util::writeLog('chat', $msg, \OCP\Util::ERROR);
+//}

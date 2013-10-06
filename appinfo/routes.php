@@ -22,9 +22,9 @@
 
 namespace OCA\Chat;
 
-use \OCA\AppFramework\App;
+use OC\AppFramework\App;
 
-use \OCA\Chat\DependencyInjection\DIContainer;
+use OCA\Chat\DependencyInjection\DIContainer;
 
 /**
  * Webinterface

@@ -17,12 +17,12 @@ $.extend({
 			var msg = JSON.parse(e.data);
 			var found = false;
 			$.each(server.messages, function(key, val){
-				if(val.id == msg.id){
+				if(val.id === msg.id){
 					val.callback(msg);
 					found = true;
 				} 
 			});
-			if (found == false){
+			if (found === false){
 				server.message(msg);
 			}
 			found = false;
@@ -62,7 +62,7 @@ $.extend({
 			return id;
 		}
 
-	if (typeof callback == 'function') { 
+	if (typeof callback === 'function') { 
 		server.onopen = function(e) {
 			callback(server);
 		};

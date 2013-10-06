@@ -11,15 +11,15 @@ $(document).ready(function(){
 
 	// When the users log in, we have to greet the server
 	greet(server, function(msg){
-		if(msg.status == "success"){
+		if(msg.status === "success"){
 			throwSuccess('Connected to the server');
 
 			server.message = function(msg){
-				if (msg.data.type == "invite"){
+				if (msg.data.type === "invite"){
 					onInvite(server, msg.data.param);
-				} else if (msg.data.type == "send"){
+				} else if (msg.data.type === "send"){
 					onChatMessage(msg.data.param);                        
-				} else if (msg.data.type == "left"){
+				} else if (msg.data.type === "left"){
 					var conservationID = msg.data.param.conservationID;
 					getUsers(server, conservationID, function(msg){
 						if (msg.data.param.users.length <= 1){
@@ -38,7 +38,7 @@ $(document).ready(function(){
 			});
 
 			$("body").on("keypress", ".messagefield", function(e){
-				if(e.which == 13) {
+				if(e.which === 13) {
 					sendChatMessage(server, $(this).val(), $(this).data('conservationid'), function(msg){
 					});
 					$(this).val('');
@@ -59,13 +59,13 @@ $(document).ready(function(){
 			});
 
 			$('#user').keypress(function(e){
-				if (e.which == 13){
+				if (e.which === 13){
 					initConservation(server)
 				}
 			});
 
 			$('body').on('keypress', '.invitefield', function(event){
-				if(event.which == 13){
+				if(event.which === 13){
 					invite(server, $(this).val(), $(this).data('conservationid'), function(msg){
 					});
 					$(this).val('');
@@ -121,7 +121,7 @@ function initConservation(server){
 function joinConservation(server, conservationID, conservationName){
 	join(server, conservationID, function(msg){
 	console.log('joined');
-	if (msg.status == "success"){
+	if (msg.status === "success"){
 		// TODO use octemplate here to make this more readable
 		var chat_template = '<section id="*CONSERVATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONSERVATIONID*"></div><input class="messagefield" data-CONSERVATIONID="*CONSERVATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conservationID="*CONSERVATIONID*" type="text" ><button class="leave" data-CONSERVATIONID="*CONSERVATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conservationID="*CONSERVATIONID*" title="Hide this window">Hide</button></footer> ';
 		var chat = chat_template.replace('*USER*', conservationName).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID).replace('*CONSERVATIONID*', conservationID);
@@ -135,9 +135,9 @@ function sendChatMessage(server, message, conservationID, callback){
 	server.sendMSG(server.generateJSONcommand('send',{conservationID : conservationID, msg : message, user: OC.currentUser}), function(msg){
 		console.log(' sendchatmessage callbak' + msg);
 		console.log(msg);
-		if (msg.status == "success"){
+		if (msg.status === "success"){
 			callback(msg);
-		} else if (msg.status == "error") {
+		} else if (msg.status === "error") {
 			throwError('Can\'t send message: ' + message );        
 		} else {
 			onChatMessage({conservationID : conservationID, msg : message, user: OC.currentUser}); // Add message to the chat window
@@ -156,9 +156,9 @@ function hideConservation(conservationID){
 
 function getUsers(server, conservationID, callback){
 	server.sendMSG(server.generateJSONcommand('getusers', {conservationID : conservationID}), function(msg){
-		if(msg.status == "success"){
+		if(msg.status === "success"){
 			callback(msg);
-		} else if (msg.status == "error"){
+		} else if (msg.status === "error"){
 			throwError('Can\'t get user list because ' + msg.data.msg); 
 		}
 	});
@@ -174,9 +174,9 @@ function join(server, conservationID, callback){
 
 function invite(server, userToInvite, conservationID, callback){
 	server.sendMSG(server.generateJSONcommand('invite', {user : OC.currentUser, conservationID : conservationID, timestamp : (new Date).getTime(), userToInvite : userToInvite}), function(msg){
-		if (msg.status == "success"){
+		if (msg.status === "success"){
 			callback(msg);
-		} else if(msg.status == "error"){
+		} else if(msg.status === "error"){
 			throwError('Can\'t ivnite user: ' + userToInvite + 'because : ' + msg.data.msg);
 		}
 	});
@@ -184,7 +184,7 @@ function invite(server, userToInvite, conservationID, callback){
 
 function leave(server, conservationID, user, callback){
 	server.sendMSG(server.generateJSONcommand('leave', {user: OC.currentUser, conservationID : conservationID}), function(msg){
-		if (msg.status == "success"){
+		if (msg.status === "success"){
 			callback(msg);
 		} else {
 			throwError('Can\'t leave room because ' + msg.data.msg);

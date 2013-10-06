@@ -1,8 +1,10 @@
-{{ script('main') }}
-{{ style('main') }}
-{{ script('date')}}
-{{ script('md5') }}
-{{ script('wjl') }}
+<?php
+\OCP\Util::addScript('chat', 'main');
+\OCP\Util::addStyle('chat', 'main');
+\OCP\Util::addScript('chat', 'date');
+\OCP\Util::addScript('3rdparty', 'md5/md5.min');
+\OCP\Util::addScript('chat', 'wjl');
+?>
 <div id="app">
 	<div id="undo-container">
 	</div>
@@ -15,7 +17,7 @@
 			<!-- The user can join or create a conversation here -->
 			<fieldset>
 				<input type="text" id="user" placeholder="User Name"><br>
-				<button type="submit" id="createConverstation" >Create Conversation</button>
+				<button type="submit" id="createConverstation"><?php p($l->t("Create Conversation")); ?></button>
 			</fieldset>
 			<ul id="status">
 

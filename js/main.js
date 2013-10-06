@@ -193,7 +193,7 @@ function leave(server, conversationID, user, callback){
 }
 
 function onInvite(server ,param){
-	joinconversation(server, param.conversationID, param.user);
+	joinConversation(server, param.conversationID, param.user);
 }
 
 function onChatMessage(param){

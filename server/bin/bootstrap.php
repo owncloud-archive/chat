@@ -26,7 +26,10 @@ use Ratchet\WebSocket\WsServer;
  * @TODO 
  */
 include dirname(__DIR__).'/../../../lib/base.php';
-OC::autoLoad('OCP\User');
+// Not needed/available in OC6
+if (is_callable("OC::autoLoad")) {
+	OC::autoLoad('OCP\User');
+}
 $user = new OC_user;
 
 /*

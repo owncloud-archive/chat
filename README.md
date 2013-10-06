@@ -6,7 +6,7 @@ Have chats in your ownCloud!
 ### Installation
 1.	Clone the repo to the apps directory of your owncloud installation
 2.	`git submodule init && git submodule update`
-3. 	Activate the appframework and the chat app
+3. 	Activate the chat app
 4.	Launch server/bin/bootstrap.php via php from the commandline
 5.	Do this only in a safe environment, **not** in a productive environment:
 	Append `"custom_csp_policy" => "",` before the closing `);` in your config/config.php

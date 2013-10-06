@@ -79,8 +79,8 @@
 	height: 350px;
 }
 
-.messagefield {
-	width: 430px !important;
+.chatLeft .messagefield {
+	width: 430px;
 }
 
 .chatContainer footer {

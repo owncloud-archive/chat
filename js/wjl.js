@@ -57,7 +57,7 @@ $.extend({
 
 		server.generateId  = function(){
 			timestamp = 'id' + (new Date).getTime() + Math.random();
-			id = CryptoJS.MD5(timestamp);
+			id = md5(timestamp);
 			id = id.toString();
 			return id;
 		}

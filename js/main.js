@@ -19,7 +19,7 @@ $(document).ready(function(){
 					onInvite(server, msg.data.param);
 				} else if (msg.data.type === "send"){
 					onChatMessage(msg.data.param);                        
-				} else if (msg.data.type == "left"){
+				} else if (msg.data.type === "left"){
 					var conversationID = msg.data.param.conversationID;
 					getUsers(server, conversationID, function(msg){
 						if (msg.data.param.users.length <= 1){
@@ -39,7 +39,7 @@ $(document).ready(function(){
 
 			$("body").on("keypress", ".messagefield", function(e){
 				if(e.which === 13) {
-					sendChatMessage(server, $(this).val(), $(this).data('conservationid'), function(msg){
+					sendChatMessage(server, $(this).val(), $(this).data('conversationid'), function(msg){
 					});
 					$(this).val('');
 				}
@@ -59,14 +59,14 @@ $(document).ready(function(){
 			});
 
 			$('#user').keypress(function(e){
-				if (e.which == 13){
+				if (e.which === 13){
 					initConversation(server)
 				}
 			});
 
 			$('body').on('keypress', '.invitefield', function(event){
-				if(event.which == 13){
-					invite(server, $(this).val(), $(this).data('conservationid'), function(msg){
+				if(event.which === 13){
+					invite(server, $(this).val(), $(this).data('conversationid'), function(msg){
 					});
 					$(this).val('');
 				} 
@@ -121,7 +121,7 @@ function initConversation(server){
 function joinConversation(server, conversationID, conversationName){
 	join(server, conversationID, function(msg){
 	console.log('joined');
-	if (msg.status == "success"){
+	if (msg.status === "success"){
 		// TODO use octemplate here to make this more readable
 		var chat_template = '<section id="*CONVERSATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONVERSATIONID*"></div><input class="messagefield" data-CONVERSATIONID="*CONVERSATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conversationID="*CONVERSATIONID*" type="text" ><button class="leave" data-CONVERSATIONID="*CONVERSATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conversationID="*CONVERSATIONID*" title="Hide this window">Hide</button></footer> ';
 		var chat = chat_template.replace('*USER*', conversationName).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID);
@@ -135,9 +135,9 @@ function sendChatMessage(server, message, conversationID, callback){
 	server.sendMSG(server.generateJSONcommand('send',{conversationID : conversationID, msg : message, user: OC.currentUser}), function(msg){
 		console.log(' sendchatmessage callbak' + msg);
 		console.log(msg);
-		if (msg.status == "success"){
+		if (msg.status === "success"){
 			callback(msg);
-		} else if (msg.status == "error") {
+		} else if (msg.status === "error") {
 			throwError('Can\'t send message: ' + message );        
 		} else {
 			onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); // Add message to the chat window
@@ -149,16 +149,16 @@ function deleteConversation(conversationID){
 	$('#' + conversationID).remove();
 	$('#conversation' + conversationID).remove();
 }
-function hideConservation(conservationID){
-	$('#' + conservationID).fadeOut();
-	$('#conservation' + conservationID).data('displayed', 'false');
+function hideconversation(conversationID){
+	$('#' + conversationID).fadeOut();
+	$('#conversation' + conversationID).data('displayed', 'false');
 }
 
-function getUsers(server, conservationID, callback){
-	server.sendMSG(server.generateJSONcommand('getusers', {conservationID : conservationID}), function(msg){
-		if(msg.status == "success"){
+function getUsers(server, conversationID, callback){
+	server.sendMSG(server.generateJSONcommand('getusers', {conversationID : conversationID}), function(msg){
+		if(msg.status === "success"){
 			callback(msg);
-		} else if (msg.status == "error"){
+		} else if (msg.status === "error"){
 			throwError('Can\'t get user list because ' + msg.data.msg); 
 		}
 	});
@@ -168,23 +168,23 @@ function greet(server, callback){
 	server.sendMSG(server.generateJSONcommand('greet', {user : OC.currentUser}), callback);
 }
 
-function join(server, conservationID, callback){
-	server.sendMSG(server.generateJSONcommand('join', {user : OC.currentUser, conservationID : conservationID,  timestamp : (new Date).getTime()  }), callback);
+function join(server, conversationID, callback){
+	server.sendMSG(server.generateJSONcommand('join', {user : OC.currentUser, conversationID : conversationID,  timestamp : (new Date).getTime()  }), callback);
 }
 
-function invite(server, userToInvite, conservationID, callback){
-	server.sendMSG(server.generateJSONcommand('invite', {user : OC.currentUser, conservationID : conservationID, timestamp : (new Date).getTime(), userToInvite : userToInvite}), function(msg){
-		if (msg.status == "success"){
+function invite(server, userToInvite, conversationID, callback){
+	server.sendMSG(server.generateJSONcommand('invite', {user : OC.currentUser, conversationID : conversationID, timestamp : (new Date).getTime(), userToInvite : userToInvite}), function(msg){
+		if (msg.status === "success"){
 			callback(msg);
-		} else if(msg.status == "error"){
+		} else if(msg.status === "error"){
 			throwError('Can\'t ivnite user: ' + userToInvite + 'because : ' + msg.data.msg);
 		}
 	});
 }
 
-function leave(server, conservationID, user, callback){
-	server.sendMSG(server.generateJSONcommand('leave', {user: OC.currentUser, conservationID : conservationID}), function(msg){
-		if (msg.status == "success"){
+function leave(server, conversationID, user, callback){
+	server.sendMSG(server.generateJSONcommand('leave', {user: OC.currentUser, conversationID : conversationID}), function(msg){
+		if (msg.status === "success"){
 			callback(msg);
 		} else {
 			throwError('Can\'t leave room because ' + msg.data.msg);
@@ -193,9 +193,9 @@ function leave(server, conservationID, user, callback){
 }
 
 function onInvite(server ,param){
-	joinConservation(server, param.conservationID, param.user);
+	joinconversation(server, param.conversationID, param.user);
 }
 
 function onChatMessage(param){
-	$('#chatText' + param.conservationID).append("<div class='chatmsg'>"+param.user+": "+param.msg+"</div>");
+	$('#chatText' + param.conversationID).append("<div class='chatmsg'>"+param.user+": "+param.msg+"</div>");
 }

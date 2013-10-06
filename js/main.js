@@ -89,7 +89,7 @@ function initConversation(server){
 			var userToInvite = $('#user').val();
 			$('#user').val('');
 			var timestamp = "conversation" + (new Date).getTime()
-			var conversationID = CryptoJS.MD5(timestamp);
+			var conversationID = md5(timestamp);
 			conversationID = conversationID.toString();
 
 			join(server, conversationID, function(msg){

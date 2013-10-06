@@ -28,11 +28,9 @@ use \OCA\AppFramework\Http\Request;
 
 class PageController extends Controller {
 
-
 	public function __construct(API $api, Request $request){
 		parent::__construct($api, $request);
 	}
-
 
 	/**
 	 * @IsAdminExemption
@@ -44,13 +42,9 @@ class PageController extends Controller {
 			'users' =>  \OCP\User::getUsers()
 		);
 		return $this->render('main', $params);
-
 	}
 
 	public function debug() {
-
 		return $this->render('debug');
-
 	}
-
 }

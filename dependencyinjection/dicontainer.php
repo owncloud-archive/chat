@@ -38,12 +38,8 @@ class DIContainer extends BaseContainer {
 		});
 
 
-	$this['SettingsController'] = $this->share(function($c){
-		return new SettingsController($c['API'], $c['Request']);
-	});
-
-
-	$this['TwigTemplateDirectory'] = __DIR__ . '/../templates';
+		$this['SettingsController'] = $this->share(function($c){
+			return new SettingsController($c['API'], $c['Request']);
+		});
 	}
 }
-

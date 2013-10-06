@@ -197,5 +197,5 @@ function onInvite(server ,param){
 }
 
 function onChatMessage(param){
-	$('#chatText' + param.conversationID).append(param.msg);
+	$('#chatText' + param.conversationID).append("<div class='chatmsg'>"+param.user+": "+param.msg+"</div>");
 }

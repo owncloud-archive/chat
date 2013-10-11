@@ -22,7 +22,7 @@
 
 namespace OCA\Chat;
 
-use OC\AppFramework\App;
+use OCA\AppFramework\App;
 
 use OCA\Chat\DependencyInjection\DIContainer;
 

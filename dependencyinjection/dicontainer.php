@@ -22,7 +22,7 @@
 
 namespace OCA\Chat\DependencyInjection;
 
-use OC\AppFramework\DependencyInjection\DIContainer as BaseContainer;
+use OCA\AppFramework\DependencyInjection\DIContainer as BaseContainer;
 
 use OCA\Chat\Controller\PageController;
 

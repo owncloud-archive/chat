@@ -22,9 +22,9 @@
 
 namespace OCA\Chat\Controller;
 
-use OC\AppFramework\Controller\Controller;
-use OC\AppFramework\Core\API;
-use OC\AppFramework\Http\Request;
+use OCA\AppFramework\Controller\Controller;
+use OCA\AppFramework\Core\API;
+use OCA\AppFramework\Http\Request;
 
 class PageController extends Controller {
 

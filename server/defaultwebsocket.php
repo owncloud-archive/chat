@@ -19,11 +19,11 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-namespace OCA\Chat;
+namespace OCA\Chat\Server;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
-class Chat implements MessageComponentInterface {
+class DefaultWebsocket implements MessageComponentInterface {
     protected $clients;
     protected $rooms;
     protected $users;

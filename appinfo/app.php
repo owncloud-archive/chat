@@ -42,7 +42,7 @@ if(\OCP\App::isEnabled('appframework')){
 	'name' => $api->getTrans()->t('Chat')
 	
 	));
-
+	
 
 } else {
 	$msg = 'Can not enable the Chat app because the App Framework App is disabled';

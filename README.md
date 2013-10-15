@@ -3,7 +3,7 @@ Chat
 
 Have chats in your ownCloud!
 
-### Installation
+## Installation
 1.	Clone the repo to the apps directory of your owncloud installation
 2.	`git submodule init && git submodule update`
 3. 	Activate the chat app
@@ -15,3 +15,16 @@ Have chats in your ownCloud!
 8. 	Fill in the username of an other user
 9. 	Click on the left bar on the conversation
 10. 	Start chatting!
+
+
+## Built-in API
+*Note: the API is just a set of commands used by the server and the client*
+
+ Action  | JSON Request Data   | JSON Possible Response Data  
+ --- | --- | ---
+ greet | `{status: “command”, data: {type: “greet”, param: {user: “foo”}}}` | `{status:  “success”}` `{status: “error”, data: {msg: “NotOCUser” }}`
+ join | `{status: “command”, data: {type: “join”, param: {user: “foo”, room: “bar”, timestamp: “”}}}` | `{status: “success”}`
+ invite | `{status: “command”, data: {type: “invite”, param: { user: “foo”, room: “bar”, timestamp: “” usertoinvite: “”}}}` | `{status: “success”} {status: “error”, data: {msg: “usernotonline”}}` `{status: “error”, data: {msg: “usernotexists”}}`
+leave | `{status: “command”, data: {type: “leave”, param: {user: “foo”, room: “bar”}}}` | `{status: “success”}` `{status: “error”, data: {msg: “roomdontexists”}}`
+getUser | `{status: “command”, data: {type: “getusers”, param: {room: “bar”}}}` | `{status: “success”, data: {param: {users: [foo, bar, foobar]}}}`
+send | `{status: “command”, data: {type: “send”, param: {room: “bar”, msg: “foobar”}}}` | `{status: “success”}`

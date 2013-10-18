@@ -35,5 +35,38 @@ $this->create('chat_index', '/')->get()->action(
 	}
 );
 
+$this->create('command_greet', '/command/greet/{user}')->action(
+	function($params){
+		App::main('CommandController', 'greet', $params, new DIContainer());
+	}
+);
 
+$this->create('command_join', '/command/join/{user}/{conversationID}/{timestamp}')->action(
+	function($params){
+		App::main('CommandController', 'join', $params, new DIContainer());
+	}
+);
 
+$this->create('command_invite', '/command/invite/{user}/{conversationID}/{timestamp}/{usertoinvite}')->action(
+		function($params){
+			App::main('CommandController', 'invite', $params, new DIContainer());
+		}
+);
+
+$this->create('command_leave', '/command/leave/{user}/{conversationID}')->action(
+		function($params){
+			App::main('CommandController', 'leave', $params, new DIContainer());
+		}
+);
+
+$this->create('command_getusers', '/command/getusers/{conversationID}')->action(
+		function($params){
+			App::main('CommandController', 'getusers', $params, new DIContainer());
+		}
+);
+
+$this->create('command_send', '/command/send/{conversationID}/{msg}')->action(
+		function($params){
+			App::main('CommandController', 'send', $params, new DIContainer());
+		}
+);

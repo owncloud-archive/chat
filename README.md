@@ -23,8 +23,8 @@ Have chats in your ownCloud!
  Action  | JSON Request Data   | JSON Possible Response Data  
  --- | --- | ---
  greet | `{status: “command”, data: {type: “greet”, param: {user: “foo”}}}` | `{status:  “success”}` `{status: “error”, data: {msg: “NotOCUser” }}`
- join | `{status: “command”, data: {type: “join”, param: {user: “foo”, room: “bar”, timestamp: “”}}}` | `{status: “success”}`
- invite | `{status: “command”, data: {type: “invite”, param: { user: “foo”, room: “bar”, timestamp: “” usertoinvite: “”}}}` | `{status: “success”} {status: “error”, data: {msg: “usernotonline”}}` `{status: “error”, data: {msg: “usernotexists”}}`
-leave | `{status: “command”, data: {type: “leave”, param: {user: “foo”, room: “bar”}}}` | `{status: “success”}` `{status: “error”, data: {msg: “roomdontexists”}}`
-getUser | `{status: “command”, data: {type: “getusers”, param: {room: “bar”}}}` | `{status: “success”, data: {param: {users: [foo, bar, foobar]}}}`
-send | `{status: “command”, data: {type: “send”, param: {room: “bar”, msg: “foobar”}}}` | `{status: “success”}`
+ join | `{status: “command”, data: {type: “join”, param: {user: “foo”, conversationID: “bar”, timestamp: “”}}}` | `{status: “success”}`
+ invite | `{status: “command”, data: {type: “invite”, param: { user: “foo”, conversationID: “bar”, timestamp: “” usertoinvite: “”}}}` | `{status: “success”} {status: “error”, data: {msg: “usernotonline”}}` `{status: “error”, data: {msg: “usernotexists”}}`
+leave | `{status: “command”, data: {type: “leave”, param: {user: “foo”, conversationID: “bar”}}}` | `{status: “success”}` `{status: “error”, data: {msg: “conversationIDdontexists”}}`
+getUser | `{status: “command”, data: {type: “getusers”, param: {conversationID: “bar”}}}` | `{status: “success”, data: {param: {users: [foo, bar, foobar]}}}`
+send | `{status: “command”, data: {type: “send”, param: {conversationID: “bar”, msg: “foobar”}}}` | `{status: “success”}`

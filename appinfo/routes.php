@@ -35,6 +35,10 @@ $this->create('chat_index', '/')->get()->action(
 	}
 );
 
+/**
+ * Commands used by the AJAX client
+ */
+
 $this->create('command_greet', '/command/greet/{user}')->action(
 	function($params){
 		App::main('CommandController', 'greet', $params, new DIContainer());

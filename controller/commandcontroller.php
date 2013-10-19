@@ -31,16 +31,20 @@ class CommandController extends Controller {
      * @IsSubAdminExemptio
      */
     public function greet(){
-    	$api = new API();
-    	
-    	$userOnline = new UserOnline();
-    	$userOnline->setUser($this->params('user'));
-    	$mapper = new UserOnlineMapper($api);
-    	$mapper->insert($userOnline);
-    	
-    	
-    	
-    	return new JSONResponse(array('status' => $this->params('user')));
+    	if(in_array($this->params('user'), OCUser::getUsers())){
+    		
+    		$api = new API();
+    		
+    		$userOnline = new UserOnline();
+    		$userOnline->setUser($this->params('user'));
+    		$mapper = new UserOnlineMapper($api);
+    		$mapper->insert($userOnline);
+    		
+    		
+    		return new JSONResponse(array('status' => 'success'));
+    	} else {
+    		return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'NO-OC-USER')));
+    	}
    	}
    	
    	/**
@@ -49,23 +53,40 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemptio
    	 */
    	public function join(){
-   		// Testing
-   		$api = new API();
-   		 
-   		$conversation = new Conversation();
-   		$conversation->setConversationId($this->params('conversationID'));
-   		$mapper = new ConversationMapper($api); // inject API class for db access
-   		$mapper->insert($conversation);
+   		if(in_array($this->params('user'), OCUser::getUsers())){ 
+	   		$api = new API();
+	
+	   		$userMapper = new UserMapper($api);
+	   		$users = $userMapper->findByConversation($this->params('conversationID'));
+	   		
+	   		if (count($users) === 0){
+	   			$conversation = new Conversation();
+	   			$conversation->setConversationId($this->params('conversationID'));
+	   			$mapper = new ConversationMapper($api); 
+	   			$mapper->insert($conversation);
+	   			 
+	   			$user = new User();
+	   			$user->setConversationId($this->params('conversationID'));
+	   			$user->setUser($this->params('user'));
+	   			$userMapper = new UserMapper($api);
+	   			$userMapper->insert($user);
+	   			
+	   			return new JSONResponse(array('status' => 'success'));
+	   		} else { 
+	   			$user = new User();
+	   			$user->setConversationId($this->params('conversationID'));
+	   			$user->setUser($this->params('user'));
+	   			$userMapper = new UserMapper($api);
+	   			$userMapper->insert($user);
+	   			
+	   			return new JSONResponse(array('status' => 'success'));
+	   		} 
+	   	} else {
+	   		return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'NO-OC-USER')));
+	   	}
    		
-   		$user = new User();
-   		$user->setConversationId($this->params('conversationID'));
-   		$user->setUser($this->params('user'));
-   		$userMapper = new UserMapper($api);
-   		$userMapper->insert($user);
-   		
-   		
-    	return new JSONResponse(array('status' => 'done'));
    	}
+   	
     
 
    	/**
@@ -74,14 +95,35 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemptio
    	 */
    	public function invite(){
-   		return new JSONResponse(array('status' => $this->params('user'),
-   										'conversationID' => $this->params('conversationID'),
-   										'timestamp' => $this->params('timestamp'),
-   										'usertoinvite' => $this->params('usertoinvite')
-   									));
+   		$api = new API();
+   		$userOnlineMapper = new UserOnlineMapper($api);
+   		$usersOnline = $userOnlineMapper->getOnlineUsers();
+
+   		if($this->params('user') !== $this->params('usertoinvite')){
+	    	if(in_array($this->params('usertoinvite'), \OCP\User::getUsers())){
+				if(in_array($this->params('usertoinvite'), $usersOnline)){
+					$pushMessage = new PushMessage();
+					$pushMessage->setSender($this->params('user'));
+					$pushMessage->setReceiver($this->params('usertoinvite'));
+					$pushMessage->setCommand(json_encode(array('type' => 'invite',
+																'param' => array(	'user' => $this->params('user'),	
+																					'conversationID' => $this->params('conversationID'),
+																					'usertoinvite' => $this->params('usertoinvite')))));
+					$mapper = new PushMessageMapper($api);
+					$mapper->insert($pushMessage);		
+					return new JSONResponse(array('status' => 'success'));
+				} else {
+					return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'USER-TO-INVITE-NOT-ONLINE')));
+				}   			
+	   		} else { 
+	    		return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'USER-TO-INVITE-NOT-OC-USER')));
+	   		}
+   		} else {
+   			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'USER-EQAUL-TO-USER-TO-INVITE')));
+   		}
    	}
    	
-    
+    // Functions below are place holders
    	/**
    	 * @CSRFExemption
    	 * @IsAdminExemption
@@ -110,20 +152,7 @@ class CommandController extends Controller {
    	 */
    	public function send(){
    		$api = new API();
-   		
-   		// For each user an entry in the pushmessage is necessary
-   		// First fetch all users in this conversation from the users_in_conversations table
-   		/*
-   		 * code block only for information
-   		$pushMessage = new PushMessage();  		
-   		$pushMessage->setReceiver('testreceiver');
-   		$pushMessage->setSender('testsender');
-   		$pushMessage->setCommand('testcommadn');
-   		$mapper = new pushMessageMapper($api); // inject API class for db access
-   		$mapper->insert($pushMessage);
-   		
-   		*/
-   		
+   		  		
    		return new JSONResponse(array('conversationID' => $this->params('conversationID'),
    										'msg' => $this->params('msg'),
    		));

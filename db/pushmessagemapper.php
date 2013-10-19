@@ -3,7 +3,6 @@ namespace OCA\Chat\Db;
 
 use \OCA\AppFramework\Db\Mapper;
 
-
 class PushMessageMapper extends Mapper {
 
 

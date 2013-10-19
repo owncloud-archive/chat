@@ -4,9 +4,15 @@ namespace OCA\Chat\Controller;
 
 use \OCA\AppFramework\Controller\Controller;
 use \OCA\AppFramework\Http\JSONResponse;
-use OCA\AppFramework\Core\API;
+use \OCA\AppFramework\Core\API;
 use \OCA\Chat\Db\PushMessage;
 use \OCA\Chat\Db\PushMessageMapper;
+use \OCA\Chat\Db\Conversation;
+use \OCA\Chat\Db\ConversationMapper;
+use \OCA\Chat\Db\User;
+use \OCA\Chat\Db\UserMapper;
+use \OCA\Chat\Db\UserOnline;
+use \OCA\Chat\Db\UserOnlineMapper;
 
 class CommandController extends Controller {
 
@@ -25,6 +31,15 @@ class CommandController extends Controller {
      * @IsSubAdminExemptio
      */
     public function greet(){
+    	$api = new API();
+    	
+    	$userOnline = new UserOnline();
+    	$userOnline->setUser($this->params('user'));
+    	$mapper = new UserOnlineMapper($api);
+    	$mapper->insert($userOnline);
+    	
+    	
+    	
     	return new JSONResponse(array('status' => $this->params('user')));
    	}
    	
@@ -34,7 +49,22 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemptio
    	 */
    	public function join(){
-    	return new JSONResponse(array('status' => $this->params('user'), 'conversationID' => $this->params('conversationID'), 'timestamp' => $this->params('timestamp')));
+   		// Testing
+   		$api = new API();
+   		 
+   		$conversation = new Conversation();
+   		$conversation->setConversationId($this->params('conversationID'));
+   		$mapper = new ConversationMapper($api); // inject API class for db access
+   		$mapper->insert($conversation);
+   		
+   		$user = new User();
+   		$user->setConversationId($this->params('conversationID'));
+   		$user->setUser($this->params('user'));
+   		$userMapper = new UserMapper($api);
+   		$userMapper->insert($user);
+   		
+   		
+    	return new JSONResponse(array('status' => 'done'));
    	}
     
 

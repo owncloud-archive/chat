@@ -16,6 +16,7 @@ use \OCA\Chat\Db\UserOnlineMapper;
 
 class CommandController extends Controller {
 
+	
 
     /**
      * @param Request $request an instance of the request
@@ -28,16 +29,14 @@ class CommandController extends Controller {
     /**
      * @CSRFExemption
      * @IsAdminExemption
-     * @IsSubAdminExemptio
+     * @IsSubAdminExemption
      */
     public function greet(){
-    	if(in_array($this->params('user'), OCUser::getUsers())){
-    		
-    		$api = new API();
-    		
+    	if(in_array($this->params('user'), \OCP\User::getUsers())){   		
+   		
     		$userOnline = new UserOnline();
     		$userOnline->setUser($this->params('user'));
-    		$mapper = new UserOnlineMapper($api);
+    		$mapper = new UserOnlineMapper($this->api);
     		$mapper->insert($userOnline);
     		
     		
@@ -50,25 +49,24 @@ class CommandController extends Controller {
    	/**
    	 * @CSRFExemption
    	 * @IsAdminExemption
-   	 * @IsSubAdminExemptio
+   	 * @IsSubAdminExemption
    	 */
    	public function join(){
-   		if(in_array($this->params('user'), OCUser::getUsers())){ 
-	   		$api = new API();
-	
-	   		$userMapper = new UserMapper($api);
+   		if(in_array($this->params('user'), \OCP\User::getUsers())){ 
+
+	   		$userMapper = new UserMapper($this->api);
 	   		$users = $userMapper->findByConversation($this->params('conversationID'));
 	   		
 	   		if (count($users) === 0){
 	   			$conversation = new Conversation();
 	   			$conversation->setConversationId($this->params('conversationID'));
-	   			$mapper = new ConversationMapper($api); 
+	   			$mapper = new ConversationMapper($this->api); 
 	   			$mapper->insert($conversation);
 	   			 
 	   			$user = new User();
 	   			$user->setConversationId($this->params('conversationID'));
 	   			$user->setUser($this->params('user'));
-	   			$userMapper = new UserMapper($api);
+	   			$userMapper = new UserMapper($this->api);
 	   			$userMapper->insert($user);
 	   			
 	   			return new JSONResponse(array('status' => 'success'));
@@ -76,7 +74,7 @@ class CommandController extends Controller {
 	   			$user = new User();
 	   			$user->setConversationId($this->params('conversationID'));
 	   			$user->setUser($this->params('user'));
-	   			$userMapper = new UserMapper($api);
+	   			$userMapper = new UserMapper($this->api);
 	   			$userMapper->insert($user);
 	   			
 	   			return new JSONResponse(array('status' => 'success'));
@@ -92,11 +90,10 @@ class CommandController extends Controller {
    	/**
    	 * @CSRFExemption
    	 * @IsAdminExemption
-   	 * @IsSubAdminExemptio
+   	 * @IsSubAdminExemption
    	 */
    	public function invite(){
-   		$api = new API();
-   		$userOnlineMapper = new UserOnlineMapper($api);
+   		$userOnlineMapper = new UserOnlineMapper($this->api);
    		$usersOnline = $userOnlineMapper->getOnlineUsers();
 
    		if($this->params('user') !== $this->params('usertoinvite')){
@@ -109,7 +106,7 @@ class CommandController extends Controller {
 																'param' => array(	'user' => $this->params('user'),	
 																					'conversationID' => $this->params('conversationID'),
 																					'usertoinvite' => $this->params('usertoinvite')))));
-					$mapper = new PushMessageMapper($api);
+					$mapper = new PushMessageMapper($this->api);
 					$mapper->insert($pushMessage);		
 					return new JSONResponse(array('status' => 'success'));
 				} else {
@@ -127,7 +124,7 @@ class CommandController extends Controller {
    	/**
    	 * @CSRFExemption
    	 * @IsAdminExemption
-   	 * @IsSubAdminExemptio
+   	 * @IsSubAdminExemption
    	 */
    	public function leave(){
    		return new JSONResponse(array('status' => $this->params('user'),
@@ -138,7 +135,7 @@ class CommandController extends Controller {
    	/**
    	 * @CSRFExemption
    	 * @IsAdminExemption
-   	 * @IsSubAdminExemptio
+   	 * @IsSubAdminExemption
    	 */
    	public function getusers(){
    		return new JSONResponse(array('conversationID' => $this->params('conversationID'),
@@ -148,7 +145,7 @@ class CommandController extends Controller {
    	/**
    	 * @CSRFExemption
    	 * @IsAdminExemption
-   	 * @IsSubAdminExemptio
+   	 * @IsSubAdminExemption
    	 */
    	public function send(){
    		$api = new API();

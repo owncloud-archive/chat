@@ -39,37 +39,37 @@ $this->create('chat_index', '/')->get()->action(
  * Commands used by the AJAX client
  */
 
-$this->create('command_greet', '/command/greet/{user}')->action(
+$this->create('command_greet', '/command/greet')->post()->action(
 	function($params){
 		App::main('CommandController', 'greet', $params, new DIContainer());
 	}
 );
 
-$this->create('command_join', '/command/join/{user}/{conversationID}/{timestamp}')->action(
+$this->create('command_join', '/command/join')->post()->action(
 	function($params){
 		App::main('CommandController', 'join', $params, new DIContainer());
 	}
 );
 
-$this->create('command_invite', '/command/invite/{user}/{conversationID}/{timestamp}/{usertoinvite}')->action(
+$this->create('command_invite', '/command/invite')->post()->action(
 		function($params){
 			App::main('CommandController', 'invite', $params, new DIContainer());
 		}
 );
 
-$this->create('command_leave', '/command/leave/{user}/{conversationID}')->action(
+$this->create('command_leave', '/command/leave')->post()->action(
 		function($params){
 			App::main('CommandController', 'leave', $params, new DIContainer());
 		}
 );
 
-$this->create('command_getusers', '/command/getusers/{conversationID}')->action(
+$this->create('command_getusers', '/command/getusers')->post()->action(
 		function($params){
 			App::main('CommandController', 'getusers', $params, new DIContainer());
 		}
 );
 
-$this->create('command_send', '/command/send/{conversationID}/{msg}')->action(
+$this->create('command_send', '/command/send')->post()->action(
 		function($params){
 			App::main('CommandController', 'send', $params, new DIContainer());
 		}

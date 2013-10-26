@@ -2,6 +2,7 @@
 namespace OCA\Chat\Db;
 
 use \OCA\AppFramework\Db\Mapper;
+use \OCA\AppFramework\Core\Api;
 
 class UserOnlineMapper extends Mapper {
 

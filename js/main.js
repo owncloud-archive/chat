@@ -1,3 +1,4 @@
+// This file is deprecated
 function throwSuccess(msg){
 	$('#status').append('<li class="status-success">' +  msg +'</li>')
 }

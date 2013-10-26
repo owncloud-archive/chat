@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-require '/var/www/owncloud/apps/chat/server/vendor/autoload.php';
+require 'apps/chat/server/vendor/autoload.php';
 
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;

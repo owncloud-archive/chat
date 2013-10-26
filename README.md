@@ -7,7 +7,7 @@ Have chats in your ownCloud!
 1.	Clone the repo to the apps directory of your owncloud installation
 2.	`git submodule init && git submodule update`
 3. 	Activate the chat app
-4.	Launch server/bin/bootstrap.php via php from the commandline
+4.	Launch occ chat:boot via php from the commandline
 5.	Do this only in a safe environment, **not** in a productive environment:
 	Append `"custom_csp_policy" => "",` before the closing `);` in your config/config.php
 6.	You may need to free port 8080 in your firewall

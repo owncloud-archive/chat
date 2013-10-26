@@ -74,3 +74,14 @@ $this->create('command_send', '/command/send')->post()->action(
 			App::main('CommandController', 'send', $params, new DIContainer());
 		}
 );
+
+/* 
+ * Receive and delete push message
+ */
+$this->create('push_get', '/push/get/{receiver}')->action(
+		function($params){
+			App::main('PushMessageController', 'get', $params, new DIContainer());
+		}
+);
+ 
+ 

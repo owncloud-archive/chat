@@ -14,9 +14,7 @@ use \OCA\Chat\Db\UserMapper;
 use \OCA\Chat\Db\UserOnline;
 use \OCA\Chat\Db\UserOnlineMapper;
 
-class CommandController extends Controller {
-
-	
+class CommandController extends Controller {	
 
     /**
      * @param Request $request an instance of the request

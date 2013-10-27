@@ -56,7 +56,7 @@ class PushMessageController extends Controller {
 		
 		$mapper = new PushMessageMapper($this->api); // inject API class for db access
 		$pushMessage = $mapper->findByReceiver($this->params('receiver'));
-		return new JSONResponse(array('status' => 'command', 'data' => json_decode($pushMessage->getCommand())));
+		return new JSONResponse(array('status' => 'command', 'id' => $pushMessage->getId(), 'data' => json_decode($pushMessage->getCommand())));
 		
 	}
 	
@@ -66,6 +66,11 @@ class PushMessageController extends Controller {
 	 * @CSRFExemption
 	 */
 	public function delete(){
+		$pushMessage = new PushMessage();
+		$pushMessage->setId($this->params('id'));
+		$mapper = new PushMessageMapper($this->api);
+		$mapper->delete($pushMessage);
+		
 		return new JSONResponse(array('status' => 'success'));
 	}
 

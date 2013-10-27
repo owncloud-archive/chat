@@ -84,4 +84,9 @@ $this->create('push_get', '/push/get/{receiver}')->action(
 		}
 );
  
- 
+ $this->create('push_delete', '/push/delete/{id}')->action(
+		function($params){
+			App::main('PushMessageController', 'delete', $params, new DIContainer());
+		}
+);
+

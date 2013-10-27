@@ -78,13 +78,13 @@ $this->create('command_send', '/command/send')->post()->action(
 /* 
  * Receive and delete push message
  */
-$this->create('push_get', '/push/get/{receiver}')->action(
+$this->create('push_get', '/push/get')->post()->action(
 		function($params){
 			App::main('PushMessageController', 'get', $params, new DIContainer());
 		}
 );
  
- $this->create('push_delete', '/push/delete/{id}')->action(
+ $this->create('push_delete', '/push/delete')->post()->action(
 		function($params){
 			App::main('PushMessageController', 'delete', $params, new DIContainer());
 		}

@@ -2,23 +2,31 @@ alert('ajax-client');
 $(document).ready(function(){
 	greet(function(msg){
 		throwSuccess('Connected to the server');
-
-		/*
-		 * TODO: Create long polling fucntion which checks for push messages
-		 *
-			if (msg.data.type === "invite"){
-				onInvite(server, msg.data.param);
-			} else if (msg.data.type === "send"){
-				onChatMessage(msg.data.param);                        
-			} else if (msg.data.type === "left"){
-				var conversationID = msg.data.param.conversationID;
-				getUsers(server, conversationID, function(msg){
-					if (msg.data.param.users.length <= 1){
-						deleteConversation(conversationID);
-					} 
-				});
-			}
-		*/	
+		
+		handlePushMessage();
+		function handlePushMessage(){
+			getPushMessge(function(msg){
+   			
+    			/*
+				if (msg.data.type === "invite"){
+					onInvite(server, msg.data.param);
+				} else if (msg.data.type === "send"){
+					onChatMessage(msg.data.param);                        
+				} else if (msg.data.type === "left"){
+					var conversationID = msg.data.param.conversationID;
+					getUsers(server, conversationID, function(msg){
+						if (msg.data.param.users.length <= 1){
+							deleteConversation(conversationID);
+						} 
+					});
+				}*/
+		
+    			deletePushMessage(msg.id, function(){
+        			handlePushMessage();
+    			});
+			});		
+		}
+			
 		
 		$('#createConverstation').click(function(){
 			initConversation(server);   

@@ -28,3 +28,14 @@ invite | `{status: “command”, data: {type: “invite”, param: { user: “f
 leave | `{status: “command”, data: {type: “leave”, param: {user: “foo”, conversationID: “bar”}}}` | `{status: “success”}` `{status: “error”, data: {msg: “conversationIDdontexists”}}`
 getUsers | `{status: “command”, data: {type: “getusers”, param: {conversationID: “bar”}}}` | `{status: “success”, data: {param: {users: [foo, bar, foobar]}}}`
 send | `{status: “command”, data: {type: “send”, param: {conversationID: “bar”, msg: “foobar”}}}` | `{status: “success”}`
+
+## Possible Error Messages
+
+Error Message  | Meaning 
+  --- | ---
+`USER-EQAUL-TO-USER-TO-INVITE` |  
+`USER-TO-INVITE-NOT-OC-USER` |
+`USER-TO-INVITE-NOT-ONLINE` |
+`NO-OC-USER` |
+`USER-TO-INVITE-EMPTY` |
+

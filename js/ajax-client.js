@@ -93,7 +93,7 @@ function initConversation(){
 
 	if(userToInvite !== ''){
 		if(userToInvite === OC.currentUser){
-			throwError('You can\'t stat a conversation with yourself');
+			throwError('USER-EQAUL-TO-USER-TO-INVITE');
 		} else {
 			
 			var conversationID = generateConversationID();
@@ -108,7 +108,7 @@ function initConversation(){
 			});
 		}
 	} else {
-		throwError('Username can\'t be empty');
+		throwError('USER-TO-INVITE-EMPTY');
 	}
 }
 
@@ -142,4 +142,12 @@ function sendChatMessage(message, conversationID, callback){
 		onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); 
 		callback(msg);
 	});
+}
+function deleteConversation(conversationID){
+	$('#' + conversationID).remove();
+	$('#conversation' + conversationID).remove();
+}
+function hideConversation(conversationID){
+	$('#' + conversationID).fadeOut();
+	$('#conversation' + conversationID).data('displayed', 'false');
 }

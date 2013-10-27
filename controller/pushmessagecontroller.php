@@ -45,6 +45,7 @@ class PushMessageController extends Controller {
 	 * 
 	 */
 	public function get() {
+		session_write_close();	// Very important! http://stackoverflow.com/questions/11946638/long-polling-blocks-my-other-ajax-requests
 		
 		try{
 			$mapper = new PushMessageMapper($this->api); // inject API class for db access

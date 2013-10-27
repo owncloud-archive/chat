@@ -6,11 +6,9 @@ $(document).ready(function(){
 		handlePushMessage();
 		function handlePushMessage(){
 			getPushMessge(function(msg){
-   			
-    			/*
-				if (msg.data.type === "invite"){
-					onInvite(server, msg.data.param);
-				} else if (msg.data.type === "send"){
+   				if (msg.data.type === "invite"){
+					onInvite(msg.data.param);
+				} /*else if (msg.data.type === "send"){
 					onChatMessage(msg.data.param);                        
 				} else if (msg.data.type === "left"){
 					var conversationID = msg.data.param.conversationID;
@@ -29,7 +27,7 @@ $(document).ready(function(){
 			
 		
 		$('#createConverstation').click(function(){
-			initConversation(server);   
+			initConversation();   
 		});
 
 		$("body").on("click", ".conversation", function(event){
@@ -58,7 +56,7 @@ $(document).ready(function(){
 
 		$('#user').keypress(function(e){
 			if (e.which === 13){
-				initConversation(server)
+				initConversation();
 			}
 		});
 
@@ -79,10 +77,59 @@ function greet(success){
 }
 
 function invite(userToInvite, conversationID, success){
-	
 	sendMSG('invite', {user : OC.currentUser, conversationid : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
 		throwError(errorMsg);
 	});
-	
 }
 
+function join(conversationID, success){
+	sendMSG('join', {user : OC.currentUser, conversationID : conversationID,  timestamp : (new Date).getTime()}, success);
+}
+
+
+function initConversation(){
+	var userToInvite = $('#user').val();
+	$('#user').val('');
+
+	if(userToInvite !== ''){
+		if(userToInvite === OC.currentUser){
+			throwError('You can\'t stat a conversation with yourself');
+		} else {
+			var conversationID = generateConversationID();
+			join(conversationID, function(msg){
+				invite(userToInvite, conversationID,  function(msg){
+
+					var chat_template = '<section id="*CONVERSATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONVERSATIONID*"></div><input class="messagefield" data-CONVERSATIONID="*CONVERSATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conversationID="*CONVERSATIONID*" type="text" ><button class="leave" data-CONVERSATIONID="*CONVERSATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conversationID="*CONVERSATIONID*" title="Hide this window">Hide</button></footer> ';
+					var chat = chat_template.replace('*USER*', userToInvite).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID);
+					$('#chats').append(chat);
+					$('#conversations').append('<li id="conversation' + conversationID +'" data-displayed="true" data-conversationID="' + conversationID + '" data-user="' + userToInvite + '" class="conversation">'  + userToInvite + '</li>');
+
+
+				});
+			});
+		}
+	} else {
+		throwError('Username can\'t be empty');
+	}
+}
+
+function joinConversation(conversationID, conversationName){
+	join(conversationID, function(msg){
+		// TODO use octemplate here to make this more readable
+		var chat_template = '<section id="*CONVERSATIONID*"class="chatContainer"><h3>*USER*</h3><div class="chatLeft"><div class="chatText" id="chatText*CONVERSATIONID*"></div><input class="messagefield" data-CONVERSATIONID="*CONVERSATIONID*" type="text"  class="message"><footer><input class="invitefield" data-conversationID="*CONVERSATIONID*" type="text" ><button class="leave" data-CONVERSATIONID="*CONVERSATIONID*" title="Leave this conversation">Leave</button><button class="hide" data-conversationID="*CONVERSATIONID*" title="Hide this window">Hide</button></footer> ';
+		var chat = chat_template.replace('*USER*', conversationName).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID);
+		$('#chats').append(chat);
+		$('#conversations').append('<li id="conversation' + conversationID +'" data-displayed="true" data-conversationID="' + conversationID + '" data-user="' + conversationName + '" class="conversation">'  + conversationName + '</li>');
+	});
+}
+
+
+function onInvite(param){
+	joinConversation(param.conversationID, param.user);
+}
+
+function generateConversationID(){
+	var timestamp = "conversation" + (new Date).getTime();
+	var conversationID = md5(timestamp);
+	return conversationID.toString();
+}

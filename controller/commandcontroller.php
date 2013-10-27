@@ -50,6 +50,7 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemption
    	 */
    	public function join(){
+		
    		if(in_array($this->params('user'), \OCP\User::getUsers())){ 
 
 	   		$userMapper = new UserMapper($this->api);
@@ -91,6 +92,7 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemption
    	 */
    	public function invite(){
+		
    		$userOnlineMapper = new UserOnlineMapper($this->api);
    		$usersOnline = $userOnlineMapper->getOnlineUsers();
 
@@ -146,10 +148,28 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemption
    	 */
    	public function send(){
-   		$api = new API();
-   		  		
-   		return new JSONResponse(array('conversationID' => $this->params('conversationID'),
-   										'msg' => $this->params('msg'),
-   		));
+   		// First get all users in the conversation
+   		$userMapper = new UserMapper($this->api);
+	   	$users = $userMapper->findByConversation($this->params('conversationID'));
+	   	
+		
+		$command = json_encode(array('type' => 'send', 'param' => array(	'conversationID' => $this->params('conversationID'), 'msg' => $this->params('msg'))));
+		
+		// For each users in the conversation we need to create a push message in the database
+		// we map the user as receiver because it is the receiver of the push message
+		$sender = $this->params('user'); // copy the params('user') to a variable so it won't be called many times in a large conversation
+		$mapper = new PushMessageMapper($this->api);
+		
+		foreach($users as $receiver){
+			\OCP\Util::writeLog('chat', $receiver->getUser(), \OCP\Util::ERROR);
+							
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setReceiver($receiver->getUser());
+			$pushMessage->setCommand($command);
+			$mapper->insert($pushMessage);	
+		}
+		
+   		return new JSONResponse(array('status' => 'success'));
    	}
 }

@@ -8,9 +8,9 @@ $(document).ready(function(){
 			getPushMessge(function(msg){
    				if (msg.data.type === "invite"){
 					onInvite(msg.data.param);
-				} /*else if (msg.data.type === "send"){
+				} else if (msg.data.type === "send"){
 					onChatMessage(msg.data.param);                        
-				} else if (msg.data.type === "left"){
+				} /*else if (msg.data.type === "left"){
 					var conversationID = msg.data.param.conversationID;
 					getUsers(server, conversationID, function(msg){
 						if (msg.data.param.users.length <= 1){
@@ -36,7 +36,7 @@ $(document).ready(function(){
 
 		$("body").on("keypress", ".messagefield", function(e){
 			if(e.which === 13) {
-				sendChatMessage(server, $(this).val(), $(this).data('conversationid'), function(msg){
+				sendChatMessage($(this).val(), $(this).data('conversationid'), function(msg){
 				});
 				$(this).val('');
 			}
@@ -62,7 +62,7 @@ $(document).ready(function(){
 
 		$('body').on('keypress', '.invitefield', function(event){
 			if(event.which === 13){
-				invite(server, $(this).val(), $(this).data('conversationid'), function(msg){
+				invite($(this).val(), $(this).data('conversationid'), function(msg){
 				});
 				$(this).val('');
 			} 
@@ -77,7 +77,7 @@ function greet(success){
 }
 
 function invite(userToInvite, conversationID, success){
-	sendMSG('invite', {user : OC.currentUser, conversationid : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
+	sendMSG('invite', {user : OC.currentUser, conversationID : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
 		throwError(errorMsg);
 	});
 }
@@ -95,6 +95,7 @@ function initConversation(){
 		if(userToInvite === OC.currentUser){
 			throwError('You can\'t stat a conversation with yourself');
 		} else {
+			
 			var conversationID = generateConversationID();
 			join(conversationID, function(msg){
 				invite(userToInvite, conversationID,  function(msg){
@@ -103,8 +104,6 @@ function initConversation(){
 					var chat = chat_template.replace('*USER*', userToInvite).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID).replace('*CONVERSATIONID*', conversationID);
 					$('#chats').append(chat);
 					$('#conversations').append('<li id="conversation' + conversationID +'" data-displayed="true" data-conversationID="' + conversationID + '" data-user="' + userToInvite + '" class="conversation">'  + userToInvite + '</li>');
-
-
 				});
 			});
 		}
@@ -132,4 +131,15 @@ function generateConversationID(){
 	var timestamp = "conversation" + (new Date).getTime();
 	var conversationID = md5(timestamp);
 	return conversationID.toString();
+}
+
+function onChatMessage(param){
+	$('#chatText' + param.conversationID).append("<div class='chatmsg'>"+param.user+": "+param.msg+"</div>");
+}
+
+function sendChatMessage(message, conversationID, callback){
+	sendMSG('send', {conversationID : conversationID, msg : message, user: OC.currentUser}, function(msg){
+		onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); 
+		callback(msg);
+	});
 }

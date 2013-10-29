@@ -6,11 +6,11 @@ $(document).ready(function(){
 		throwSuccess('Connected to the server');
 		
 		// Get existing conversations which the user are joined
-		getConversations(function(conversations){
-			$.each(conversations, function(index, conversation){
-				joinConversation(conversation, 'test' + index);
-			});
-		});
+		//getConversations(function(conversations){
+			//$.each(conversations, function(index, conversation){
+		//		joinConversation(conversation, 'test' + index);
+			//});
+	//	});
 		
 		/*
 		 * Long Polling Function

@@ -132,23 +132,23 @@ function onChatMessage(param){
  * Send command to server functions
  */
 function greet(success){
-	sendMSG('greet', {user: OC.currentUser}, success, function(errorMsg){
+	sendMSG('greet', {}, success, function(errorMsg){
    		throwError(errorMsg);
 	});
 }
 
 function invite(userToInvite, conversationID, success){
-	sendMSG('invite', {user : OC.currentUser, conversationID : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
+	sendMSG('invite', {conversationID : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
 		throwError(errorMsg);
 	});
 }
 
 function join(conversationID, success){
-	sendMSG('join', {user : OC.currentUser, conversationID : conversationID,  timestamp : (new Date).getTime()}, success);
+	sendMSG('join', {conversationID : conversationID,  timestamp : (new Date).getTime()}, success);
 }
 
 function sendChatMessage(message, conversationID, callback){
-	sendMSG('send', {conversationID : conversationID, msg : message, user: OC.currentUser}, function(msg){
+	sendMSG('send', {conversationID : conversationID, msg : message}, function(msg){
 		onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); 
 		callback(msg);
 	});

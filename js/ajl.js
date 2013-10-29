@@ -2,7 +2,8 @@
  * Ajax jQuery Layer
  */
 function sendMSG(type, param, success, error){
-
+	param.user = OC.currentUser;
+	param.sessionID = sessionID;
 	$.post(OC.Router.generate("command_" + type), param).done(function(data){
     	if(data.status === "success"){
     		success();

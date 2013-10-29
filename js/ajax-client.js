@@ -5,6 +5,13 @@ $(document).ready(function(){
 	greet(function(msg){
 		throwSuccess('Connected to the server');
 		
+		// Get existing conversations which the user are joined
+		getConversations(function(conversations){
+			$.each(conversations, function(index, conversation){
+				joinConversation(conversation, 'test' + index);
+			});
+		});
+		
 		/*
 		 * Long Polling Function
 		 */
@@ -150,5 +157,11 @@ function join(conversationID, success){
 function sendChatMessage(message, conversationID, callback){
 	sendMSG('send', {conversationID : conversationID, msg : message}, function(msg){
 		callback(msg);
+	});
+}
+
+function getConversations(callback){
+	sendMSG('get_conversations', {}, function(data){
+		callback(data.data.param.conversations);
 	});
 }

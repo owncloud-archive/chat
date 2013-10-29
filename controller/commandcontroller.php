@@ -184,4 +184,19 @@ class CommandController extends Controller {
 		
    		return new JSONResponse(array('status' => 'success'));
    	}
+	
+	/**
+   	 * @CSRFExemption
+   	 * @IsAdminExemption
+   	 * @IsSubAdminExemption
+   	 */
+	public function getConversations(){
+		$userMapper = new UserMapper($this->api);
+		$conversations = $userMapper->findByUser($this->params('user'));
+		$response = array();
+		foreach($conversations as $conversation){
+			array_push($response, $conversation->getConversationId());
+		}
+		return new JSONResponse(array('status' => 'success', 'data'=> array('param' => array('conversations' => $response))));
+	}
 }

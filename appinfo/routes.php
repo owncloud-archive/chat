@@ -75,6 +75,12 @@ $this->create('command_send', '/command/send')->post()->action(
 		}
 );
 
+$this->create('command_get_conversations', '/command/getconversations')->post()->action(
+		function($params){
+			App::main('CommandController', 'getConversations', $params, new DIContainer());
+		}
+);
+
 /* 
  * Receive and delete push message
  */

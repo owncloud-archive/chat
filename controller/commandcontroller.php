@@ -150,7 +150,7 @@ class CommandController extends Controller {
    	public function send(){
    		$userMapper = new UserMapper($this->api);
 	   	$users = $userMapper->findByConversation($this->params('conversationID'));
-		$command = json_encode(array('type' => 'send', 'param' => array(	'conversationID' => $this->params('conversationID'), 'msg' => $this->params('msg'))));	
+		$command = json_encode(array('type' => 'send', 'param' => array('user' => $this->params('user'), 'conversationID' => $this->params('conversationID'), 'msg' => $this->params('msg'))));	
 		$sender = $this->params('user'); // copy the params('user') to a variable so it won't be called many times in a large conversation
 		$mapper = new PushMessageMapper($this->api);
 		

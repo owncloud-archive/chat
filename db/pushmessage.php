@@ -10,7 +10,8 @@ class PushMessage extends Entity {
     public $sender;
     public $receiver;
     public $command;
-
+	public $receiverSessionId;
+	
     public function __construct(){
     }
 

@@ -28,6 +28,12 @@
 	      		<length>64</length>/length>
 	    	</field>
 	    	<field>
+	    		<name>receiver_session_id</name>
+	     	 	<type>text</type>
+	      		<notnull>true</notnull>
+	      		<length>64</length>/length>
+	    	</field>
+	    	<field>
 	   			<name>command</name>
 	   			<type>text</type> 
 	   			<notnull>true</notnull>

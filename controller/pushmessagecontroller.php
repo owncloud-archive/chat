@@ -49,14 +49,15 @@ class PushMessageController extends Controller {
 		
 		try{
 			$mapper = new PushMessageMapper($this->api); // inject API class for db access
-			$pushMessage = $mapper->findByReceiver($this->params('receiver'));		
+			$pushMessage = $mapper->findBysSessionId($this->params('sessionID'));		
+			
 		} catch(DoesNotExistException $e){
 			sleep(1);
 			$this->get();
 		}
 		
 		$mapper = new PushMessageMapper($this->api); // inject API class for db access
-		$pushMessage = $mapper->findByReceiver($this->params('receiver'));
+		$pushMessage = $mapper->findBysSessionId($this->params('sessionID'));
 		return new JSONResponse(array('status' => 'command', 'id' => $pushMessage->getId(), 'data' => json_decode($pushMessage->getCommand())));
 		
 	}

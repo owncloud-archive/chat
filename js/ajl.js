@@ -15,7 +15,7 @@ function sendMSG(type, param, success, error){
 }
 
 function getPushMessge(callback){
-	$.post(OC.Router.generate('push_get'), {receiver: OC.currentUser}, function(data){
+	$.post(OC.Router.generate('push_get'), {receiver: OC.currentUser, sessionID: sessionID}, function(data){
 	   callback(data);
 	});
 }

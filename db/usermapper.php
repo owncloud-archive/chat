@@ -27,6 +27,21 @@ class UserMapper extends Mapper {
 
     	return $feeds;
     }
-	
+
+	public function findByUser($user){
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
+    			'WHERE `user` = ? ';
+    	
+    	$result = $this->execute($sql, array($user));
+    	
+  		$feeds = array();
+        while($row = $result->fetchRow()){
+        	$feed = new User();
+            $feed->fromRow($row);
+            array_push($feeds, $feed);
+	    }
+
+    	return $feeds;
+	}
  
 }

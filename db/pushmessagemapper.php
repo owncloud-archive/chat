@@ -12,9 +12,9 @@ class PushMessageMapper extends Mapper {
       parent::__construct($api, 'chat_push_messages'); // tablename is news_feeds
     }
 
-	public function findByReceiver($receiver){
-  		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `receiver` = ? ORDER BY id LIMIT 1';
-		return $this->findEntity($sql, array($receiver));
+	public function findBysSessionId($sessionId){
+  		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `receiver_session_id` = ? ORDER BY id LIMIT 1';
+		return $this->findEntity($sql, array($sessionId));
 	}
 	
 		

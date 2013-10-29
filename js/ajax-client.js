@@ -149,7 +149,6 @@ function join(conversationID, success){
 
 function sendChatMessage(message, conversationID, callback){
 	sendMSG('send', {conversationID : conversationID, msg : message}, function(msg){
-		onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); 
 		callback(msg);
 	});
 }

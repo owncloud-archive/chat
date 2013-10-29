@@ -1,8 +1,13 @@
 alert('ajax-client');
+var sessionID = generateSessionID();
+console.log(sessionID);
 $(document).ready(function(){
 	greet(function(msg){
 		throwSuccess('Connected to the server');
 		
+		/*
+		 * Long Polling Function
+		 */
 		handlePushMessage();
 		function handlePushMessage(){
 			getPushMessge(function(msg){
@@ -24,8 +29,11 @@ $(document).ready(function(){
     			});
 			});		
 		}
-			
 		
+		
+		/*
+		 * UI Event Handler Functions
+		 */		
 		$('#createConverstation').click(function(){
 			initConversation();   
 		});
@@ -70,23 +78,10 @@ $(document).ready(function(){
 	});
 });
 
-function greet(success){
-	sendMSG('greet', {user: OC.currentUser}, success, function(errorMsg){
-   		throwError(errorMsg);
-	});
-}
 
-function invite(userToInvite, conversationID, success){
-	sendMSG('invite', {user : OC.currentUser, conversationID : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
-		throwError(errorMsg);
-	});
-}
-
-function join(conversationID, success){
-	sendMSG('join', {user : OC.currentUser, conversationID : conversationID,  timestamp : (new Date).getTime()}, success);
-}
-
-
+/*
+ * Conversation functions
+ */
 function initConversation(){
 	var userToInvite = $('#user').val();
 	$('#user').val('');
@@ -122,19 +117,34 @@ function joinConversation(conversationID, conversationName){
 	});
 }
 
-
+/*
+ * On push message functions
+ */
 function onInvite(param){
 	joinConversation(param.conversationID, param.user);
 }
 
-function generateConversationID(){
-	var timestamp = "conversation" + (new Date).getTime();
-	var conversationID = md5(timestamp);
-	return conversationID.toString();
-}
-
 function onChatMessage(param){
 	$('#chatText' + param.conversationID).append("<div class='chatmsg'>"+param.user+": "+param.msg+"</div>");
+}
+
+/*
+ * Send command to server functions
+ */
+function greet(success){
+	sendMSG('greet', {user: OC.currentUser}, success, function(errorMsg){
+   		throwError(errorMsg);
+	});
+}
+
+function invite(userToInvite, conversationID, success){
+	sendMSG('invite', {user : OC.currentUser, conversationID : conversationID, timestamp : (new Date).getTime(), usertoinvite : userToInvite},success, function(errorMsg){
+		throwError(errorMsg);
+	});
+}
+
+function join(conversationID, success){
+	sendMSG('join', {user : OC.currentUser, conversationID : conversationID,  timestamp : (new Date).getTime()}, success);
 }
 
 function sendChatMessage(message, conversationID, callback){
@@ -142,12 +152,4 @@ function sendChatMessage(message, conversationID, callback){
 		onChatMessage({conversationID : conversationID, msg : message, user: OC.currentUser}); 
 		callback(msg);
 	});
-}
-function deleteConversation(conversationID){
-	$('#' + conversationID).remove();
-	$('#conversation' + conversationID).remove();
-}
-function hideConversation(conversationID){
-	$('#' + conversationID).fadeOut();
-	$('#conversation' + conversationID).data('displayed', 'false');
 }

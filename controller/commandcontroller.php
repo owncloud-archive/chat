@@ -78,7 +78,9 @@ class CommandController extends Controller {
 				$user->setSessionId($this->params('sessionID'));
 	   			$userMapper = new UserMapper($this->api);
 	   			$userMapper->insert($user);
-	   			
+
+				$conversationMapper = new ConversationMapper($this->api);
+				$conversationMapper->updateName($this->params('conversationID'));	   			
 	   			return new JSONResponse(array('status' => 'success'));
 	   		} 
 	   	} else {

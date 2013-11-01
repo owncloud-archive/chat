@@ -1,3 +1,6 @@
+/*
+ * Websocket jQuery Layer
+ */
 (function($){
 $.extend({
 	websocket: function(url, callback) {

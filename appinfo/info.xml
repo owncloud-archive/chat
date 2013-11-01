@@ -5,6 +5,6 @@
 	<description>A chat application for ownCloud.</description>
 	<licence>AGPL</licence>
 	<author>Tobia De Koninck and Christopher Schäpers</author>
-	<version>0.1</version>
-	<require>5.80.0</require>
+	<version>0.1.2.18</version>
+	<require>5</require>
 </info>

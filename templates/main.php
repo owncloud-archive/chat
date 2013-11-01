@@ -1,9 +1,16 @@
 <?php
-\OCP\Util::addScript('chat', 'main');
+\OCP\Util::addScript('chat', 'common');
 \OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'date');
 \OCP\Util::addScript('3rdparty', 'md5/md5.min');
-\OCP\Util::addScript('chat', 'wjl');
+
+if(\OCP\Config::getAppValue('chat', 'client', 'ajax') === 'ajax'){
+	\OCP\Util::addScript('chat', 'ajax-client');	
+	\OCP\Util::addScript('chat', 'ajl');
+} elseif(\OCP\Config::getAppValue('chat', 'client') === 'ws'){
+	\OCP\Util::addScript('chat', 'ws-client');	
+	\OCP\Util::addScript('chat', 'wjl');
+}
 ?>
 <div id="app">
 	<div id="undo-container">

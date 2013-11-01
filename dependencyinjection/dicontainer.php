@@ -25,6 +25,8 @@ namespace OCA\Chat\DependencyInjection;
 use OCA\AppFramework\DependencyInjection\DIContainer as BaseContainer;
 
 use OCA\Chat\Controller\PageController;
+use OCA\Chat\Controller\CommandController;
+use OCA\Chat\Controller\PushMessageController;
 
 class DIContainer extends BaseContainer {
 
@@ -36,5 +38,13 @@ class DIContainer extends BaseContainer {
 			return new PageController($c['API'], $c['Request']);
 		});
 
+
+		$this['CommandController'] = $this->share(function($c){
+			return new CommandController($c['API'], $c['Request']);
+		});
+		
+		$this['PushMessageController'] = $this->share(function($c){
+			return new PushMessageController($c['API'], $c['Request']);
+		});		
 	}
 }

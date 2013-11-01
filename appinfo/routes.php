@@ -35,5 +35,64 @@ $this->create('chat_index', '/')->get()->action(
 	}
 );
 
+/**
+ * Commands used by the AJAX client
+ */
 
+$this->create('command_greet', '/command/greet')->post()->action(
+	function($params){
+		App::main('CommandController', 'greet', $params, new DIContainer());
+	}
+);
+
+$this->create('command_join', '/command/join')->post()->action(
+	function($params){
+		App::main('CommandController', 'join', $params, new DIContainer());
+	}
+);
+
+$this->create('command_invite', '/command/invite')->post()->action(
+		function($params){
+			App::main('CommandController', 'invite', $params, new DIContainer());
+		}
+);
+
+$this->create('command_leave', '/command/leave')->post()->action(
+		function($params){
+			App::main('CommandController', 'leave', $params, new DIContainer());
+		}
+);
+
+$this->create('command_getusers', '/command/getusers')->post()->action(
+		function($params){
+			App::main('CommandController', 'getusers', $params, new DIContainer());
+		}
+);
+
+$this->create('command_send', '/command/send')->post()->action(
+		function($params){
+			App::main('CommandController', 'send', $params, new DIContainer());
+		}
+);
+
+$this->create('command_get_conversations', '/command/getconversations')->post()->action(
+		function($params){
+			App::main('CommandController', 'getConversations', $params, new DIContainer());
+		}
+);
+
+/* 
+ * Receive and delete push message
+ */
+$this->create('push_get', '/push/get')->post()->action(
+		function($params){
+			App::main('PushMessageController', 'get', $params, new DIContainer());
+		}
+);
+ 
+ $this->create('push_delete', '/push/delete')->post()->action(
+		function($params){
+			App::main('PushMessageController', 'delete', $params, new DIContainer());
+		}
+);
 

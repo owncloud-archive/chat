@@ -22,9 +22,21 @@ Have chats in your ownCloud!
 
  Action  | JSON Request Data   | JSON Possible Response Data  
  --- | --- | ---
- greet | `{status: “command”, data: {type: “greet”, param: {user: “foo”}}}` | `{status:  “success”}` `{status: “error”, data: {msg: “NotOCUser” }}`
- join | `{status: “command”, data: {type: “join”, param: {user: “foo”, room: “bar”, timestamp: “”}}}` | `{status: “success”}`
- invite | `{status: “command”, data: {type: “invite”, param: { user: “foo”, room: “bar”, timestamp: “” usertoinvite: “”}}}` | `{status: “success”} {status: “error”, data: {msg: “usernotonline”}}` `{status: “error”, data: {msg: “usernotexists”}}`
-leave | `{status: “command”, data: {type: “leave”, param: {user: “foo”, room: “bar”}}}` | `{status: “success”}` `{status: “error”, data: {msg: “roomdontexists”}}`
-getUser | `{status: “command”, data: {type: “getusers”, param: {room: “bar”}}}` | `{status: “success”, data: {param: {users: [foo, bar, foobar]}}}`
-send | `{status: “command”, data: {type: “send”, param: {room: “bar”, msg: “foobar”}}}` | `{status: “success”}`
+greet | `{status: "command", data: {type: "greet", param: {user: "", sessionID: ""}}}` | `{status:  "success"}` `{status: "error", data: {msg: "NO-OC-USER" }}`
+join | `{status: "command", data: {type: "join", param: {user: "", sessionID: "", conversationID: "", timestamp: ""}}}` | `{status: "success"}` `{status: "error", data: {msg: "NO-OC-USER" }}`
+invite | `{status: "command", data: {type: "invite", param: { user: "", sessionID: "", conversationID: "", timestamp: "", usertoinvite: ""}}}` | `{status: "success"} {status: "error", data: {msg: "USER-TO-INVITE-NOT-ONLINE"}}` `{status: "error", data: {msg: "USER-EQAUL-TO-USER-TO-INVITE"}}` `{status: "error", data: {msg: "USER-TO-INVITE-NOT-OC-USER"}}`
+leave | `{status: "command", data: {type: "leave", param: {user: "", sessionID: "", conversationID: ""}}}` | `{status: "success"}` `{status: "error", data: {msg: "CONVERSATION-DO-NOT-EXISTS"”}}`
+getUsers | `{status: "command", data: {type: "getusers", param: {user: "", sessionID: "", conversationID: ""}}}` | `{status: "success", data: {param: {users: []}}}`
+send | `{status: "command", data: {type: "send", param: {user: "", sessionID: "", conversationID: "", msg: ""}}}` | `{status: "success"}`
+
+## Possible Error Messages
+
+Error Message  | Meaning 
+  --- | ---
+`USER-EQAUL-TO-USER-TO-INVITE` |  
+`USER-TO-INVITE-NOT-OC-USER` |
+`USER-TO-INVITE-NOT-ONLINE` |
+`NO-OC-USER` |
+`USER-TO-INVITE-EMPTY` |
+`CONVERSATION-DO-NOT-EXISTS` | 
+

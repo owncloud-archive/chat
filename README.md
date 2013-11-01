@@ -5,12 +5,11 @@ Have chats in your ownCloud!
 
 ## Installation
 1.	Clone the repo to the apps directory of your owncloud installation
-3. 	Activate the chat app
-4.	Launch occ chat:boot via php from the commandline
-7. 	Go to the chat app in owncloud. You should see 'Connected to the server'
-8. 	Fill in the username of an other user
-9. 	Click on the left bar on the conversation
-10. 	Start chatting!
+2. Activate the chat app
+3. Go to the chat app in owncloud. You should see 'Connected to the server'
+4. Fill in the username of an other user
+5. Click on the left bar on the conversation
+6. Start chatting!
 
 
 ## Built-in API

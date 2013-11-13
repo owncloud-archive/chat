@@ -1,5 +1,5 @@
-alert('ajax-client');
 var sessionID = generateSessionID();
+alert(sessionID);
 console.log(sessionID);
 $(document).ready(function(){
 	greet(function(msg){
@@ -37,6 +37,16 @@ $(document).ready(function(){
 			});		
 		}
 		
+		window.addEventListener("beforeunload", function (e) {
+		  	var confirmationMessage = "\o/";
+		
+		  
+		  	quit(function(){
+		  		(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+
+		  		return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+		  	});
+		});
 		
 		/*
 		 * UI Event Handler Functions
@@ -153,6 +163,16 @@ function invite(userToInvite, conversationID, success){
 function join(conversationID, success){
 	sendMSG('join', {conversationID : conversationID,  timestamp : (new Date).getTime()}, success);
 }
+
+function quit(success){
+	$.ajax({
+		type: "POST",
+		url: OC.Router.generate("command_quit"),
+		data: { user: OC.currentUser, sessionID : sessionID},
+		async: false,
+	}).done(success);
+}
+
 
 function sendChatMessage(message, conversationID, callback){
 	sendMSG('send', {conversationID : conversationID, msg : message}, function(msg){

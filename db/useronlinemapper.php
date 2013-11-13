@@ -38,4 +38,10 @@ class UserOnlineMapper extends Mapper {
 
     	return $feeds;
 	}
+
+	public function deleteBySessionId($sessionID){
+		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `session_id` = ?';
+		$this->execute($sql, array($sessionID));
+	}
+ 
 }

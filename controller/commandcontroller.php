@@ -201,4 +201,21 @@ class CommandController extends Controller {
 		}
 		return new JSONResponse(array('status' => 'success', 'data'=> array('param' => array('conversations' => $response))));
 	}
+
+	/**
+   	 * @IsAdminExemption
+   	 * @IsSubAdminExemption
+   	 */
+	public function quit(){
+		\OCP\Util::writeLog('chat', 'quit ' . $this->params('sessionID'), \OCP\Util::ERROR);
+		
+		// First delete the sessionid from the online user table
+		$userOnlineMapper = new UserOnlineMapper($this->api);
+		$userOnlineMapper->deleteBySessionId($this->params('sessionID'));
+		
+		// Next leave all conversations by sessionID
+		$userMapper = new UserMapper($this->api);
+		$userMapper->deleteBySessionId($this->params('sessionID'));
+		return new JSONResponse(array('status' => 'success'));
+	}
 }

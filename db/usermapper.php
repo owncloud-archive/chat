@@ -43,5 +43,14 @@ class UserMapper extends Mapper {
 
     	return $feeds;
 	}
- 
+	
+		
+	public function deleteBySessionId($sessionID){
+				\OCP\Util::writeLog('chat', 'delete conv ' . $sessio, \OCP\Util::ERROR);
+		
+		
+		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `session_id` = ?';
+		$this->execute($sql, array($sessionID));
+	}
+	
 }

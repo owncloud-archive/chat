@@ -43,7 +43,6 @@ if(\OCP\App::isEnabled('appframework')){
 	
 	));
 	
-
 } else {
 	$msg = 'Can not enable the Chat app because the App Framework App is disabled';
 	\OCP\Util::writeLog('chat', $msg, \OCP\Util::ERROR);

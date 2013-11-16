@@ -13,6 +13,15 @@ use \OCA\Chat\Db\User;
 use \OCA\Chat\Db\UserMapper;
 use \OCA\Chat\Db\UserOnline;
 use \OCA\Chat\Db\UserOnlineMapper;
+use \OCA\Chat\Exceptions\NoOcUserException;
+use \OCA\Chat\Exceptions\UserNotOnlineException;
+use \OCA\Chat\Exceptions\UserToInviteNotOnlineException;
+use \OCA\Chat\Exceptiosn\UserEqualToUserToInvite;
+use \OCA\Chat\Commands\Greet;
+use \OCA\Chat\Commands\Join;
+use \OCA\Chat\Commands\Invite;
+use \OCA\Chat\Commands\Send;
+use \OCA\Chat\Commands\GetConversations;
 
 class CommandController extends Controller {	
 
@@ -25,125 +34,58 @@ class CommandController extends Controller {
     }
   
     /**
-     * @CSRFExemption
      * @IsAdminExemption
      * @IsSubAdminExemption
      */
     public function greet(){
-    	if(in_array($this->params('user'), \OCP\User::getUsers())){   		
-   		
-    		$userOnline = new UserOnline();
-    		$userOnline->setUser($this->params('user'));
-			$userOnline->setSessionId($this->params('sessionID'));
-    		$mapper = new UserOnlineMapper($this->api);
-    		$mapper->insert($userOnline);
-    		
-    		
-    		return new JSONResponse(array('status' => 'success'));
-    	} else {
-    		return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'NO-OC-USER')));
-    	}
+		try {
+			$greet = new Greet($this->api, $this->getParams());
+			$greet->execute();
+			return new JSONResponse(array('status' => 'success'));
+		} catch (NoOcUserException $e) {
+			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
+		}
    	}
    	
    	/**
-   	 * @CSRFExemption
    	 * @IsAdminExemption
    	 * @IsSubAdminExemption
    	 */
    	public function join(){
-		
-   		if(in_array($this->params('user'), \OCP\User::getUsers())){ 
-
-	   		$userMapper = new UserMapper($this->api);
-	   		$users = $userMapper->findByConversation($this->params('conversationID'));
-	   		
-	   		if (count($users) === 0){
-	   			$conversation = new Conversation();
-	   			$conversation->setConversationId($this->params('conversationID'));
-	   			$mapper = new ConversationMapper($this->api); 
-	   			$mapper->insert($conversation);
-	   			 
-	   			$user = new User();
-	   			$user->setConversationId($this->params('conversationID'));
-	   			$user->setUser($this->params('user'));
-				$user->setSessionId($this->params('sessionID'));
-	   			$userMapper = new UserMapper($this->api);
-	   			$userMapper->insert($user);
-	   			
-	   			return new JSONResponse(array('status' => 'success'));
-	   		} else { 
-	   			$user = new User();
-	   			$user->setConversationId($this->params('conversationID'));
-	   			$user->setUser($this->params('user'));
-				$user->setSessionId($this->params('sessionID'));
-	   			$userMapper = new UserMapper($this->api);
-	   			$userMapper->insert($user);
-
-				$conversationMapper = new ConversationMapper($this->api);
-				$conversationMapper->updateName($this->params('conversationID'));	   			
-	   			return new JSONResponse(array('status' => 'success'));
-	   		} 
-	   	} else {
-	   		return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'NO-OC-USER')));
-	   	}
-   		
+		try {
+			$join = new Join($this->api, $this->getParams());
+			$join->execute();
+			return new JSONResponse(array('status' => 'success'));
+		} catch (NoOcUserException $e) {
+			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
+		}
    	}
    	
-    
-
    	/**
-   	 * @CSRFExemption
    	 * @IsAdminExemption
    	 * @IsSubAdminExemption
    	 */
    	public function invite(){
+		try {
+			$invite = new Invite($this->api, $this->getParams());
+			$invite->execute();
+			return new JSONResponse(array('status' => 'success'));
+		} catch (UserNotOnlineException $e) {
+			
+			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
 		
-   		$userOnlineMapper = new UserOnlineMapper($this->api);
-   		$usersOnline = $userOnlineMapper->getOnlineUsers();
-
-   		if($this->params('user') !== $this->params('usertoinvite')){
-	    	if(in_array($this->params('usertoinvite'), \OCP\User::getUsers())){
-				if(in_array($this->params('usertoinvite'), $usersOnline)){
-					// First fetch every sessionID of the user to invite
-					$userOnlineMapper = new UserOnlineMapper($this->api);
-					$pushMessageMapper = new PushMessageMapper($this->api);
-					
-					$command = json_encode(array('type' => 'invite',
-																'param' => array(	'user' => $this->params('user'),	
-																					'conversationID' => $this->params('conversationID'),
-														
-																				'usertoinvite' => $this->params('usertoinvite'))));
-																					
-					$UTISessionID = $userOnlineMapper->findByUser($this->params('usertoinvite')); // $UTISessionID = UserToInviteSessionId = array()
-					
-					foreach($UTISessionID as $userToInvite){
-						$pushMessage = new PushMessage();
-						$pushMessage->setSender($this->params('user'));
-						$pushMessage->setReceiver($userToInvite->getUser());
-						$pushMessage->setReceiverSessionId($userToInvite->getSessionId());
-						\OCP\Util::writeLog('chat', 'session ID: user to invite' . $userToInvite->getSessionId(), \OCP\Util::ERROR);
-						
-						$pushMessage->setCommand($command);
-						$pushMessageMapper->insert($pushMessage);	
-					}
-					
-						
-					
-					return new JSONResponse(array('status' => 'success'));
-				} else {
-					return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'USER-TO-INVITE-NOT-ONLINE')));
-				}   			
-	   		} else { 
-	    		return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'USER-TO-INVITE-NOT-OC-USER')));
-	   		}
-   		} else {
-   			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => 'USER-EQAUL-TO-USER-TO-INVITE')));
-   		}
+		} catch (UserToInviteNotOnlineException $e) {
+			
+			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
+		
+		} catch (UserEqualToUserToInvite $e) {
+			
+			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
+		
+		}
    	}
    	
-    // Functions below are place holders
    	/**
-   	 * @CSRFExemption
    	 * @IsAdminExemption
    	 * @IsSubAdminExemption
    	 */
@@ -154,7 +96,6 @@ class CommandController extends Controller {
    	}
    	
    	/**
-   	 * @CSRFExemption
    	 * @IsAdminExemption
    	 * @IsSubAdminExemption
    	 */
@@ -164,42 +105,31 @@ class CommandController extends Controller {
    	}
    	
    	/**
-   	 * @CSRFExemption
    	 * @IsAdminExemption
    	 * @IsSubAdminExemption
    	 */
    	public function send(){
-   		$userMapper = new UserMapper($this->api);
-	   	$users = $userMapper->findByConversation($this->params('conversationID'));
-		$command = json_encode(array('type' => 'send', 'param' => array('user' => $this->params('user'), 'conversationID' => $this->params('conversationID'), 'msg' => $this->params('msg'))));	
-		$sender = $this->params('user'); // copy the params('user') to a variable so it won't be called many times in a large conversation
-		$PushMessageMapper = new PushMessageMapper($this->api);
-		
-		foreach($users as $receiver){
-			$pushMessage = new PushMessage();
-			$pushMessage->setSender($sender);
-			$pushMessage->setReceiver($receiver->getUser());
-			$pushMessage->setReceiverSessionId($receiver->getSessionId());
-			$pushMessage->setCommand($command);
-			$PushMessageMapper->insert($pushMessage);	
+   		try {
+   			$send = new Send($this->api, $this->getParams());
+			$send->execute();
+			return new JSONResponse(array('status' => 'success'));
+   		} catch(exception $e){
+   			
 		}
-		
-   		return new JSONResponse(array('status' => 'success'));
    	}
 	
 	/**
-   	 * @CSRFExemption
    	 * @IsAdminExemption
    	 * @IsSubAdminExemption
    	 */
 	public function getConversations(){
-		$userMapper = new UserMapper($this->api);
-		$conversations = $userMapper->findByUser($this->params('user'));
-		$response = array();
-		foreach($conversations as $conversation){
-			array_push($response, $conversation->getConversationId());
+		try {
+			$getConversations = new GetConversations($this->api, $this->getParams());
+			$response = $getConversations->execute();
+			return new JSONResponse(array('status' => 'success', 'data'=> array('param' => array('conversations' => $response))));
+		} catch (Exception $e){
+			
 		}
-		return new JSONResponse(array('status' => 'success', 'data'=> array('param' => array('conversations' => $response))));
 	}
 
 	/**

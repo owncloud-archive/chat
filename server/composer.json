@@ -1,9 +1,0 @@
-{
-    "name": "owncloud/chat"
-  	, "type": "library"
-  	, "minimum-stability": "dev"
-  	, "require": {
-        "php": ">=5.3.3"
-    	, "cboden/Ratchet": "master"
-	}
-}

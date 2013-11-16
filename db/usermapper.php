@@ -45,9 +45,25 @@ class UserMapper extends Mapper {
 	}
 	
 		
-	public function deleteBySessionId($sessionID){
-		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `session_id` = ?';
-		$this->execute($sql, array($sessionID));
+	public function findBySessionId($sessionID){
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
+    			'WHERE `session_id` = ? ';
+    	
+    	$result = $this->execute($sql, array($sessionID));
+    	
+  		$feeds = array();
+        while($row = $result->fetchRow()){
+        	$feed = new User();
+            $feed->fromRow($row);
+            array_push($feeds, $feed);
+	    }
+
+    	return $feeds;
+	}
+	
+	public function deleteBySessionId($conversationID, $sessionID){
+		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? AND `session_id` = ?';
+        $this->execute($sql, array($conversationID, $sessionID));
 	}
 	
 }

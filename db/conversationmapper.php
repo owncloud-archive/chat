@@ -22,9 +22,13 @@ class ConversationMapper extends Mapper {
 			array_push($usersArray, $user->getUser());	
 		}
 		$name = json_encode($usersArray);
-		\OCP\Util::writeLog('chat', $this->tableName, \OCP\Util::ERROR);
-
 		$sql = 'UPDATE `' . $this->tableName . '` SET name=?, generated=1 WHERE `conversation_id` = ?';
 		$this->execute($sql, array($name, $conversation)); //$sql, array $params=array(), $limit=null, $offset=nul			
 	}
+	
+	public function deleteConversation($conversationID){
+		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? ';
+        $this->execute($sql, array($conversationID));
+	}
+	
 }

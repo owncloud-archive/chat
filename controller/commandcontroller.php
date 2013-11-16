@@ -22,6 +22,7 @@ use \OCA\Chat\Commands\Join;
 use \OCA\Chat\Commands\Invite;
 use \OCA\Chat\Commands\Send;
 use \OCA\Chat\Commands\GetConversations;
+use \OCA\Chat\Commands\Quit;
 
 class CommandController extends Controller {	
 
@@ -137,15 +138,13 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemption
    	 */
 	public function quit(){
-		\OCP\Util::writeLog('chat', 'quit ' . $this->params('sessionID'), \OCP\Util::ERROR);
+		// TODO catch error when user isn't online
+		try {
+			$quit = new Quit($this->api, $this->getParams());
+			$quit->execute();
+			return new JSONResponse(array('status' => 'success'));			
+		} catch (exception $e){
 		
-		// First delete the sessionid from the online user table
-		$userOnlineMapper = new UserOnlineMapper($this->api);
-		$userOnlineMapper->deleteBySessionId($this->params('sessionID'));
-		
-		// Next leave all conversations by sessionID
-		$userMapper = new UserMapper($this->api);
-		$userMapper->deleteBySessionId($this->params('sessionID'));
-		return new JSONResponse(array('status' => 'success'));
+		}
 	}
 }

@@ -30,6 +30,7 @@ use \OCA\AppFramework\Http\JSONResponse;
 use \OCA\Chat\Db\PushMessage;
 use \OCA\Chat\Db\PushMessageMapper;
 use \OCA\Appframework\Db\DoesNotExistException;
+use \OCA\Chat\Commands\GetPushMessage;
 
 
 class PushMessageController extends Controller {
@@ -46,20 +47,10 @@ class PushMessageController extends Controller {
 	 */
 	public function get() {
 		session_write_close();	// Very important! http://stackoverflow.com/questions/11946638/long-polling-blocks-my-other-ajax-requests
-		
-		try{
-			$mapper = new PushMessageMapper($this->api); // inject API class for db access
-			$pushMessage = $mapper->findBysSessionId($this->params('sessionID'));		
-			
-		} catch(DoesNotExistException $e){
-			sleep(1);
-			$this->get();
-		}
-		
-		$mapper = new PushMessageMapper($this->api); // inject API class for db access
-		$pushMessage = $mapper->findBysSessionId($this->params('sessionID'));
+		$getPushMesage = new GetPushMessage($this->api, $this->getParams());
+		$pushMessage = $getPushMesage->execute();		
 		return new JSONResponse(array('status' => 'command', 'id' => $pushMessage->getId(), 'data' => json_decode($pushMessage->getCommand())));
-		
+				
 	}
 	
 	/**

@@ -42,7 +42,6 @@ class PushMessageController extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
-	 * @CSRFExemption
 	 * 
 	 */
 	public function get() {
@@ -56,7 +55,6 @@ class PushMessageController extends Controller {
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
-	 * @CSRFExemption
 	 */
 	public function delete(){
 		$pushMessage = new PushMessage();

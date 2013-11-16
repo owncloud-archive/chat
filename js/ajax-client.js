@@ -1,5 +1,4 @@
 var sessionID = generateSessionID();
-alert(sessionID);
 console.log(sessionID);
 $(document).ready(function(){
 	greet(function(msg){

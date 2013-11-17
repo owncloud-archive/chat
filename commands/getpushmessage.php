@@ -21,14 +21,12 @@ class GetPushMessage extends Command {
 	public function execute(){
 		try {
 			$mapper = new PushMessageMapper($this->api); // inject API class for db access
-			$this->pushMessage = $mapper->findBysSessionId($this->params('sessionID'));		
-				\OCP\Util::writeLog('chat', $pushMessage, \OCP\Util::ERROR);
-			
+			$this->pushMessages = $mapper->findBysSessionId($this->params('sessionID'));					
 		} catch(DoesNotExistException $e){
 			sleep(1);
 			$this->execute();
 		}
-		return $this->pushMessage;	
+		return $this->pushMessages;	
 	}
 			
 

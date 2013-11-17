@@ -1,5 +1,6 @@
 var sessionID = generateSessionID();
 console.log(sessionID);
+alert(sessionID);
 $(document).ready(function(){
 	greet(function(msg){
 		throwSuccess('Connected to the server');

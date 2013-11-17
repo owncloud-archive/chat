@@ -47,8 +47,17 @@ class PushMessageController extends Controller {
 	public function get() {
 		session_write_close();	// Very important! http://stackoverflow.com/questions/11946638/long-polling-blocks-my-other-ajax-requests
 		$getPushMesage = new GetPushMessage($this->api, $this->getParams());
-		$pushMessage = $getPushMesage->execute();		
-		return new JSONResponse(array('status' => 'command', 'id' => $pushMessage->getId(), 'data' => json_decode($pushMessage->getCommand())));
+		$pushMessages = $getPushMesage->execute();		
+		
+		$commands = array();
+		foreach($pushMessages as $pushMessage){
+			$command = array();
+			$command['status'] = 'command';
+			$command['id'] = $pushMessage->getId();
+			$command['data'] = $pushMessage->getCommand();
+			$commands[] = $command;
+		}
+		return new JSONResponse(array('status' => 'command', 'data' => $commands));
 				
 	}
 	

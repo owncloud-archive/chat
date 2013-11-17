@@ -50,15 +50,16 @@ class PushMessageController extends Controller {
 		$pushMessages = $getPushMesage->execute();		
 		
 		$commands = array();
+		$ids = array();
 		foreach($pushMessages as $pushMessage){
 			$command = array();
 			$command['status'] = 'command';
 			$command['id'] = $pushMessage->getId();
-			$command['data'] = $pushMessage->getCommand();
+			$command['data'] = json_decode($pushMessage->getCommand());
 			$commands[] = $command;
+			$ids[] = $pushMessage->getId();
 		}
-		return new JSONResponse(array('status' => 'command', 'data' => $commands));
-				
+		return new JSONResponse(array('status' => 'command', 'data' => $commands, 'ids' => $ids));
 	}
 	
 	/**
@@ -66,11 +67,13 @@ class PushMessageController extends Controller {
 	 * @IsSubAdminExemption
 	 */
 	public function delete(){
-		$pushMessage = new PushMessage();
-		$pushMessage->setId($this->params('id'));
-		$mapper = new PushMessageMapper($this->api);
-		$mapper->delete($pushMessage);
-		
+		$ids = $this->params('ids');
+		foreach($ids as $id){		
+			$pushMessage = new PushMessage();
+			$pushMessage->setId($id);
+			$mapper = new PushMessageMapper($this->api);
+			$mapper->delete($pushMessage);
+		}
 		return new JSONResponse(array('status' => 'success'));
 	}
 

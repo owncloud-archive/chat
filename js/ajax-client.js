@@ -15,6 +15,38 @@ $(document).ready(function(){
 		/*
 		 * Long Polling Function
 		 */
+	
+		longPoll();
+		function longPoll(){
+			console.log('ongPoll Called');
+			getPushMessge(function(commands){
+				deletePushMessage(commands.ids, function(){
+				$.each(commands.data, function(index, command){
+					handlePushMessage(command);
+				});
+				longPoll();
+				});
+			});
+		}
+		
+		function handlePushMessage(command){
+			if (command.data.type === "invite"){
+				onInvite(command.data.param);
+			} else if (command.data.type === "send"){
+				onChatMessage(command.data.param);                        
+			} /*else if (msg.data.type === "left"){
+				var conversationID = msg.data.param.conversationID;
+				getUsers(server, conversationID, function(msg){
+					if (msg.data.param.users.length <= 1){
+						deleteConversation(conversationID);
+					} 
+				});
+			}*/
+		}
+	
+	
+	/*
+	
 		handlePushMessage();
 		function handlePushMessage(){
 			getPushMessge(function(msg){
@@ -30,13 +62,13 @@ $(document).ready(function(){
 						} 
 					});
 				}*/
-		
+		/*
     			deletePushMessage(msg.id, function(){
         			handlePushMessage();
     			});
 			});		
 		}
-		
+		*/
 		window.addEventListener("beforeunload", function (e) {
 		  	var confirmationMessage = "\o/";
 		

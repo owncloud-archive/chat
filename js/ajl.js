@@ -20,8 +20,8 @@ function getPushMessge(callback){
 	});
 }
 
-function deletePushMessage(id, callback){
-	$.post(OC.Router.generate('push_delete'), {id: id}, function(data){
+function deletePushMessage(ids, callback){
+	$.post(OC.Router.generate('push_delete'), {ids: ids}, function(data){
 	   callback();
 	});
 }

@@ -31,4 +31,9 @@ class ConversationMapper extends Mapper {
         $this->execute($sql, array($conversationID));
 	}
 	
+	public function findByConversationId($conversationID){
+     	$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
+  		return $this->findEntity($sql, array($conversationID));
+	}
+	
 }

@@ -6,11 +6,12 @@ $(document).ready(function(){
 		throwSuccess('Connected to the server');
 		
 		// Get existing conversations which the user are joined
-		//getConversations(function(conversations){
-			//$.each(conversations, function(index, conversation){
-		//		joinConversation(conversation, 'test' + index);
-			//});
-	//	});
+		getConversations(function(conversations){
+			$.each(conversations, function(index, conversation){
+				console.log(conversation);
+				joinConversation(conversation.conversationID, conversation.conversationName);
+			});
+		});
 		
 		/*
 		 * Long Polling Function
@@ -44,31 +45,6 @@ $(document).ready(function(){
 			}*/
 		}
 	
-	
-	/*
-	
-		handlePushMessage();
-		function handlePushMessage(){
-			getPushMessge(function(msg){
-   				if (msg.data.type === "invite"){
-					onInvite(msg.data.param);
-				} else if (msg.data.type === "send"){
-					onChatMessage(msg.data.param);                        
-				} /*else if (msg.data.type === "left"){
-					var conversationID = msg.data.param.conversationID;
-					getUsers(server, conversationID, function(msg){
-						if (msg.data.param.users.length <= 1){
-							deleteConversation(conversationID);
-						} 
-					});
-				}*/
-		/*
-    			deletePushMessage(msg.id, function(){
-        			handlePushMessage();
-    			});
-			});		
-		}
-		*/
 		window.addEventListener("beforeunload", function (e) {
 		  	var confirmationMessage = "\o/";
 		

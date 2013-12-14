@@ -7,6 +7,8 @@ use \OCA\AppFramework\Core\API;
 use \OCA\Chat\Exceptions\NoOcUserException;
 use \OCA\Chat\Db\User;
 use \OCA\Chat\Db\UserMapper;
+use \OCA\Chat\Db\ConversationMapper;
+use \OCA\Chat\Db\Conversation;
 
 class GetConversations extends Command {
 	
@@ -16,12 +18,16 @@ class GetConversations extends Command {
 	
 	public function execute(){
 		$userMapper = new UserMapper($this->api);
-		$conversations = $userMapper->findByUser($this->params('user'));
-		$response = array();
-		foreach($conversations as $conversation){
-			array_push($response, $conversation->getConversationId());
+		$conversationsDB = $userMapper->findByUser($this->params('user'));
+		$conversations = array();
+		foreach($conversationsDB as $conversationDB){
+   			$conversationMapper = new ConversationMapper($this->api); 
+			$conversationName = $conversationMapper->findByConversationId($conversationDB->getConversationId());
+			$conversation = array(	"conversationID" => $conversationDB->getConversationId(),
+									"conversationName" => json_decode($conversationName->getName()));
+			array_push($conversations, $conversation);
 		}
-		return $response;
+		return $conversations;
 	}	
 
 }

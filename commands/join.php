@@ -46,8 +46,6 @@ class Join extends Command {
 	   			$userMapper = new UserMapper($this->api);
 	   			$userMapper->insert($user);
 
-				$conversationMapper = new ConversationMapper($this->api);
-				$conversationMapper->updateName($this->params('conversationID'));	   			
 	   			return true;
 	   		} 
 	   	} else {

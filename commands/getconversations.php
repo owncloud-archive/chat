@@ -22,9 +22,7 @@ class GetConversations extends Command {
 		$conversations = array();
 		foreach($conversationsDB as $conversationDB){
    			$conversationMapper = new ConversationMapper($this->api); 
-			$conversationName = $conversationMapper->findByConversationId($conversationDB->getConversationId());
-			$conversation = array(	"conversationID" => $conversationDB->getConversationId(),
-									"conversationName" => json_decode($conversationName->getName()));
+			$conversation = array("conversationID" => $conversationDB->getConversationId());
 			array_push($conversations, $conversation);
 		}
 		return $conversations;

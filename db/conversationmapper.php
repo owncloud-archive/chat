@@ -13,19 +13,6 @@ class ConversationMapper extends Mapper {
       $this->tableName = '*PREFIX*' . 'chat_conversations';
     }
 
-	public function updateName($conversation){
-		$userMapper = new UserMapper($this->api);
-		$users = $userMapper->findByConversation($conversation);
-		
-		$usersArray = array();
-		foreach($users as $user){
-			array_push($usersArray, $user->getUser());	
-		}
-		$name = json_encode($usersArray);
-		$sql = 'UPDATE `' . $this->tableName . '` SET name=?, generated=1 WHERE `conversation_id` = ?';
-		$this->execute($sql, array($name, $conversation)); //$sql, array $params=array(), $limit=null, $offset=nul			
-	}
-	
 	public function deleteConversation($conversationID){
 		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? ';
         $this->execute($sql, array($conversationID));

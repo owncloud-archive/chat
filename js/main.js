@@ -1,21 +1,7 @@
-alert('main loaded');
+
 Chat.angular = angular.module('myApp',[]),
 Chat.angular.controller('ConvController', ['$scope', function($scope) {
-	init();
-	
-	function init(){
-		Chat.ui.showLoading();
-		Chat.sessionId = Chat.util.generateSessionId();
-
-		// This function will greet the server, get existing conversations from the server and join them
-		// sleep.php sleeps for 2 seconds and simulate all the requestestobia
-		
-		//$.post("sleep.php", function( data ) {
-			Chat.ui.clear();
-			Chat.ui.showEmpty();
-		//});
-	}
-	
+	//alert('controller caleed');
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
 	$scope.msgs = {}; // Start with the last messages retrieved from the chat server
@@ -121,5 +107,6 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	};
 	
 }]);
+	
 
 

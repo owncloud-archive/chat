@@ -2,7 +2,9 @@
 \OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'classes');
+\OCP\Util::addScript('chat', 'init');
 \OCP\Util::addScript('chat', 'main');
+
 ?>
 <div ng-controller="ConvController" ng-app="myApp" id="chat-wrapper">
 	<div id="loading-panel" class="panel">

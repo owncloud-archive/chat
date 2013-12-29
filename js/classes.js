@@ -78,17 +78,30 @@ var Chat = {
     	},
     	checkMobile : function(){
     		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    	},
+    	throwError : function(msg){
+    		alert(msg);
     	}
 
     },
     api : {
-    	emit : {
-    		
+    	command : {
+    		greet : function(success){
+    			Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+    		}
     	},
-    	on : {
-    		
-    	}, 
     	util : {
+    		doRequest : function(type, param, success){
+    			var route = OC.Router.generate("command_" + type);
+    			$.post(route, param).done(function(data){
+    				console.log(data);
+    	            if(data.status === "success"){
+    	                    success();
+    	            } else if (data.status === "error"){
+    	                    Chat.util.throwError(data.data.msg);
+    	            }
+    	        });
+    		}
     	}
     },
     // The following class is only used for testing, in the real app it will be deleted

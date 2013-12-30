@@ -28,7 +28,6 @@
 					<option  ng-repeat="conv in convs" value="{{ conv.id }">{{ conv.name }}</option>
 				</select>
 				<button class="header-left" ng-click="newConv()">New Conversation</button>
-				<button class="header-left" ng-click="simulate()">Simulate</button>
 				<span id="header-center">
 				</span>
 				<button class="header-right" ng-click="invite()" id="chat-invite">Add Person</button>
@@ -36,7 +35,7 @@
 			</header>
 			<section id="chat-window-body">
 				<div id="chat-window-msgs">
-					<div class="chat-msg-container" ng-repeat="msg in msgs">
+					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">
 						<div class="chat-msg-time">
 							{{ msg.time.hours }} : {{ msg.time.minutes }}
 						</div>

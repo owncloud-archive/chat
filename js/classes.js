@@ -88,67 +88,78 @@ var Chat = {
     	command : {
     		greet : function(success){
     			Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+    		},
+    		join : function(convId, success){
+    	        Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+    		},
+    		invite : function(userToInvite, convId, success){
+    	        Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success);
+    		},
+    		sendChatMsg : function(msg, convId, success){
+    			Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, function(msg){
+    				success();
+    			});
+    		}
+    	},
+    	on : {
+    		invite : function(param){
+        		var scope = angular.element($("#chat-wrapper")).scope();
+    			scope.$apply(function(){
+	    	        scope.addConvToView(param.conversationID, param.user);
+	    	    }); 
+    			Chat.api.command.join(param.conversationID, function(){});
+    		},
+    		chatMessage : function(param){
+    			var scope = angular.element($("#chat-wrapper")).scope();
+        	    scope.$apply(function(){
+        	    	scope.addChatMsgToView(param.conversationID, param.user, param.msg, param.timestamp);	
+        	    });
     		}
     	},
     	util : {
     		doRequest : function(type, param, success){
-    			var route = OC.Router.generate("command_" + type);
-    			$.post(route, param).done(function(data){
-    				console.log(data);
+    			$.post(OC.Router.generate("command_" + type), param).done(function(data){
     	            if(data.status === "success"){
     	                    success();
     	            } else if (data.status === "error"){
     	                    Chat.util.throwError(data.data.msg);
     	            }
     	        });
+    		},
+    		longPoll : function(){
+    			this.getPushMessages(function(commands){
+                      Chat.api.util.deletePushMessages(commands.ids, function(){
+                    	  $.each(commands.data, function(index, command){
+                    		  Chat.api.util.handlePushMessage(command);
+                    	  });
+                    	  Chat.api.util.longPoll();
+                      });
+    			});
+    		},
+    		handlePushMessage : function(command){
+    			if (command.data.type === "invite"){
+                    Chat.api.on.invite(command.data.param);
+	            } else if (command.data.type === "send"){
+	            	Chat.api.on.chatMessage(command.data.param);
+	            } /*else if (msg.data.type === "left"){
+	                    var conversationID = msg.data.param.conversationID;
+	                    getUsers(server, conversationID, function(msg){
+	                            if (msg.data.param.users.length <= 1){
+	                                    deleteConversation(conversationID);
+	                            }
+	                    });
+	            }*/
+    		},
+    		getPushMessages : function(success){
+    			$.post(OC.Router.generate('push_get'), {"receiver" : OC.currentUser, "sessionID" : Chat.sessionId}, function(data){
+    				success(data);
+		        });
+    		},
+    		deletePushMessages : function(ids, callback){
+    			$.post(OC.Router.generate('push_delete'), {ids: ids}, function(data){
+    		           callback();
+		        });
     		}
     	}
     },
-    // The following class is only used for testing, in the real app it will be deleted
-    testing : {
-    	simulateChatMessage : function(convId){
-    		var scope = angular.element($("#chat-wrapper")).scope();
-    		Chat.testing.addChatMessage({
-    			msg : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra, purus vel ultrices auctor, lacus orci interdum lacus, ac blandit.',
-    			user : 'Derpina',
-    			timestamp : new Date().getTime() / 1000,
-    			conversationID : scope.activeConv 
-    		});
-    		Chat.testing.addChatMessage({
-    			msg : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra, purus vel ultrices auctor, lacus orci interdum lacus, ac blandit.',
-    			user : 'Derpina',
-    			timestamp : new Date().getTime() / 1000,
-    			conversationID : scope.activeConv 
-    		});	Chat.testing.addChatMessage({
-    			msg : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra, purus vel ultrices auctor, lacus orci interdum lacus, ac blandit.',
-    			user : 'Derpina',
-    			timestamp : new Date().getTime() / 1000,
-    			conversationID : scope.activeConv 
-    		});	Chat.testing.addChatMessage({
-    			msg : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra, purus vel ultrices auctor, lacus orci interdum lacus, ac blandit.',
-    			user : 'Derpina',
-    			timestamp : new Date().getTime() / 1000,
-    			conversationID : scope.activeConv 
-    		});	Chat.testing.addChatMessage({
-    			msg : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra, purus vel ultrices auctor, lacus orci interdum lacus, ac blandit.',
-    			user : 'Derpina',
-    			timestamp : new Date().getTime() / 1000,
-    			conversationID : scope.activeConv 
-    		});	Chat.testing.addChatMessage({
-    			msg : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra, purus vel ultrices auctor, lacus orci interdum lacus, ac blandit.',
-    			user : 'Derpina',
-    			timestamp : new Date().getTime() / 1000,
-    			conversationID : scope.activeConv 
-    		});
-    	},
-    	addChatMessage : function(msg){
-    		msg.align = 'left';
-    		msg.time = Chat.util.timeStampToDate(msg.timestamp); 
-    	    var scope = angular.element($("#chat-wrapper")).scope();
-    	    scope.$apply(function(){
-    	        scope.convs[msg.conversationID].msgs.push(msg);
-    	    });
-    	    Chat.ui.scrollDown();
-    	}
-    }
 }

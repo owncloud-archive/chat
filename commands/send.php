@@ -23,17 +23,19 @@ class Send extends Command {
 	public function execute(){
    		$userMapper = new UserMapper($this->api);
 	   	$users = $userMapper->findByConversation($this->params('conversationID'));
-		$command = json_encode(array('type' => 'send', 'param' => array('user' => $this->params('user'), 'conversationID' => $this->params('conversationID'), 'msg' => $this->params('msg'))));	
+		$command = json_encode(array('type' => 'send', 'param' => array('user' => $this->params('user'), 'timestamp' => $this->params('timestamp'),  'conversationID' => $this->params('conversationID'), 'msg' => $this->params('msg'))));	
 		$sender = $this->params('user'); // copy the params('user') to a variable so it won't be called many times in a large conversation
 		$PushMessageMapper = new PushMessageMapper($this->api);
 		
 		foreach($users as $receiver){
-			$pushMessage = new PushMessage();
-			$pushMessage->setSender($sender);
-			$pushMessage->setReceiver($receiver->getUser());
-			$pushMessage->setReceiverSessionId($receiver->getSessionId());
-			$pushMessage->setCommand($command);
-			$PushMessageMapper->insert($pushMessage);	
+			if($receiver->getUser() !== $sender){
+				$pushMessage = new PushMessage();
+				$pushMessage->setSender($sender);
+				$pushMessage->setReceiver($receiver->getUser());
+				$pushMessage->setReceiverSessionId($receiver->getSessionId());
+				$pushMessage->setCommand($command);
+				$PushMessageMapper->insert($pushMessage);	
+			}
 		}
 		return true;
 	}	

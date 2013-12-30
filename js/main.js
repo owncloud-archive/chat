@@ -1,10 +1,7 @@
-
 Chat.angular = angular.module('myApp',[]),
 Chat.angular.controller('ConvController', ['$scope', function($scope) {
-	//alert('controller caleed');
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
-	$scope.msgs = {}; // Start with the last messages retrieved from the chat server
 	$scope.startmsg = 'Start Chatting!';
 	
 	$scope.updateTitle = function(newTitle){
@@ -13,49 +10,64 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	
 	$scope.sendChatMsg = function(){
 		if (this.chatMsg != ''){
-			$scope.convs[$scope.activeConv].msgs.push({
-	        	user : OC.currentUser,
-	        	msg : this.chatMsg,
-	        	timestamp : 1387722204,
-	        	time : Chat.util.timeStampToDate(new Date().getTime() / 1000), 
-	        	align: 'right'
-	        });
+			$scope.addChatMsgToView($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
+			Chat.api.command.sendChatMsg(this.chatMsg, $scope.activeConv, function(){});
 			this.chatMsg = '';
-			// Do send msg magic here
 			Chat.ui.scrollDown();
 		}
 	};
 	
 	$scope.newConv = function(){
-		var userName = prompt('Give the owncloud user name: ');
-		if(userName === OC.currentUser){
+		var userToInvite = prompt('Give the owncloud user name: ');
+		if(userToInvite === OC.currentUser){
 			alert('You can\'t start a conversation with yourself');
-		} else if(userName === ''){
+		} else if(userToInvite === ''){
 			alert('Please provide a user name');
 		} else {
-			var convId = Chat.util.generateConvId();
-			$scope.convs[convId] = {
-            	name : userName,
-            	id : convId,
-            	users : [
-            	         OC.currentUser,
-            	         userName
-            	         ],
-            	msgs : []
-			};
-			// Check if this is the first conversation
-			if($('#empty-panel').is(":visible")){
-				Chat.ui.clear();
-				Chat.ui.showChat();
-			}
-			$scope.makeActive(convId);
-			
+			var newConvId = Chat.util.generateConvId();
+			Chat.api.command.join(newConvId, function(){ 
+				Chat.api.command.invite(userToInvite, newConvId, function(){
+					$scope.addConvToView(newConvId, userToInvite);
+				});
+			});
 		}
 	}
 
+	$scope.addChatMsgToView = function(convId, user, msg, timestamp){
+		if (user === OC.currentUser){
+			align = 'right';
+		} else {
+			align = 'left'
+		}
+		$scope.convs[convId].msgs.push({
+        	user : user,
+        	msg : msg,
+        	timestamp : timestamp,
+        	time : Chat.util.timeStampToDate(timestamp), 
+        	align: align
+        });
+	}	
+	
+	$scope.addConvToView = function(newConvId, convName){
+		$scope.convs[newConvId] = {
+            	name : convName,
+            	id : newConvId,
+            	users : [
+            	         OC.currentUser,
+            	         convName
+            	         ],
+            	msgs : []
+			};
+		// Check if this is the first conversation
+		if($('#empty-panel').is(":visible")){
+			Chat.ui.clear();
+			Chat.ui.showChat();
+		}
+		$scope.makeActive(newConvId);
+	}
+	
 	$scope.makeActive = function(convId){
 		$scope.activeConv = convId;
-		$scope.msgs = $scope.convs[convId].msgs; 
 		Chat.ui.focusMsgInput();
 		Chat.ui.markConvActive(convId);
 	}
@@ -71,17 +83,6 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 				$scope.makeActive(Chat.ui.getFirstConv());
 			}
 		}
-	}
-	
-	$scope.simulate = function(){
-		$scope.convs[$scope.activeConv].msgs.push({
-        	user : 'Derpina',
-        	msg : 'lpisasfjas;lkfja;lskdjf;lkasjdf;lajs;dflj',
-        	timestamp : new Date().getTime() / 1000,
-        	time : Chat.util.timeStampToDate(new Date().getTime() / 1000), 
-        	align: 'left'
-        });
-		Chat.ui.scrollDown();
 	}
 	
 	$scope.invite = function(){

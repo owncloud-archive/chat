@@ -115,6 +115,9 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 		Chat.ui.showHeader();
 	};
 	
+	$scope.focusMsgInput = function(){
+		Chat.ui.focusMsgInput();
+	}
 }]);
 	
 

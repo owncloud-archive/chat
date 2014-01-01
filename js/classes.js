@@ -37,7 +37,7 @@ var Chat = {
     	},
     	focusMsgInput : function(){
     		if(!Chat.util.checkMobile()) {
-    			this.focus('#chat-msg-input');
+    			Chat.ui.focus('#chat-msg-input');
     		}
     	},
     	getFirstConv : function(){
@@ -110,8 +110,7 @@ var Chat = {
 			Chat.api.command.greet(function(){
 				//TODO add getConversation function
 				Chat.ui.clear();
-				Chat.ui.
-				showEmpty();
+				Chat.ui.showEmpty();
 				Chat.api.util.longPoll();
 			});
 		}

@@ -34,7 +34,7 @@
 				<button class="header-right" ng-click="invite()" id="chat-invite">Add Person</button>
 				<button class="header-right" ng-click="leave()" id="chat-leave">Leave </button>
 			</header>
-			<section id="chat-window-body">
+			<section ng-click="focusMsgInput()" id="chat-window-body">
 				<div id="chat-window-msgs">
 					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">
 						<div class="chat-msg-time">

@@ -1,7 +1,9 @@
 var Chat = {
-	settings : {
-	},
-    ui : {
+/*  sessionId = '',
+ */
+	tabActive : true, 
+	tabTitle : 'Chat - Owncloud',
+	ui : {
     	clear : function(){
     		$('.panel').hide();
     	},
@@ -50,7 +52,15 @@ var Chat = {
     	},
     	applyAvatar : function(user){
     		$('.icon-' + user).avatar(user, 32);
-    	}
+    	},
+    	updateTitle : function(){
+    		if(!Chat.tabActive){
+    			$('title').text(Chat.tabTitle);
+    		}
+		},
+    	clearTitle : function(){
+			$('title').text('Chat - ownCloud');
+    	},
     },
     util : {
     	generateSessionId : function(){
@@ -94,12 +104,14 @@ var Chat = {
 		    });
     	},
 		init : function(){
+			Chat.ui.updateTitle();
 			Chat.ui.showLoading();
 			Chat.sessionId = Chat.util.generateSessionId();
 			Chat.api.command.greet(function(){
 				//TODO add getConversation function
 				Chat.ui.clear();
-				Chat.ui.showEmpty();
+				Chat.ui.
+				showEmpty();
 				Chat.api.util.longPoll();
 			});
 		}

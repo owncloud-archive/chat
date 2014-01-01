@@ -49,6 +49,10 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 		setTimeout(function(){
 			Chat.ui.applyAvatar(user);
 		},1); // Give angular some time to apply the msg to scope
+		// Edit tab title when the tab isn't active
+		if(user !== OC.currentUser) {
+			Chat.tabTitle = 'New msg from ' + user;
+		}
 	}	
 	
 	$scope.addConvToView = function(newConvId, convName){
@@ -90,13 +94,13 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	}
 	
 	$scope.invite = function(){
-		var userName = prompt('Give the owncloud user name: ');
-		if(userName === OC.currentUser){
+		var userToInvite = prompt('Give the owncloud user name: ');
+		if(userToInvite === OC.currentUser){
 			alert('You can\'t invite yourself');
-		} else if(userName === ''){
+		} else if(userToInvite === ''){
 			alert('Please provide a user name');
 		} else {
-			// Do magic invite stuff here
+			Chat.api.command.invite(userToInvite, $scope.activeConv,function(){});
 		}
 	};
 	

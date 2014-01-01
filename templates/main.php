@@ -2,8 +2,9 @@
 \OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'classes');
-\OCP\Util::addScript('chat', 'init');
 \OCP\Util::addScript('chat', 'main');
+\OCP\Util::addScript('chat', 'handlers');
+
 
 ?>
 <div ng-controller="ConvController" ng-app="myApp" id="chat-wrapper">
@@ -40,8 +41,9 @@
 							{{ msg.time.hours }} : {{ msg.time.minutes }}
 						</div>
 						<div class="chat-msg-{{ msg.align }}">
-							<img src="http://placehold.it/32x32">
-								<p>
+							<div class="icon-{{ msg.user }}">
+							</div>
+							<p>
 								{{ msg.msg }}										
 							</p>
 						</div>

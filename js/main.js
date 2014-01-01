@@ -44,8 +44,11 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         	msg : msg,
         	timestamp : timestamp,
         	time : Chat.util.timeStampToDate(timestamp), 
-        	align: align
+        	align: align,
         });
+		setTimeout(function(){
+			Chat.ui.applyAvatar(user);
+		},1); // Give angular some time to apply the msg to scope
 	}	
 	
 	$scope.addConvToView = function(newConvId, convName){
@@ -76,6 +79,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 		var confirm = window.confirm("Are you sure you want to leave this conversation?");
 		if (confirm === true) {
 			delete $scope.convs[$scope.activeConv];
+			Chat.api.command.leave($scope.activeConv);
 			if(Chat.util.countObjects($scope.convs) === 0){
 				Chat.ui.clear();
 				Chat.ui.showEmpty();

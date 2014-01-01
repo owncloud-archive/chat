@@ -17,7 +17,8 @@ class Quit extends Command {
 	}
 	
 	public function execute(){
-			
+		\OCP\Util::writeLog('chat', 'quit called', \OCP\Util::ERROR);
+		
 		// First delete the sessionid from the online user table
 		$userOnlineMapper = new UserOnlineMapper($this->api);
 		$userOnlineMapper->deleteBySessionId($this->params('sessionID'));

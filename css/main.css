@@ -204,7 +204,7 @@
 	float:left;
 	width:85%;
 }
-.chat-msg-right img, .chat-msg-right p,  .chat-msg-left img, .chat-msg-left p{
+.chat-msg-right div, .chat-msg-right p,  .chat-msg-left div, .chat-msg-left p{
 	float:left;	
 }
 .chat-msg-right p, .chat-msg-left p{

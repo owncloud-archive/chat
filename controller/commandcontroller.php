@@ -23,6 +23,7 @@ use \OCA\Chat\Commands\Invite;
 use \OCA\Chat\Commands\Send;
 use \OCA\Chat\Commands\GetConversations;
 use \OCA\Chat\Commands\Quit;
+use \OCA\Chat\Commands\Leave;
 
 class CommandController extends Controller {	
 
@@ -91,9 +92,13 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemption
    	 */
    	public function leave(){
-   		return new JSONResponse(array('status' => $this->params('user'),
-   				'conversationID' => $this->params('conversationID'),
-   		));
+   		try {
+   			$leave = new Leave($this->api, $this->getParams());
+   			$leave->execute();
+   			return new JSONResponse(array('status' => 'success'));
+   		} catch(exception $e){
+   		
+   		}
    	}
    	
    	/**

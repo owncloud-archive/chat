@@ -48,6 +48,9 @@ var Chat = {
     		$('#conv-new-msg-' + convId).fadeOut();
     		this.newMsg(convId);
     	},
+    	applyAvatar : function(user){
+    		$('.icon-' + user).avatar(user, 32);
+    	}
     },
     util : {
     	generateSessionId : function(){
@@ -81,7 +84,25 @@ var Chat = {
     	},
     	throwError : function(msg){
     		alert(msg);
-    	}
+    	},
+    	quit : function(){
+    		$.ajax({
+                type: "POST",
+                url: OC.Router.generate("command_quit"),
+                data: { user: OC.currentUser, sessionID : Chat.sessionId},
+                async: false,
+		    });
+    	},
+		init : function(){
+			Chat.ui.showLoading();
+			Chat.sessionId = Chat.util.generateSessionId();
+			Chat.api.command.greet(function(){
+				//TODO add getConversation function
+				Chat.ui.clear();
+				Chat.ui.showEmpty();
+				Chat.api.util.longPoll();
+			});
+		}
 
     },
     api : {
@@ -96,9 +117,10 @@ var Chat = {
     	        Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success);
     		},
     		sendChatMsg : function(msg, convId, success){
-    			Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, function(msg){
-    				success();
-    			});
+    			Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
+    		},
+    		leave : function(convId, success){
+    			Chat.api.util.doRequest('leave', {"conversationID" : convId, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
     		}
     	},
     	on : {
@@ -159,7 +181,7 @@ var Chat = {
     			$.post(OC.Router.generate('push_delete'), {ids: ids}, function(data){
     		           callback();
 		        });
-    		}
+    		},
     	}
     },
 }

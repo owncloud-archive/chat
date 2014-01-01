@@ -103,71 +103,74 @@ var Chat = {
                 async: false,
 		    });
     	},
-		init : function(){
-			Chat.ui.updateTitle();
-			Chat.ui.showLoading();
-			Chat.sessionId = Chat.util.generateSessionId();
-			Chat.api.command.greet(function(){
-				//TODO add getConversation function
-				Chat.ui.clear();
-				Chat.ui.showEmpty();
-				Chat.api.util.longPoll();
-			});
-		}
+        init : function(){
+            Chat.scope = angular.element($("#chat-wrapper")).scope();
+            Chat.ui.updateTitle();
+            Chat.ui.showLoading();
+            Chat.sessionId = Chat.util.generateSessionId();
+            Chat.api.command.greet(function(){
+                //TODO add getConversation function
+                Chat.ui.clear();
+                Chat.ui.showEmpty();
+                Chat.api.util.longPoll();
+                OC.Notification.show('Connected to the chat server!');
+                setTimeout(function(){
+                        OC.Notification.hide();
+                }, 1000);
+            });
+        }
 
     },
     api : {
     	command : {
     		greet : function(success){
-    			Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+                    Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
     		},
     		join : function(convId, success){
-    	        Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+                    Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
     		},
     		invite : function(userToInvite, convId, success){
-    	        Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success);
+                    Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success);
     		},
     		sendChatMsg : function(msg, convId, success){
-    			Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
+                    Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
     		},
     		leave : function(convId, success){
-    			Chat.api.util.doRequest('leave', {"conversationID" : convId, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
+                    Chat.api.util.doRequest('leave', {"conversationID" : convId, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
     		}
     	},
     	on : {
     		invite : function(param){
-        		var scope = angular.element($("#chat-wrapper")).scope();
-    			scope.$apply(function(){
-	    	        scope.addConvToView(param.conversationID, param.user);
+                    Chat.scope.$apply(function(){
+	    	        Chat.scope.addConvToView(param.conversationID, param.user);
 	    	    }); 
-    			Chat.api.command.join(param.conversationID, function(){});
+                    Chat.api.command.join(param.conversationID, function(){});
     		},
     		chatMessage : function(param){
-    			var scope = angular.element($("#chat-wrapper")).scope();
-        	    scope.$apply(function(){
-        	    	scope.addChatMsgToView(param.conversationID, param.user, param.msg, param.timestamp);	
+        	    Chat.scope.$apply(function(){
+        	    	Chat.scope.addChatMsgToView(param.conversationID, param.user, param.msg, param.timestamp);	
         	    });
     		}
     	},
     	util : {
     		doRequest : function(type, param, success){
-    			$.post(OC.Router.generate("command_" + type), param).done(function(data){
-    	            if(data.status === "success"){
-    	                    success();
-    	            } else if (data.status === "error"){
-    	                    Chat.util.throwError(data.data.msg);
-    	            }
-    	        });
+                    $.post(OC.Router.generate("command_" + type), param).done(function(data){
+                        if(data.status === "success"){
+                                success();
+                        } else if (data.status === "error"){
+                                Chat.util.throwError(data.data.msg);
+                        }
+                    });
     		},
     		longPoll : function(){
-    			this.getPushMessages(function(commands){
-                      Chat.api.util.deletePushMessages(commands.ids, function(){
+                    this.getPushMessages(function(commands){
+                    Chat.api.util.deletePushMessages(commands.ids, function(){
                     	  $.each(commands.data, function(index, command){
                     		  Chat.api.util.handlePushMessage(command);
                     	  });
                     	  Chat.api.util.longPoll();
                       });
-    			});
+                    });
     		},
     		handlePushMessage : function(command){
     			if (command.data.type === "invite"){

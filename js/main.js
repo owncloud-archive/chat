@@ -107,46 +107,43 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	}
 	
 	$scope.invite = function(){
-		
-		
-		
-		
-            var userToInvite = prompt('Give the owncloud user name: ');
-            if(userToInvite === OC.currentUser){
-            	Chat.ui.alert('You can\'t invite yourself');
-            } else if(userToInvite === ''){
-                Chat.ui.alert('Please provide a user name');
-            } else {
-            	Chat.api.command.invite(
-            		userToInvite,
-            		$scope.activeConv,
-            		function(){ // Success
-            		},
-            		function(errorMsg){
-            			if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
-            				Chat.ui.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO
-            			} else if(errorMsg === 'USER-TO-INVITE-NOT-OC-USER'){
-            				Chat.ui.alert('The user you tried to invite isn\'t a valid owncloud user')
-            			} 
-        			}
-        		);
-            }
+		var userToInvite = prompt('Give the owncloud user name: ');
+        if(userToInvite === OC.currentUser){
+        	Chat.ui.alert('You can\'t invite yourself');
+        } else if(userToInvite === ''){
+            Chat.ui.alert('Please provide a user name');
+        } else {
+        	Chat.api.command.invite(
+        		userToInvite,
+        		$scope.activeConv,
+        		function(){ // Success
+        		},
+        		function(errorMsg){ // Error
+        			if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
+        				Chat.ui.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO
+        			} else if(errorMsg === 'USER-TO-INVITE-NOT-OC-USER'){
+        				Chat.ui.alert('The user you tried to invite isn\'t a valid owncloud user')
+        			} 
+    			}
+    		);
+        }
 	};
 	
 	$scope.hideHeader = function(){
-            height = $(window).height();
-            if(height < 800 && Chat.util.checkMobile()){
-                    Chat.ui.hideHeader();
-            }
+        height = $(window).height();
+        if(height < 800 && Chat.util.checkMobile()){
+                Chat.ui.hideHeader();
+        }
 	};
 	
 	$scope.showHeader = function(){
-            Chat.ui.showHeader();
+        Chat.ui.showHeader();
 	};
 	
 	$scope.focusMsgInput = function(){
-            Chat.ui.focusMsgInput();
+		Chat.ui.focusMsgInput();
 	}
+	
 }]);
 	
 

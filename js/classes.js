@@ -155,6 +155,12 @@ var Chat = {
                 Chat.scope.$apply(function(){
                     Chat.scope.addChatMsgToView(param.conversationID, param.user, param.msg, param.timestamp);	
                 });
+            },
+            joined : function(param){
+            	Chat.ui.alert('The user ' + param.user + ' joined this conversation');
+            	Chat.scope.$apply(function(){
+            		Chat.scope.convs[param.conversationID].name = Chat.scope.convs[param.conversationID].name + ' ' + param.user ;	
+                });
             }
     	},
     	util : {
@@ -178,10 +184,12 @@ var Chat = {
                 });
             },
             handlePushMessage : function(command){
-                    if (command.data.type === "invite"){
-                Chat.api.on.invite(command.data.param);
+        		if (command.data.type === "invite"){
+        			Chat.api.on.invite(command.data.param);
                 } else if (command.data.type === "send"){
                     Chat.api.on.chatMessage(command.data.param);
+                } else if (command.data.type === "joined"){
+                    Chat.api.on.joined(command.data.param);
                 } /*else if (msg.data.type === "left"){
                         var conversationID = msg.data.param.conversationID;
                         getUsers(server, conversationID, function(msg){

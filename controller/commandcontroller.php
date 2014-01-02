@@ -72,18 +72,12 @@ class CommandController extends Controller {
 			$invite = new Invite($this->api, $this->getParams());
 			$invite->execute();
 			return new JSONResponse(array('status' => 'success'));
-		} catch (UserNotOnlineException $e) {
-			
+   		}catch (UserNotOnlineException $e) {
 			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
-		
 		} catch (UserToInviteNotOnlineException $e) {
-			
 			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
-		
 		} catch (UserEqualToUserToInvite $e) {
-			
 			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
-		
 		}
    	}
    	

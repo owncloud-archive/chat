@@ -61,47 +61,54 @@ var Chat = {
     	clearTitle : function(){
 			$('title').text('Chat - ownCloud');
     	},
+    	alert : function(text){
+    		OC.Notification.showHtml(text);
+			setTimeout(function(){
+                OC.Notification.hide();
+			}, 2000);
+    	}
+         
     },
     util : {
     	generateSessionId : function(){
-			var timestamp = "sessionID" + (new Date).getTime();
-			var sessionID = md5(timestamp);
-			return sessionID.toString();
+            var timestamp = "sessionID" + (new Date).getTime();
+            var sessionID = md5(timestamp);
+            return sessionID.toString();
     	},
     	generateConvId : function(){
-			var timestamp = "conversation" + (new Date).getTime();
-		    var conversationID = md5(timestamp);
-		    return conversationID.toString();
+            var timestamp = "conversation" + (new Date).getTime();
+            var conversationID = md5(timestamp);
+            return conversationID.toString();
     	},
     	timeStampToDate : function(timestamp){
-	    	var date = new Date(timestamp*1000);
-	    	var hours = date.getHours();
-	    	var minutes = date.getMinutes();
-	    	var seconds = date.getSeconds();
-	    	return	{hours : date.getHours(), minutes : date.getMinutes(), seconds : date.getSeconds()};
+            var date = new Date(timestamp*1000);
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+            return	{hours : date.getHours(), minutes : date.getMinutes(), seconds : date.getSeconds()};
     	},
     	countObjects : function(object){
-    		var count = 0;
-    		for (var k in object) {
-    		    if (object.hasOwnProperty(k)) {
-    		       ++count;
-    		    }
-    		}
-    		return count;
+            var count = 0;
+            for (var k in object) {
+                if (object.hasOwnProperty(k)) {
+                   ++count;
+                }
+            }
+            return count;
     	},
     	checkMobile : function(){
-    		return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     	},
     	throwError : function(msg){
-    		alert(msg);
+            alert(msg);
     	},
     	quit : function(){
-    		$.ajax({
+            $.ajax({
                 type: "POST",
                 url: OC.Router.generate("command_quit"),
                 data: { user: OC.currentUser, sessionID : Chat.sessionId},
                 async: false,
-		    });
+            });
     	},
         init : function(){
             Chat.scope = angular.element($("#chat-wrapper")).scope();
@@ -113,89 +120,87 @@ var Chat = {
                 Chat.ui.clear();
                 Chat.ui.showEmpty();
                 Chat.api.util.longPoll();
-                OC.Notification.show('Connected to the chat server!');
-                setTimeout(function(){
-                        OC.Notification.hide();
-                }, 1000);
+                Chat.ui.alert('Connected to the chat server!');
             });
         }
 
     },
     api : {
     	command : {
-    		greet : function(success){
-                    Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
-    		},
-    		join : function(convId, success){
-                    Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
-    		},
-    		invite : function(userToInvite, convId, success){
-                    Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success);
-    		},
-    		sendChatMsg : function(msg, convId, success){
-                    Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
-    		},
-    		leave : function(convId, success){
-                    Chat.api.util.doRequest('leave', {"conversationID" : convId, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
-    		}
+            greet : function(success){
+                Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+            },
+            join : function(convId, success){
+                Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+            },
+            invite : function(userToInvite, convId, success, error){
+                Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success,error);
+            },
+            sendChatMsg : function(msg, convId, success){
+                Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
+            },
+            leave : function(convId, success){
+                Chat.api.util.doRequest('leave', {"conversationID" : convId, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
+            }
     	},
     	on : {
-    		invite : function(param){
-                    Chat.scope.$apply(function(){
-	    	        Chat.scope.addConvToView(param.conversationID, param.user);
-	    	    }); 
-                    Chat.api.command.join(param.conversationID, function(){});
-    		},
-    		chatMessage : function(param){
-        	    Chat.scope.$apply(function(){
-        	    	Chat.scope.addChatMsgToView(param.conversationID, param.user, param.msg, param.timestamp);	
-        	    });
-    		}
+            invite : function(param){
+                Chat.scope.$apply(function(){
+                    Chat.scope.addConvToView(param.conversationID, param.user);
+                }); 
+                Chat.api.command.join(param.conversationID, function(){});
+                Chat.ui.alert('You auto started a new conversation with ' + param.user);
+            },
+            chatMessage : function(param){
+                Chat.scope.$apply(function(){
+                    Chat.scope.addChatMsgToView(param.conversationID, param.user, param.msg, param.timestamp);	
+                });
+            }
     	},
     	util : {
-    		doRequest : function(type, param, success){
-                    $.post(OC.Router.generate("command_" + type), param).done(function(data){
-                        if(data.status === "success"){
-                                success();
-                        } else if (data.status === "error"){
-                                Chat.util.throwError(data.data.msg);
-                        }
-                    });
-    		},
-    		longPoll : function(){
-                    this.getPushMessages(function(commands){
-                    Chat.api.util.deletePushMessages(commands.ids, function(){
-                    	  $.each(commands.data, function(index, command){
-                    		  Chat.api.util.handlePushMessage(command);
-                    	  });
-                    	  Chat.api.util.longPoll();
+            doRequest : function(type, param, success, error){
+                $.post(OC.Router.generate("command_" + type), param).done(function(data){
+                	if(data.status === "success"){
+                        success();
+                    } else if (data.status === "error"){
+                    	error(data.data.msg);
+                    }
+                });
+            },
+            longPoll : function(){
+                this.getPushMessages(function(commands){
+                Chat.api.util.deletePushMessages(commands.ids, function(){
+                      $.each(commands.data, function(index, command){
+                              Chat.api.util.handlePushMessage(command);
                       });
+                      Chat.api.util.longPoll();
+                  });
+                });
+            },
+            handlePushMessage : function(command){
+                    if (command.data.type === "invite"){
+                Chat.api.on.invite(command.data.param);
+                } else if (command.data.type === "send"){
+                    Chat.api.on.chatMessage(command.data.param);
+                } /*else if (msg.data.type === "left"){
+                        var conversationID = msg.data.param.conversationID;
+                        getUsers(server, conversationID, function(msg){
+                                if (msg.data.param.users.length <= 1){
+                                        deleteConversation(conversationID);
+                                }
+                        });
+                }*/
+            },
+            getPushMessages : function(success){
+                    $.post(OC.Router.generate('push_get'), {"receiver" : OC.currentUser, "sessionID" : Chat.sessionId}, function(data){
+                            success(data);
                     });
-    		},
-    		handlePushMessage : function(command){
-    			if (command.data.type === "invite"){
-                    Chat.api.on.invite(command.data.param);
-	            } else if (command.data.type === "send"){
-	            	Chat.api.on.chatMessage(command.data.param);
-	            } /*else if (msg.data.type === "left"){
-	                    var conversationID = msg.data.param.conversationID;
-	                    getUsers(server, conversationID, function(msg){
-	                            if (msg.data.param.users.length <= 1){
-	                                    deleteConversation(conversationID);
-	                            }
-	                    });
-	            }*/
-    		},
-    		getPushMessages : function(success){
-    			$.post(OC.Router.generate('push_get'), {"receiver" : OC.currentUser, "sessionID" : Chat.sessionId}, function(data){
-    				success(data);
-		        });
-    		},
-    		deletePushMessages : function(ids, callback){
-    			$.post(OC.Router.generate('push_delete'), {ids: ids}, function(data){
-    		           callback();
-		        });
-    		},
+            },
+            deletePushMessages : function(ids, callback){
+                    $.post(OC.Router.generate('push_delete'), {ids: ids}, function(data){
+                       callback();
+                    });
+            },
     	}
     },
 }

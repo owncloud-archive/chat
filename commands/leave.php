@@ -24,7 +24,8 @@ class Leave extends Command {
 		
 		// fetch users in conversation by conversationid
 		$users = $userMapper->findByConversation($this->params('conversationID'));
-		if(count($users) === 0){
+		// TODO check for multiple sessions by the same user
+		if(count($users) <= 1){
 			// there are no users in the conversatio -> conversation can be deleted
 			$conversationMapper = new ConversationMapper($this->api);
 			$conversationMapper->deleteConversation($this->params('conversationID'));

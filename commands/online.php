@@ -9,7 +9,7 @@ use \OCA\Chat\Db\UserOnline;
 use \OCA\Chat\Db\UserOnlineMapper;
 
 
-class Greet extends Command {
+class Online extends Command {
 	
 	public function __construct(API $api, $params){
 		parent::__construct($api, $params);
@@ -17,14 +17,9 @@ class Greet extends Command {
 	
 	public function execute(){	
 		if(in_array($this->params('user'), \OCP\User::getUsers())){   		
-    		$userOnline = new UserOnline();
-    		$userOnline->setUser($this->params('user'));
-			$userOnline->setSessionId($this->params('sessionID'));
-			$userOnline->setLastOnline($this->params('timestamp'));
     		$mapper = new UserOnlineMapper($this->api);
-    		$mapper->insert($userOnline);   		
-    		
-			return true;
+    		$mapper->updateLastOnline($this->params('sessionID'), $this->params('timestamp'));   		
+    		return true;
     	} else {
     		throw new NoOcUserException('NO-OC-USER');
     	}

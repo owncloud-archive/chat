@@ -23,6 +23,9 @@ use \OCA\Chat\Commands\Invite;
 use \OCA\Chat\Commands\Send;
 use \OCA\Chat\Commands\GetConversations;
 use \OCA\Chat\Commands\Quit;
+use \OCA\Chat\Commands\Leave;
+use \OCA\Chat\Commands\Online;
+use \OCA\Chat\Commands\checkOnline;
 
 class CommandController extends Controller {	
 
@@ -71,18 +74,12 @@ class CommandController extends Controller {
 			$invite = new Invite($this->api, $this->getParams());
 			$invite->execute();
 			return new JSONResponse(array('status' => 'success'));
-		} catch (UserNotOnlineException $e) {
-			
+   		}catch (UserNotOnlineException $e) {
 			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
-		
 		} catch (UserToInviteNotOnlineException $e) {
-			
 			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
-		
 		} catch (UserEqualToUserToInvite $e) {
-			
 			return new JSONResponse(array('status' => 'error', 'data' => array('msg' => $e->getMessage()))); 
-		
 		}
    	}
    	
@@ -91,9 +88,13 @@ class CommandController extends Controller {
    	 * @IsSubAdminExemption
    	 */
    	public function leave(){
-   		return new JSONResponse(array('status' => $this->params('user'),
-   				'conversationID' => $this->params('conversationID'),
-   		));
+   		try {
+   			$leave = new Leave($this->api, $this->getParams());
+   			$leave->execute();
+   			return new JSONResponse(array('status' => 'success'));
+   		} catch(exception $e){
+   		
+   		}
    	}
    	
    	/**
@@ -146,5 +147,20 @@ class CommandController extends Controller {
 		} catch (exception $e){
 		
 		}
+	}
+	
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 */
+	public function online(){
+		// TODO catch error when user isn't online
+		$online = new Online($this->api, $this->getParams());
+		$online->execute();
+		
+		$checkOnline = new checkOnline($this->api, $this->getParams());
+		$checkOnline->execute();
+		return new JSONResponse(array('status' => 'success'));
+		
 	}
 }

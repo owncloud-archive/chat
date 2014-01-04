@@ -27,6 +27,7 @@ class Invite extends Command {
 
    		if($this->params('user') !== $this->params('usertoinvite')){
 	    	if(in_array($this->params('usertoinvite'), \OCP\User::getUsers())){
+	    		 
 				if(in_array($this->params('usertoinvite'), $usersOnline)){
 					// First fetch every sessionID of the user to invite
 					$userOnlineMapper = new UserOnlineMapper($this->api);
@@ -51,13 +52,13 @@ class Invite extends Command {
 					}
 					return true;					
 				} else {
-					return UserNotOnlineException('USER-TO-INVITE-NOT-ONLINE');
+					throw new UserNotOnlineException('USER-TO-INVITE-NOT-ONLINE');
 				}   			
 	   		} else { 
-	    		return UserToInviteNotOnlineException('USER-TO-INVITE-NOT-OC-USER');
+	    		throw new UserToInviteNotOnlineException('USER-TO-INVITE-NOT-OC-USER');
 	   		}
    		} else {
-   			return new UserEqualToUserToInvite('USER-EQAUL-TO-USER-TO-INVITE');
+   			throw new UserEqualToUserToInvite('USER-EQAUL-TO-USER-TO-INVITE');
    		}
 	}	
 

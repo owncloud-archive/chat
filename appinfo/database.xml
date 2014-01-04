@@ -102,6 +102,13 @@
 	    		<notnull>true</notnull>
 	    		<length>2000</length>
 	    	</field>
+	    	<field>
+   	    		<name>last_online</name>
+				<type>datetime</type>
+				<default>0</default>	  
+				<notnull>true</notnull>
+	    		<length>2000</length>  	        
+    	    </field>
 	   	</declaration>
 	</table>
 </database>

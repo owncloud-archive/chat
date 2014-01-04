@@ -1,88 +1,222 @@
-/**
-* ownCloud - Chat app
-*
-* @author Tobia De Koninck (LEDfan)
-* @copyright 2013 Tobia De Koninck tobia@ledfan.be
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
+/* Contents
+ * 1.  Responsive
+ * 2.  Panels
+ * 2.1 Loading Panel
+ * 2.2 Empty Panel
+ * 2.3 Chat Panel
+ * 2.3.1 Chat Panel Header
+ * 2.3.2 Chat Panel Body
+ * 2.3.3 Chat Panel Footer
+ * 3. Conversation list
+ * 4. Buttons, forms, inputs
+ * 5 Chat msgs 
 */
-.conversation {
+
+/* 1.  Responsive */
+@media screen and (max-width: 1000px) {
+	  #chat-window, #chat-window-footer, #chat-window-body, #chat-window-header{
+	  	width: 100% !important;
+	  }
+	  #app-navigation{
+	 	display: none !important;
+	  }
+	  .chat-conversation-list-mini {
+	  	display: block !important;
+	  }
+	  #chat-invite{
+	  	width: 20% !important;
+	  }
+}
+
+@media screen and (max-width: 500px) {
+	#chat-window-header{
+		height:90px !important;
+	}
+	#chat-leave, #chat-invite, #chat-conversation-list-rollup-select {
+		float:left !important;
+		width:25% !important;
+	}
+	#chat-window-body {
+		margin-top: 90px !important;
+	}
+	#chat-msg-input {
+		width:65% !important;
+	}
+	#chat-msg-send {
+		width:20% !important;
+	}
+	
+}
+
+/* 2.  Panels */
+.panel{
+	display:none;
+}
+/* 2.1 Loading Panel */
+#loading-panel{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+#loading-panel-img{
+	width: 100%;
+	height: 100%;
+	background: url('../img/loading.gif') no-repeat 0 0;
+    background-position: center;
+}
+/* 2.2 Empty Panel */
+#empty-panel{
+	width:100%;
+	float:left;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: rgb(136, 136, 136);
+	position: absolute;
+	text-align: center;
+	top: 50%;
+}
+/* 2.2 Chat Panel */
+#chat-panel{
+	height:100%;
+}
+#chat-window{
+	width:85%;
+	float:left;
+}
+/* 2.2.1 Chat Panel Header */
+#chat-window-header {
+    position: absolute;
+    height: 40px;
+	top:0;
+	width:85%;
+    background-color:#F8F8F8;
+	z-index:100;
+	border-bottom:#AAAAAA solid 1px;
+	text-align:center;
+}
+.header-left{
+	float:left;
+}
+.header-right{
+	float:right;
+}
+/* 2.2.2 Chat Panel Body */
+#chat-window-body {
+    position: absolute;
+    top: 0;
+    bottom:41px;
+    width:85%;
+    background-color:white;
+    margin-top:41px;
+}
+/* 2.2.3 Chat Panel Footer */
+#chat-window-footer {
+    position: absolute;
+    height: 40px;
+    bottom: 0;
+    width:85%;
+    background-color:#F8F8F8;
+    border-top:#AAAAAA solid 1px;
+}
+
+/* 3. Conversation List */
+#app-navigation {
+	float:left;
+	width: 15%;
+	display: inline-block;
+	height:100%;
+	overflow:auto;
+	border-right:#AAAAAA solid 1px;
+}
+#app-navigation li {
 	padding: 10px;
+	border-bottom: 1px solid #aaa;
 }
-
-#users {
-	width: 350px !important; 
+#app-navigation li:hover {
+	background-color: #999;
+	color: #eee;
+	text-shadow: none;
+	font-weight: bold;
 }
-
-#chatText {
-	width: 500px;
-	margin: auto 0;
-	height: 500px;
-	border: 1px solid #cecece;
+.conv-list-active {
+	background-color: #dadada;
 }
-
-#message {
-	width: 400px;
-}
-
-#send {
-	width: 80px;
-}
-
-#chat {
-	display: none;
-}
-
-#room, #createRoom, #password {
-	width: 240px !important;
-	padding: 6px;
-}
-
-.chatContainer section {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.chatContainer {
-	background-color: white;
-	color: rgb(51, 51, 51);
-	border-radius: 3px 3px 3px 3px;
-	box-shadow: 0px 0px 10px rgb(136, 136, 136);
-	padding: 10px;
-	margin-top: 1em;
-	margin-left: 1em;
-	width: 490px;
-	float: left;
-	display: none;
+.chat-conversation-list-mini{
+	display:none;
+  	float:left;
 }
 
 
-.chatContainer h3 {
-	font-size: 1.4em;
+/* 4. Buttons, forms, inputs*/
+#chat-conv-new{
+	text-align:center;	
+	margin:0;
+	padding:0 !important;
 }
-.chatText {
-	width: 450px;
-	overflow-y: scroll;
-	height: 350px;
+#chat-conv-new-button{
+	margin-top:0px;
+	margin-bottom:0px;
+}
+#chat-msg-input{
+	width:80%;
 }
 
-.chatLeft .messagefield {
-	width: 430px;
+#chat-msg-send{
+	width:10%;	
 }
 
-.chatContainer footer {
-	clear: left;
+#chat-leave{
+	width:10%;
+}
+
+#chat-invite{
+	width:10%;
+}
+.conv-new-msg {
+	border-radius: 50%;
+	width: 15px;
+	height: 15px; 
+    background-color:#008000;
+	display:block;
+	float:right;
+	margin:0;
+	padding:0;
+	margin-top:4px;
+	display:none;
+}
+
+/* 5 Chat msgs */
+.chat-msg-container{
+	width:100%;
+	border-top:1px solid #EEEEEE;
+	float:left;
+}
+.chat-msg-time{
+	color:#383C43;
+	float:right;
+	padding-right:20px;
+}
+.chat-msg-right{
+	float:right;
+	width:85%;
+}
+.chat-msg-left{
+	float:left;
+	width:85%;
+}
+.chat-msg-right div, .chat-msg-right p,  .chat-msg-left div, .chat-msg-left p{
+	float:left;	
+}
+.chat-msg-right p, .chat-msg-left p{
+	margin-left:10px;
+	word-wrap: break-word
+}
+#chat-window-msgs{
+	overflow:hidden;
+	height:100%;
+	width:100%;
+}
+
+#chat-wrapper{
+	height:100%;
 }

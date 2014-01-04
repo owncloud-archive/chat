@@ -24,6 +24,8 @@ use \OCA\Chat\Commands\Send;
 use \OCA\Chat\Commands\GetConversations;
 use \OCA\Chat\Commands\Quit;
 use \OCA\Chat\Commands\Leave;
+use \OCA\Chat\Commands\Online;
+use \OCA\Chat\Commands\checkOnline;
 
 class CommandController extends Controller {	
 
@@ -145,5 +147,20 @@ class CommandController extends Controller {
 		} catch (exception $e){
 		
 		}
+	}
+	
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 */
+	public function online(){
+		// TODO catch error when user isn't online
+		$online = new Online($this->api, $this->getParams());
+		$online->execute();
+		
+		$checkOnline = new checkOnline($this->api, $this->getParams());
+		$checkOnline->execute();
+		return new JSONResponse(array('status' => 'success'));
+		
 	}
 }

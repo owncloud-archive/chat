@@ -22,6 +22,10 @@ class UserOnlineMapper extends Mapper {
     	
     	return $rows;
     }
+    
+    public function getAll(){
+    	return $this->findEntities("SELECT * FROM " . $this->getTableName());
+    }
 	
 	public function findByUser($user){
 		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
@@ -42,6 +46,11 @@ class UserOnlineMapper extends Mapper {
 	public function deleteBySessionId($sessionID){
 		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `session_id` = ?';
 		$this->execute($sql, array($sessionID));
+	}
+	
+	public function updateLastOnline($sessionID, $timestamp){
+		$sql = 'UPDATE `' . $this->getTableName() . '` SET `last_online` = ? WHERE `session_id` = ?';
+		$this->execute($sql, array($timestamp, $sessionID));
 	}
  
 }

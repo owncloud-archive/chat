@@ -59,6 +59,7 @@ class PushMessageController extends Controller {
 			$commands[] = $command;
 			$ids[] = $pushMessage->getId();
 		}
+		
 		return new JSONResponse(array('status' => 'command', 'data' => $commands, 'ids' => $ids));
 	}
 	

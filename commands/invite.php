@@ -29,8 +29,6 @@ class Invite extends Command {
 	    	if(in_array($this->params('usertoinvite'), \OCP\User::getUsers())){
 	    		 
 				if(in_array($this->params('usertoinvite'), $usersOnline)){
-					\OCP\Util::writeLog('chat', 'OK', \OCP\Util::ERROR);
-						
 					// First fetch every sessionID of the user to invite
 					$userOnlineMapper = new UserOnlineMapper($this->api);
 					$pushMessageMapper = new PushMessageMapper($this->api);

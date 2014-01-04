@@ -87,6 +87,13 @@ $this->create('command_quit', '/command/quit')->post()->action(
 		}
 );
 
+$this->create('command_online', '/command/online')->post()->action(
+		function($params){
+			App::main('CommandController', 'online', $params, new DIContainer());
+		}
+);
+
+
 /* 
  * Receive and delete push message
  */

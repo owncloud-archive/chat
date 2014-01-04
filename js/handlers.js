@@ -21,11 +21,6 @@ $(function() {
 	    }
 	    $(this).data("prevType", e.type);
 	});
-	setInterval(titleHandler, 2000);
-	function titleHandler(){
-		Chat.ui.clearTitle();
-		setTimeout(function(){
-			Chat.ui.updateTitle();
-		}, 1000);
-	}
+	setInterval(Chat.util.titleHandler, 2000);
+	setInterval(Chat.util.updateOnlineStatus, 60000);
 });

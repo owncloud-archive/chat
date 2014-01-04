@@ -99,9 +99,6 @@ var Chat = {
     	checkMobile : function(){
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     	},
-    	throwError : function(msg){
-            alert(msg);
-    	},
     	quit : function(){
             $.ajax({
                 type: "POST",
@@ -122,13 +119,22 @@ var Chat = {
                 Chat.api.util.longPoll();
                 Chat.ui.alert('Connected to the chat server!');
             });
+        },
+        updateOnlineStatus : function(){
+        	Chat.api.command.online();
+        },
+        titleHandler : function(){
+        	Chat.ui.clearTitle();
+    		setTimeout(function(){
+    			Chat.ui.updateTitle();
+    		}, 1000);
         }
 
     },
     api : {
     	command : {
             greet : function(success){
-                Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+                Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000 }, success);
             },
             join : function(convId, success){
                 Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
@@ -141,6 +147,9 @@ var Chat = {
             },
             leave : function(convId, success){
                 Chat.api.util.doRequest('leave', {"conversationID" : convId, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
+            },
+            online : function(success){
+            	Chat.api.util.doRequest('online', {"user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, function(){});
             }
     	},
     	on : {

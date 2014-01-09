@@ -10,7 +10,6 @@
 	   		<field>
 	  			<name>id</name>
 	    		<type>integer</type>
-	      		<default>0</default>
 	      		<notnull>true</notnull>
 	          	<autoincrement>1</autoincrement>
 	      		<length>4</length>
@@ -47,15 +46,8 @@
     		<field>
 	  			<name>conversation_id</name>
 	    		<type>text</type>
-	      		<default>0</default>
 	      		<notnull>true</notnull>
 	      		<length>200</length>
-	   		</field>
-	   		<field>
-	  			<name>generated</name>
-	    		<type>boolean</type>
-	      		<default>false</default>
-	      		<notnull>true</notnull>
 	   		</field>
    		</declaration>
 	</table>
@@ -65,21 +57,18 @@
 		  	<field>
 		  		<name>conversation_id</name>
 			    <type>text</type>
-			    <default>0</default>
 			    <notnull>true</notnull>
 			    <length>200</length>
 		    </field>
 		    <field>
 		  		<name>user</name>
 		      	<type>text</type>
-		      	<default>0</default>
 		      	<notnull>true</notnull>
 		      	<length>64</length>
 	    	</field>
 	    	<field>
 	    		<name>session_id</name>
 	    		<type>text</type>
-	    		<default>0</default>
 	    		<notnull>true</notnull>
 	    		<length>2000</length>
 	    	</field>
@@ -91,23 +80,19 @@
 	    	<field>
 	  			<name>user</name>
 	      		<type>text</type>
-	      		<default>0</default>
 	      		<notnull>true</notnull>
 	      		<length>64</length>
     		</field>
 			<field>
 	    		<name>session_id</name>
 	    		<type>text</type>
-	    		<default>0</default>
 	    		<notnull>true</notnull>
 	    		<length>2000</length>
 	    	</field>
 	    	<field>
    	    		<name>last_online</name>
-				<type>datetime</type>
-				<default>0</default>	  
+				<type>bigint</type>
 				<notnull>true</notnull>
-	    		<length>2000</length>  	        
     	    </field>
 	   	</declaration>
 	</table>

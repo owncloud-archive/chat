@@ -13,7 +13,7 @@ class PushMessageMapper extends Mapper {
     }
 
 	public function findBysSessionId($sessionId){
-  		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `receiver_session_id` = ? ORDER BY id';
+  		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `receiver_session_id` = ?';
 		$feeds =  $this->findEntities($sql, array($sessionId));
 		if (count($feeds) === 0 ){
 			throw new DoesNotExistException('');

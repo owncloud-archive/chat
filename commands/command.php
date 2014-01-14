@@ -6,21 +6,18 @@ use \OCA\AppFramework\Core\API;
 abstract class Command {
 
 	public $api;
-	protected $params;
+	protected $commandData;
 	
-	public function __construct(API $api, $params){
-		
+	public function __construct(API $api){
 		$this->api = $api;
-		$this->params = $params;
-		
 	}
 	
-	public function params($key, $default=null){
-		
-	    return isset($this->params[$key])
-	        ? $this->params[$key]
-	        : $default;
+	abstract function setCommandData(array $commandData);
+
+	public function getCommandData(){
+		return $this->commandData;
 	}
+
 	
 	abstract public function execute();	
 

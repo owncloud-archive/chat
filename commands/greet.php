@@ -14,20 +14,24 @@ class Greet extends Command {
 	public function __construct(API $api, $params){
 		parent::__construct($api, $params);
 	}
+
+	public function setCommandData(array $commandData){
+		$this->commandData = $commandData;
+	}
 	
 	public function execute(){	
-		if(in_array($this->params('user'), \OCP\User::getUsers())){   		
-    		$userOnline = new UserOnline();
-    		$userOnline->setUser($this->params('user'));
-			$userOnline->setSessionId($this->params('sessionID'));
-			$userOnline->setLastOnline($this->params('timestamp'));
-    		$mapper = new UserOnlineMapper($this->api);
-    		$mapper->insert($userOnline);   		
-    		
-			return true;
-    	} else {
-    		throw new NoOcUserException('NO-OC-USER');
-    	}
+
+		$commandData = $this->getCommandData();
+		\OCP\Util::writeLog('chat', $commandData, \OCP\Util::ERROR);
+
+		$userOnline = new UserOnline();
+		$userOnline->setUser($commandData['user']);
+		$userOnline->setSessionId($commandData['session_id']);
+		$userOnline->setLastOnline($commandData['timestamp']);
+		$mapper = new UserOnlineMapper($this->api);
+		$mapper->insert($userOnline);   		
+		
+		return;
 	}	
 
 }

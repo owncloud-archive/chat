@@ -13,8 +13,30 @@ use \OCA\Chat\Commands\Quit;
 use \OCA\Chat\Commands\Leave;
 use \OCA\Chat\Commands\Online;
 use \OCA\Chat\Commands\checkOnline;
-use \OCA\Chat\Commands\SuccessCommandResponse;
-use \OCA\Chat\Commands\ErrorCommandResponse;
+use \OCA\Chat\Responses\Success;
+use \OCA\Chat\Responses\Error;
+use \OCA\Chat\Exceptions\CommandDataInvalid;
+
+use \OCA\AppFramework\Http\JSONResponse;
+
+
+/**
+ * For testing:
+ * $.post(OC.Router.generate('chat_api_command') + '/greet', {
+ *   command: JSON.stringify({
+ *      'type': 'greet',
+ *       'http_type': 'request',
+ *       'data': {
+ *           'user': 'admin',
+ *           'timestamp': 12424242,
+ *           'session_id': 'skja;lsasfdahooooooooooooooooooooooooooisdf'
+ *       }
+ *   })
+ * }).done(function (data) {
+ *   alert('hoi');
+ *   console.log(data)
+ * })
+*/
 
 class ApiController extends Controller {	
 
@@ -41,37 +63,29 @@ class ApiController extends Controller {
 		$className = '\OCA\Chat\Commands\\' . ucfirst($type);
 		$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online');
 
-		if($command['http_type'] === "request"){
-			if(!empty($command['data']['session_id'])){
-				if(in_array($this->params('type'), $possibleCommands)){
-					if($command['data']['user'] === $this->api->getUserId()){
-						$commandClass = new $className($this->api, array());
-						$commandClass->setCommandData($command['data']);
-						$commandClass->execute();
-						return new SuccessCommandResponse($this->params('type'));
-					} else {
-						return new ErrorCommandResponse($this->params('type'), "USER-NOT-EQUAL-TO-OC-USER");
-					}
+		if(in_array($this->params('type'), $possibleCommands)){
+			if(isset($command['http_type']) && $command['http_type'] === "request"){
+				if(!empty($command['data']['session_id'])){
+						if($command['data']['user'] === $this->api->getUserId()){
+							try{
+								$commandClass = new $className($this->api, array());
+								$commandClass->setCommandData($command['data']);
+								$commandClass->execute();
+								return new Success($this->params('type'));
+							} catch (CommandDataInvalid $e){
+								return new Error($this->params('type'), $e->getMessage());
+							}
+						} else {
+							return new Error($this->params('type'), "USER-NOT-EQUAL-TO-OC-USER");
+						}
 				} else {
-					return new JSONResponse(array(
-						"type" => $this->params('type'),
-						"http_type"=> "response",
-						"data" => array(
-						"status" => "error",
-							"msg" => "COMMAND-NOT-FOUND"
-						)
-					));
+					return new Error($this->params('type'), "SESSION-ID-NOT-PROVIDED"); 
 				}
 			} else {
-				return new JSONResponse(array(
-					"type" => $this->params('type'),
-					"http_type"=> "response",
-					"data" => array(
-					"status" => "error",
-						"msg" => "SESSION-ID-NOT-PROVIDED"
-					)
-				));
+				return new Error($this->params('type'), "HTTP-TYPE-INVALID");
 			}
+		} else {
+			return new Error($this->params('type'), "COMMAND-NOT-FOUND");
 		}
    	} 
 }

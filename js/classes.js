@@ -134,13 +134,16 @@ var Chat = {
     api : {
     	command : {
             greet : function(success){
-                Chat.api.util.doRequest('greet', {"user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000 }, success);
+                // OK
+                Chat.api.util.doRequest('greet', {"type" : "greet", "http_type" : "request", "data" : { "user" : OC.currentUser, "session_id" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000 }}, success);
             },
             join : function(convId, success){
-                Chat.api.util.doRequest('join', {"conversationID" : convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "sessionID" : Chat.sessionId }, success);
+                // OK
+                Chat.api.util.doRequest('join', {"type" : "join", "http_type" : "request", "data" : { "conv_id": convId,  "timestamp" : (new Date).getTime() / 1000, "user" : OC.currentUser, "session_id" : Chat.sessionId }}, success);
             },
             invite : function(userToInvite, convId, success, error){
-                Chat.api.util.doRequest('invite', {"conversationID" : convId, "timestamp" : (new Date).getTime() / 1000, "usertoinvite" : userToInvite , "user" : OC.currentUser, "sessionID" : Chat.sessionId },success,error);
+                // In progress
+                Chat.api.util.doRequest('invite', {"type" : "invite", "http_type" : "request", "data" : { "conv_id" : convId, "timestamp" : (new Date).getTime() / 1000, "user_to_invite" : userToInvite , "user" : OC.currentUser, "session_id" : Chat.sessionId }},success,error);
             },
             sendChatMsg : function(msg, convId, success){
                 Chat.api.util.doRequest('send', {"conversationID" : convId, "msg" : msg, "user" : OC.currentUser, "sessionID" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000   }, success);
@@ -173,12 +176,12 @@ var Chat = {
             }
     	},
     	util : {
-            doRequest : function(type, param, success, error){
-                $.post(OC.Router.generate("command_" + type), param).done(function(data){
-                	if(data.status === "success"){
+            doRequest : function(type, command, success, error){
+                $.post(OC.Router.generate("chat_api_command", {type: type}), {command: JSON.stringify(command)}).done(function(response){
+                	if(response.data.status === "success"){
                         success();
-                    } else if (data.status === "error"){
-                    	error(data.data.msg);
+                    } else if (response.data.status === "error"){
+                    	error(response.data.data.msg);
                     }
                 });
             },
@@ -193,20 +196,22 @@ var Chat = {
                 });
             },
             handlePushMessage : function(command){
-        		if (command.data.type === "invite"){
-        			Chat.api.on.invite(command.data.param);
-                } else if (command.data.type === "send"){
-                    Chat.api.on.chatMessage(command.data.param);
-                } else if (command.data.type === "joined"){
-                    Chat.api.on.joined(command.data.param);
-                } /*else if (msg.data.type === "left"){
-                        var conversationID = msg.data.param.conversationID;
-                        getUsers(server, conversationID, function(msg){
-                                if (msg.data.param.users.length <= 1){
-                                        deleteConversation(conversationID);
-                                }
-                        });
-                }*/
+                if(command.http_type === "request"){
+            		if (command.type === "invite"){
+            			Chat.api.on.invite(command.data.param);
+                    } else if (command.type === "send"){
+                        Chat.api.on.chatMessage(command.data.param);
+                    } else if (command.type === "joined"){
+                        Chat.api.on.joined(command.data.param);
+                    } /*else if (msg.data.type === "left"){
+                            var conversationID = msg.data.param.conversationID;
+                            getUsers(server, conversationID, function(msg){
+                                    if (msg.data.param.users.length <= 1){
+                                            deleteConversation(conversationID);
+                                    }
+                            });
+                    }*/
+                }
             },
             getPushMessages : function(success){
                     $.post(OC.Router.generate('push_get'), {"receiver" : OC.currentUser, "sessionID" : Chat.sessionId}, function(data){

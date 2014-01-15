@@ -1,16 +1,17 @@
 <?php
-namespace OCA\Chat\Commands;
+namespace OCA\Chat\Responses;
 
 use \OCA\AppFramework\Http\JSONResponse;
 
-class SuccessCommandResponse extends JSONResponse{
+class Error extends JSONResponse {
 
-	public function __construct($commandType){
+	public function __construct($commandType, $errorMsg){
 		parent::__construct(array(
 			"type" => $commandType,
 			"http_type"=> "response",
 			"data" => array(
-				"status" => "success"
+			"status" => "error",
+				"msg" => $errorMsg
 			)
 		));
 	}

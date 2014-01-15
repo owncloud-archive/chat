@@ -39,7 +39,7 @@ $this->create('chat_index', '/')->get()->action(
  * Commands used by the AJAX client
  */
 
-$this->create('chat_command', '/api/command/{type}')->action(
+$this->create('chat_api_command', '/api/command/{type}')->action(
 	function($params){
 		App::main('ApiController', 'command', $params, new DIContainer());
 	}

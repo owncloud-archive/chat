@@ -2,7 +2,7 @@
 
 namespace OCA\Chat\Exceptions;
 
-class CommandDataInvalid extends \Exception {
+class RequestDataInvalid extends \Exception {
 
         public function __construct($msg){
                 parent::__construct($msg);

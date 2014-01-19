@@ -5,12 +5,11 @@ use \OCA\AppFramework\Http\JSONResponse;
 
 class Error extends JSONResponse {
 
-	public function __construct($commandType, $errorMsg){
+	public function __construct($requestType, $action, $errorMsg){
 		parent::__construct(array(
-			"type" => $commandType,
-			"http_type"=> "response",
+			"type" => $requestType . "::" . $action . "::response",
 			"data" => array(
-			"status" => "error",
+				"status" => "error",
 				"msg" => $errorMsg
 			)
 		));

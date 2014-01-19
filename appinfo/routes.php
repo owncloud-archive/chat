@@ -26,21 +26,15 @@ use OCA\AppFramework\App;
 
 use OCA\Chat\DependencyInjection\DIContainer;
 
-/**
- * Webinterface
- */
 $this->create('chat_index', '/')->get()->action(
 	function($params){
 		App::main('PageController', 'index', $params, new DIContainer());
 	}
 );
 
-/**
- * Commands used by the AJAX client
- */
-
-$this->create('chat_api_command', '/api/command/{type}')->action(
+$this->create('chat_api', '/api')->action(
 	function($params){
-		App::main('ApiController', 'command', $params, new DIContainer());
+		App::main('ApiController', 'route', $params, new DIContainer());
 	}
 );
+

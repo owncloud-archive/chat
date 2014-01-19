@@ -2,17 +2,21 @@
 
 namespace OCA\Chat\Commands;
 
-use OCA\Chat\Commands\Command;
+use \OCA\Chat\ChatAPI;
 use \OCA\AppFramework\Core\API;
 use \OCA\Chat\Exceptions\NoOcUserException;
 use \OCA\Chat\Db\UserOnline;
 use \OCA\Chat\Db\UserOnlineMapper;
 
 
-class CheckOnline extends Command {
+class CheckOnline extends ChatAPI {
 	
-	public function __construct(API $api, $params){
-		parent::__construct($api, $params);
+	public function __construct(API $api){
+		parent::__construct($api);
+	}
+
+	public function setRequestData(array $requestData){
+		$this->requestData = $requestData;
 	}
 	
 	public function execute(){	

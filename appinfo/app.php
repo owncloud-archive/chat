@@ -43,23 +43,25 @@ if(\OCP\App::isEnabled('appframework')){
 	
 	));
 
-	
+	\OC::$CLASSPATH['OCA\Chat\ChatAPI'] = 'chat/lib/chatapi.php';
+
+
 	\OC::$CLASSPATH['OCA\Chat\Commands\Greet'] = 'chat/lib/commands/greet.php';
 	\OC::$CLASSPATH['OCA\Chat\Commands\CheckOnline'] = 'chat/lib/commands/checkonline.php';
-	\OC::$CLASSPATH['OCA\Chat\Commands\Command'] = 'chat/lib/commands/command.php';
 	\OC::$CLASSPATH['OCA\Chat\Commands\Invite'] = 'chat/lib/commands/invite.php';
 	\OC::$CLASSPATH['OCA\Chat\Commands\Join'] = 'chat/lib/commands/join.php';
 	\OC::$CLASSPATH['OCA\Chat\Commands\Leave'] = 'chat/lib/commands/leave.php';
 	\OC::$CLASSPATH['OCA\Chat\Commands\Online'] = 'chat/lib/commands/online.php';
-	\OC::$CLASSPATH['OCA\Chat\Commands\Quit'] = 'chat/lib/commands/Quit.php';
-	\OC::$CLASSPATH['OCA\Chat\Commands\Send'] = 'chat/lib/commands/Send.php';
+	\OC::$CLASSPATH['OCA\Chat\Commands\Quit'] = 'chat/lib/commands/quit.php';
+	\OC::$CLASSPATH['OCA\Chat\Commands\SendChatMsg'] = 'chat/lib/commands/sendchatmsg.php';
 
 	\OC::$CLASSPATH['OCA\Chat\Respones\Success'] = 'chat/lib/responses/success.php';
 	\OC::$CLASSPATH['OCA\Chat\Respones\Error'] = 'chat/lib/responses/error.php';
 
 	\OC::$CLASSPATH['OCA\Chat\Exceptions\CommandDataInvalid'] = 'chat/lib/exceptions/commanddatainvalid.php';
 
- 
+ 	\OC::$CLASSPATH['OCA\Chat\Push\Get'] = 'chat/lib/push/get.php';
+ 	\OC::$CLASSPATH['OCA\Chat\Push\Delete'] = 'chat/lib/push/delete.php';
 
 
  } else {

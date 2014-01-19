@@ -5,10 +5,9 @@ use \OCA\AppFramework\Http\JSONResponse;
 
 class Success extends JSONResponse{
 
-	public function __construct($commandType){
+	public function __construct($requestType, $action){
 		parent::__construct(array(
-			"type" => $commandType,
-			"http_type"=> "response",
+			"type" => $requestType . "::" . $action . "::response" ,
 			"data" => array(
 				"status" => "success"
 			)

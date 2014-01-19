@@ -62,6 +62,8 @@ class UserMapper extends Mapper {
 	}
 	
 	public function deleteBySessionId($conversationID, $sessionID){
+                                            \OCP\Util::writeLog('chat', 'delete by sessionid    ' . $conversationID . "   " . $sessionID, \OCP\Util::ERROR);
+
 		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? AND `session_id` = ?';
         $this->execute($sql, array($conversationID, $sessionID));
 	}

@@ -15,28 +15,12 @@ use \OCA\Chat\Commands\Online;
 use \OCA\Chat\Commands\checkOnline;
 use \OCA\Chat\Responses\Success;
 use \OCA\Chat\Responses\Error;
-use \OCA\Chat\Exceptions\CommandDataInvalid;
+use \OCA\Chat\Exceptions\RequestDataInvalid;
 
 use \OCA\AppFramework\Http\JSONResponse;
 
-
-/**
- * For testing:
- * $.post(OC.Router.generate('chat_api_command') + '/greet', {
- *   command: JSON.stringify({
- *      'type': 'greet',
- *       'http_type': 'request',
- *       'data': {
- *           'user': 'admin',
- *           'timestamp': 12424242,
- *           'session_id': 'skja;lsasfdahooooooooooooooooooooooooooisdf'
- *       }
- *   })
- * }).done(function (data) {
- *   alert('hoi');
- *   console.log(data)
- * })
-*/
+use \OCA\Chat\Push\Get;
+use \OCA\Chat\Push\Delete;
 
 class ApiController extends Controller {	
 
@@ -49,43 +33,85 @@ class ApiController extends Controller {
     }
   
     /**
-     * First function called when handling a command
-     * Determines which classes are needed.
-     * @param String $this->params('type') type of the command
-     * @param String $this->params('command') the JSON command 
+	 * Routes the API Request
+     * @param String $this->params('JSON') command in JSON
      * @return JSONResponse 
      * @IsAdminExemption
      * @IsSubAdminExemption
      */
-    public function command(){
-		$command = json_decode($this->params('command'), true);
-		$type = $this->params('type');
-		$className = '\OCA\Chat\Commands\\' . ucfirst($type);
-		$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online');
+    public function route(){
+		$request = json_decode($this->params('JSON'), true);
+		list($requestType, $action, $http_type) = explode("::", $request['type']);
 
-		if(in_array($this->params('type'), $possibleCommands)){
-			if(isset($command['http_type']) && $command['http_type'] === "request"){
-				if(!empty($command['data']['session_id'])){
-						if($command['data']['user'] === $this->api->getUserId()){
-							try{
-								$commandClass = new $className($this->api, array());
-								$commandClass->setCommandData($command['data']);
-								$commandClass->execute();
-								return new Success($this->params('type'));
-							} catch (CommandDataInvalid $e){
-								return new Error($this->params('type'), $e->getMessage());
+		if($http_type === "request"){
+
+			// Check request type 
+			switch($requestType){
+				case "command":
+					// $action is the type of the command
+
+					$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online');
+					if(in_array($action, $possibleCommands)){
+						if(!empty($request['data']['session_id'])){
+							if($request['data']['user'] === $this->api->getUserId()){
+								
+								$commandClasses = array(
+									'greet' => '\OCA\Chat\Commands\Greet',
+									'join' => '\OCA\Chat\Commands\Join',
+									'invite' => '\OCA\Chat\Commands\Invite',
+									'leave' => '\OCA\Chat\Commands\Leave',
+									'send_chat_msg' => '\OCA\Chat\Commands\SendChatMsg',
+									'quit' => '\OCA\Chat\Commands\Quit',
+									'online' => '\OCA\Chat\Commands\Online'
+								);
+								
+								try{
+									$className = $commandClasses[$action];
+									$commandClass = new $className($this->api);
+									$commandClass->setRequestData($request['data']);
+									$commandClass->execute();
+
+									return new Success("command", $action);
+								}catch(RequestDataInvalid $e){
+									return new Error("command", $action, $e->getMessage());
+								}
+							} else {
+								return new Error("command", $action, "USER-NOT-EQUAL-TO-OC-USER");
 							}
 						} else {
-							return new Error($this->params('type'), "USER-NOT-EQUAL-TO-OC-USER");
+							return new Error("command", $action, "SESSION-ID-NOT-PROVIDED"); 
 						}
-				} else {
-					return new Error($this->params('type'), "SESSION-ID-NOT-PROVIDED"); 
-				}
-			} else {
-				return new Error($this->params('type'), "HTTP-TYPE-INVALID");
+					} else {
+						return new Error("command", $action, "COMMAND-NOT-FOUND");
+					}
+
+					break;
+				case "push":
+   					if($request['data']['user'] === $this->api->getUserId()){
+   						if(!empty($request['data']['session_id'])){
+   							$pushClasses = array(
+   								"get" => "\OCA\Chat\Push\Get",
+								"delete" => "\OCA\Chat\Push\Delete"
+   							);
+   							$className = $pushClasses[$action];
+							$pushClass = new $className($this->api);
+							$pushClass->setRequestData($request['data']);
+							return $pushClass->execute();
+
+   						} else{
+   							return new Error('push', 'session_id not provided');
+   							//@todo add better error reporting
+   						}
+					} else {
+						return new Error('push', 'user not ok');
+   					}
+					break;
+				case "data":
+					break;
 			}
+
 		} else {
-			return new Error($this->params('type'), "COMMAND-NOT-FOUND");
+			return new Error($requestType, $action, "HTTP-TYPE-INVALID");
 		}
-   	} 
+	}
 }

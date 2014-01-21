@@ -22,9 +22,8 @@
 
 namespace OCA\Chat;
 
-use OCA\Chat\Core\App;
-
-use OCA\Chat\DependencyInjection\DIContainer;
+use \OCA\Chat\Core\App;
+use \OCA\Chat\DependencyInjection\DIContainer;
 
 $this->create('chat_index', '/')->get()->action(
 	function($params){

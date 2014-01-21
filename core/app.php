@@ -2,8 +2,9 @@
 
 namespace OCA\Chat\Core;
 
-use OCA\Chat\DependencyInjection\DIContainer;
-use OCP\AppFramework\IAppContainer;
+use \OCA\Chat\DependencyInjection\DIContainer;
+
+use \OCP\AppFramework\IAppContainer;
 
 
 /**

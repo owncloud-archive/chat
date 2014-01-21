@@ -12,7 +12,6 @@ use \OCA\Chat\Db\UserOnline;
 use \OCA\Chat\Db\UserOnlineMapper;
 use \OCA\Chat\Db\PushMessage;
 use \OCA\Chat\Db\PushMessageMapper;
-
 use \OCA\Chat\Exceptions\RequestDataInvalid;
 
 

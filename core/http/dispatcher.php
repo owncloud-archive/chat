@@ -26,6 +26,7 @@ namespace OCA\Chat\Core\Http;
 
 use \OCA\Chat\Core\Middleware\MiddlewareDispatcher;
 use \OCA\Chat\Core\Http;
+
 use \OCP\AppFramework\Controller;
 
 

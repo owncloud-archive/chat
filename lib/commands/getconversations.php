@@ -2,7 +2,7 @@
 //broken
 namespace OCA\Chat\Commands;
 
-use OCA\Chat\Commands\Command;
+use \OCA\Chat\Commands\Command;
 use \OCA\AppFramework\Core\API;
 use \OCA\Chat\Exceptions\NoOcUserException;
 use \OCA\Chat\Db\User;

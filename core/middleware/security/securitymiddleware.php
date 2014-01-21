@@ -27,6 +27,7 @@ namespace OCA\Chat\Core\Middleware\Security;
 use \OCA\Chat\Core\Http;
 use \OCA\Chat\Core\Http\RedirectResponse;
 use \OCA\Chat\Core\Utility\MethodAnnotationReader;
+
 use \OCP\AppFramework\Middleware;
 use \OCP\AppFramework\Http\Response;
 use \OCP\AppFramework\Http\JSONResponse;

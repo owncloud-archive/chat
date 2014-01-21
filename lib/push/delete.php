@@ -4,9 +4,9 @@ namespace OCA\Chat\Push;
 use \OCA\Chat\ChatAPI;
 use \OCA\Chat\Db\PushMessage;
 use \OCA\Chat\Db\PushMessageMapper;
-
 use \OCA\Chat\Core\API;
-use OCP\AppFramework\Http\JSONResponse;
+
+use \OCP\AppFramework\Http\JSONResponse;
 
 
 class Delete extends ChatAPI{

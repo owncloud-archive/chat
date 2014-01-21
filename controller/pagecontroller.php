@@ -22,8 +22,9 @@
 
 namespace OCA\Chat\Controller;
 
-use \OCP\AppFramework\Controller;
 use \OCA\Chat\Core\API;
+
+use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
 

@@ -24,8 +24,8 @@
 
 namespace OCA\Chat\Core\Http;
 
-use OCP\AppFramework\Http\Response,
-        OCP\AppFramework\Http;
+use \OCP\AppFramework\Http\Response;
+use \OCP\AppFramework\Http;
 
 
 /**

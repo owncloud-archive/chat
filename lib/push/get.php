@@ -5,14 +5,12 @@ use \OCA\Chat\Commands\Command;
 use \OCA\Chat\Core\API;
 use \OCA\Chat\ChatAPI;
 use \OCA\Chat\Exceptions\RequestDataInvalid;
-
 use \OCA\Chat\Db\PushMessageMapper;
 use \OCA\Chat\Db\PushMessage;
-
+use \OCA\Chat\Db\DoesNotExistException;
 
 use \OCP\AppFramework\Http\JSONResponse;
 
-use \OCA\Chat\Db\DoesNotExistException;
 
 class Get extends ChatAPI{
 

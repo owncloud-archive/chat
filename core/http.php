@@ -24,7 +24,7 @@
 
 namespace OCA\Chat\Core;
 
-use OCP\AppFramework\Http as BaseHttp;
+use \OCP\AppFramework\Http as BaseHttp;
 
 class Http extends BaseHttp {
 

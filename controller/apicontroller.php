@@ -14,14 +14,12 @@ use \OCA\Chat\Commands\checkOnline;
 use \OCA\Chat\Responses\Success;
 use \OCA\Chat\Responses\Error;
 use \OCA\Chat\Exceptions\RequestDataInvalid;
-
-use OCP\AppFramework\Http\JSONResponse;
-
 use \OCA\Chat\Push\Get;
 use \OCA\Chat\Push\Delete;
-
-use \OCP\AppFramework\Controller;
 use \OCA\Chat\Core\API;
+
+use \OCP\AppFramework\Http\JSONResponse;
+use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
 

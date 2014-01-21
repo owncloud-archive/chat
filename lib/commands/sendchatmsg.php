@@ -2,8 +2,7 @@
 
 namespace OCA\Chat\Commands;
 
-use OCA\Chat\ChatAPI;
-
+use \OCA\Chat\ChatAPI;
 use \OCA\Chat\Core\API;
 use \OCA\Chat\Exceptions\NoOcUserException;
 use \OCA\Chat\Db\UserOnline;
@@ -14,7 +13,6 @@ use \OCA\Chat\Db\Conversation;
 use \OCA\Chat\Db\ConversationMapper;
 use \OCA\Chat\Db\PushMessage;
 use \OCA\Chat\Db\PushMessageMapper;
-
 use \OCA\Chat\Exceptions\RequestDataInvalid;
 
 

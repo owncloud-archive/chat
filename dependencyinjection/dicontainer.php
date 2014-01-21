@@ -1,26 +1,24 @@
 <?php
 namespace OCA\Chat\DependencyInjection;
 
+use \OCA\Chat\Core\API;
 use \OCA\Chat\Core\Http;
 use \OCA\Chat\Core\Http\Dispatcher;
 use \OCA\Chat\Core\Middleware\MiddlewareDispatcher;
 use \OCA\Chat\Core\Middleware\Security\SecurityMiddleware;
 use \OCA\Chat\Core\Utility\SimpleContainer;
 use \OCA\Chat\Core\Utility\TimeFactory;
+use \OCA\Chat\Controller\PageController;
+use \OCA\Chat\Controller\ApiController;
+
+use \OCP\AppFramework\Http\Request;
+use \OCP\AppFramework\IApi;
+use \OCP\AppFramework\IAppContainer;
+use \OCP\AppFramework\IMiddleWare;
+use \OCP\AppFramework\Middleware;
+use \OCP\IServerContainer;
 
 
-
-use OCP\AppFramework\Http\Request;
-use OCA\Chat\Core\API;
-use OCP\AppFramework\IApi;
-use OCP\AppFramework\IAppContainer;
-use OCP\AppFramework\IMiddleWare;
-use OCP\AppFramework\Middleware;
-use OCP\IServerContainer;
-
-
-use OCA\Chat\Controller\PageController;
-use OCA\Chat\Controller\ApiController;
 
 
 class DIContainer extends SimpleContainer implements IAppContainer{

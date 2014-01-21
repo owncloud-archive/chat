@@ -1,14 +1,17 @@
 <?php
 namespace OCA\Chat\DependencyInjection;
 
-use OC\AppFramework\Http;
+use \OCA\Chat\Core\Http;
+use \OCA\Chat\Core\Http\Dispatcher;
+use \OCA\Chat\Core\Middleware\MiddlewareDispatcher;
+use \OCA\Chat\Core\Middleware\Security\SecurityMiddleware;
+use \OCA\Chat\Core\Utility\SimpleContainer;
+use \OCA\Chat\Core\Utility\TimeFactory;
+
+
+
 use OCP\AppFramework\Http\Request;
-use OC\AppFramework\Http\Dispatcher;
 use OCA\Chat\Core\API;
-use OC\AppFramework\Middleware\MiddlewareDispatcher;
-use OC\AppFramework\Middleware\Security\SecurityMiddleware;
-use OC\AppFramework\Utility\SimpleContainer;
-use OC\AppFramework\Utility\TimeFactory;
 use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\AppFramework\IMiddleWare;
@@ -105,6 +108,10 @@ class DIContainer extends SimpleContainer implements IAppContainer{
                 return new PageController($c['this'], $c['Request']);
 			});
 
+$this['ApiController'] = $this->share(function($c){
+             //   throw new \Exception("PAgecontroller callee");
+                return new ApiController($c['this'], $c['Request']);
+            });
 
          
 
@@ -116,8 +123,9 @@ class DIContainer extends SimpleContainer implements IAppContainer{
         /**
          * @return IApi
          */
-        function getCoreApi()
+        public function getCoreApi()
         {
+              // throw new \Exception('hoooooooooooooooooooooooooooi');
                 return $this->query('API');
         }
 
@@ -148,7 +156,7 @@ class DIContainer extends SimpleContainer implements IAppContainer{
         /**
          * @return boolean
          */
-        function isLoggedIn() {
+        public function isLoggedIn() {
                 return \OC_User::isLoggedIn();
         }
 

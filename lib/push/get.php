@@ -2,16 +2,17 @@
 
 namespace OCA\Chat\Push;
 use \OCA\Chat\Commands\Command;
-use \OCA\AppFramework\Core\API;
+use \OCA\Chat\Core\API;
 use \OCA\Chat\ChatAPI;
 use \OCA\Chat\Exceptions\RequestDataInvalid;
 
 use \OCA\Chat\Db\PushMessageMapper;
 use \OCA\Chat\Db\PushMessage;
 
-use \OCA\AppFramework\Http\JSONResponse;
 
-use \OCA\AppFramework\Db\DoesNotExistException;
+use \OCP\AppFramework\Http\JSONResponse;
+
+use \OCA\Chat\Db\DoesNotExistException;
 
 class Get extends ChatAPI{
 

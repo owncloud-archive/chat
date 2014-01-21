@@ -1,17 +1,17 @@
 <?php
-
+//broken
 namespace OCA\Chat\Commands;
 
-use OCA\Chat\Commands\Command;
-use \OCA\AppFramework\Core\API;
+use \OCA\Chat\Core\API;
+use \OCA\Chat\ChatAPI;
 use \OCA\Chat\Exceptions\NoOcUserException;
 use \OCA\Chat\Db\User;
 use \OCA\Chat\Db\UserMapper;
-use \OCA\Appframework\Db\DoesNotExistException;
+use \OCA\Chat\Db\DoesNotExistException;
 use \OCA\Chat\Db\PushMessageMapper;
 use \OCA\Chat\Db\PushMessage;
 
-class GetPushMessage extends Command {
+class GetPushMessage extends ChatAPI {
 	private $pushMessage;
 	
 	public function __construct(API $api, $params){

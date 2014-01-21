@@ -1,7 +1,7 @@
 <?php
 
 namespace OCA\Chat;
-use \OCA\AppFramework\Core\API;
+use \OCA\Chat\Core\API;
 
 /*
  * API Base Class

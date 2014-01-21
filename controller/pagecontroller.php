@@ -35,14 +35,10 @@ class PageController extends Controller {
 	}
 
 	/**
-	 * @IsAdminExemption
-	 * @IsSubAdminExemption
-	 * @CSRFExemption
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
 	public function index() {
-
 		$params = array(
 			'users' =>  \OCP\User::getUsers()
 		);

@@ -1,5 +1,5 @@
 <?php
-
+//broken
 namespace OCA\Chat\Commands;
 
 use OCA\Chat\Commands\Command;

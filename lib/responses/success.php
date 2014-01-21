@@ -1,7 +1,7 @@
 <?php
 namespace OCA\Chat\Responses;
 
-use \OCA\AppFramework\Http\JSONResponse;
+use \OCP\AppFramework\Http\JSONResponse;
 
 class Success extends JSONResponse{
 

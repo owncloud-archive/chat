@@ -2,8 +2,6 @@
 
 namespace OCA\Chat\Controller;
 
-use \OCP\AppFramework\Controller;
-use \OCA\Chat\Core\API;
 use \OCA\Chat\Commands\Greet;
 use \OCA\Chat\Commands\Join;
 use \OCA\Chat\Commands\Invite;
@@ -17,27 +15,30 @@ use \OCA\Chat\Responses\Success;
 use \OCA\Chat\Responses\Error;
 use \OCA\Chat\Exceptions\RequestDataInvalid;
 
-use \OCP\Chat\Http\JSONResponse;
+use OCP\AppFramework\Http\JSONResponse;
 
 use \OCA\Chat\Push\Get;
 use \OCA\Chat\Push\Delete;
 
+use \OCP\AppFramework\Controller;
+use \OCA\Chat\Core\API;
+use \OCP\IRequest;
+use \OCP\AppFramework\IAppContainer;
+
+
+
 class ApiController extends Controller {	
 
-    /**
-     * @param Request $request an instance of the request
-     * @param API $api an api wrapper instance
-     */
-    public function __construct($api, $request){
-        parent::__construct($api, $request);
-    }
+    public function __construct(IAppContainer $app, IRequest $request){
+		parent::__construct($app, $request);
+	}
   
     /**
 	 * Routes the API Request
      * @param String $this->params('JSON') command in JSON
      * @return JSONResponse 
-     * @IsAdminExemption
-     * @IsSubAdminExemption
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
      */
     public function route(){
 		$request = json_decode($this->params('JSON'), true);
@@ -53,7 +54,7 @@ class ApiController extends Controller {
 					$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($request['data']['session_id'])){
-							if($request['data']['user'] === $this->api->getUserId()){
+							if($request['data']['user'] === $this->app->getCoreApi()->getUserId()){
 								
 								$commandClasses = array(
 									'greet' => '\OCA\Chat\Commands\Greet',
@@ -67,7 +68,7 @@ class ApiController extends Controller {
 								
 								try{
 									$className = $commandClasses[$action];
-									$commandClass = new $className($this->api);
+									$commandClass = new $className($this->app->getCoreApi());
 									$commandClass->setRequestData($request['data']);
 									$commandClass->execute();
 
@@ -87,16 +88,21 @@ class ApiController extends Controller {
 
 					break;
 				case "push":
-   					if($request['data']['user'] === $this->api->getUserId()){
+   					if($request['data']['user'] === $this->app->getCoreApi()->getUserId()){
    						if(!empty($request['data']['session_id'])){
+   							//throw new \Exception("good to go");
    							$pushClasses = array(
    								"get" => "\OCA\Chat\Push\Get",
 								"delete" => "\OCA\Chat\Push\Delete"
    							);
    							$className = $pushClasses[$action];
-							$pushClass = new $className($this->api);
+							$pushClass = new $className($this->app->getCoreApi());
+  							//throw new \Exception("ok");
+
 							$pushClass->setRequestData($request['data']);
+
 							return $pushClass->execute();
+  							//throw new \Exception("ok");
 
    						} else{
    							return new Error('push', 'session_id not provided');

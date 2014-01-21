@@ -1,9 +1,9 @@
 <?php
 namespace OCA\Chat\Db;
 
-use \OCA\AppFramework\Db\Mapper;
-use \OCA\AppFramework\Core\Api;
-use \OCA\Appframework\Db\DoesNotExistException;
+use \OCA\Chat\Db\Mapper;
+use \OCA\Chat\Core\Api;
+use \OCA\Chat\Db\DoesNotExistException;
 
 class PushMessageMapper extends Mapper {
 

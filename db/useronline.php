@@ -1,7 +1,7 @@
 <?php
 namespace OCA\Chat\Db;
 
-use \OCA\AppFramework\Db\Entity;
+use \OCA\Chat\Db\Entity;
 
 class UserOnline extends Entity {
 

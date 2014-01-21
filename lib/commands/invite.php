@@ -2,8 +2,8 @@
 
 namespace OCA\Chat\Commands;
 
-use OCA\Chat\ChatAPI;
-use \OCA\AppFramework\Core\API;
+use \OCA\Chat\ChatAPI;
+use \OCA\Chat\Core\API;
 use \OCA\Chat\Exceptions\NoOcUserException;
 use \OCA\Chat\Exceptions\UserNotOnlineException;
 use \OCA\Chat\Exceptions\UserToInviteNotOnlineException;

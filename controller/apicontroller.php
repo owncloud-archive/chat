@@ -2,8 +2,8 @@
 
 namespace OCA\Chat\Controller;
 
-use \OCA\AppFramework\Controller\Controller;
-use \OCA\AppFramework\Core\API;
+use \OCP\AppFramework\Controller;
+use \OCA\Chat\Core\API;
 use \OCA\Chat\Commands\Greet;
 use \OCA\Chat\Commands\Join;
 use \OCA\Chat\Commands\Invite;
@@ -17,7 +17,7 @@ use \OCA\Chat\Responses\Success;
 use \OCA\Chat\Responses\Error;
 use \OCA\Chat\Exceptions\RequestDataInvalid;
 
-use \OCA\AppFramework\Http\JSONResponse;
+use \OCP\Chat\Http\JSONResponse;
 
 use \OCA\Chat\Push\Get;
 use \OCA\Chat\Push\Delete;

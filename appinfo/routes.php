@@ -22,19 +22,19 @@
 
 namespace OCA\Chat;
 
-use OCA\AppFramework\App;
+use OCA\Chat\Core\App;
 
 use OCA\Chat\DependencyInjection\DIContainer;
 
 $this->create('chat_index', '/')->get()->action(
 	function($params){
-		App::main('PageController', 'index', $params, new DIContainer());
+		App::main('PageController', 'index', new DIContainer('chat'), $params);
 	}
 );
 
 $this->create('chat_api', '/api')->action(
 	function($params){
-		App::main('ApiController', 'route', $params, new DIContainer());
+		App::main('ApiController', 'route', new DIContainer('chat'));
 	}
 );
 

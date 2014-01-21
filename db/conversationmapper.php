@@ -1,8 +1,8 @@
 <?php
 namespace OCA\Chat\Db;
 
-use \OCA\AppFramework\Db\Mapper;
-use \OCA\AppFramework\Core\Api;
+use \OCA\Chat\Db\Mapper;
+use \OCA\Chat\Core\Api;
 
 
 class ConversationMapper extends Mapper {

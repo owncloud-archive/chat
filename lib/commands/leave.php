@@ -3,7 +3,7 @@
 namespace OCA\Chat\Commands;
 
 use \OCA\Chat\ChatAPI;
-use \OCA\AppFramework\Core\API;
+use \OCA\Chat\Core\API;
 use \OCA\Chat\Db\User;
 use \OCA\Chat\Db\UserMapper;
 use \OCA\Chat\Db\Conversation;

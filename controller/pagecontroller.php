@@ -22,29 +22,31 @@
 
 namespace OCA\Chat\Controller;
 
-use OCA\AppFramework\Controller\Controller;
-use OCA\AppFramework\Core\API;
-use OCA\AppFramework\Http\Request;
+use \OCP\AppFramework\Controller;
+use \OCA\Chat\Core\API;
+use \OCP\IRequest;
+use \OCP\AppFramework\IAppContainer;
 
 class PageController extends Controller {
 
-	public function __construct(API $api, Request $request){
-		parent::__construct($api, $request);
+    public function __construct(IAppContainer $app, IRequest $request){
+		parent::__construct($app, $request);
+
 	}
 
 	/**
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
 	 * @CSRFExemption
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 */
 	public function index() {
+
 		$params = array(
 			'users' =>  \OCP\User::getUsers()
 		);
 		return $this->render('main', $params);
 	}
 
-	public function debug() {
-		return $this->render('debug');
-	}
 }

@@ -18,9 +18,6 @@ use \OCP\AppFramework\IMiddleWare;
 use \OCP\AppFramework\Middleware;
 use \OCP\IServerContainer;
 
-
-
-
 class DIContainer extends SimpleContainer implements IAppContainer{
 
     /**

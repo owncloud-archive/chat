@@ -4,8 +4,6 @@
 \OCP\Util::addScript('chat', 'classes');
 \OCP\Util::addScript('chat', 'main');
 \OCP\Util::addScript('chat', 'handlers');
-
-
 ?>
 <div ng-controller="ConvController" ng-app="myApp" id="chat-wrapper">
 	<div id="loading-panel" class="panel">
@@ -25,12 +23,7 @@
 		</ul>
 		<div id="chat-window">
 			<header id="chat-window-header">
-				<select class="chat-conversation-list-mini header-left" id="chat-conversation-list-rollup-select">
-					<option  ng-repeat="conv in convs" value="{{ conv.id }">{{ conv.name }}</option>
-				</select>
 				<button class="header-left" ng-click="newConv()">New Conversation</button>
-				<span id="header-center">
-				</span>
 				<button class="header-right" ng-click="invite()" id="chat-invite">Add Person</button>
 				<button class="header-right" ng-click="leave()" id="chat-leave">Leave </button>
 			</header>
@@ -52,7 +45,7 @@
 			</section>
 			<footer id="chat-window-footer">
 				<form ng-submit="sendChatMsg()"> 
-					<input ng-focus="hideHeader()" ng-blur="showHeader()" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
+					<input ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
 					<input id="chat-msg-send" type="submit"  value="Send" />
 				</form>
 			</footer>

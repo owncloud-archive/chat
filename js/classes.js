@@ -24,14 +24,6 @@ var Chat = {
     	showChat : function(){
     		$('#chat-panel').show();
     	},
-    	hideHeader : function(){
-    		$('#header').hide();
-    		$('#content-wrapper').css('padding-top', 0);
-    	},
-    	showHeader : function(){
-    		$('#header').show();
-    		$('#content-wrapper').css('padding-top', '3.5em');
-    	},
     	focus : function(element){
     		$(element).focus();
     	},

@@ -129,17 +129,6 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         }
 	};
 	
-	$scope.hideHeader = function(){
-        height = $(window).height();
-        if(height < 800 && Chat.util.checkMobile()){
-                Chat.ui.hideHeader();
-        }
-	};
-	
-	$scope.showHeader = function(){
-        Chat.ui.showHeader();
-	};
-	
 	$scope.focusMsgInput = function(){
 		Chat.ui.focusMsgInput();
 	}

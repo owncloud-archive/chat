@@ -1,5 +1,4 @@
 /* Contents
- * 1.  Responsive
  * 2.  Panels
  * 2.1 Loading Panel
  * 2.2 Empty Panel
@@ -11,42 +10,6 @@
  * 4. Buttons, forms, inputs
  * 5 Chat msgs 
 */
-
-/* 1.  Responsive */
-@media screen and (max-width: 1000px) {
-	  #chat-window, #chat-window-footer, #chat-window-body, #chat-window-header{
-	  	width: 100% !important;
-	  }
-	  #app-navigation{
-	 	display: none !important;
-	  }
-	  .chat-conversation-list-mini {
-	  	display: block !important;
-	  }
-	  #chat-invite{
-	  	width: 20% !important;
-	  }
-}
-
-@media screen and (max-width: 500px) {
-	#chat-window-header{
-		height:90px !important;
-	}
-	#chat-leave, #chat-invite, #chat-conversation-list-rollup-select {
-		float:left !important;
-		width:25% !important;
-	}
-	#chat-window-body {
-		margin-top: 90px !important;
-	}
-	#chat-msg-input {
-		width:65% !important;
-	}
-	#chat-msg-send {
-		width:20% !important;
-	}
-	
-}
 
 /* 2.  Panels */
 .panel{

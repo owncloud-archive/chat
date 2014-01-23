@@ -17,13 +17,15 @@
 	</div>
 	<div id="chat-panel" class="panel">
 		<ul id="app-navigation" >
+			<li ng-click="newConv()">
+				New Conversation</li>
+			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
 				{{ conv.name }} <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
 			</li>
 		</ul>
 		<div id="chat-window">
 			<header id="chat-window-header">
-				<button class="header-left" ng-click="newConv()">New Conversation</button>
 				<button class="header-right" ng-click="invite()" id="chat-invite">Add Person</button>
 				<button class="header-right" ng-click="leave()" id="chat-leave">Leave </button>
 			</header>

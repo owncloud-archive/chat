@@ -57,12 +57,6 @@
 	border-bottom:#AAAAAA solid 1px;
 	text-align:center;
 }
-.header-left{
-	float:left;
-}
-.header-right{
-	float:right;
-}
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
     position: absolute;

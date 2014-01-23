@@ -21,14 +21,13 @@
 				New Conversation</li>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
-				{{ conv.name }} <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
+				{{ conv.name }} 
+				<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
+				<span ng-click="leave(conv.id)" class="icon-leave" title="Leave Conversation">X</span>
+				<span ng-click="invite(conv.id)" class="icon-plus" title="Invite Person to Conversation">+</span>
 			</li>
 		</ul>
 		<div id="chat-window">
-			<header id="chat-window-header">
-				<button class="header-right" ng-click="invite()" id="chat-invite">Add Person</button>
-				<button class="header-right" ng-click="leave()" id="chat-leave">Leave </button>
-			</header>
 			<section ng-click="focusMsgInput()" id="chat-window-body">
 				<div id="chat-window-msgs">
 					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">

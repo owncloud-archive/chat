@@ -92,21 +92,21 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
             Chat.ui.markConvActive(convId);
 	}
 	
-	$scope.leave = function(){
+	$scope.leave = function(convId){
             var confirm = window.confirm("Are you sure you want to leave this conversation?");
             if (confirm === true) {
-                delete $scope.convs[$scope.activeConv];
-                Chat.api.command.leave($scope.activeConv);
+                delete $scope.convs[convId];
+                Chat.api.command.leave(convId);
                 if(Chat.util.countObjects($scope.convs) === 0){
                     Chat.ui.clear();
                     Chat.ui.showEmpty();
                 } else {
-                        $scope.makeActive(Chat.ui.getFirstConv());
+                    $scope.makeActive(Chat.ui.getFirstConv());
                 }
             }
 	}
 	
-	$scope.invite = function(){
+	$scope.invite = function(convId){
 		var userToInvite = prompt('Give the owncloud user name: ');
         if(userToInvite === OC.currentUser){
         	Chat.ui.alert('You can\'t invite yourself');
@@ -115,7 +115,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         } else {
         	Chat.api.command.invite(
         		userToInvite,
-        		$scope.activeConv,
+        		convId,
         		function(){ // Success
         		},
         		function(errorMsg){ // Error

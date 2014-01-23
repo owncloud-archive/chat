@@ -3,7 +3,6 @@
  * 2.1 Loading Panel
  * 2.2 Empty Panel
  * 2.3 Chat Panel
- * 2.3.1 Chat Panel Header
  * 2.3.2 Chat Panel Body
  * 2.3.3 Chat Panel Footer
  * 3. Conversation list
@@ -46,17 +45,6 @@
 	width:85%;
 	float:left;
 }
-/* 2.2.1 Chat Panel Header */
-#chat-window-header {
-    position: absolute;
-    height: 40px;
-	top:0;
-	width:85%;
-    background-color:#F8F8F8;
-	z-index:100;
-	border-bottom:#AAAAAA solid 1px;
-	text-align:center;
-}
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
     position: absolute;
@@ -64,7 +52,6 @@
     bottom:41px;
     width:85%;
     background-color:white;
-    margin-top:41px;
 }
 /* 2.2.3 Chat Panel Footer */
 #chat-window-footer {
@@ -176,4 +163,20 @@
 
 #chat-wrapper{
 	height:100%;
+}
+
+.icon-plus{
+    font-weight: bold;
+    font-size: 150%;
+    float:right;
+    margin-right:10px;
+    cursor:pointer;
+}
+
+.icon-leave{
+  	font-weight: bold;
+    float:right;
+    margin-top:2px;
+    margin-right:10px;
+    cursor:pointer;
 }

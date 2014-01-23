@@ -45,7 +45,7 @@
 			</section>
 			<footer id="chat-window-footer">
 				<form ng-submit="sendChatMsg()"> 
-					<input ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
+					<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
 					<input id="chat-msg-send" type="submit"  value="Send" />
 				</form>
 			</footer>

@@ -156,9 +156,11 @@
 	word-wrap: break-word
 }
 #chat-window-msgs{
-	overflow:hidden;
-	height:100%;
+	overflow-y:scroll;
+	max-height:100%;
 	width:100%;
+    bottom:0;
+    position:absolute;
 }
 
 #chat-wrapper{

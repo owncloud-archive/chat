@@ -14,7 +14,6 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
                 $scope.addChatMsgToView($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
                 Chat.api.command.sendChatMsg(this.chatMsg, $scope.activeConv, function(){});
                 this.chatMsg = '';
-                Chat.ui.scrollDown();
             }
 	};
 	
@@ -49,9 +48,9 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 
 	$scope.addChatMsgToView = function(convId, user, msg, timestamp){
             if (user === OC.currentUser){
-                    align = 'right';
+                align = 'right';
             } else {
-                    align = 'left'
+                align = 'left'
             }
             $scope.convs[convId].msgs.push({
                 user : user,
@@ -62,6 +61,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
             });
             setTimeout(function(){
                 Chat.ui.applyAvatar(user);
+                Chat.ui.scrollDown();
             },1); // Give angular some time to apply the msg to scope
             // Edit tab title when the tab isn't active
             if(user !== OC.currentUser) {

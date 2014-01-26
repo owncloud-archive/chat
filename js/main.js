@@ -3,6 +3,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
 	$scope.startmsg = 'Start Chatting!';
+	$scope.currentUser = OC.currentUser;
 	
 	$scope.updateTitle = function(newTitle){
             $scope.title = newTitle;
@@ -76,7 +77,8 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
                          OC.currentUser,
                          convName
                          ],
-                msgs : []
+                msgs : [],
+                currentUser : OC.currentUser
             };
             // Check if this is the first conversation
             if($('#empty-panel').is(":visible")){
@@ -84,6 +86,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
                     Chat.ui.showChat();
             }
             $scope.makeActive(newConvId);
+            Chat.ui.applyAvatar(convName);
 	}
 	
 	$scope.makeActive = function(convId){

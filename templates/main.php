@@ -21,7 +21,10 @@
 				New Conversation</li>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
-				{{ conv.name }} 
+                <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list icon-{{ user }}"></div>
+                <span ng-repeat="user in conv.users | filter:'!' + currentUser" >
+                    {{ user }}
+                </span>
 				<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
 				<span ng-click="leave(conv.id)" class="icon-leave" title="Leave Conversation">X</span>
 				<span ng-click="invite(conv.id)" class="icon-plus" title="Invite Person to Conversation">+</span>

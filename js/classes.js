@@ -43,7 +43,7 @@ var Chat = {
     		this.newMsg(convId);
     	},
     	applyAvatar : function(user){
-    		$('.icon-' + user).avatar(user, 32);
+    	    $('.icon-' + user).avatar(user, 32);
     	},
     	updateTitle : function(){
     		if(!Chat.tabActive){
@@ -151,6 +151,7 @@ var Chat = {
                 }); 
                 Chat.api.command.join(data.conv_id, function(){});
                 Chat.ui.alert('You auto started a new conversation with ' + data.user);
+                Chat.ui.applyAvatar(data.user);
             },
             chatMessage : function(data){
                 Chat.scope.$apply(function(){
@@ -160,8 +161,9 @@ var Chat = {
             joined : function(data){
             	Chat.ui.alert('The user ' + data.user + ' joined this conversation');
             	Chat.scope.$apply(function(){
-            		Chat.scope.convs[data.conv_id].name = Chat.scope.convs[data.conv_id].name + ' ' + data.user ;	
+            		Chat.scope.convs[data.conv_id].users.push(data.user);	
                 });
+                Chat.ui.applyAvatar(data.user);
             }
     	},
     	util : {

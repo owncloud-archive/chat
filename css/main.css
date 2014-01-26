@@ -10,40 +10,40 @@
  * 5 Chat msgs 
 */
 
-/* 2.  Panels */
+/* 2. Panels */
 .panel{
-	display:none;
+        display:none;
 }
 /* 2.1 Loading Panel */
 #loading-panel{
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
 }
 #loading-panel-img{
-	width: 100%;
-	height: 100%;
-	background: url('../img/loading.gif') no-repeat 0 0;
+        width: 100%;
+        height: 100%;
+        background: url('../img/loading.gif') no-repeat 0 0;
     background-position: center;
 }
 /* 2.2 Empty Panel */
 #empty-panel{
-	width:100%;
-	float:left;
-	font-size: 1.5em;
-	font-weight: bold;
-	color: rgb(136, 136, 136);
-	position: absolute;
-	text-align: center;
-	top: 50%;
+        width:100%;
+        float:left;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: rgb(136, 136, 136);
+        position: absolute;
+        text-align: center;
+        top: 50%;
 }
 /* 2.2 Chat Panel */
 #chat-panel{
-	height:100%;
+        height:100%;
 }
 #chat-window{
-	width:85%;
-	float:left;
+        width:85%;
+        float:left;
 }
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
@@ -65,37 +65,37 @@
 
 /* 3. Conversation List */
 #app-navigation {
-	float:left;
-	width: 15%;
-	display: inline-block;
-	height:100%;
-	overflow:auto;
-	border-right:#AAAAAA solid 1px;
+        float:left;
+        width: 15%;
+        display: inline-block;
+        height:100%;
+        overflow:auto;
+        border-right:#AAAAAA solid 1px;
 }
 #app-navigation li {
-	padding: 10px;
-	border-bottom: 1px solid #aaa;
+        padding: 10px;
+        border-bottom: 1px solid #aaa;
 }
 #app-navigation li:hover {
-	background-color: #999;
-	color: #eee;
-	text-shadow: none;
-	font-weight: bold;
+        background-color: #999;
+        color: #eee;
+        text-shadow: none;
+        font-weight: bold;
 }
 .conv-list-active {
-	background-color: #dadada;
+        background-color: #dadada;
 }
 .chat-conversation-list-mini{
-	display:none;
-  	float:left;
+        display:none;
+          float:left;
 }
 
 
 /* 4. Buttons, forms, inputs*/
 #chat-conv-new{
-	text-align:center;	
-	margin:0;
-	padding:0 !important;
+        text-align:center;        
+        margin:0;
+        padding:0 !important;
 }
 #chat-conv-new-button{
 	margin-top:0px;
@@ -179,4 +179,7 @@
     margin-top:2px;
     margin-right:10px;
     cursor:pointer;
+}
+.icon-list{
+    float:left;
 }

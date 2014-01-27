@@ -35,10 +35,10 @@
 			<section ng-click="focusMsgInput()" id="chat-window-body">
 				<div id="chat-window-msgs">
 					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">
-						<div class="chat-msg-time">
+						<div ng-if="msg.time" class="chat-msg-time">
 							{{ msg.time.hours }} : {{ msg.time.minutes }}
 						</div>
-						<div class="chat-msg-{{ msg.align }}">
+						<div class="chat-msg">
 							<div class="icon-{{ msg.user }}">
 							</div>
 							<p ng-bind-html="msg.msg">

@@ -59,17 +59,28 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
             if($scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] !== undefined){
                 var lastMsg = $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1];
                 console.log(lastMsg);
+                
                 if(lastMsg.user === user){
                     lastMsg.msg = lastMsg.msg + "<br>" + $.trim(msg);
                     $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
-                } else {
+                } else if (Chat.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.util.timeStampToDate(timestamp).minutes
+                            && Chat.util.timeStampToDate(lastMsg.timestamp).hours === Chat.util.timeStampToDate(timestamp).hours
+                            ) {
                     $scope.convs[convId].msgs.push({
+                        user : user,
+                        msg : $.trim(msg),
+                        timestamp : timestamp,
+                        time : null, 
+                        align: align,
+                    });    
+                } else {
+                     $scope.convs[convId].msgs.push({
                         user : user,
                         msg : $.trim(msg),
                         timestamp : timestamp,
                         time : Chat.util.timeStampToDate(timestamp), 
                         align: align,
-                    });    
+                    });     
                 }
             } else {
                 $scope.convs[convId].msgs.push({

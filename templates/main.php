@@ -1,6 +1,7 @@
 <?php 
 \OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
+\OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
 \OCP\Util::addScript('chat', 'classes');
 \OCP\Util::addScript('chat', 'main');
 \OCP\Util::addScript('chat', 'handlers');
@@ -40,8 +41,8 @@
 						<div class="chat-msg-{{ msg.align }}">
 							<div class="icon-{{ msg.user }}">
 							</div>
-							<p>
-								{{ msg.msg }}										
+							<p ng-bind-html="msg.msg">
+                                placeholder
 							</p>
 						</div>
 					</div>
@@ -55,4 +56,12 @@
 			</footer>
 		</div>
 	</div>
+	<div id="debug-panel" class="panel">
+	    <ul>
+	       <li ng-repeat="msg in debug">
+	            {{ msg }}
+	       </li>
+	    </ul>
+	    
+    </div>
 </div>

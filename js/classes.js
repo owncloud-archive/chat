@@ -12,7 +12,6 @@ var Chat = {
     		$('#conv-list-' + convId).addClass('conv-list-active');
 		},
     	scrollDown : function(){
-    	    console.log('scrolldown');
     		$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
     	},
     	showLoading : function(){

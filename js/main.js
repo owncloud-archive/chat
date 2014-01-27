@@ -1,9 +1,10 @@
-Chat.angular = angular.module('myApp',[]),
+Chat.angular = angular.module('myApp',['ngSanitize']),
 Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
+	$scope.debug = [];
 	
 	$scope.updateTitle = function(newTitle){
             $scope.title = newTitle;
@@ -52,13 +53,34 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
             } else {
                 align = 'left'
             }
-            $scope.convs[convId].msgs.push({
-                user : user,
-                msg : msg,
-                timestamp : timestamp,
-                time : Chat.util.timeStampToDate(timestamp), 
-                align: align,
-            });
+            
+            // Check if the user is equal to the user of the last msg
+            // First get the last msg
+            if($scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] !== undefined){
+                var lastMsg = $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1];
+                console.log(lastMsg);
+                if(lastMsg.user === user){
+                    lastMsg.msg = lastMsg.msg + "<br>" + $.trim(msg);
+                    $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
+                } else {
+                    $scope.convs[convId].msgs.push({
+                        user : user,
+                        msg : $.trim(msg),
+                        timestamp : timestamp,
+                        time : Chat.util.timeStampToDate(timestamp), 
+                        align: align,
+                    });    
+                }
+            } else {
+                $scope.convs[convId].msgs.push({
+                    user : user,
+                    msg : $.trim(msg),
+                    timestamp : timestamp,
+                    time : Chat.util.timeStampToDate(timestamp), 
+                    align: align,
+                });
+            }
+            
             setTimeout(function(){
                 Chat.ui.applyAvatar(user);
                 Chat.ui.scrollDown();

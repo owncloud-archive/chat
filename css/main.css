@@ -153,7 +153,8 @@
 }
 .chat-msg-right p, .chat-msg-left p{
 	margin-left:10px;
-	word-wrap: break-word
+	word-wrap: break-word;
+    white-space: pre-line;
 }
 #chat-window-msgs{
 	overflow-y:scroll;

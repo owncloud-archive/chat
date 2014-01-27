@@ -75,6 +75,7 @@
 #app-navigation li {
         padding: 10px;
         border-bottom: 1px solid #aaa;
+        height:70px !important;
 }
 #app-navigation li:hover {
         background-color: #999;
@@ -153,7 +154,7 @@
     white-space: pre-line;
 }
 #chat-window-msgs{
-	overflow-y:scroll;
+	overflow-y:auto;
 	max-height:100%;
 	width:100%;
     bottom:0;

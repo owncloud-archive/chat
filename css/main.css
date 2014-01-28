@@ -79,18 +79,10 @@
         display: inline-block;
         height:100%;
         overflow:auto;
-        border-right:#AAAAAA solid 1px;
 }
 #app-navigation li {
         padding: 10px;
-        border-bottom: 1px solid #aaa;
         height:70px !important;
-}
-#app-navigation li:hover {
-        background-color: #999;
-        color: #eee;
-        text-shadow: none;
-        font-weight: bold;
 }
 .conv-list-active {
         background-color: #dadada;
@@ -198,4 +190,5 @@
     color: rgb(119, 119, 119);
     font-size: 1.5em;
     padding-top:25px !important;
+    border-bottom: 1px solid rgb(204, 204, 204);
 }

@@ -109,7 +109,6 @@ var Chat = {
                 Chat.ui.clear();
                 Chat.ui.showEmpty();
                 Chat.api.util.longPoll();
-                Chat.ui.alert('Connected to the chat server!');
             });
         },
         updateOnlineStatus : function(){

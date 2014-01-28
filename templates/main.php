@@ -12,13 +12,9 @@
 			&nbsp;
 		</div>
 	</div>
-	<div id="empty-panel" class="panel">
-		Start Chatting!<br>
-		<button id="empty-panel-new-conv" ng-click="newConv()">New Conversation</button>
-	</div>
-	<div id="chat-panel" class="panel">
+	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li ng-click="newConv()">
+			<li id="new-conv" ng-click="newConv()">
 				New Conversation</li>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
@@ -32,6 +28,11 @@
                 </span>
 		    </li>
 		</ul>
+		<div id="empty-window" class="panel">
+		    <div>
+	    	    Start Chatting!
+	    	</div>
+	    </div>
 		<div id="chat-window">
 			<section ng-click="focusMsgInput()" id="chat-window-body">
 				<div id="chat-window-msgs">

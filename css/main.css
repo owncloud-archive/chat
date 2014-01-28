@@ -27,23 +27,32 @@
     background-position: center;
 }
 /* 2.2 Empty Panel */
-#empty-panel{
-        width:100%;
-        float:left;
-        font-size: 1.5em;
-        font-weight: bold;
-        color: rgb(136, 136, 136);
-        position: absolute;
-        text-align: center;
-        top: 50%;
+#empty-window{
+    width:85%;
+    height:100%;
+    float:left;
+    position:relative;
+}
+#empty-window div {
+    width:300px;
+    height:30px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-15px 0 0 -150px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(119, 119, 119);
+    font-size: 1.5em;
 }
 /* 2.2 Chat Panel */
-#chat-panel{
-        height:100%;
+#main-panel{
+    height:100%;
 }
 #chat-window{
-        width:85%;
-        float:left;
+    display:none;
+    width:85%;
+    float:left;
 }
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
@@ -182,4 +191,11 @@
 }
 .icon-list{
     float:left;
+}
+#new-conv{
+    font-weight: bold;
+    text-align: center;
+    color: rgb(119, 119, 119);
+    font-size: 1.5em;
+    padding-top:25px !important;
 }

@@ -18,11 +18,14 @@ var Chat = {
     		$('#loading-panel').show();
     	}, 
     	showEmpty : function(){
-    		$('#empty-panel').show();
+    		$('#empty-window').show();
     		this.focus('#empty-panel-new-conv');
     	},
+    	showMain : function(){
+    		$('#main-panel').show();
+    	},
     	showChat : function(){
-    		$('#chat-panel').show();
+    		$('#chat-window').show();
     	},
     	focus : function(element){
     		$(element).focus();
@@ -107,6 +110,7 @@ var Chat = {
             Chat.api.command.greet(function(){
                 //TODO add getConversation function
                 Chat.ui.clear();
+                Chat.ui.showMain();
                 Chat.ui.showEmpty();
                 Chat.api.util.longPoll();
             });

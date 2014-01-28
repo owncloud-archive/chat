@@ -1,10 +1,13 @@
 <?php 
-\OCP\Util::addStyle('chat', 'main');
+\OCP\Util::addStyle('chat', 'bootstrap-stripped');
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
+\OCP\Util::addScript('chat', 'vendor/angular/ui-bootstrap');
+\OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
 \OCP\Util::addScript('chat', 'classes');
 \OCP\Util::addScript('chat', 'main');
 \OCP\Util::addScript('chat', 'handlers');
+
 ?>
 <div ng-controller="ConvController" ng-app="myApp" id="chat-wrapper">
 	<div id="loading-panel" class="panel">
@@ -14,7 +17,11 @@
 	</div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li id="new-conv" ng-click="newConv()">
+			<li popover-placement="right" popover=' <form ng-submit="newConv()"> 
+				        <input ng-model="userToInvite" type="text" placeholder="ownCloud Username">
+				        <input id="chat-msg-send" type="submit"  value="Invite" />
+		    	        </form>' popover-html="true" popover-title="The title." id="new-conv" rel="popover" ng-click="newConv()" 
+    	        >
 				New Conversation</li>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">

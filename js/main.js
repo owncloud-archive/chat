@@ -1,4 +1,4 @@
-Chat.angular = angular.module('myApp',['ngSanitize']),
+Chat.angular = angular.module('myApp',['ngSanitize', 'ui.bootstrap']),
 Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
@@ -18,8 +18,10 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
             }
 	};
 	
-	$scope.newConv = function(){
-            var userToInvite = prompt('Give the owncloud user name: ');
+	$scope.newConvClick = function(){
+        Chat.ui.prompt('#new-conv');
+	}
+    $scope.newConv = function(){
             if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
             	Chat.ui.alert('You can\'t start a conversation with yourself');
             } else if(userToInvite === ''){
@@ -143,7 +145,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	}
 	
 	$scope.invite = function(convId){
-		var userToInvite = prompt('Give the owncloud user name: ');
+		var userToInvite = Chat.ui.prompt('#new-conv');
         if(userToInvite === OC.currentUser){
         	Chat.ui.alert('You can\'t invite yourself');
         } else if(userToInvite === ''){

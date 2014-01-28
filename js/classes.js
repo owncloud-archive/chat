@@ -61,6 +61,10 @@ var Chat = {
 			setTimeout(function(){
                 OC.Notification.hide();
 			}, 2000);
+    	},
+    	prompt : function(element){
+    	    console.log('promtp function called');
+    	    $(element).popover();
     	}
          
     },

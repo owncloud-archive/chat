@@ -51,15 +51,18 @@
 }
 #chat-window{
     display:none;
-    width:85%;
+     width:85%;
+    height:100%;
     float:left;
+        position:relative;
+
 }
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
     position: absolute;
     top: 0;
     bottom:41px;
-    width:85%;
+    width:100%;
     background-color:white;
 }
 /* 2.2.3 Chat Panel Footer */
@@ -67,7 +70,7 @@
     position: absolute;
     height: 40px;
     bottom: 0;
-    width:85%;
+    width:100%;
     background-color:#F8F8F8;
     border-top:#AAAAAA solid 1px;
 }
@@ -79,6 +82,7 @@
         display: inline-block;
         height:100%;
         overflow:auto;
+        
 }
 #app-navigation li {
         padding: 10px;

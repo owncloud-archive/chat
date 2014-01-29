@@ -19,7 +19,9 @@ var Chat = {
     	}, 
     	showEmpty : function(){
     		$('#empty-window').show();
-    		this.focus('#empty-panel-new-conv');
+    	},
+    	hideEmpty : function(){
+    		$('#empty-window').hide();
     	},
     	showMain : function(){
     		$('#main-panel').show();
@@ -62,9 +64,15 @@ var Chat = {
                 OC.Notification.hide();
 			}, 2000);
     	},
-    	prompt : function(element){
-    	    console.log('promtp function called');
-    	    $(element).popover();
+    	showPopover : function(id){
+    	    console.log('show');
+    	    console.log('#' + id + '-popover');
+    	    $('#' + id + '-popover').show();
+    	},
+    	hidePopover : function(id){
+    	    console.log('show');
+    	    console.log('#' + id + '-popover');
+    	    $('#' + id + '-popover').hide();
     	}
          
     },

@@ -1,9 +1,8 @@
 <?php 
 \OCP\Util::addStyle('chat', 'bootstrap-stripped');
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
-\OCP\Util::addScript('chat', 'vendor/angular/ui-bootstrap');
-\OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
+\OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'classes');
 \OCP\Util::addScript('chat', 'main');
 \OCP\Util::addScript('chat', 'handlers');
@@ -17,13 +16,19 @@
 	</div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li popover-placement="right" popover=' <form ng-submit="newConv()"> 
-				        <input ng-model="userToInvite" type="text" placeholder="ownCloud Username">
-				        <input id="chat-msg-send" type="submit"  value="Invite" />
-		    	        </form>' popover-html="true" popover-title="The title." id="new-conv" rel="popover" ng-click="newConv()" 
-    	        >
-				New Conversation</li>
+			<li ng-click="newConvShow()" id="new-conv"> 
+				New Conversation
 			</li>
+			<div id="new-conv-popover" class="popover right animation-fade" style="top: -14px; left: 275px;">
+			    <div class="arrow"></div>
+			    <h3 class="popover-title">Give in ownCloud user name <span ng-click="newConvHide()">X<span></h3>
+			    <div class="popover-content">
+			       	<form ng-submit="newConv()"> 
+					    <input id="new-conv-username" ng-model="userToInvite" type="text" placeholder="ownCloud username">
+					    <input type="submit" value="Invite" />
+    				</form>
+			    </div>
+			</div>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
     			<span ng-click="leave(conv.id)" class="icon-leave" title="Leave Conversation">X</span>
@@ -41,6 +46,7 @@
 	    	</div>
 	    </div>
 		<div id="chat-window">
+
 			<section ng-click="focusMsgInput()" id="chat-window-body">
 				<div id="chat-window-msgs">
 					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">

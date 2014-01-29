@@ -1,10 +1,11 @@
-Chat.angular = angular.module('myApp',['ngSanitize', 'ui.bootstrap']),
+Chat.angular = angular.module('myApp',['ngSanitize']);
 Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
+
 	
 	$scope.updateTitle = function(newTitle){
             $scope.title = newTitle;
@@ -18,10 +19,22 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
             }
 	};
 	
-	$scope.newConvClick = function(){
-        Chat.ui.prompt('#new-conv');
+	$scope.newConvShow = function(){
+	    console.log('click');
+	    Chat.ui.showPopover('new-conv');
+	    Chat.ui.focus('#new-conv-username');
 	}
+	
+	$scope.newConvHide = function(){
+	    Chat.ui.hidePopover('new-conv');
+        $('#new-conv-username').val('');
+	}
+	
+	
     $scope.newConv = function(){
+        $scope.newConvHide();
+        console.log(this.userToInvite);
+        var userToInvite = this.userToInvite;
             if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
             	Chat.ui.alert('You can\'t start a conversation with yourself');
             } else if(userToInvite === ''){
@@ -116,9 +129,9 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
                 currentUser : OC.currentUser
             };
             // Check if this is the first conversation
-            if($('#empty-panel').is(":visible")){
-                    Chat.ui.clear();
-                    Chat.ui.showChat();
+            if($('#empty-window').is(":visible")){
+                Chat.ui.hideEmpty();
+                Chat.ui.showChat();
             }
             $scope.makeActive(newConvId);
             Chat.ui.applyAvatar(convName);

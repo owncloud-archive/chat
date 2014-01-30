@@ -42,6 +42,9 @@ var Chat = {
     		convId = id.substr(10, id.length); // strip conv-id-
     		return convId;
     	},
+    	getConvIndex : function(convId){
+    	    return $("#conv-list-" + convId).index() + 1
+    	},
     	newMsg : function(convId){
     		$('#conv-new-msg-' + convId).fadeIn();
     		$('#conv-new-msg-' + convId).fadeOut();
@@ -64,15 +67,12 @@ var Chat = {
                 OC.Notification.hide();
 			}, 2000);
     	},
-    	showPopover : function(id){
-    	    console.log('show');
-    	    console.log('#' + id + '-popover');
-    	    $('#' + id + '-popover').show();
+    	showPopover : function(){
+    	    $('#popover').show();
     	},
-    	hidePopover : function(id){
-    	    console.log('show');
-    	    console.log('#' + id + '-popover');
-    	    $('#' + id + '-popover').hide();
+    	hidePopover : function(){
+    	    $('#popover-value').val('');
+    	    $('#popover').hide();
     	}
          
     },

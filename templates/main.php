@@ -19,34 +19,38 @@
 			<li ng-click="newConvShow()" id="new-conv"> 
 				New Conversation
 			</li>
-			<div id="new-conv-popover" class="popover right animation-fade" style="top: -14px; left: 275px;">
-			    <div class="arrow"></div>
-			    <h3 class="popover-title">Give in ownCloud user name <span ng-click="newConvHide()">X<span></h3>
-			    <div class="popover-content">
-			       	<form ng-submit="newConv()"> 
-					    <input id="new-conv-username" ng-model="userToInvite" type="text" placeholder="ownCloud username">
-					    <input type="submit" value="Invite" />
-    				</form>
-			    </div>
-			</div>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-    			<span ng-click="leave(conv.id)" class="icon-leave" title="Leave Conversation">X</span>
-				<span ng-click="invite(conv.id)" class="icon-plus" title="Invite Person to Conversation">+</span>
+    			<span ng-click="leaveShow(conv.id)" class="icon-leave" title="Leave Conversation">X</span>
+				<span ng-click="inviteShow(conv.id)" class="icon-plus" title="Invite Person to Conversation">+</span>
                 <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list icon-{{ user }}"></div>
                 <div style="clear:both;"></div>
                 <span ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list" >
                     {{ user }}
                 </span>
 		    </li>
+            <div id="popover" class="popover right animation-fade" style="top: {{ popover.top }}px; left: 274px;">
+                <div class="arrow"></div>
+                <h3 class="popover-title">{{ popover.title }}</h3>
+                <div ng-if="popover.button === false" class="popover-content">
+                   	<form ng-submit="popoverSubmit('submit')"> 
+            		    <input id="popover-value" ng-model="popover.value" type="text" placeholder="{{ popover.placeholder }}">
+            		    <input type="submit" value="{{ popover.submit }}" />
+            		</form>
+                </div>
+                <div ng-if="popover.button === true" class="popover-content">
+                    <button ng-click="popoverSubmit('no')">No</button>
+                    <button ng-click="popoverSubmit('yes')">Yes</utton>
+                </div>
+            </div>
 		</ul>
+
 		<div id="empty-window" class="panel">
 		    <div>
 	    	    Start Chatting!
 	    	</div>
 	    </div>
 		<div id="chat-window">
-
 			<section ng-click="focusMsgInput()" id="chat-window-body">
 				<div id="chat-window-msgs">
 					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">

@@ -8,7 +8,7 @@
 \OCP\Util::addScript('chat', 'handlers');
 
 ?>
-<div ng-controller="ConvController" ng-app="myApp" id="chat-wrapper">
+<div ng-controller="ConvController" ng-app="myApp" id="app">
 	<div id="loading-panel" class="panel">
 		<div id="loading-panel-img">
 			&nbsp;
@@ -44,36 +44,37 @@
                 </div>
             </div>
 		</ul>
-
-		<div id="empty-window" class="panel">
-		    <div>
-	    	    Start Chatting!
-	    	</div>
+        <div id="app-content">
+	        <div id="empty-window" class="panel">
+    		    <div>
+    	    	    Start Chatting!
+    	    	</div>
+    	    </div>
+        	<div id="chat-window">
+    			<section ng-click="focusMsgInput()" id="chat-window-body">
+    				<div id="chat-window-msgs">
+    					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">
+    						<div ng-if="msg.time" class="chat-msg-time">
+    							{{ msg.time.hours }} : {{ msg.time.minutes }}
+    						</div>
+    						<div class="chat-msg">
+    							<div class="icon-{{ msg.user }}">
+    							</div>
+    							<p ng-bind-html="msg.msg">
+                                    placeholder
+    							</p>
+    						</div>
+    					</div>
+    				</div>
+    			</section>
+    			<footer id="chat-window-footer">
+    				<form ng-submit="sendChatMsg()"> 
+    					<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
+    					<input id="chat-msg-send" type="submit"  value="Send" />
+    				</form>
+    			</footer>
+    		</div>
 	    </div>
-		<div id="chat-window">
-			<section ng-click="focusMsgInput()" id="chat-window-body">
-				<div id="chat-window-msgs">
-					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">
-						<div ng-if="msg.time" class="chat-msg-time">
-							{{ msg.time.hours }} : {{ msg.time.minutes }}
-						</div>
-						<div class="chat-msg">
-							<div class="icon-{{ msg.user }}">
-							</div>
-							<p ng-bind-html="msg.msg">
-                                placeholder
-							</p>
-						</div>
-					</div>
-				</div>
-			</section>
-			<footer id="chat-window-footer">
-				<form ng-submit="sendChatMsg()"> 
-					<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
-					<input id="chat-msg-send" type="submit"  value="Send" />
-				</form>
-			</footer>
-		</div>
 	</div>
 	<div id="debug-panel" class="panel">
 	    <ul>

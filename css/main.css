@@ -28,8 +28,8 @@
 }
 /* 2.2 Empty Panel */
 #empty-window{
-    width:85%;
     height:100%;
+    width:100%;
     float:left;
     position:relative;
 }
@@ -51,7 +51,7 @@
 }
 #chat-window{
     display:none;
-     width:85%;
+     width:100%;
     height:100%;
     float:left;
         position:relative;
@@ -77,12 +77,7 @@
 
 /* 3. Conversation List */
 #app-navigation {
-        float:left;
-        width: 15%;
-        display: inline-block;
-        height:100%;
-        overflow:auto;
-        
+    overflow:auto;
 }
 #app-navigation li {
         padding: 10px;
@@ -166,10 +161,6 @@
     position:absolute;
 }
 
-#chat-wrapper{
-	height:100%;
-}
-
 .icon-plus{
     font-weight: bold;
     font-size: 150%;
@@ -195,4 +186,10 @@
     font-size: 1.5em;
     padding-top:25px !important;
     border-bottom: 1px solid rgb(204, 204, 204);
+}
+#container{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding-left: 300px;
 }

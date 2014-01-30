@@ -115,7 +115,7 @@ var Chat = {
             });
     	},
         init : function(){
-            Chat.scope = angular.element($("#chat-wrapper")).scope();
+            Chat.scope = angular.element($("#app")).scope();
             Chat.ui.updateTitle();
             Chat.ui.showLoading();
             Chat.sessionId = Chat.util.generateSessionId();

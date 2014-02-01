@@ -16,7 +16,7 @@
 	</div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li ng-click="newConvShow()" id="new-conv"> 
+			<li popover id="new-conv" template-url="/apps/chat/js/popover-form.html" title="Invite an user to chat with" top="-14" ng-click="show()" submit="Invite" placeholder="ownCloud username"> 
 				New Conversation
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
@@ -29,20 +29,6 @@
                     {{ user }}
                 </span>
 		    </li>
-            <div id="popover" class="popover right animation-fade" style="top: {{ popover.top }}px; left: 274px;">
-                <div class="arrow"></div>
-                <h3 class="popover-title">{{ popover.title }}</h3>
-                <div ng-if="popover.button === false" class="popover-content">
-                   	<form ng-submit="popoverSubmit('submit')"> 
-            		    <input id="popover-value" ng-model="popover.value" type="text" placeholder="{{ popover.placeholder }}">
-            		    <input type="submit" value="{{ popover.submit }}" />
-            		</form>
-                </div>
-                <div ng-if="popover.button === true" class="popover-content">
-                    <button ng-click="popoverSubmit('no')">No</button>
-                    <button ng-click="popoverSubmit('yes')">Yes</utton>
-                </div>
-            </div>
 		</ul>
         <div id="app-content">
 	        <div id="empty-window" class="panel">

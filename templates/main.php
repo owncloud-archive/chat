@@ -4,11 +4,13 @@
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
 \OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'classes');
-\OCP\Util::addScript('chat', 'main');
+\OCP\Util::addScript('chat', 'app/app');
+\OCP\Util::addScript('chat', 'app/controllers/convcontroller');
+\OCP\Util::addScript('chat', 'app/directives/popover');
 \OCP\Util::addScript('chat', 'handlers');
 
 ?>
-<div ng-controller="ConvController" ng-app="myApp" id="app">
+<div ng-controller="ConvController" ng-app="chat" id="app">
 	<div id="loading-panel" class="panel">
 		<div id="loading-panel-img">
 			&nbsp;
@@ -16,7 +18,7 @@
 	</div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li popover id="new-conv" template-url="/apps/chat/js/popover-form.html" title="Invite an user to chat with" top="-14" ng-click="show()" submit="Invite" placeholder="ownCloud username"> 
+			<li popover id="new-conv" template-url="/apps/chat/js/app/templates/popover-form.html" title="Invite an user to chat with" top="-14" ng-click="show()" submit="Invite" placeholder="ownCloud username"> 
 				New Conversation
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">

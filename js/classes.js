@@ -29,6 +29,9 @@ var Chat = {
     	showChat : function(){
     		$('#chat-window').show();
     	},
+    	hideChat : function(){
+    		$('#chat-window').hide();
+    	},
     	focus : function(element){
     		$(element).focus();
     	},
@@ -42,7 +45,7 @@ var Chat = {
     		convId = id.substr(10, id.length); // strip conv-id-
     		return convId;
     	},
-    	getConvIndex : function(convId){
+    	getConvListIndex : function(convId){
     	    return $("#conv-list-" + convId).index() + 1
     	},
     	newMsg : function(convId){

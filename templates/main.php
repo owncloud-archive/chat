@@ -19,13 +19,12 @@
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
 			<li popover
-			    id="new-conv" 
+			    id="conv-list-new-conv" 
 			    template-url="/apps/chat/js/app/templates/popover-form.html"
 			    title="Invite an user to chat with"
-			    top="30" 
-			    ng-click="show()"
-			    on-submit="newConv"
-		    > 
+			    conv-id="new-conv"
+			    on-submit="newConv(arg1)"
+		    >
 				New Conversation
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
@@ -35,11 +34,9 @@
     			    id="conv-leave-{{ conv.id }}"
     			    class="icon-leave" 
     			    title="Are you sure you want to leave this conversation?" 
-    			    top="100" 
-    			    ng-click="show()" 
-    			    on-submit="leave"
 				    template-url="/apps/chat/js/app/templates/popover-button.html" 
-			        buttons="['yes', 'no']"
+				    conv-id="{{ conv.id }}"
+				    on-submit="leave(arg1, conv.id)"
 			    >
 			        X edf
 		        </span>
@@ -49,11 +46,10 @@
 				    class="icon-plus"
 				    title="Invite user to add to conversation"
     			    template-url="/apps/chat/js/app/templates/popover-form.html" 
-				    top="100" 
-				    ng-click="show()" 
-				    on-submit="invite"
+				    on-submit="invite(arg1, conv.id)"
+    			    conv-id="{{ conv.id }}"
 			    >
-		            +
+		            plus+
                 </span>
                 <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list icon-{{ user }}"></div>
                 <div style="clear:both;"></div>

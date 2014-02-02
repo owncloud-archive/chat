@@ -22,61 +22,6 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         }
 	};
 	
-	$scope.newConvShow = function(){
-        $scope.popover.title = "Fill in  an ownCoud username";
-        $scope.popover.placeholder = "ownCloud username";
-        $scope.popover.submit = "Invite";
-        $scope.popover.top = -14;
-        $scope.popover.action = function(value){
-            $scope.newConv(value);
-        }
-        $scope.popover.button = false;
-        setTimeout(function(){
-            Chat.ui.showPopover();
-	        Chat.ui.focus('#popover-value');
-        },1); // Give angular some time to apply the msg to scope
-	};
-	
-	$scope.inviteShow = function(convId){
-        $scope.popover.title = "Fill in  an ownCoud username";
-        $scope.popover.placeholder = "ownCloud username";
-        $scope.popover.submit = "Invite";
-        $scope.popover.top = -14 + (Chat.ui.getConvIndex(convId) - 1 ) * 70;
-        $scope.popover.action = function(value){
-            $scope.invite(convId, value);
-        };
-        $scope.popover.button = false;
-        setTimeout(function(){
-            Chat.ui.showPopover();
-	        Chat.ui.focus('#popover-value');
-        },1); // Give angular some time to apply the msg to scope
-
-	};
-	
-	$scope.leaveShow = function(convId){
-        $scope.popover.title = "Are you sure you want to leave this conversation?";
-        $scope.popover.top = -14 + (Chat.ui.getConvIndex(convId) - 1 ) * 70;
-        $scope.popover.action = function(){
-            $scope.leave(convId);
-        };
-        $scope.popover.button = true;
-        setTimeout(function(){
-            Chat.ui.showPopover();
-	        Chat.ui.focus('#popover-value');
-        },1); // Give angular some time to apply the msg to scope
- 
-	};
-	
-	
-	$scope.popoverSubmit = function(type){
-	    if(type === 'submit'){
-	        $scope.popover.action(this.popover.value);
-	    } else if (type === 'yes'){
-	        $scope.popover.action();
-	    }
-        Chat.ui.hidePopover();
-	};
-	
     $scope.newConv = function(userToInvite){
         if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
         	Chat.ui.alert('You can\'t start a conversation with yourself');
@@ -184,18 +129,21 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         Chat.ui.markConvActive(convId);
 	};
 	
-	$scope.leave = function(convId){
-        delete $scope.convs[convId];
-        Chat.api.command.leave(convId);
-        if(Chat.util.countObjects($scope.convs) === 0){
-            Chat.ui.clear();
-            Chat.ui.showEmpty();
-        } else {
-            $scope.makeActive(Chat.ui.getFirstConv());
+	$scope.leave = function(ok, convId){
+        if(ok === 'yes'){
+            Chat.api.command.leave(convId, function(){
+                delete $scope.convs[convId];
+                if(Chat.util.countObjects($scope.convs) === 0){
+                    Chat.ui.hideChat();
+                    Chat.ui.showEmpty();
+                } else {
+                    $scope.makeActive(Chat.ui.getFirstConv());
+                }    
+            });
         }
 	};
 	
-	$scope.invite = function(convId, userToInvite ){
+	$scope.invite = function(userToInvite, convId){
         if(userToInvite === OC.currentUser){
         	Chat.ui.alert('You can\'t invite yourself');
         } else if(userToInvite === ''){

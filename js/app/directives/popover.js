@@ -1,10 +1,14 @@
 angular.module('popover', []).directive('popover', function($templateCache, $http, $q, $compile) {
     return function(scope, element, attrs) {
+        console.log('called');
+        var body = angular.element('body');
+        
         $http.get(attrs.templateUrl).success(function(data, status){
+            console.log(attrs.templateUrl + data);
             var contentTemplate = data;
             
             var template = angular.element(
-                '<div id="popover" class="popover right animation-fade" style="top: ' + attrs.top  +'px; left: 300px;">' +
+                '<div id="' + element.attr('id') + '-popover" class="popover right animation-fade" style="top: ' + attrs.top  +'px; left: 380px;">' +
                     '<div class="arrow"></div>' +
                     '<h3 class="popover-title">' + attrs.title + '<span ng-click="hide()" style="float:right"> Close</span></h3>' +
                     '<div class="popover-content">' +
@@ -14,23 +18,29 @@ angular.module('popover', []).directive('popover', function($templateCache, $htt
         
             var compiled = $compile(template);
             
-            element.after(template);
+            
+            body.after(template);
     
             compiled(scope);
         });
+        
+        console.log(attrs);
             
-        scope.submit = function() {
-            scope.newConv(this.value);
+        scope.submit = function(value) {
+            scope[attrs.onSubmit](value)
             this.value = '';
             scope.hide();
         };
             
         scope.hide = function(){
-            element.next().fadeOut();
+            var popoverEl = angular.element('#' + element.attr('id') + '-popover');
+            console.log(popoverEl);
+            popoverEl.fadeOut();
         };
             
         scope.show = function(){
-            element.next().fadeIn();
+            var popoverEl = angular.element('#' + element.attr('id') + '-popover');
+            popoverEl.fadeIn();
         }
 
     };

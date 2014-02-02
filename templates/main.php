@@ -18,13 +18,43 @@
 	</div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li popover id="new-conv" template-url="/apps/chat/js/app/templates/popover-form.html" title="Invite an user to chat with" top="-14" ng-click="show()" submit="Invite" placeholder="ownCloud username"> 
+			<li popover
+			    id="new-conv" 
+			    template-url="/apps/chat/js/app/templates/popover-form.html"
+			    title="Invite an user to chat with"
+			    top="30" 
+			    ng-click="show()"
+			    on-submit="newConv"
+		    > 
 				New Conversation
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-    			<span ng-click="leaveShow(conv.id)" class="icon-leave" title="Leave Conversation">X</span>
-				<span ng-click="inviteShow(conv.id)" class="icon-plus" title="Invite Person to Conversation">+</span>
+    			<span
+    			    popover
+    			    id="conv-leave-{{ conv.id }}"
+    			    class="icon-leave" 
+    			    title="Are you sure you want to leave this conversation?" 
+    			    top="100" 
+    			    ng-click="show()" 
+    			    on-submit="leave"
+				    template-url="/apps/chat/js/app/templates/popover-button.html" 
+			        buttons="['yes', 'no']"
+			    >
+			        X edf
+		        </span>
+				<span 
+				    popover
+    			    id="conv-invite-{{ conv.id }}"
+				    class="icon-plus"
+				    title="Invite user to add to conversation"
+    			    template-url="/apps/chat/js/app/templates/popover-form.html" 
+				    top="100" 
+				    ng-click="show()" 
+				    on-submit="invite"
+			    >
+		            +
+                </span>
                 <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list icon-{{ user }}"></div>
                 <div style="clear:both;"></div>
                 <span ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list" >

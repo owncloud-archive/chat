@@ -29,28 +29,28 @@
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-    			<span
+    			<div
     			    popover
     			    id="conv-leave-{{ conv.id }}"
-    			    class="icon-leave" 
+    			    class="icon icon-close icon-32 right" 
     			    title="Are you sure you want to leave this conversation?" 
 				    template-url="/apps/chat/js/app/templates/popover-button.html" 
 				    conv-id="{{ conv.id }}"
 				    on-submit="leave(arg1, conv.id)"
 			    >
-			        X edf
-		        </span>
-				<span 
+                    &nbsp;
+		        </div>
+				<div 
 				    popover
     			    id="conv-invite-{{ conv.id }}"
-				    class="icon-plus"
+				    class="icon icon-add right icon-32"
 				    title="Invite user to add to conversation"
     			    template-url="/apps/chat/js/app/templates/popover-form.html" 
 				    on-submit="invite(arg1, conv.id)"
     			    conv-id="{{ conv.id }}"
 			    >
-		            plus+
-                </span>
+                    &nbsp;
+                </div>
                 <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list icon-{{ user }}"></div>
                 <div style="clear:both;"></div>
                 <span ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list" >

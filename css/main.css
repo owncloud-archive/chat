@@ -20,12 +20,6 @@
         height: 100%;
         overflow: hidden;
 }
-#loading-panel-img{
-        width: 100%;
-        height: 100%;
-        background: url('../img/loading.gif') no-repeat 0 0;
-    background-position: center;
-}
 /* 2.2 Empty Panel */
 #empty-window{
     height:100%;
@@ -161,24 +155,6 @@
     position:absolute;
 }
 
-.icon-plus{
-    font-weight: bold;
-    font-size: 150%;
-    float:right;
-    margin-right:10px;
-    cursor:pointer;
-}
-
-.icon-leave{
-  	font-weight: bold;
-    float:right;
-    margin-top:2px;
-    margin-right:10px;
-    cursor:pointer;
-}
-.icon-list{
-    float:left;
-}
 #conv-list-new-conv{
     font-weight: bold;
     text-align: center;
@@ -192,4 +168,13 @@
     height: 100%;
     width: 100%;
     padding-left: 300px;
+}
+
+.right{
+    float:right;
+}
+
+.icon-32{
+    width:32px;
+    height:32px;
 }

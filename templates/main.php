@@ -8,14 +8,14 @@
 \OCP\Util::addScript('chat', 'app/controllers/convcontroller');
 \OCP\Util::addScript('chat', 'app/directives/popover');
 \OCP\Util::addScript('chat', 'handlers');
+//s\OCP\Util::addStyle('core', 'icons');
+
 
 ?>
 <div ng-controller="ConvController" ng-app="chat" id="app">
-	<div id="loading-panel" class="panel">
-		<div id="loading-panel-img">
-			&nbsp;
-		</div>
-	</div>
+	<div id="loading-panel" class="icon icon-loading"  class="panel">
+        &nbsp;
+    </div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
 			<li popover

@@ -23,6 +23,9 @@ var Chat = {
     	hideEmpty : function(){
     		$('#empty-window').hide();
     	},
+    	hideLoading : function(){
+    	  	$('#loading-panel').hide();
+    	},  
     	showMain : function(){
     		$('#main-panel').show();
     	},
@@ -124,7 +127,7 @@ var Chat = {
             Chat.sessionId = Chat.util.generateSessionId();
             Chat.api.command.greet(function(){
                 //TODO add getConversation function
-                Chat.ui.clear();
+                Chat.ui.hideLoading();
                 Chat.ui.showMain();
                 Chat.ui.showEmpty();
                 Chat.api.util.longPoll();

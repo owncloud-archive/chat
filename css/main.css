@@ -1,10 +1,8 @@
 /* Contents
- * 1.  Responsive
  * 2.  Panels
  * 2.1 Loading Panel
  * 2.2 Empty Panel
  * 2.3 Chat Panel
- * 2.3.1 Chat Panel Header
  * 2.3.2 Chat Panel Body
  * 2.3.3 Chat Panel Footer
  * 3. Conversation list
@@ -12,146 +10,87 @@
  * 5 Chat msgs 
 */
 
-/* 1.  Responsive */
-@media screen and (max-width: 1000px) {
-	  #chat-window, #chat-window-footer, #chat-window-body, #chat-window-header{
-	  	width: 100% !important;
-	  }
-	  #app-navigation{
-	 	display: none !important;
-	  }
-	  .chat-conversation-list-mini {
-	  	display: block !important;
-	  }
-	  #chat-invite{
-	  	width: 20% !important;
-	  }
-}
-
-@media screen and (max-width: 500px) {
-	#chat-window-header{
-		height:90px !important;
-	}
-	#chat-leave, #chat-invite, #chat-conversation-list-rollup-select {
-		float:left !important;
-		width:25% !important;
-	}
-	#chat-window-body {
-		margin-top: 90px !important;
-	}
-	#chat-msg-input {
-		width:65% !important;
-	}
-	#chat-msg-send {
-		width:20% !important;
-	}
-	
-}
-
-/* 2.  Panels */
+/* 2. Panels */
 .panel{
-	display:none;
+        display:none;
 }
 /* 2.1 Loading Panel */
 #loading-panel{
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-#loading-panel-img{
-	width: 100%;
-	height: 100%;
-	background: url('../img/loading.gif') no-repeat 0 0;
-    background-position: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
 }
 /* 2.2 Empty Panel */
-#empty-panel{
-	width:100%;
-	float:left;
-	font-size: 1.5em;
-	font-weight: bold;
-	color: rgb(136, 136, 136);
-	position: absolute;
-	text-align: center;
-	top: 50%;
+#empty-window{
+    height:100%;
+    width:100%;
+    float:left;
+    position:relative;
+}
+#empty-window div {
+    width:300px;
+    height:30px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-15px 0 0 -150px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(119, 119, 119);
+    font-size: 1.5em;
 }
 /* 2.2 Chat Panel */
-#chat-panel{
-	height:100%;
+#main-panel{
+    height:100%;
 }
 #chat-window{
-	width:85%;
-	float:left;
-}
-/* 2.2.1 Chat Panel Header */
-#chat-window-header {
-    position: absolute;
-    height: 40px;
-	top:0;
-	width:85%;
-    background-color:#F8F8F8;
-	z-index:100;
-	border-bottom:#AAAAAA solid 1px;
-	text-align:center;
-}
-.header-left{
-	float:left;
-}
-.header-right{
-	float:right;
+    display:none;
+     width:100%;
+    height:100%;
+    float:left;
+        position:relative;
+
 }
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
     position: absolute;
     top: 0;
     bottom:41px;
-    width:85%;
+    width:100%;
     background-color:white;
-    margin-top:41px;
 }
 /* 2.2.3 Chat Panel Footer */
 #chat-window-footer {
     position: absolute;
     height: 40px;
     bottom: 0;
-    width:85%;
+    width:100%;
     background-color:#F8F8F8;
     border-top:#AAAAAA solid 1px;
 }
 
 /* 3. Conversation List */
 #app-navigation {
-	float:left;
-	width: 15%;
-	display: inline-block;
-	height:100%;
-	overflow:auto;
-	border-right:#AAAAAA solid 1px;
+    overflow:auto;
 }
 #app-navigation li {
-	padding: 10px;
-	border-bottom: 1px solid #aaa;
-}
-#app-navigation li:hover {
-	background-color: #999;
-	color: #eee;
-	text-shadow: none;
-	font-weight: bold;
+        padding: 10px;
+        height:70px !important;
 }
 .conv-list-active {
-	background-color: #dadada;
+        background-color: #dadada;
 }
 .chat-conversation-list-mini{
-	display:none;
-  	float:left;
+        display:none;
+          float:left;
 }
 
 
 /* 4. Buttons, forms, inputs*/
 #chat-conv-new{
-	text-align:center;	
-	margin:0;
-	padding:0 !important;
+        text-align:center;        
+        margin:0;
+        padding:0 !important;
 }
 #chat-conv-new-button{
 	margin-top:0px;
@@ -190,33 +129,52 @@
 	width:100%;
 	border-top:1px solid #EEEEEE;
 	float:left;
+	margin-top:10px;
 }
 .chat-msg-time{
 	color:#383C43;
 	float:right;
 	padding-right:20px;
 }
-.chat-msg-right{
-	float:right;
-	width:85%;
-}
-.chat-msg-left{
+.chat-msg{
 	float:left;
-	width:85%;
 }
-.chat-msg-right div, .chat-msg-right p,  .chat-msg-left div, .chat-msg-left p{
+.chat-msg div, .chat-msg p{
 	float:left;	
 }
-.chat-msg-right p, .chat-msg-left p{
+.chat-msg p{
 	margin-left:10px;
-	word-wrap: break-word
+	word-wrap: break-word;
+    white-space: pre-line;
 }
 #chat-window-msgs{
-	overflow:hidden;
-	height:100%;
+	overflow-y:auto;
+	max-height:100%;
 	width:100%;
+    bottom:0;
+    position:absolute;
 }
 
-#chat-wrapper{
-	height:100%;
+#conv-list-new-conv{
+    font-weight: bold;
+    text-align: center;
+    color: rgb(119, 119, 119);
+    font-size: 1.5em;
+    padding-top:25px !important;
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+#container{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding-left: 300px;
+}
+
+.right{
+    float:right;
+}
+
+.icon-32{
+    width:32px;
+    height:32px;
 }

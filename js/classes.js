@@ -12,25 +12,28 @@ var Chat = {
     		$('#conv-list-' + convId).addClass('conv-list-active');
 		},
     	scrollDown : function(){
-    		$('#chat-window-body').scrollTop($('#chat-window-body')[0].scrollHeight);
+    		$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
     	},
     	showLoading : function(){
     		$('#loading-panel').show();
     	}, 
     	showEmpty : function(){
-    		$('#empty-panel').show();
-    		this.focus('#empty-panel-new-conv');
+    		$('#empty-window').show();
+    	},
+    	hideEmpty : function(){
+    		$('#empty-window').hide();
+    	},
+    	hideLoading : function(){
+    	  	$('#loading-panel').hide();
+    	},  
+    	showMain : function(){
+    		$('#main-panel').show();
     	},
     	showChat : function(){
-    		$('#chat-panel').show();
+    		$('#chat-window').show();
     	},
-    	hideHeader : function(){
-    		$('#header').hide();
-    		$('#content-wrapper').css('padding-top', 0);
-    	},
-    	showHeader : function(){
-    		$('#header').show();
-    		$('#content-wrapper').css('padding-top', '3.5em');
+    	hideChat : function(){
+    		$('#chat-window').hide();
     	},
     	focus : function(element){
     		$(element).focus();
@@ -45,13 +48,16 @@ var Chat = {
     		convId = id.substr(10, id.length); // strip conv-id-
     		return convId;
     	},
+    	getConvListIndex : function(convId){
+    	    return $("#conv-list-" + convId).index() + 1
+    	},
     	newMsg : function(convId){
     		$('#conv-new-msg-' + convId).fadeIn();
     		$('#conv-new-msg-' + convId).fadeOut();
     		this.newMsg(convId);
     	},
     	applyAvatar : function(user){
-    		$('.icon-' + user).avatar(user, 32);
+    	    $('.icon-' + user).avatar(user, 32);
     	},
     	updateTitle : function(){
     		if(!Chat.tabActive){
@@ -66,6 +72,13 @@ var Chat = {
 			setTimeout(function(){
                 OC.Notification.hide();
 			}, 2000);
+    	},
+    	showPopover : function(){
+    	    $('#popover').show();
+    	},
+    	hidePopover : function(){
+    	    $('#popover-value').val('');
+    	    $('#popover').hide();
     	}
          
     },
@@ -108,16 +121,16 @@ var Chat = {
             });
     	},
         init : function(){
-            Chat.scope = angular.element($("#chat-wrapper")).scope();
+            Chat.scope = angular.element($("#app")).scope();
             Chat.ui.updateTitle();
             Chat.ui.showLoading();
             Chat.sessionId = Chat.util.generateSessionId();
             Chat.api.command.greet(function(){
                 //TODO add getConversation function
-                Chat.ui.clear();
+                Chat.ui.hideLoading();
+                Chat.ui.showMain();
                 Chat.ui.showEmpty();
                 Chat.api.util.longPoll();
-                Chat.ui.alert('Connected to the chat server!');
             });
         },
         updateOnlineStatus : function(){
@@ -159,6 +172,7 @@ var Chat = {
                 }); 
                 Chat.api.command.join(data.conv_id, function(){});
                 Chat.ui.alert('You auto started a new conversation with ' + data.user);
+                Chat.ui.applyAvatar(data.user);
             },
             chatMessage : function(data){
                 Chat.scope.$apply(function(){
@@ -168,8 +182,9 @@ var Chat = {
             joined : function(data){
             	Chat.ui.alert('The user ' + data.user + ' joined this conversation');
             	Chat.scope.$apply(function(){
-            		Chat.scope.convs[data.conv_id].name = Chat.scope.convs[data.conv_id].name + ' ' + data.user ;	
+            		Chat.scope.convs[data.conv_id].users.push(data.user);	
                 });
+                Chat.ui.applyAvatar(data.user);
             }
     	},
     	util : {

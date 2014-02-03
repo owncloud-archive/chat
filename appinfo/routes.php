@@ -37,3 +37,8 @@ $this->create('chat_api', '/api')->action(
 	}
 );
 
+$this->create('chat_get_contacts', '/getcontacts')->action(
+	function($params){
+		App::main('PageController', 'getContacts', new DIContainer('chat'), $params);
+	}
+);

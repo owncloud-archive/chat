@@ -27,6 +27,7 @@ use \OCA\Chat\Core\API;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
+use \OCP\AppFramework\Http\JSONResponse;
 
 class PageController extends Controller {
 
@@ -41,9 +42,62 @@ class PageController extends Controller {
 	 */
 	public function index() {
 		$params = array(
-			'users' =>  \OCP\User::getUsers()
 		);
 		return $this->render('main', $params);
+	}
+	
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 */
+	public function getContacts() {
+	    $cm = \OC::$server->getContactsManager();
+         // The API is not active -> nothing to do
+        if (!$cm->isEnabled()) {
+             $receivers = null;
+             $error = 'Please enable the contacts app.';
+        }
+        
+        $result = $cm->search('',array('FN'));
+        $receivers = array();
+         
+        
+        foreach ($result as $r) {
+            $data = array();
+            
+            $data['id'] = $r['id'];
+            $data['displayname'] = $r['FN'];
+
+            if(isset($r['EMAIL'])){
+                $email = $r['EMAIL'];
+                if (!is_array($email)) {
+                    $email = array($email);
+                }    
+                $data['email'] = $email;
+            } else {
+                $data['email'] = array();
+            }
+            
+            if(isset($r['IMPP'])){
+                $data['IMPP'] = array(); // Array with all IM contact information
+                foreach($r['IMPP'] as $IMPP){
+                    $array = array();
+                    $exploded = explode(":", $IMPP);
+                    $array['backend'] = $exploded[0];
+                    $array['value'] = $exploded[1];
+                    $data['IMPP'][] = $array;
+                }
+            } else {
+                $data['IMPP'] = array();
+            }
+            
+            
+            
+            $receivers[] = $data;
+            
+        }
+      //  throw new \Exception(var_dump($receivers));
+	    return new JSONResponse(array('contacts' => $receivers));
 	}
 
 }

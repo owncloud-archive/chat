@@ -27,17 +27,59 @@
     float:left;
     position:relative;
 }
-#empty-window div {
+
+.contact {
+    margin:10px;
     width:300px;
-    height:30px;
-    position:absolute;
-    left:50%;
-    top:50%;
-    margin:-15px 0 0 -150px;
-    font-weight: bold;
-    text-align: center;
-    color: rgb(119, 119, 119);
+    height:250px;
+    border: 1px solid #cccccc;
+    position:relative;
+}
+.contact-header {
+    border-bottom: 1px solid #cccccc;
+    background-color:#F8F8F8;
+    height:52px;
+    width:100%;
+}
+.contact-header-name{
+    float:left;
+    margin-top:15px;
+    font-weight:bold;
     font-size: 1.5em;
+}
+.contact-header-avatar{
+    float:left;
+    width:52px;
+    padding:10px;
+}
+
+.contact-body{
+    padding:10px;
+}
+
+.contact-body-left  {
+    width:100px;
+    float:left;
+    text-align:right;
+}
+
+.contact-body-right  {
+    width:160px;
+    float:left;
+    margin-left:10px;
+}
+
+
+.contact-body-left ul li {
+    margin:0px;
+    padding:0px;
+    list-style:none;
+}
+
+.contact-body-right ul li {
+    margin:0px;
+    padding:0px;
+    list-style:none;
 }
 /* 2.2 Chat Panel */
 #main-panel{

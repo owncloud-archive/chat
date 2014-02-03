@@ -4,12 +4,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
-    
-    $scope.popover = {
-        button : false,
-        title : "World"
-    };
-
+	
 	$scope.updateTitle = function(newTitle){
         $scope.title = newTitle;
 	}
@@ -22,31 +17,35 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         }
 	};
 	
-    $scope.newConv = function(userToInvite){
-        if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
-        	Chat.ui.alert('You can\'t start a conversation with yourself');
-        } else if(userToInvite === ''){
-        	Chat.ui.alert('Please provide an ownCloud user name');
+    $scope.newConv = function(backend, userToInvite){
+        if(backend === "owncloud_handle"){
+            if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
+            	Chat.ui.alert('You can\'t start a conversation with yourself');
+            } else if(userToInvite === ''){
+            	Chat.ui.alert('Please provide an ownCloud user name');
+            } else {
+                var newConvId = Chat.util.generateConvId();
+                Chat.api.command.join(newConvId, function(){ 
+                    Chat.api.command.invite(
+                    		userToInvite,
+                    		newConvId,
+                    		function(){ // Success
+                    			$scope.addConvToView(newConvId, userToInvite);
+                    		},
+                    		function(errorMsg){
+                    			if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
+                    				Chat.ui.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO
+                    			} else if(errorMsg === 'USER-TO-INVITE-NOT-OC-USER'){
+                    				Chat.ui.alert('The user you tried to invite isn\'t a valid owncloud user')
+                    				// Leave the already joined conversation
+                    				Chat.api.command.leave(newConvId, function(){});
+                    			} 
+                			}
+                    		);
+                });
+            }
         } else {
-            var newConvId = Chat.util.generateConvId();
-            Chat.api.command.join(newConvId, function(){ 
-                Chat.api.command.invite(
-                		userToInvite,
-                		newConvId,
-                		function(){ // Success
-                			$scope.addConvToView(newConvId, userToInvite);
-                		},
-                		function(errorMsg){
-                			if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
-                				Chat.ui.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO
-                			} else if(errorMsg === 'USER-TO-INVITE-NOT-OC-USER'){
-                				Chat.ui.alert('The user you tried to invite isn\'t a valid owncloud user')
-                				// Leave the already joined conversation
-                				Chat.api.command.leave(newConvId, function(){});
-                			} 
-            			}
-                		);
-            });
+            alert("Unsupported");
         }
 	};
 

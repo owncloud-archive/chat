@@ -3,6 +3,14 @@ var Chat = {
  */
 	tabActive : true, 
 	tabTitle : 'Chat - Owncloud',
+	app : {
+	    getContacts : function(success){
+	        $.get(OC.Router.generate("chat_get_contacts")).done(function(data){
+                console.log(data);
+                success(data);
+            });
+	    }  
+	},
 	ui : {
     	clear : function(){
     		$('.panel').hide();
@@ -125,6 +133,11 @@ var Chat = {
             Chat.ui.updateTitle();
             Chat.ui.showLoading();
             Chat.sessionId = Chat.util.generateSessionId();
+           	Chat.app.getContacts(function(contacts){
+            	Chat.scope.$apply(function(){
+            		Chat.scope.contacts = contacts['contacts'];	
+                });
+	        });
             Chat.api.command.greet(function(){
                 //TODO add getConversation function
                 Chat.ui.hideLoading();

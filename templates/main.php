@@ -8,9 +8,6 @@
 \OCP\Util::addScript('chat', 'app/controllers/convcontroller');
 \OCP\Util::addScript('chat', 'app/directives/popover');
 \OCP\Util::addScript('chat', 'handlers');
-//s\OCP\Util::addStyle('core', 'icons');
-
-
 ?>
 <div ng-controller="ConvController" ng-app="chat" id="app">
 	<div id="loading-panel" class="icon icon-loading"  class="panel">
@@ -23,7 +20,7 @@
 			    template-url="/apps/chat/js/app/templates/popover-form.html"
 			    title="Invite an user to chat with"
 			    conv-id="new-conv"
-			    on-submit="newConv(arg1)"
+			    on-submit="newConv('owncloud_handle', arg1)"
 		    >
 				New Conversation
 			</li>
@@ -60,9 +57,38 @@
 		</ul>
         <div id="app-content">
 	        <div id="empty-window" class="panel">
-    		    <div>
-    	    	    Start Chatting!
-    	    	</div>
+                <div ng-repeat="contact in contacts" class="contact">
+                    <header class="contact-header"> 
+                        <div class="contact-header-avatar">
+                            <img src="/index.php/avatar/admin/32?requesttoken=17879af3897c8ac0da25">
+                        </div>
+                        <div class="contact-header-name">
+                            {{ contact.displayname }}
+                        </div>
+                    </header>
+                    <section class="contact-body">
+                        <div class="contact-body-left">
+                            <ul>
+                                <li ng-click="newConv(IM.backend, IM.value)" ng-repeat="IM in contact.IMPP">
+                                    {{ IM.backend }}
+                                </li>
+                                <li ng-repeat="em in contact.email">
+                                    Email
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="contact-body-right">
+                            <ul>
+                                <li ng-click="newConv(IM.backend, IM.value)" ng-repeat="IM in contact.IMPP">
+                                    {{ IM.value }}
+                                </li>
+                                <li ng-repeat="em in contact.email">
+                                    {{ em }}
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
     	    </div>
         	<div id="chat-window">
     			<section ng-click="focusMsgInput()" id="chat-window-body">
@@ -90,12 +116,4 @@
     		</div>
 	    </div>
 	</div>
-	<div id="debug-panel" class="panel">
-	    <ul>
-	       <li ng-repeat="msg in debug">
-	            {{ msg }}
-	       </li>
-	    </ul>
-	    
-    </div>
 </div>

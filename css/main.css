@@ -41,7 +41,7 @@
     border: 1px solid #CCC;
 }
 .contact:hover{
-    box-shadow: 0px 0px 10px #000;
+    border: 1px solid #1C2C43;
 }
 .contact label{
     text-shadow: 0px 0px 10px #000;

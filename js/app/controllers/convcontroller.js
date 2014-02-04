@@ -4,6 +4,11 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
+	$scope.showNewConvText = true;
+	
+	$scope.toggleNewConv = function(){
+	    $scope.showNewConvText = !$scope.showNewConvText;
+	}
 	
 	$scope.updateTitle = function(newTitle){
         $scope.title = newTitle;

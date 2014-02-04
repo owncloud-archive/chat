@@ -15,14 +15,16 @@
     </div>
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
-			<li popover
-			    id="conv-list-new-conv" 
-			    template-url="/apps/chat/js/app/templates/popover-form.html"
-			    title="Invite an user to chat with"
-			    conv-id="new-conv"
-			    on-submit="newConv('owncloud_handle', arg1)"
-		    >
-				New Conversation
+			<li id="conv-list-new-conv">
+				<div id="new-conv-text" ng-click="toggleNewConv()" ng-if="showNewConvText" >
+				    <div class="icon icon-add">&nbsp;</div><span>New Conversation</spn>
+			    </div>
+				<div id="new-conv-form" ng-if="!showNewConvText">
+				    <input id="new-conv-input" placeholder="Contact name" type="text" >
+				    <button id="new-conv-button" class="primary">
+				        Start
+			    	</button>
+                </div>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>

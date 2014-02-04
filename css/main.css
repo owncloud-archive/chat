@@ -91,7 +91,7 @@
 }
 #app-navigation li {
         padding: 10px;
-        height:70px !important;
+     /*   height:70px !important;*/
 }
 .conv-list-active {
         background-color: #dadada;
@@ -104,9 +104,9 @@
 
 /* 4. Buttons, forms, inputs*/
 #chat-conv-new{
-        text-align:center;        
-        margin:0;
-        padding:0 !important;
+    text-align:center;        
+    margin:0;
+    padding:0 !important;
 }
 #chat-conv-new-button{
 	margin-top:0px;
@@ -172,18 +172,54 @@
 }
 
 #conv-list-new-conv{
-    font-weight: bold;
-    text-align: center;
-    color: rgb(119, 119, 119);
-    font-size: 1.5em;
-    padding-top:25px !important;
     border-bottom: 1px solid rgb(204, 204, 204);
+    height:44px !important;
+    padding-top:5px !important;
+    position:relative;
 }
+
+#new-conv-form {
+    padding:0px;
+}
+
+#new-conv-text{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    padding:10px;
+}
+#new-conv-text span, #new-conv-text div{
+    float:left;
+}
+#new-conv-text div{
+    /* ICON */
+    width:32px;
+}
+
 #container{
     position: absolute;
     height: 100%;
     width: 100%;
     padding-left: 300px;
+}
+
+#new-conv-input{
+    float:left;
+    margin-right: 0px;
+    height: 34px;
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;
+    margin-top: 0px;
+}
+#new-conv-button{
+    float:left;
+    margin-left: 0px;
+    margin-top: 0px;
+    height: 33px;
+    border-top-left-radius:0px;
+    border-bottom-left-radius:0px;
 }
 
 .right{

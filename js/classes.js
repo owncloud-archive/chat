@@ -6,7 +6,6 @@ var Chat = {
 	app : {
 	    getContacts : function(success){
 	        $.get(OC.Router.generate("chat_get_contacts")).done(function(data){
-                console.log(data);
                 success(data);
             });
 	    }  

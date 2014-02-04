@@ -61,7 +61,6 @@ class PageController extends Controller {
         $result = $cm->search('',array('FN'));
         $receivers = array();
          
-        
         foreach ($result as $r) {
             $data = array();
             
@@ -83,20 +82,19 @@ class PageController extends Controller {
                 foreach($r['IMPP'] as $IMPP){
                     $array = array();
                     $exploded = explode(":", $IMPP);
-                    $array['backend'] = $exploded[0];
+                    if($exploded[0] === 'owncloud-handle'){
+                        $array['backend'] = 'ownCloud';
+                    } else {
+                        $array['backend'] = $exploded[0];
+                    }
                     $array['value'] = $exploded[1];
                     $data['IMPP'][] = $array;
                 }
             } else {
                 $data['IMPP'] = array();
             }
-            
-            
-            
             $receivers[] = $data;
-            
         }
-      //  throw new \Exception(var_dump($receivers));
 	    return new JSONResponse(array('contacts' => $receivers));
 	}
 

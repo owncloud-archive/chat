@@ -57,37 +57,10 @@
 		</ul>
         <div id="app-content">
 	        <div id="empty-window" class="panel">
-                <div ng-repeat="contact in contacts" class="contact">
-                    <header class="contact-header"> 
-                        <div class="contact-header-avatar">
-                            <img src="/index.php/avatar/admin/32?requesttoken=17879af3897c8ac0da25">
-                        </div>
-                        <div class="contact-header-name">
-                            {{ contact.displayname }}
-                        </div>
-                    </header>
-                    <section class="contact-body">
-                        <div class="contact-body-left">
-                            <ul>
-                                <li ng-click="newConv(IM.backend, IM.value)" ng-repeat="IM in contact.IMPP">
-                                    {{ IM.backend }}
-                                </li>
-                                <li ng-repeat="em in contact.email">
-                                    Email
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="contact-body-right">
-                            <ul>
-                                <li ng-click="newConv(IM.backend, IM.value)" ng-repeat="IM in contact.IMPP">
-                                    {{ IM.value }}
-                                </li>
-                                <li ng-repeat="em in contact.email">
-                                    {{ em }}
-                                </li>
-                            </ul>
-                        </div>
-                    </section>
+                <div ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+                    <label>
+                        {{ contact.displayname }}
+                    </label>
                 </div>
     	    </div>
         	<div id="chat-window">

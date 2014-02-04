@@ -18,7 +18,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	};
 	
     $scope.newConv = function(backend, userToInvite){
-        if(backend === "owncloud_handle"){
+        if(backend === "ownCloud"){
             if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
             	Chat.ui.alert('You can\'t start a conversation with yourself');
             } else if(userToInvite === ''){

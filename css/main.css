@@ -213,6 +213,7 @@
     border-bottom-right-radius:0px;
     margin-top: 0px;
     width:220px;
+    background-color:#fff;
 }
 #new-conv-button{
     float:left;

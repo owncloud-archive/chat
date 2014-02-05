@@ -2,6 +2,9 @@
 \OCP\Util::addStyle('chat', 'bootstrap-stripped');
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
+\OCP\Util::addScript('chat', 'vendor/tagger');
+\OCP\Util::addStyle('chat', 'tagger');
+
 \OCP\Util::addStyle('chat', 'main');
 \OCP\Util::addScript('chat', 'classes');
 \OCP\Util::addScript('chat', 'app/app');
@@ -20,10 +23,12 @@
 				    <div class="icon icon-add">&nbsp;</div><span>New Conversation</spn>
 			    </div>
 				<div id="new-conv-form" ng-if="!showNewConvText">
-				    <input id="new-conv-input" placeholder="Contact name" type="text" >
-				    <button id="new-conv-button" class="primary">
-				        Start
-			    	</button>
+				    <form ng-submit="newConv(userToInvite)">
+				        <input tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" placeholder="Contact name" type="text" >
+				        <button id="new-conv-button" class="primary">
+			                Start
+		    	        </button>
+			    	</form>
                 </div>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
@@ -59,7 +64,7 @@
 		</ul>
         <div id="app-content">
 	        <div id="empty-window" class="panel">
-                <div ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+                <div ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
                     <label>
                         {{ contact.displayname }}
                     </label>

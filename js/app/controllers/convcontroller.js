@@ -5,7 +5,15 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
 	$scope.showNewConvText = true;
-	
+
+	OC.Router.registerLoadedCallback(function(){
+    	console.log('router callback');
+    	$.get(OC.Router.generate("chat_get_contacts")).done(function(data){
+            console.log('request done' + data);
+            $scope.contacts = data['contacts'];
+            $scope.contactsList = data['contactsList'];
+        });
+	});
 	$scope.toggleNewConv = function(){
 	    $scope.showNewConvText = !$scope.showNewConvText;
 	}
@@ -22,8 +30,8 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         }
 	};
 	
-    $scope.newConv = function(backend, userToInvite){
-        if(backend === "ownCloud"){
+    $scope.newConv = function(userToInvite){
+        //if(backend === "ownCloud"){
             if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
             	Chat.ui.alert('You can\'t start a conversation with yourself');
             } else if(userToInvite === ''){
@@ -49,9 +57,9 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
                     		);
                 });
             }
-        } else {
-            alert("Unsupported");
-        }
+       // } else {
+        //    alert("Unsupported");
+       // }
 	};
 
 	$scope.addChatMsgToView = function(convId, user, msg, timestamp){

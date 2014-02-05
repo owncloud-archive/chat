@@ -132,11 +132,6 @@ var Chat = {
             Chat.ui.updateTitle();
             Chat.ui.showLoading();
             Chat.sessionId = Chat.util.generateSessionId();
-           	Chat.app.getContacts(function(contacts){
-            	Chat.scope.$apply(function(){
-            		Chat.scope.contacts = contacts['contacts'];	
-                });
-	        });
             Chat.api.command.greet(function(){
                 //TODO add getConversation function
                 Chat.ui.hideLoading();

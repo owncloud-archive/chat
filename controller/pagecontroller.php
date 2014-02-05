@@ -60,9 +60,11 @@ class PageController extends Controller {
         
         $result = $cm->search('',array('FN'));
         $receivers = array();
-         
+        $contactList = array();
         foreach ($result as $r) {
             $data = array();
+            
+            $contactList[] = $r['FN'];
             
             $data['id'] = $r['id'];
             $data['displayname'] = $r['FN'];
@@ -95,7 +97,7 @@ class PageController extends Controller {
             }
             $receivers[] = $data;
         }
-	    return new JSONResponse(array('contacts' => $receivers));
+	    return new JSONResponse(array('contacts' => $receivers, 'contactsList' => $contactList));
 	}
 
 }

@@ -19,18 +19,13 @@
 	<div id="main-panel" class="panel">
 		<ul id="app-navigation" >
 			<li id="conv-list-new-conv">
-				<div id="new-conv-text" ng-click="toggleNewConv()" ng-if="showNewConvText" >
-				    <div class="icon icon-add">&nbsp;</div><span>New Conversation</spn>
-			    </div>
-				<div id="new-conv-form" ng-if="!showNewConvText">
-				    <form ng-submit="newConv(userToInvite)">
-				        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" placeholder="Contact name" type="text" >
-				        </div>
-				        <button id="new-conv-button" class="primary">
-			                Start
-		    	        </button>
-			    	</form>
-                </div>
+			    <form ng-submit="newConv(userToInvite)">
+			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" placeholder="Contact name" type="text" >
+			        </div>
+			        <button id="new-conv-button" class="primary">
+		                <div class="icon icon-add icon-20">&nbsp;</div>
+	    	        </button>
+		    	</form>
 			</li>
 			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>

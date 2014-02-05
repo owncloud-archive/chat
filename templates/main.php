@@ -24,7 +24,8 @@
 			    </div>
 				<div id="new-conv-form" ng-if="!showNewConvText">
 				    <form ng-submit="newConv(userToInvite)">
-				        <input tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" placeholder="Contact name" type="text" >
+				        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" placeholder="Contact name" type="text" >
+				        </div>
 				        <button id="new-conv-button" class="primary">
 			                Start
 		    	        </button>

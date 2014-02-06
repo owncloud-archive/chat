@@ -51,14 +51,14 @@
 		    </li>
 		</ul>
         <div id="app-content">
-	        <div id="empty-window" class="panel">
-                <div ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="showElements.contact" >
+                <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
                     <label>
                         {{ contact.displayname }}
                     </label>
                 </div>
     	    </div>
-        	<div id="chat-window">
+        	<div ng-if="showElements.chat" >
     			<section ng-click="focusMsgInput()" id="chat-window-body">
     				<div id="chat-window-msgs">
     					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">

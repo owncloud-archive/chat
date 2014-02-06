@@ -20,13 +20,6 @@
     height: 100%;
     overflow: hidden;
 }
-/* 2.2 Empty Panel */
-#empty-window{
-    height:100%;
-    width:100%;
-    float:left;
-    position:relative;
-}
 
 .contact {
     margin:20px;
@@ -59,14 +52,7 @@
 #main-panel{
     height:100%;
 }
-#chat-window{
-    display:none;
-     width:100%;
-    height:100%;
-    float:left;
-        position:relative;
 
-}
 /* 2.2.2 Chat Panel Body */
 #chat-window-body {
     position: absolute;
@@ -229,4 +215,8 @@
 }
 #invite-container{
     margin-top:10px;
+}
+.loading{
+    content:"";
+    height:100%;
 }

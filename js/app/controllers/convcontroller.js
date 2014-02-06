@@ -1,21 +1,26 @@
-Chat.angular.controller('ConvController', ['$scope', function($scope) {
+Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope, contacts) {
 	$scope.activeConv = null;
 	$scope.convs = {}; // Get started with the existing conversations retrieved from the server via an ajax request
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
 	$scope.showElements = {
-	    "inviteInput" : false  
+	    "inviteInput" : false,
+	    "contact" : true,
+	    "chat" : false,
 	};
+	$scope.contacts = [];
+	$scope.contactsList = [];
     
     $scope.init = function(){
         console.log('init scope');
         Chat.ui.hideLoading();
         Chat.ui.showMain();
         Chat.ui.showEmpty();
-        $.get(OC.Router.generate("chat_get_contacts")).done(function(data){
+        contacts(function(data){
             $scope.contacts = data['contacts'];
             $scope.contactsList = data['contactsList'];
+            $scope.$apply();
         });
         Chat.util.init(); 
     }
@@ -196,4 +201,8 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 		Chat.ui.focusMsgInput();
 	};
 	
-}]);
+}]).factory('contacts', function() {
+    return function(callback){
+        $.get(OC.Router.generate("chat_get_contacts")).then(callback);
+    }
+});

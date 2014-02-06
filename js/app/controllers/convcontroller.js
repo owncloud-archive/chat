@@ -4,6 +4,22 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
+	$scope.showElements = {
+	    "inviteInput" : false  
+	};
+    
+    $scope.show = function(element){
+        $scope.showElements[element] = true;
+    };
+    
+    $scope.hide = function(element){
+        $scope.showElements[element] = false;
+    };
+    
+    $scope.toggle = function(element){
+        $scope.showElements[element] = !$scope.showElements[element];
+    };
+
 
 	OC.Router.registerLoadedCallback(function(){
     	console.log('router callback');
@@ -56,6 +72,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
        // } else {
         //    alert("Unsupported");
        // }
+        this.userToInvite = '';
 	};
 
 	$scope.addChatMsgToView = function(convId, user, msg, timestamp){
@@ -171,6 +188,7 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
     			}
     		);
         }
+        $scope.hide('inviteInput');
 	};
 	
 	$scope.focusMsgInput = function(){

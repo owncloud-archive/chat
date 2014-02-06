@@ -9,7 +9,6 @@
 \OCP\Util::addScript('chat', 'classes');
 \OCP\Util::addScript('chat', 'app/app');
 \OCP\Util::addScript('chat', 'app/controllers/convcontroller');
-\OCP\Util::addScript('chat', 'app/directives/popover');
 \OCP\Util::addScript('chat', 'handlers');
 ?>
 <div ng-controller="ConvController" ng-app="chat" id="app">
@@ -20,42 +19,35 @@
 		<ul id="app-navigation" >
 			<li id="conv-list-new-conv">
 			    <form ng-submit="newConv(userToInvite)">
-			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" placeholder="Contact name" type="text" >
+			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 			        </div>
-			        <button id="new-conv-button" class="primary">
+			        <button id="new-conv-button" class="primary tagger-button">
 		                <div class="icon icon-add icon-20">&nbsp;</div>
 	    	        </button>
 		    	</form>
 			</li>
-			<li ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
+			<li ng-class="{heightInvite: showElements.inviteInput }" ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-    			<div
-    			    popover
-    			    id="conv-leave-{{ conv.id }}"
-    			    class="icon icon-close icon-32 right" 
-    			    title="Are you sure you want to leave this conversation?" 
-				    template-url="/apps/chat/js/app/templates/popover-button.html" 
-				    conv-id="{{ conv.id }}"
-				    on-submit="leave(arg1, conv.id)"
-			    >
+    			<div ng-click="toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
                     &nbsp;
 		        </div>
-				<div 
-				    popover
-    			    id="conv-invite-{{ conv.id }}"
-				    class="icon icon-add right icon-32"
-				    title="Invite user to add to conversation"
-    			    template-url="/apps/chat/js/app/templates/popover-form.html" 
-				    on-submit="invite(arg1, conv.id)"
-    			    conv-id="{{ conv.id }}"
-			    >
-                    &nbsp;
+				<div ng-if="conv.id == activeConv" class="icon icon-close right icon-20" >
+				    &nbsp;
                 </div>
-                <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list icon-{{ user }}"></div>
-                <div style="clear:both;"></div>
-                <span ng-repeat="user in conv.users | filter:'!' + currentUser" class="icon-list" >
+                <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left icon-{{ user }}"></div>
+                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" >
                     {{ user }}
                 </span>
+                <div style="clear:both;"></div>
+                <div id="invite-container" ng-if="showElements.inviteInput">
+                    <form ng-submit="invite(userInvite, conv.id)">
+                        <div tagger ng-model="userInvite" options="contactsList" single disable-new id="new-conv-invite" class="tagger-input" placeholder="Contact name" type="text" >
+    			        </div>
+    			        <button id="new-conv-button" class="primary tagger-button">
+    		                <div class="icon icon-add icon-20">&nbsp;</div>
+    	    	        </button>
+                    </form>
+                </div>
 		    </li>
 		</ul>
         <div id="app-content">

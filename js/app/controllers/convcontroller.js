@@ -154,18 +154,17 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         Chat.ui.markConvActive(convId);
 	};
 	
-	$scope.leave = function(ok, convId){
-        if(ok === 'yes'){
-            Chat.api.command.leave(convId, function(){
-                delete $scope.convs[convId];
-                if(Chat.util.countObjects($scope.convs) === 0){
-                    Chat.ui.hideChat();
-                    Chat.ui.showEmpty();
-                } else {
-                    $scope.makeActive(Chat.ui.getFirstConv());
-                }    
-            });
-        }
+	$scope.leave = function(convId){
+        Chat.api.command.leave(convId, function(){
+            delete $scope.convs[convId];
+            if(Chat.util.countObjects($scope.convs) === 0){
+                Chat.ui.hideChat();
+                Chat.ui.showEmpty();
+            } else {
+                $scope.makeActive(Chat.ui.getFirstConv());
+            }    
+        });
+        Chat.ui.alert();
 	};
 	
 	$scope.invite = function(userToInvite, convId){

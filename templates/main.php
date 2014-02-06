@@ -31,7 +31,7 @@
     			<div ng-click="toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
                     &nbsp;
 		        </div>
-				<div ng-if="conv.id == activeConv" class="icon icon-close right icon-20" >
+				<div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
 				    &nbsp;
                 </div>
                 <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left icon-{{ user }}"></div>

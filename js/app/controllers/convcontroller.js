@@ -8,6 +8,18 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
 	    "inviteInput" : false  
 	};
     
+    $scope.init = function(){
+        console.log('init scope');
+        Chat.ui.hideLoading();
+        Chat.ui.showMain();
+        Chat.ui.showEmpty();
+        $.get(OC.Router.generate("chat_get_contacts")).done(function(data){
+            $scope.contacts = data['contacts'];
+            $scope.contactsList = data['contactsList'];
+        });
+        Chat.util.init(); 
+    }
+    
     $scope.show = function(element){
         $scope.showElements[element] = true;
     };
@@ -20,16 +32,6 @@ Chat.angular.controller('ConvController', ['$scope', function($scope) {
         $scope.showElements[element] = !$scope.showElements[element];
     };
 
-
-	OC.Router.registerLoadedCallback(function(){
-    	console.log('router callback');
-    	$.get(OC.Router.generate("chat_get_contacts")).done(function(data){
-            console.log('request done' + data);
-            $scope.contacts = data['contacts'];
-            $scope.contactsList = data['contactsList'];
-        });
-	});
-	
 	$scope.updateTitle = function(newTitle){
         $scope.title = newTitle;
 	}

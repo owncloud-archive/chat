@@ -128,15 +128,9 @@ var Chat = {
             });
     	},
         init : function(){
-            Chat.scope = angular.element($("#app")).scope();
-            Chat.ui.updateTitle();
-            Chat.ui.showLoading();
             Chat.sessionId = Chat.util.generateSessionId();
             Chat.api.command.greet(function(){
                 //TODO add getConversation function
-                Chat.ui.hideLoading();
-                Chat.ui.showMain();
-                Chat.ui.showEmpty();
                 Chat.api.util.longPoll();
             });
         },

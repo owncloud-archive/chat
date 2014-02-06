@@ -3,7 +3,10 @@ $(function() {
         Chat.util.quit();
     });
 	OC.Router.registerLoadedCallback(function(){
-		Chat.util.init();
+        Chat.scope = angular.element($("#app")).scope();
+        Chat.scope.$apply(function(){
+            Chat.scope.init();            
+        });
 	});
 	$(window).on("blur focus", function(e) {
 	    var prevType = $(this).data("prevType");

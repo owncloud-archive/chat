@@ -12,10 +12,10 @@
 \OCP\Util::addScript('chat', 'handlers');
 ?>
 <div ng-controller="ConvController" ng-app="chat" id="app">
-	<div id="loading-panel" class="icon icon-loading"  class="panel">
+    <div class="icon icon-loading" id="main-panel" ng-if="!initDone">
         &nbsp;
     </div>
-	<div id="main-panel" class="panel">
+	<div ng-if="initDone" id="main-panel" >
 		<ul id="app-navigation" >
 			<li id="conv-list-new-conv">
 			    <form ng-submit="newConv(userToInvite)">
@@ -26,7 +26,7 @@
 	    	        </button>
 		    	</form>
 			</li>
-			<li ng-class="{heightInvite: showElements.inviteInput }" ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
+			<li ng-class="{heightInvite: showElements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
     			<div ng-click="toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
                     &nbsp;

@@ -14,33 +14,8 @@ var Chat = {
     	clear : function(){
     		$('.panel').hide();
     	},
-    	markConvActive : function(convId){
-    		$('.conv-list-item').removeClass('conv-list-active');
-    		$('#conv-list-' + convId).addClass('conv-list-active');
-		},
     	scrollDown : function(){
     		$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-    	},
-    	showLoading : function(){
-    		$('#loading-panel').show();
-    	}, 
-    	showEmpty : function(){
-    		$('#empty-window').show();
-    	},
-    	hideEmpty : function(){
-    		$('#empty-window').hide();
-    	},
-    	hideLoading : function(){
-    	  	$('#loading-panel').hide();
-    	},  
-    	showMain : function(){
-    		$('#main-panel').show();
-    	},
-    	showChat : function(){
-    		$('#chat-window').show();
-    	},
-    	hideChat : function(){
-    		$('#chat-window').hide();
     	},
     	focus : function(element){
     		$(element).focus();
@@ -183,7 +158,7 @@ var Chat = {
             joined : function(data){
             	Chat.ui.alert('The user ' + data.user + ' joined this conversation');
             	Chat.scope.$apply(function(){
-            		Chat.scope.convs[data.conv_id].users.push(data.user);	
+            		Chat.scope.addConvToView(data.conv_id. data.user);
                 });
                 Chat.ui.applyAvatar(data.user);
             }

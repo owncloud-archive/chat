@@ -8,24 +8,23 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	    "inviteInput" : false,
 	    "contact" : true,
 	    "chat" : false,
+	    "initDone" : false,
 	};
 	$scope.contacts = [];
 	$scope.contactsList = [];
     
     $scope.init = function(){
-        console.log('init scope');
-        Chat.ui.hideLoading();
-        Chat.ui.showMain();
-        Chat.ui.showEmpty();
         contacts(function(data){
             $scope.contacts = data['contacts'];
             $scope.contactsList = data['contactsList'];
             $scope.$apply();
         });
         Chat.util.init(); 
+        $scope.initDone = true;
     }
     
     $scope.show = function(element){
+        console.log('show' + element);
         $scope.showElements[element] = true;
     };
     
@@ -71,7 +70,9 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
                     				Chat.ui.alert('The user you tried to invite isn\'t a valid owncloud user')
                     				// Leave the already joined conversation
                     				Chat.api.command.leave(newConvId, function(){});
-                    			} 
+                    			} else {
+                    				Chat.ui.alert(errorMsg);
+                    			}
                 			}
                     		);
                 });
@@ -136,6 +137,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	};
 	
 	$scope.addConvToView = function(newConvId, convName){
+	    console.log('addoncvotieg');
         $scope.convs[newConvId] = {
             name : convName,
             id : newConvId,
@@ -146,27 +148,23 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
             msgs : [],
             currentUser : OC.currentUser
         };
-        // Check if this is the first conversation
-        if($('#empty-window').is(":visible")){
-            Chat.ui.hideEmpty();
-            Chat.ui.showChat();
-        }
+        $scope.show('chat');
         $scope.makeActive(newConvId);
         Chat.ui.applyAvatar(convName);
+		$scope.$apply();
 	};
 	
 	$scope.makeActive = function(convId){
         $scope.activeConv = convId;
         Chat.ui.focusMsgInput();
-        Chat.ui.markConvActive(convId);
 	};
 	
 	$scope.leave = function(convId){
         Chat.api.command.leave(convId, function(){
             delete $scope.convs[convId];
             if(Chat.util.countObjects($scope.convs) === 0){
-                Chat.ui.hideChat();
-                Chat.ui.showEmpty();
+                $scope.hide('chat');
+                $scope.show('contact');
             } else {
                 $scope.makeActive(Chat.ui.getFirstConv());
             }    

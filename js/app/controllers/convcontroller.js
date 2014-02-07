@@ -4,12 +4,6 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	$scope.startmsg = 'Start Chatting!';
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
-	$scope.showElements = {
-	    "inviteInput" : false,
-	    "contact" : true,
-	    "chat" : false,
-	    "initDone" : false,
-	};
 	$scope.contacts = [];
 	$scope.contactsList = [];
     
@@ -23,26 +17,108 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
         $scope.initDone = true;
     }
     
-    $scope.show = function(element){
-        console.log('show' + element);
-        $scope.showElements[element] = true;
+    $scope.view = {
+        elements : {
+            "inviteInput" : false,
+	        "contact" : true,
+	        "chat" : false,
+    	    "initDone" : false,
+        },        
+        show : function(element){
+            console.log('show' + element);
+            $scope.view.elements[element] = true;
+        },
+        hide : function(element){
+            $scope.view.elements[element] = false;
+        },
+        toggle : function(element){
+            $scope.view.elements[element] = !$scope.view.elements[element];
+        },
+    	updateTitle : function(newTitle){
+            $scope.title = newTitle;
+    	},
+    	makeActive : function(convId){
+            $scope.activeConv = convId;
+            $scope.view.focusMsgInput();
+	    },
+	    addConv : function(newConvId, convName){
+    	    console.log('addoncvotieg');
+            $scope.convs[newConvId] = {
+                name : convName,
+                id : newConvId,
+                users : [
+                         OC.currentUser,
+                         convName
+                         ],
+                msgs : [],
+                currentUser : OC.currentUser
+            };
+            $scope.view.show('chat');
+            $scope.view.makeActive(newConvId);
+            Chat.ui.applyAvatar(convName);
+    		$scope.$apply();
+	    },
+	    addChatMsg : function(convId, user, msg, timestamp){
+            if (user === OC.currentUser){
+                align = 'right';
+            } else {
+                align = 'left'
+            }
+            
+            // Check if the user is equal to the user of the last msg
+            // First get the last msg
+            if($scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] !== undefined){
+                var lastMsg = $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1];
+                if(lastMsg.user === user){
+                    lastMsg.msg = lastMsg.msg + "<br>" + $.trim(msg);
+                    $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
+                } else if (Chat.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.util.timeStampToDate(timestamp).minutes
+                            && Chat.util.timeStampToDate(lastMsg.timestamp).hours === Chat.util.timeStampToDate(timestamp).hours
+                            ) {
+                    $scope.convs[convId].msgs.push({
+                        user : user,
+                        msg : $.trim(msg),
+                        timestamp : timestamp,
+                        time : null, 
+                        align: align,
+                    });    
+                } else {
+                     $scope.convs[convId].msgs.push({
+                        user : user,
+                        msg : $.trim(msg),
+                        timestamp : timestamp,
+                        time : Chat.util.timeStampToDate(timestamp), 
+                        align: align,
+                    });     
+                }
+            } else {
+                $scope.convs[convId].msgs.push({
+                    user : user,
+                    msg : $.trim(msg),
+                    timestamp : timestamp,
+                    time : Chat.util.timeStampToDate(timestamp), 
+                    align: align,
+                });
+            }
+            
+            setTimeout(function(){
+                Chat.ui.applyAvatar(user);
+                Chat.ui.scrollDown();
+            },1); // Give angular some time to apply the msg to scope
+            // Edit tab title when the tab isn't active
+            if(user !== OC.currentUser) {
+                Chat.tabTitle = 'New msg from ' + user;
+            }
+    	},
+        focusMsgInput : function(){
+            Chat.ui.focusMsgInput();
+	    },
     };
     
-    $scope.hide = function(element){
-        $scope.showElements[element] = false;
-    };
-    
-    $scope.toggle = function(element){
-        $scope.showElements[element] = !$scope.showElements[element];
-    };
-
-	$scope.updateTitle = function(newTitle){
-        $scope.title = newTitle;
-	}
-	
+    	
 	$scope.sendChatMsg = function(){
         if (this.chatMsg != ''){
-            $scope.addChatMsgToView($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
+            $scope.view.addChatMsg($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
             Chat.api.command.sendChatMsg(this.chatMsg, $scope.activeConv, function(){});
             this.chatMsg = '';
         }
@@ -61,7 +137,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
                     		userToInvite,
                     		newConvId,
                     		function(){ // Success
-                    			$scope.addConvToView(newConvId, userToInvite);
+                    			$scope.view.addConv(newConvId, userToInvite);
                     		},
                     		function(errorMsg){
                     			if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
@@ -83,90 +159,20 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
         this.userToInvite = '';
 	};
 
-	$scope.addChatMsgToView = function(convId, user, msg, timestamp){
-        if (user === OC.currentUser){
-            align = 'right';
-        } else {
-            align = 'left'
-        }
-        
-        // Check if the user is equal to the user of the last msg
-        // First get the last msg
-        if($scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] !== undefined){
-            var lastMsg = $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1];
-            if(lastMsg.user === user){
-                lastMsg.msg = lastMsg.msg + "<br>" + $.trim(msg);
-                $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
-            } else if (Chat.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.util.timeStampToDate(timestamp).minutes
-                        && Chat.util.timeStampToDate(lastMsg.timestamp).hours === Chat.util.timeStampToDate(timestamp).hours
-                        ) {
-                $scope.convs[convId].msgs.push({
-                    user : user,
-                    msg : $.trim(msg),
-                    timestamp : timestamp,
-                    time : null, 
-                    align: align,
-                });    
-            } else {
-                 $scope.convs[convId].msgs.push({
-                    user : user,
-                    msg : $.trim(msg),
-                    timestamp : timestamp,
-                    time : Chat.util.timeStampToDate(timestamp), 
-                    align: align,
-                });     
-            }
-        } else {
-            $scope.convs[convId].msgs.push({
-                user : user,
-                msg : $.trim(msg),
-                timestamp : timestamp,
-                time : Chat.util.timeStampToDate(timestamp), 
-                align: align,
-            });
-        }
-        
-        setTimeout(function(){
-            Chat.ui.applyAvatar(user);
-            Chat.ui.scrollDown();
-        },1); // Give angular some time to apply the msg to scope
-        // Edit tab title when the tab isn't active
-        if(user !== OC.currentUser) {
-            Chat.tabTitle = 'New msg from ' + user;
-        }
-	};
 	
-	$scope.addConvToView = function(newConvId, convName){
-	    console.log('addoncvotieg');
-        $scope.convs[newConvId] = {
-            name : convName,
-            id : newConvId,
-            users : [
-                     OC.currentUser,
-                     convName
-                     ],
-            msgs : [],
-            currentUser : OC.currentUser
-        };
-        $scope.show('chat');
-        $scope.makeActive(newConvId);
-        Chat.ui.applyAvatar(convName);
-		$scope.$apply();
-	};
 	
-	$scope.makeActive = function(convId){
-        $scope.activeConv = convId;
-        Chat.ui.focusMsgInput();
-	};
+
+	
+
 	
 	$scope.leave = function(convId){
         Chat.api.command.leave(convId, function(){
             delete $scope.convs[convId];
             if(Chat.util.countObjects($scope.convs) === 0){
                 $scope.hide('chat');
-                $scope.show('contact');
+                $scope.view.show('contact');
             } else {
-                $scope.makeActive(Chat.ui.getFirstConv());
+                $scope.view.makeActive(Chat.ui.getFirstConv());
             }    
         });
         Chat.ui.alert();
@@ -192,12 +198,10 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
     			}
     		);
         }
-        $scope.hide('inviteInput');
+        $scope.view.hide('inviteInput');
 	};
 	
-	$scope.focusMsgInput = function(){
-		Chat.ui.focusMsgInput();
-	};
+
 	
 }]).factory('contacts', function() {
     return function(callback){

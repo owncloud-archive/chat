@@ -26,9 +26,9 @@
 	    	        </button>
 		    	</form>
 			</li>
-			<li ng-class="{heightInvite: showElements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
+			<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
          		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-    			<div ng-click="toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
+    			<div ng-click="view.toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
                     &nbsp;
 		        </div>
 				<div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
@@ -39,7 +39,7 @@
                     {{ user }}
                 </span>
                 <div style="clear:both;"></div>
-                <div id="invite-container" ng-if="showElements.inviteInput">
+                <div id="invite-container" ng-if="view.elements.inviteInput">
                     <form ng-submit="invite(userInvite, conv.id)">
                         <div tagger ng-model="userInvite" options="contactsList" single disable-new id="new-conv-invite" class="tagger-input" placeholder="Contact name" type="text" >
     			        </div>
@@ -51,14 +51,14 @@
 		    </li>
 		</ul>
         <div id="app-content">
-	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="showElements.contact" >
+	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
                 <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
                     <label>
                         {{ contact.displayname }}
                     </label>
                 </div>
     	    </div>
-        	<div ng-if="showElements.chat" >
+        	<div ng-if="view.elements.chat" >
     			<section ng-click="focusMsgInput()" id="chat-window-body">
     				<div id="chat-window-msgs">
     					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">

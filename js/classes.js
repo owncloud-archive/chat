@@ -144,7 +144,7 @@ var Chat = {
     	on : {
             invite : function(data){
                 Chat.scope.$apply(function(){
-                    Chat.scope.addConvToView(data.conv_id, data.user);
+                    Chat.scope.view.addConv(data.conv_id, data.user);
                 }); 
                 Chat.api.command.join(data.conv_id, function(){});
                 Chat.ui.alert('You auto started a new conversation with ' + data.user);
@@ -152,13 +152,13 @@ var Chat = {
             },
             chatMessage : function(data){
                 Chat.scope.$apply(function(){
-                    Chat.scope.addChatMsgToView(data.conv_id, data.user, data.chat_msg, data.timestamp);	
+                    Chat.scope.view.addChatMsg(data.conv_id, data.user, data.chat_msg, data.timestamp);	
                 });
             },
             joined : function(data){
             	Chat.ui.alert('The user ' + data.user + ' joined this conversation');
             	Chat.scope.$apply(function(){
-            		Chat.scope.addConvToView(data.conv_id. data.user);
+            		Chat.scope.view.addConv(data.conv_id. data.user);
                 });
                 Chat.ui.applyAvatar(data.user);
             }

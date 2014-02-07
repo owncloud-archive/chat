@@ -194,3 +194,6 @@
     content:"" !important;
     height:100%;
 }
+#app-content{
+    position:relative;
+}

@@ -3,13 +3,6 @@ var Chat = {
  */
 	tabActive : true, 
 	tabTitle : 'Chat - Owncloud',
-	app : {
-	    getContacts : function(success){
-	        $.get(OC.Router.generate("chat_get_contacts")).done(function(data){
-                success(data);
-            });
-	    }  
-	},
 	ui : {
     	clear : function(){
     		$('.panel').hide();
@@ -55,14 +48,6 @@ var Chat = {
                 OC.Notification.hide();
 			}, 2000);
     	},
-    	showPopover : function(){
-    	    $('#popover').show();
-    	},
-    	hidePopover : function(){
-    	    $('#popover-value').val('');
-    	    $('#popover').hide();
-    	}
-         
     },
     util : {
     	generateSessionId : function(){

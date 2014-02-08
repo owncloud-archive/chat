@@ -31,7 +31,7 @@ $this->create('chat_index', '/')->get()->action(
 	}
 );
 
-$this->create('chat_api', '/api')->action(
+$this->create('chat_och_api', '/och/api')->action(
 	function($params){
 		App::main('ApiController', 'route', new DIContainer('chat'), $params);
 	}

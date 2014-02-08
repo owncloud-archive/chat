@@ -82,7 +82,7 @@ var Chat = {
     	quit : function(){
             $.ajax({
                 type: "POST",
-                url: OC.Router.generate("chat_api"),
+                url: OC.Router.generate("chat_och_api"),
                 data: {"JSON" : JSON.stringify({ "type" : "command::quit::request", "data" : { "user" : OC.currentUser, "session_id" : Chat.sessionId, "timestamp" : (new Date).getTime() / 1000}})},
                 async: false,
             });
@@ -150,7 +150,7 @@ var Chat = {
     	},
     	util : {
             doRequest : function(request, success, error){
-                $.post(OC.Router.generate("chat_api"), {JSON: JSON.stringify(request)}).done(function(response){
+                $.post(OC.Router.generate("chat_och_api"), {JSON: JSON.stringify(request)}).done(function(response){
                 	if(response.data.status === "success"){
                         success();
                     } else if (response.data.status === "error"){
@@ -187,12 +187,12 @@ var Chat = {
                 }*/
             },
             getPushMessages : function(success){
-                $.post(OC.Router.generate('chat_api'), {"JSON" : JSON.stringify({"type" : "push::get::request", "data" : { "user" : OC.currentUser, "session_id" : Chat.sessionId}})}, function(data){
+                $.post(OC.Router.generate('chat_och_api'), {"JSON" : JSON.stringify({"type" : "push::get::request", "data" : { "user" : OC.currentUser, "session_id" : Chat.sessionId}})}, function(data){
                     success(data);
                 });
             },
             deletePushMessages : function(ids, success){
-                $.post(OC.Router.generate('chat_api'), {"JSON" : JSON.stringify({"type" : "push::delete::request", "data" : {"user" : OC.currentUser, "session_id" : Chat.sessionId, ids: ids}})}, function(data){
+                $.post(OC.Router.generate('chat_och_api'), {"JSON" : JSON.stringify({"type" : "push::delete::request", "data" : {"user" : OC.currentUser, "session_id" : Chat.sessionId, ids: ids}})}, function(data){
                    success();
                 });
             },

@@ -1,6 +1,6 @@
 $(function() {
     $(window).bind('beforeunload', function() {
-        Chat.util.quit();
+    // TODO    Chat.util.quit();
     });
 	OC.Router.registerLoadedCallback(function(){
         Chat.scope = angular.element($("#app")).scope();
@@ -24,6 +24,6 @@ $(function() {
 	    }
 	    $(this).data("prevType", e.type);
 	});
-	setInterval(Chat.util.titleHandler, 2000);
-	setInterval(Chat.util.updateOnlineStatus, 60000);
+// TODO setInterval(Chat.util.titleHandler, 2000);
+// TODO	setInterval(Chat.util.updateOnlineStatus, 60000);
 });

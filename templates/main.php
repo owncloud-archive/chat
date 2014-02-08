@@ -1,14 +1,31 @@
 <?php 
+// Fist load all style sheets
 \OCP\Util::addStyle('chat', 'bootstrap-stripped');
+\OCP\Util::addStyle('chat', 'tagger');
+\OCP\Util::addStyle('chat', 'main');
+
+// Second load all dependencies
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
 \OCP\Util::addScript('chat', 'vendor/tagger');
-\OCP\Util::addStyle('chat', 'tagger');
 
-\OCP\Util::addStyle('chat', 'main');
-\OCP\Util::addScript('chat', 'classes');
+// Third load the Chat object definition
+\OCP\Util::addScript('chat', 'chat');
+
+// Fourth load all Chat sub objects
+\OCP\Util::addScript('chat', 'app/chat.app');
+\OCP\Util::addScript('chat', 'app/chat.app.ui');
+\OCP\Util::addScript('chat', 'app/chat.app.view');
+
+/***************************/
+// Here all backend files will be loaded
+/***************************/
+
+// Fifth load all angular files
 \OCP\Util::addScript('chat', 'app/app');
 \OCP\Util::addScript('chat', 'app/controllers/convcontroller');
+
+// At last load the main handlers file, this will boot up the Chat app
 \OCP\Util::addScript('chat', 'handlers');
 ?>
 <div ng-controller="ConvController" ng-app="chat" id="app">

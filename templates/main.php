@@ -16,6 +16,7 @@
 \OCP\Util::addScript('chat', 'app/chat.app');
 \OCP\Util::addScript('chat', 'app/chat.app.ui');
 \OCP\Util::addScript('chat', 'app/chat.app.view');
+\OCP\Util::addScript('chat', 'app/chat.app.util');
 
 /***************************/
 // Here all backend files will be loaded

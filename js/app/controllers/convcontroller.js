@@ -65,23 +65,21 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
                 if(lastMsg.user === user){
                     lastMsg.msg = lastMsg.msg + "<br>" + $.trim(msg);
                     $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
-                } else if (Chat.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.util.timeStampToDate(timestamp).minutes
-                            && Chat.util.timeStampToDate(lastMsg.timestamp).hours === Chat.util.timeStampToDate(timestamp).hours
+                } else if (Chat.app.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.app.util.timeStampToDate(timestamp).minutes
+                            && Chat.app.util.timeStampToDate(lastMsg.timestamp).hours === Chat.app.util.timeStampToDate(timestamp).hours
                             ) {
                     $scope.convs[convId].msgs.push({
                         user : user,
                         msg : $.trim(msg),
                         timestamp : timestamp,
                         time : null, 
-                        align: align,
                     });    
                 } else {
                      $scope.convs[convId].msgs.push({
                         user : user,
                         msg : $.trim(msg),
                         timestamp : timestamp,
-                        time : Chat.util.timeStampToDate(timestamp), 
-                        align: align,
+                        time : Chat.app.util.timeStampToDate(timestamp), 
                     });     
                 }
             } else {
@@ -89,8 +87,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
                     user : user,
                     msg : $.trim(msg),
                     timestamp : timestamp,
-                    time : Chat.util.timeStampToDate(timestamp), 
-                    align: align,
+                    time : Chat.app.util.timeStampToDate(timestamp), 
                 });
             }
             
@@ -116,6 +113,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	    if (this.chatMsg != ''){
             $scope.view.addChatMsg($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
             // TODO Chat[backned].on.sendChatMsg(this.chatMsg);
+            Chat.och.on.sendChatMsg($scope.activeConv, this.chatMsg);
             this.chatMsg = '';
         }
 	};
@@ -127,7 +125,9 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
         	Chat.app.ui.alert('Please provide an ownCloud user name');
         } else {
             // TODO Chat[backend].on.newConv(userToInvite);
-            Chat.och.on.newConv(userToInvite);
+            Chat.och.on.newConv(userToInvite, function(convId, users){
+                $scope.view.addConv(convId, users);
+            });
         }
         this.userToInvite = '';
 	};

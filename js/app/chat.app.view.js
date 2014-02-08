@@ -13,5 +13,8 @@ Chat.app.view = {
         Chat.scope.$apply(function(){
             Chat.scope.view.addUserToConv(convId, user); 
         });
+    },
+    alert : function(text){
+        Chat.app.ui.alert(text);
     }
 };

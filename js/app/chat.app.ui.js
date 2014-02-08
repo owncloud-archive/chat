@@ -6,8 +6,8 @@ Chat.app.ui = {
 		$(element).focus();
 	},
 	focusMsgInput : function(){
-		if(!Chat.util.checkMobile()) {
-			Chat.ui.focus('#chat-msg-input');
+		if(!Chat.app.ui.checkMobile()) {
+			Chat.app.ui.focus('#chat-msg-input');
 		}
 	},
 	getFirstConv : function(){
@@ -40,4 +40,7 @@ Chat.app.ui = {
             OC.Notification.hide();
 		}, 2000);
 	},
+	checkMobile : function(){
+	                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	}
 };

@@ -23,11 +23,11 @@ Chat.och.api = {
         invite : function(data){
             // Here update the view
             Chat.app.view.addConv(data.conv_id, [data.user, OC.currentUser]);
-            Chat.api.command.join(data.conv_id, function(){});
+            Chat.och.api.command.join(data.conv_id, function(){});
             // TODO move this to the concontroller
             Chat.app.ui.alert('You auto started a new conversation with ' + data.user);
             // TOOD move this to the convcontroller
-            Chat.ui.applyAvatar(data.user);
+            //Chat.ui.applyAvatar(data.user);
         },
         chatMessage : function(data){
             Chat.app.view.addChatMsg(data.conv_id, data.user, data.chat_msg, data.timestamp);
@@ -55,20 +55,20 @@ Chat.och.api = {
                 var ids_del = [];
                 $.each(push_msgs.push_msgs, function(push_id, push_msg){
                     ids_del.push(push_id);
-                    Chat.api.util.handlePushMessage(push_msg);
+                    Chat.och.api.util.handlePushMessage(push_msg);
                 });
-                Chat.api.util.deletePushMessages(ids_del, function(){
-                    Chat.api.util.longPoll();
+                Chat.och.api.util.deletePushMessages(ids_del, function(){
+                    Chat.och.api.util.longPoll();
                 });
             });
         },
         handlePushMessage : function(push_msg){
             if (push_msg.type === "invite"){
-                Chat.api.on.invite(push_msg.data);
+                Chat.och.api.on.invite(push_msg.data);
             } else if (push_msg.type === "send_chat_msg"){
-                Chat.api.on.chatMessage(push_msg.data);
+                Chat.och.api.on.chatMessage(push_msg.data);
             } else if (push_msg.type === "joined"){
-                Chat.api.on.joined(push_msg.data);
+                Chat.och.api.on.joined(push_msg.data);
             } /*else if (msg.data.type === "left"){
     var conversationID = msg.data.param.conversationID;
     getUsers(server, conversationID, function(msg){

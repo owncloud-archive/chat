@@ -9,7 +9,7 @@ class PushMessageMapper extends Mapper {
 
 
     public function __construct(API $api) {
-      parent::__construct($api, 'chat_push_messages'); // tablename is news_feeds
+      parent::__construct($api, 'chat_och_push_messages'); // tablename is news_feeds
     }
 
 	public function findBysSessionId($sessionId){

@@ -8,7 +8,7 @@ class UserOnlineMapper extends Mapper {
 
 
     public function __construct(API $api) {
-      parent::__construct($api, 'chat_users_online'); // tablename is news_feeds
+      parent::__construct($api, 'chat_och_users_online'); // tablename is news_feeds
     }
 	
     public function getOnlineUsers(){

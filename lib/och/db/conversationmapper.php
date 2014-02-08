@@ -9,7 +9,7 @@ class ConversationMapper extends Mapper {
 
 
     public function __construct(API $api) {
-      parent::__construct($api, 'chat_conversations'); // tablename is news_feeds
+      parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
       $this->tableName = '*PREFIX*' . 'chat_conversations';
     }
 

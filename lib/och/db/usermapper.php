@@ -9,7 +9,7 @@ class UserMapper extends Mapper {
 
 
     public function __construct(API $api) {
-      parent::__construct($api, 'chat_users_in_conversation'); // tablename is news_feeds
+      parent::__construct($api, 'chat_och_users_in_conversation'); // tablename is news_feeds
     }
 
     public function findByConversation($conversationId){

@@ -24,25 +24,6 @@ namespace OCA\Chat;
 
 use \OCA\Chat\Core\API;
 
-\OC::$CLASSPATH['OCA\Chat\ChatAPI'] = 'chat/lib/chatapi.php';
-
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\Greet'] = 'chat/lib/och/commands/greet.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\CheckOnline'] = 'chat/lib/och/commands/checkonline.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\Invite'] = 'chat/lib/och/commands/invite.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\Join'] = 'chat/lib/och/commands/join.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\Leave'] = 'chat/lib/och/commands/leave.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\Online'] = 'chat/lib/och/commands/online.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\Quit'] = 'chat/lib/och/commands/quit.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Commands\SendChatMsg'] = 'chat/lib/och/commands/sendchatmsg.php';
-
-\OC::$CLASSPATH['OCA\Chat\OCH\Respones\Success'] = 'chat/lib/och/responses/success.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Respones\Error'] = 'chat/lib/och/responses/error.php';
-
-\OC::$CLASSPATH['OCA\Chat\OCH\Exceptions\CommandDataInvalid'] = 'chat/lib/och/exceptions/commanddatainvalid.php';
-
-\OC::$CLASSPATH['OCA\Chat\OCH\Push\Get'] = 'chat/lib/och/push/get.php';
-\OC::$CLASSPATH['OCA\Chat\OCH\Push\Delete'] = 'chat/lib/och/push/delete.php';
-
 $api = new API('chat');
 
 $api->addNavigationEntry(array(

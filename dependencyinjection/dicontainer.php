@@ -8,8 +8,8 @@ use \OCA\Chat\Core\Middleware\MiddlewareDispatcher;
 use \OCA\Chat\Core\Middleware\Security\SecurityMiddleware;
 use \OCA\Chat\Core\Utility\SimpleContainer;
 use \OCA\Chat\Core\Utility\TimeFactory;
-use \OCA\Chat\Controller\PageController;
-use \OCA\Chat\Controller\ApiController;
+use \OCA\Chat\Controller\AppController;
+use \OCA\Chat\Controller\OCH\ApiController;
 
 use \OCP\AppFramework\Http\Request;
 use \OCP\AppFramework\IApi;
@@ -93,9 +93,9 @@ class DIContainer extends SimpleContainer implements IAppContainer{
 
         $this['this'] = $this;
 
-        $this['PageController'] = $this->share(function($c){
+        $this['AppController'] = $this->share(function($c){
         //   throw new \Exception("PAgecontroller callee");
-        return new PageController($c['this'], $c['Request']);
+        return new AppController($c['this'], $c['Request']);
         });
 
         $this['ApiController'] = $this->share(function($c){

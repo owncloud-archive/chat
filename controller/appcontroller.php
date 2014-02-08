@@ -29,7 +29,7 @@ use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
 
-class PageController extends Controller {
+class AppController extends Controller {
 
     public function __construct(IAppContainer $app, IRequest $request){
 		parent::__construct($app, $request);

@@ -27,7 +27,7 @@ use \OCA\Chat\DependencyInjection\DIContainer;
 
 $this->create('chat_index', '/')->get()->action(
 	function($params){
-		App::main('PageController', 'index', new DIContainer('chat'), $params);
+		App::main('AppController', 'index', new DIContainer('chat'), $params);
 	}
 );
 
@@ -39,6 +39,6 @@ $this->create('chat_och_api', '/och/api')->action(
 
 $this->create('chat_get_contacts', '/getcontacts')->action(
 	function($params){
-		App::main('PageController', 'getContacts', new DIContainer('chat'), $params);
+		App::main('AppController', 'getContacts', new DIContainer('chat'), $params);
 	}
 );

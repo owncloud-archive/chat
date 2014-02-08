@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Chat\Controller;
+namespace OCA\Chat\Controller\OCH;
 //  \OCA\Chat\OCH\Commands\Greet
 use \OCA\Chat\OCH\Commands\Greet;
 use \OCA\Chat\OCH\Commands\Join;

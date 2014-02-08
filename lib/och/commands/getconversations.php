@@ -1,14 +1,13 @@
 <?php
 //broken
-namespace OCA\Chat\Commands;
+namespace OCA\Chat\OCH\Commands;
 
-use \OCA\Chat\Commands\Command;
 use \OCA\AppFramework\Core\API;
-use \OCA\Chat\Exceptions\NoOcUserException;
-use \OCA\Chat\Db\User;
-use \OCA\Chat\Db\UserMapper;
-use \OCA\Chat\Db\ConversationMapper;
-use \OCA\Chat\Db\Conversation;
+use \OCA\Chat\OCH\Commands\Command;
+use \OCA\Chat\OCH\Db\User;
+use \OCA\Chat\OCH\Db\UserMapper;
+use \OCA\Chat\OCH\Db\ConversationMapper;
+use \OCA\Chat\OCH\Db\Conversation;
 
 class GetConversations extends Command {
 	

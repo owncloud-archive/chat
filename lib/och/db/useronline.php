@@ -1,12 +1,14 @@
 <?php
-namespace OCA\Chat\Db;
+namespace OCA\Chat\OCH\Db;
 
 use \OCA\Chat\Db\Entity;
 
-class Conversation extends Entity {
+class UserOnline extends Entity {
 
     // Note: a field id is set automatically by the parent class
-    public $conversationId;
+    public $user;
+	public $sessionId;
+	public $lastOnline;
 	
     public function __construct(){
     }

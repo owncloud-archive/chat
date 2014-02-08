@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Chat;
+namespace OCA\Chat\OCH;
 use \OCA\Chat\Core\API;
 
 /*
@@ -22,7 +22,6 @@ abstract class ChatAPI {
 		return $this->requestData;
 	}
 
-	
 	abstract public function execute();	
 
 }

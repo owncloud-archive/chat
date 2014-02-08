@@ -1,12 +1,11 @@
 <?php
 
-namespace OCA\Chat\Commands;
+namespace OCA\Chat\OCH\Commands;
 
-use \OCA\Chat\ChatAPI;
+use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
-use \OCA\Chat\Exceptions\NoOcUserException;
-use \OCA\Chat\Db\UserOnline;
-use \OCA\Chat\Db\UserOnlineMapper;
+use \OCA\Chat\OCH\Db\UserOnline;
+use \OCA\Chat\OCH\Db\UserOnlineMapper;
 
 
 class CheckOnline extends ChatAPI {

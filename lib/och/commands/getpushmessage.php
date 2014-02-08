@@ -1,15 +1,14 @@
 <?php
 //broken
-namespace OCA\Chat\Commands;
+namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\Core\API;
-use \OCA\Chat\ChatAPI;
-use \OCA\Chat\Exceptions\NoOcUserException;
-use \OCA\Chat\Db\User;
-use \OCA\Chat\Db\UserMapper;
-use \OCA\Chat\Db\DoesNotExistException;
-use \OCA\Chat\Db\PushMessageMapper;
-use \OCA\Chat\Db\PushMessage;
+use \OCA\Chat\OCH\ChatAPI;
+use \OCA\Chat\OCH\Db\User;
+use \OCA\Chat\OCH\Db\UserMapper;
+use \OCA\Chat\OCH\Db\DoesNotExistException;
+use \OCA\Chat\OCH\Db\PushMessageMapper;
+use \OCA\Chat\OCH\Db\PushMessage;
 
 class GetPushMessage extends ChatAPI {
 	private $pushMessage;

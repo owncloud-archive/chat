@@ -1,12 +1,13 @@
 <?php
 
-namespace OCA\Chat\Push;
-use \OCA\Chat\Commands\Command;
+namespace OCA\Chat\OCH\Push;
+
 use \OCA\Chat\Core\API;
-use \OCA\Chat\ChatAPI;
-use \OCA\Chat\Exceptions\RequestDataInvalid;
-use \OCA\Chat\Db\PushMessageMapper;
-use \OCA\Chat\Db\PushMessage;
+use \OCA\Chat\OCH\ChatAPI;
+use \OCA\Chat\OCH\Commands\Command;
+use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use \OCA\Chat\OCH\Db\PushMessageMapper;
+use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\Db\DoesNotExistException;
 
 use \OCP\AppFramework\Http\JSONResponse;

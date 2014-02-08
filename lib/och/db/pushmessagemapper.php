@@ -1,5 +1,5 @@
 <?php
-namespace OCA\Chat\Db;
+namespace OCA\Chat\OCH\Db;
 
 use \OCA\Chat\Db\Mapper;
 use \OCA\Chat\Core\Api;

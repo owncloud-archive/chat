@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Chat\Exceptions;
+namespace OCA\Chat\OCH\Exceptions;
 
 class RequestDataInvalid extends \Exception {
 

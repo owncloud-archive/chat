@@ -1,18 +1,14 @@
 <?php
 
-namespace OCA\Chat\Commands;
+namespace OCA\Chat\OCH\Commands;
 
-use \OCA\Chat\ChatAPI;
+use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
-use \OCA\Chat\Exceptions\NoOcUserException;
-use \OCA\Chat\Exceptions\UserNotOnlineException;
-use \OCA\Chat\Exceptions\UserToInviteNotOnlineException;
-use \OCA\Chat\Exceptiosn\UserEqualToUserToInvite;
-use \OCA\Chat\Db\UserOnline;
-use \OCA\Chat\Db\UserOnlineMapper;
-use \OCA\Chat\Db\PushMessage;
-use \OCA\Chat\Db\PushMessageMapper;
-use \OCA\Chat\Exceptions\RequestDataInvalid;
+use \OCA\Chat\OCH\Db\UserOnline;
+use \OCA\Chat\OCH\Db\UserOnlineMapper;
+use \OCA\Chat\OCH\Db\PushMessage;
+use \OCA\Chat\OCH\Db\PushMessageMapper;
+use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 
 
 class Invite extends ChatAPI {

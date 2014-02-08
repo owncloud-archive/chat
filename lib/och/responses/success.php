@@ -1,5 +1,5 @@
 <?php
-namespace OCA\Chat\Responses;
+namespace OCA\Chat\OCH\Responses;
 
 use \OCP\AppFramework\Http\JSONResponse;
 

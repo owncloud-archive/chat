@@ -1,9 +1,10 @@
 <?php
 
-namespace OCA\Chat\Push;
-use \OCA\Chat\ChatAPI;
-use \OCA\Chat\Db\PushMessage;
-use \OCA\Chat\Db\PushMessageMapper;
+namespace OCA\Chat\OCH\Push;
+
+use \OCA\Chat\OCH\ChatAPI;
+use \OCA\Chat\OCH\Db\PushMessage;
+use \OCA\Chat\OCH\Db\PushMessageMapper;
 use \OCA\Chat\Core\API;
 
 use \OCP\AppFramework\Http\JSONResponse;

@@ -1,21 +1,21 @@
 <?php
 
 namespace OCA\Chat\Controller;
-
-use \OCA\Chat\Commands\Greet;
-use \OCA\Chat\Commands\Join;
-use \OCA\Chat\Commands\Invite;
-use \OCA\Chat\Commands\Send;
-use \OCA\Chat\Commands\GetConversations;
-use \OCA\Chat\Commands\Quit;
-use \OCA\Chat\Commands\Leave;
-use \OCA\Chat\Commands\Online;
-use \OCA\Chat\Commands\checkOnline;
-use \OCA\Chat\Responses\Success;
-use \OCA\Chat\Responses\Error;
-use \OCA\Chat\Exceptions\RequestDataInvalid;
-use \OCA\Chat\Push\Get;
-use \OCA\Chat\Push\Delete;
+//  \OCA\Chat\OCH\Commands\Greet
+use \OCA\Chat\OCH\Commands\Greet;
+use \OCA\Chat\OCH\Commands\Join;
+use \OCA\Chat\OCH\Commands\Invite;
+use \OCA\Chat\OCH\Commands\Send;
+use \OCA\Chat\OCH\Commands\GetConversations;
+use \OCA\Chat\OCH\Commands\Quit;
+use \OCA\Chat\OCH\Commands\Leave;
+use \OCA\Chat\OCH\Commands\Online;
+use \OCA\Chat\OCH\Commands\checkOnline;
+use \OCA\Chat\OCH\Responses\Success;
+use \OCA\Chat\OCH\Responses\Error;
+use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use \OCA\Chat\OCH\Push\Get;
+use \OCA\Chat\OCH\Push\Delete;
 use \OCA\Chat\Core\API;
 
 use \OCP\AppFramework\Http\JSONResponse;
@@ -55,13 +55,13 @@ class ApiController extends Controller {
 							if($request['data']['user'] === $this->app->getCoreApi()->getUserId()){
 								
 								$commandClasses = array(
-									'greet' => '\OCA\Chat\Commands\Greet',
-									'join' => '\OCA\Chat\Commands\Join',
-									'invite' => '\OCA\Chat\Commands\Invite',
-									'leave' => '\OCA\Chat\Commands\Leave',
-									'send_chat_msg' => '\OCA\Chat\Commands\SendChatMsg',
-									'quit' => '\OCA\Chat\Commands\Quit',
-									'online' => '\OCA\Chat\Commands\Online'
+									'greet' => '\OCA\Chat\OCH\Commands\Greet',
+									'join' => '\OCA\Chat\OCH\Commands\Join',
+									'invite' => '\OCA\Chat\OCH\Commands\Invite',
+									'leave' => '\OCA\Chat\OCH\Commands\Leave',
+									'send_chat_msg' => '\OCA\Chat\OCH\Commands\SendChatMsg',
+									'quit' => '\OCA\Chat\OCH\Commands\Quit',
+									'online' => '\OCA\Chat\OCH\Commands\Online'
 								);
 								
 								try{
@@ -90,8 +90,8 @@ class ApiController extends Controller {
    						if(!empty($request['data']['session_id'])){
    							//throw new \Exception("good to go");
    							$pushClasses = array(
-   								"get" => "\OCA\Chat\Push\Get",
-								"delete" => "\OCA\Chat\Push\Delete"
+   								"get" => "\OCA\Chat\OCH\Push\Get",
+								"delete" => "\OCA\Chat\OCH\Push\Delete"
    							);
    							$className = $pushClasses[$action];
 							$pushClass = new $className($this->app->getCoreApi());

@@ -1,13 +1,13 @@
 <?php
 
-namespace OCA\Chat\Commands;
+namespace OCA\Chat\OCH\Commands;
 
-use \OCA\Chat\ChatAPI;
+use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
-use \OCA\Chat\Db\User;
-use \OCA\Chat\Db\UserMapper;
-use \OCA\Chat\Db\Conversation;
-use \OCA\Chat\Db\ConversationMapper;
+use \OCA\Chat\OCH\Db\User;
+use \OCA\Chat\OCH\Db\UserMapper;
+use \OCA\Chat\OCH\Db\Conversation;
+use \OCA\Chat\OCH\Db\ConversationMapper;
 
 class Leave extends ChatAPI {
 	

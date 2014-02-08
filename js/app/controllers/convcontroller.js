@@ -14,6 +14,11 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
         });
         // TOOD init every backend 
         $scope.initDone = true;
+        angular.forEach(Chat.app.backends, function(backend, key){
+            // For each backend call the init function of the Chat.{backend}.util.init() function
+            console.log(backend);
+            Chat[backend].util.init();
+        });
     }
     
     $scope.view = {
@@ -122,6 +127,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
         	Chat.app.ui.alert('Please provide an ownCloud user name');
         } else {
             // TODO Chat[backend].on.newConv(userToInvite);
+            Chat.och.on.newConv(userToInvite);
         }
         this.userToInvite = '';
 	};

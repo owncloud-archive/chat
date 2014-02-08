@@ -19,6 +19,11 @@
 
 /***************************/
 // Here all backend files will be loaded
+\OCP\Util::addScript('chat', 'och/chat.och');
+\OCP\Util::addScript('chat', 'och/chat.och.on');
+\OCP\Util::addScript('chat', 'och/chat.och.util');
+\OCP\Util::addScript('chat', 'och/chat.och.api');
+\OCP\Util::addScript('chat', 'och/handlers');
 /***************************/
 
 // Fifth load all angular files

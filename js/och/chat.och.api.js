@@ -35,9 +35,9 @@ Chat.och.api = {
         joined : function(data){
             // TODO move this alert to convcontroller
             Chat.app.ui.alert('The user ' + data.user + ' joined this conversation');
-            Chat.app.view.addConv(data.conv_id. data.user);
+            Chat.app.view.addConv(data.conv_id, data.user);
             //TODO move this to convcontroller
-            Chat.ui.applyAvatar(data.user);
+            //Chat.ui.applyAvatar(data.user);
         }
     },
     util : {

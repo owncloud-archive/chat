@@ -149,6 +149,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
             Chat.app.ui.alert('Please provide a user name');
         } else {
             // TODO Chat[backend].on.invite(convId, userToInvite);
+            Chat.och.on.invite(convId, userToInvite);
         }
         $scope.view.hide('inviteInput');
 	};

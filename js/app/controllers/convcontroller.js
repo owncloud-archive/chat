@@ -130,14 +130,15 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
         this.userToInvite = '';
 	};
 	$scope.leave = function(convId){
-	    // TODO Chat[backend].on.leave(convId);
-        delete $scope.convs[convId];
-        if(Chat.util.countObjects($scope.convs) === 0){
-            $scope.hide('chat');
-            $scope.view.show('contact');
-        } else {
-            $scope.view.makeActive(Chat.app.ui.getFirstConv());
-        }    
+		Chat.och.on.leave(convId, function(){
+		    delete $scope.convs[convId];
+	        if(Chat.app.util.countObjects($scope.convs) === 0){
+	            $scope.view.hide('chat');
+	            $scope.view.show('contact');
+	        } else {
+	            $scope.view.makeActive(Chat.app.ui.getFirstConv());
+	        }    		
+		});
 	};
 	
 	$scope.invite = function(userToInvite, convId){

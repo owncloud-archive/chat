@@ -39,5 +39,8 @@ Chat.och.on = {
                 }
             }
      );
+    },
+    leave : function(convId, success){
+    	Chat.och.api.command.leave(convId, success);
     }
 };

@@ -26,8 +26,6 @@ Chat.och.api = {
             Chat.och.api.command.join(data.conv_id, function(){});
             // TODO move this to the concontroller
             Chat.app.ui.alert('You auto started a new conversation with ' + data.user);
-            // TOOD move this to the convcontroller
-            //Chat.ui.applyAvatar(data.user);
         },
         chatMessage : function(data){
             Chat.app.view.addChatMsg(data.conv_id, data.user, data.chat_msg, data.timestamp);
@@ -35,11 +33,7 @@ Chat.och.api = {
         joined : function(data){
             // TODO move this alert to convcontroller
             Chat.app.ui.alert('The user ' + data.user + ' joined this conversation');
-            Chat.app.view.addUserToConv(data.conv_id, data.user);
-            alert('dam it');
-            
-            //TODO move this to convcontroller
-            //Chat.ui.applyAvatar(data.user);
+            Chat.app.view.addUserToConv(data.conv_id, data.user);           
         }
     },
     util : {

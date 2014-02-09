@@ -45,19 +45,21 @@
 			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 			        </div>
 			        <button id="new-conv-button" class="primary tagger-button">
-		                <div class="icon icon-add icon-20">&nbsp;</div>
-	    	        </button>
-		    	</form>
+                                    <div class="icon icon-add icon-20">&nbsp;</div>
+                                </button>
+                            </form>
 			</li>
 			<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
-         		<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-    			<div ng-click="view.toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
-                    &nbsp;
-		        </div>
-				<div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
-				    &nbsp;
-                </div>
-                <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left icon-{{ user }}"></div>
+                            <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
+                            <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
+                                &nbsp;
+                            </div>
+                            <div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
+                                &nbsp;
+                            </div>
+                            <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" avatar data-size="32" data-user="{{ user }}">
+                                
+                            </div>
                 <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" >
                     {{ user }}
                 </span>
@@ -89,7 +91,7 @@
     							{{ msg.time.hours }} : {{ msg.time.minutes }}
     						</div>
     						<div class="chat-msg">
-    							<div class="icon-{{ msg.user }}">
+    							<div data-user="{{ msg.user }}" data-size="32" avatar>
     							</div>
     							<p ng-bind-html="msg.msg">
                                     placeholder

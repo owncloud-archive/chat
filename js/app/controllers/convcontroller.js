@@ -54,8 +54,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
             };
             $scope.view.show('chat');
             $scope.view.makeActive(convId);
-            //Chat.app.ui.applyAvatar(convName); // TODO
-    		$scope.$apply();
+            $scope.$apply();
 	    },
 	    addChatMsg : function(convId, user, msg, timestamp){
             // Check if the user is equal to the user of the last msg
@@ -92,7 +91,6 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
             }
             
             setTimeout(function(){
-                Chat.app.ui.applyAvatar(user);
                 Chat.app.ui.scrollDown();
             },1); // Give angular some time to apply the msg to scope
             // Edit tab title when the tab isn't active
@@ -158,4 +156,11 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
     return function(callback){
         $.get(OC.Router.generate("chat_get_contacts")).then(callback);
     }
-});
+}).directive('avatar', function() {
+    return {    
+        restrict: 'A',
+        link: function (scope, element,attrs) {
+            element.avatar(attrs.user, attrs.size);
+        }
+    };
+});;

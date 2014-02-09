@@ -82,7 +82,6 @@
                 }); 
                 Chat.api.command.join(data.conv_id, function(){});
                 Chat.ui.alert('You auto started a new conversation with ' + data.user);
-                Chat.ui.applyAvatar(data.user);
             },
             chatMessage : function(data){
                 Chat.scope.$apply(function(){
@@ -94,7 +93,6 @@
             	Chat.scope.$apply(function(){
             		Chat.scope.view.addConv(data.conv_id. data.user);
                 });
-                Chat.ui.applyAvatar(data.user);
             }
     	},
     	util : {

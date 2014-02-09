@@ -23,9 +23,6 @@ Chat.app.ui = {
 		$('#conv-new-msg-' + convId).fadeOut();
 		this.newMsg(convId);
 	},
-	applyAvatar : function(user){
-	    $('.icon-' + user).avatar(user, 32);
-	},
 	updateTitle : function(){
 		if(!Chat.tabActive){
 			$('title').text(Chat.tabTitle);

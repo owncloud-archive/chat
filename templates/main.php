@@ -34,20 +34,23 @@
 // At last load the main handlers file, this will boot up the Chat app
 \OCP\Util::addScript('chat', 'handlers');
 ?>
-<div ng-controller="ConvController" ng-app="chat" id="app">
+<div ng-click="view.hide('backendSelect')" ng-controller="ConvController" ng-app="chat" id="app">
     <div class="icon icon-loading" id="main-panel" ng-if="!initDone">
         &nbsp;
     </div>
 	<div ng-if="initDone" id="main-panel" >
 		<ul id="app-navigation" >
 			<li id="conv-list-new-conv">
-			    <form ng-submit="newConv(userToInvite)">
+			    <form ng-submit="newConv(userToInvite, backend)">
 			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 			        </div>
 			        <button id="new-conv-button" class="primary tagger-button">
-                                    <div class="icon icon-add icon-20">&nbsp;</div>
-                                </button>
-                            </form>
+                    	<div class="icon icon-add icon-20">&nbsp;</div>
+                    </button>
+                    <button ng-click="view.toggle('backendSelect', $event)" id="new-conv-backend-button" class="primary tagger-button-right tagger-button">
+                    	<div class="triangle-bottom">&nbsp;</div>
+                    </button>
+            	</form>
 			</li>
 			<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
                             <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
@@ -77,7 +80,7 @@
 		</ul>
         <div id="app-content">
 	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
-                <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+                <div  ng-click="newConv(contact.displayname, 'och')" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
                     <label>
                         {{ contact.displayname }}
                     </label>
@@ -104,9 +107,19 @@
     				<form ng-submit="sendChatMsg()"> 
     					<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
     					<input id="chat-msg-send" type="submit"  value="Send" />
+    					<select ng-if="convs[activeConv].backend === null">
+    						<option ng-repeat="" value="och">ownCloud Handle</option>
+    					</select>
     				</form>
     			</footer>
     		</div>
 	    </div>
+	</div>
+	<div ng-if="view.elements.backendSelect" id="backend-select">
+		<ul>
+			<li ng-class="{'backend-selected': backend.name === selectedBackend.name}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
+				{{ backend.displayname }}
+			</li>
+		</ul>
 	</div>
 </div>

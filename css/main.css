@@ -76,9 +76,11 @@
 	margin-bottom:0px;
 }
 #chat-msg-input{
-	width:80%;
+	width:65%;
 }
-
+#chat-msg-backend{
+	width:20%;	
+}
 #chat-msg-send{
 	width:10%;	
 }
@@ -160,16 +162,20 @@
     border-top-right-radius:0px;
     border-bottom-right-radius:0px;
     margin-top: 0px;
-    width:230px;
+    width:190px;
     background-color:#fff;
 }
 .tagger-button {
     float:left;
     margin-left: 0px;
+    margin-right:0px;
     margin-top: 0px;
     height: 33px;
-    border-top-left-radius:0px;
-    border-bottom-left-radius:0px;
+    border-radius:0px;
+}
+.tagger-button-right {
+	border-top-right-radius:3px;
+    border-bottom-right-radius:3px;
 }
 
 .right{
@@ -196,4 +202,38 @@
 }
 #app-content{
     position:relative;
+}
+.triangle-bottom{
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #000000;
+}
+
+/* Backend selecter */
+#backend-select{
+	position:fixed;
+	top:84px;
+	left:164px;
+	width:190px;
+	margin-top:1px;
+}
+
+#backend-select ul li {
+	border:1px solid #1d2d44;	
+	border-top:none;
+	background-color:#35537a;
+    padding: 10px;
+	height:40px;
+	color:#fff;
+	height:40px;
+}
+
+#backend-select ul li:hover{
+    background: #304d76;
+}
+
+.backend-selected {
+	background-color:#3B3F46 !important;
 }

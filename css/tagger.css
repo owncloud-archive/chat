@@ -17,7 +17,6 @@
 .angular-tagger__tag {
     background: #FFF;
     padding: 5px;
-    margin: 1px;
     display: inline-block;
     color: black;
      border-radius: 3px;
@@ -59,7 +58,6 @@
     width: 100%;
     top: 0px;
     left: -1;
-    border: 1px solid #eee;
     padding: 0;
     margin: 0;
     background: #fff;
@@ -72,6 +70,7 @@
     color: #ddd;
     border: 1px solid #1d2d44;
     border-top:none;
+	height:40px;
 }
 
 .angular-tagger__matching-item:hover {

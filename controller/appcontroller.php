@@ -23,11 +23,13 @@
 namespace OCA\Chat\Controller;
 
 use \OCA\Chat\Core\API;
-
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
+use \OCA\Chat\Db\Backend;
+use \OCA\Chat\Db\BackendMapper;
+
 
 class AppController extends Controller {
 
@@ -47,7 +49,6 @@ class AppController extends Controller {
 	}
 	
 	/**
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
 	public function getContacts() {
@@ -98,6 +99,31 @@ class AppController extends Controller {
             $receivers[] = $data;
         }
 	    return new JSONResponse(array('contacts' => $receivers, 'contactsList' => $contactList));
+	}
+	
+	public function backend(){
+		$backendMapper = new BackendMapper($this->app->getCoreApi());
+		$backend = new Backend();
+		$backend->setId($this->params('id'));
+		
+		if($this->params('do') === 'enable'){
+			$backend->setEnabled('true');	
+		} elseif($this->params('do') === 'disable'){
+			$backend->setEnabled('false');
+		}
+
+		$backendMapper->update($backend);
+		return new JSONResponse(array("status" => "success"));
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 */
+	public function getBackends(){
+		$backendMapper = new BackendMapper($this->app->getCoreApi());
+		$backends = $backendMapper->getAllEnabled();
+
+		return new JSONResponse(array("backends" => $backends));
 	}
 
 }

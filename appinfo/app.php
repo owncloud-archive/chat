@@ -23,6 +23,9 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\Core\API;
+use \OCA\Chat\Core\AppApi;
+use \OCA\Chat\DependencyInjection\DIContainer;
+
 
 $api = new API('chat');
 
@@ -33,3 +36,10 @@ $api->addNavigationEntry(array(
 	'icon' => $api->imagePath('chat.png'),
 	'name' => $api->getTrans()->t('Chat')
 ));
+
+\OCP\App::registerAdmin('chat', 'admin');
+
+$DIContainer = new DIContainer('chat');
+$appApi = $DIContainer['AppApi'];
+$appApi->registerBackend('ownCloud Handle', 'och', 'true');
+//$appApi->registerBackend('Email', 'email', 'true');

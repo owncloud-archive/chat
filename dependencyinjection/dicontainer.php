@@ -10,6 +10,7 @@ use \OCA\Chat\Core\Utility\SimpleContainer;
 use \OCA\Chat\Core\Utility\TimeFactory;
 use \OCA\Chat\Controller\AppController;
 use \OCA\Chat\Controller\OCH\ApiController;
+use \OCA\Chat\Core\AppApi;
 
 use \OCP\AppFramework\Http\Request;
 use \OCP\AppFramework\IApi;
@@ -102,7 +103,13 @@ class DIContainer extends SimpleContainer implements IAppContainer{
         //   throw new \Exception("PAgecontroller callee");
         return new ApiController($c['this'], $c['Request']);
         });
+        
+        $this['AppApi'] = $this->share(function($c){
+        	return new AppApi($c['this']);
+        });
 
+        
+        
     }
 
 

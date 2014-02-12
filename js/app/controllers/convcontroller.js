@@ -1,24 +1,30 @@
-Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope, contacts) {
+Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',function($scope, contacts, backends) {
 	$scope.activeConv = null;
 	$scope.convs = {}; 
 	$scope.currentUser = OC.currentUser;
 	$scope.debug = [];
 	$scope.contacts = [];
 	$scope.contactsList = [];
-    
+	$scope.backends = [];
+	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
+	//$scope.selectedBackend // set in $scope.init // this is the selected backend in the backend choser in the new conv panel
+	
     $scope.init = function(){
         contacts(function(data){
             $scope.contacts = data['contacts'];
             $scope.contactsList = data['contactsList'];
             $scope.$apply();
         });
+        backends(function(data){
+        	$scope.backends = data['backends'];
+        	$scope.selectedBackend = $scope.backends[0];
+        });
         // TOOD init every backend 
-        $scope.initDone = true;
         angular.forEach(Chat.app.backends, function(backend, key){
             // For each backend call the init function of the Chat.{backend}.util.init() function
-            console.log(backend);
             Chat[backend].util.init();
         });
+        $scope.initDone = true;
     }
     
     $scope.view = {
@@ -27,16 +33,26 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	        "contact" : true,
 	        "chat" : false,
     	    "initDone" : false,
+    	    "backendSelect" : false
         },        
-        show : function(element){
-            console.log('show' + element);
+        show : function(element, $event){
             $scope.view.elements[element] = true;
+            if ($event != null) {
+                if (typeof $event.stopPropagation === "function") {
+                  $event.stopPropagation();
+                }
+        	}
         },
         hide : function(element){
             $scope.view.elements[element] = false;
         },
-        toggle : function(element){
-            $scope.view.elements[element] = !$scope.view.elements[element];
+        toggle : function(element, $event){
+        	$scope.view.elements[element] = !$scope.view.elements[element];
+        	if ($event != null) {
+                if (typeof $event.stopPropagation === "function") {
+                  $event.stopPropagation();
+                }
+        	}
         },
     	updateTitle : function(newTitle){
             $scope.title = newTitle;
@@ -46,11 +62,12 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
             $scope.view.focusMsgInput();
 	    },
 	    addConv : function(convId, users){
-            $scope.convs[convId] = {
+	    	$scope.convs[convId] = {
                 id : convId,
                 users : users,
                 msgs : [],
-                currentUser : OC.currentUser
+                currentUser : OC.currentUser,
+                backend : null,
             };
             $scope.view.show('chat');
             $scope.view.makeActive(convId);
@@ -110,27 +127,28 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	$scope.sendChatMsg = function(){
 	    if (this.chatMsg != ''){
             $scope.view.addChatMsg($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
-            // TODO Chat[backned].on.sendChatMsg(this.chatMsg);
-            Chat.och.on.sendChatMsg($scope.activeConv, this.chatMsg);
+            var backend = $scope.convs[$scope.activeConv].backend;
+            Chat[backend].on.sendChatMsg($scope.activeConv, this.chatMsg);
             this.chatMsg = '';
         }
 	};
 	
-    $scope.newConv = function(userToInvite){
+    $scope.newConv = function(userToInvite, backend){
         if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
         	Chat.app.ui.alert('You can\'t start a conversation with yourself');
         } else if(userToInvite === ''){
         	Chat.app.ui.alert('Please provide an ownCloud user name');
         } else {
-            // TODO Chat[backend].on.newConv(userToInvite);
-            Chat.och.on.newConv(userToInvite, function(convId, users){
+        	Chat[backend].on.newConv(userToInvite, function(convId, users){
                 $scope.view.addConv(convId, users);
             });
         }
         this.userToInvite = '';
 	};
+	
 	$scope.leave = function(convId){
-		Chat.och.on.leave(convId, function(){
+        var backend = $scope.convs[convId].backend;
+		Chat[backend].on.leave(convId, function(){
 		    delete $scope.convs[convId];
 	        if(Chat.app.util.countObjects($scope.convs) === 0){
 	            $scope.view.hide('chat');
@@ -142,13 +160,13 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 	};
 	
 	$scope.invite = function(userToInvite, convId){
+        var backend = $scope.convs[convId].backend;
         if(userToInvite === OC.currentUser){
         	Chat.app.ui.alert('You can\'t invite yourself');
         } else if(userToInvite === ''){
             Chat.app.ui.alert('Please provide a user name');
         } else {
-            // TODO Chat[backend].on.invite(convId, userToInvite);
-            Chat.och.on.invite(convId, userToInvite);
+            Chat[backend].on.invite(convId, userToInvite);
         }
         $scope.view.hide('inviteInput');
 	};
@@ -156,7 +174,11 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts',function($scope,
 }]).factory('contacts', function() {
     return function(callback){
         $.get(OC.Router.generate("chat_get_contacts")).then(callback);
-    }
+    };
+}).factory('backends', function() {
+    return function(callback){
+        $.get(OC.Router.generate("chat_get_backends")).then(callback);
+    };
 }).directive('avatar', function() {
     return {    
         restrict: 'A',

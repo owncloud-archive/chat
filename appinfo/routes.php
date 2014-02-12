@@ -25,6 +25,8 @@ namespace OCA\Chat;
 use \OCA\Chat\Core\App;
 use \OCA\Chat\DependencyInjection\DIContainer;
 
+// Note that action can't be used as keyword
+
 $this->create('chat_index', '/')->get()->action(
 	function($params){
 		App::main('AppController', 'index', new DIContainer('chat'), $params);
@@ -42,3 +44,18 @@ $this->create('chat_get_contacts', '/getcontacts')->action(
 		App::main('AppController', 'getContacts', new DIContainer('chat'), $params);
 	}
 );
+
+$this->create('chat_get_backends', '/backend/get')->action(
+		function($params){
+			//throw new \Exception("hoi2");
+			App::main('AppController', 'getBackends', new DIContainer('chat'), $params);
+		}
+);
+
+// Action can be enable or disable
+$this->create('chat_backend', '/backend/{do}/{backend}/{id}')->action(
+	function($params){
+		App::main('AppController', 'backend', new DIContainer('chat'), $params);
+	}
+);
+

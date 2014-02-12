@@ -5,7 +5,37 @@
  	<overwrite>false</overwrite>
  	<charset>utf8</charset>
  	<table>
- 		<name>*dbprefix*chat_och_push_messages</name>
+ 		<name>*dbprefix*chat_backends</name>
+  		<declaration>
+	   		<field>
+	  			<name>id</name>
+	    		<type>integer</type>
+	      		<notnull>true</notnull>
+	          	<autoincrement>1</autoincrement>
+	      		<length>4</length>
+	    	</field>
+	    	<field>
+	      		<name>displayname</name>
+	      		<type>text</type>
+	      		<notnull>true</notnull>
+	      		<length>64</length>
+	    	</field>
+	    	<field>
+	    		<name>name</name>
+	     	 	<type>text</type>
+	      		<notnull>true</notnull>
+	      		<length>64</length>/length>
+	    	</field>
+	    	<field>
+	    		<name>enabled</name>
+	     	 	<type>boolean</type>
+	      		<notnull>true</notnull>
+	      		<length>64</length>/length>
+	    	</field>
+   		</declaration>
+	</table>
+ 	<table>
+ 		<name>*dbprefix*chat_push_messages</name>
   		<declaration>
 	   		<field>
 	  			<name>id</name>
@@ -41,7 +71,7 @@
    		</declaration>
 	</table>
 	<table>
-  		<name>*dbprefix*chat_och_conversations</name>
+  		<name>*dbprefix*chat_conversations</name>
   		<declaration>
     		<field>
 	  			<name>conversation_id</name>
@@ -52,7 +82,7 @@
    		</declaration>
 	</table>
 	<table>
-		<name>*dbprefix*chat_och_users_in_conversation</name>
+		<name>*dbprefix*chat_users_in_conversation</name>
 	  	<declaration>
 		  	<field>
 		  		<name>conversation_id</name>
@@ -75,7 +105,7 @@
     	</declaration>
 	</table>
 	<table>
-		<name>*dbprefix*chat_och_users_online</name>
+		<name>*dbprefix*chat_users_online</name>
 	  	<declaration>
 	    	<field>
 	  			<name>user</name>

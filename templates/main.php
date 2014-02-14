@@ -41,7 +41,7 @@
 	<div ng-if="initDone" id="main-panel" >
 		<ul id="app-navigation" >
 			<li id="conv-list-new-conv">
-			    <form ng-submit="newConv(userToInvite, backend)">
+			    <form ng-submit="newConv(userToInvite, selectedBackend)">
 			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 			        </div>
 			        <button id="new-conv-button" class="primary tagger-button">
@@ -107,9 +107,6 @@
     				<form ng-submit="sendChatMsg()"> 
     					<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
     					<input id="chat-msg-send" type="submit"  value="Send" />
-    					<select ng-if="convs[activeConv].backend === null">
-    						<option ng-repeat="" value="och">ownCloud Handle</option>
-    					</select>
     				</form>
     			</footer>
     		</div>
@@ -117,7 +114,7 @@
 	</div>
 	<div ng-if="view.elements.backendSelect" id="backend-select">
 		<ul>
-			<li ng-class="{'backend-selected': backend.name === selectedBackend.name}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
+			<li ng-click="selectBackend(backend)" ng-class="{'backend-selected': backend.name === selectedBackend.name}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
 				{{ backend.displayname }}
 			</li>
 		</ul>

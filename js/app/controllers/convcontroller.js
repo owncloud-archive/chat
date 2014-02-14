@@ -25,7 +25,11 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
             Chat[backend].util.init();
         });
         $scope.initDone = true;
-    }
+    };
+    
+    $scope.selectBackend = function(backend){
+      	$scope.selectedBackend = backend;
+    };
     
     $scope.view = {
         elements : {
@@ -61,13 +65,13 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
             $scope.activeConv = convId;
             $scope.view.focusMsgInput();
 	    },
-	    addConv : function(convId, users){
+	    addConv : function(convId, users, backend){
 	    	$scope.convs[convId] = {
                 id : convId,
                 users : users,
                 msgs : [],
                 currentUser : OC.currentUser,
-                backend : null,
+                backend : backend,
             };
             $scope.view.show('chat');
             $scope.view.makeActive(convId);
@@ -127,7 +131,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 	$scope.sendChatMsg = function(){
 	    if (this.chatMsg != ''){
             $scope.view.addChatMsg($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
-            var backend = $scope.convs[$scope.activeConv].backend;
+            var backend = $scope.convs[$scope.activeConv].backend.name;
             Chat[backend].on.sendChatMsg($scope.activeConv, this.chatMsg);
             this.chatMsg = '';
         }
@@ -139,15 +143,15 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
         } else if(userToInvite === ''){
         	Chat.app.ui.alert('Please provide an ownCloud user name');
         } else {
-        	Chat[backend].on.newConv(userToInvite, function(convId, users){
-                $scope.view.addConv(convId, users);
+        	Chat[backend.name].on.newConv(userToInvite, function(convId, users){
+                $scope.view.addConv(convId, users, backend);
             });
         }
         this.userToInvite = '';
 	};
 	
 	$scope.leave = function(convId){
-        var backend = $scope.convs[convId].backend;
+        var backend = $scope.convs[convId].backend.name;
 		Chat[backend].on.leave(convId, function(){
 		    delete $scope.convs[convId];
 	        if(Chat.app.util.countObjects($scope.convs) === 0){
@@ -160,7 +164,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 	};
 	
 	$scope.invite = function(userToInvite, convId){
-        var backend = $scope.convs[convId].backend;
+        var backend = $scope.convs[convId].backend.name;
         if(userToInvite === OC.currentUser){
         	Chat.app.ui.alert('You can\'t invite yourself');
         } else if(userToInvite === ''){

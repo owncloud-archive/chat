@@ -35,7 +35,6 @@ class ApiController extends Controller {
 	 * Routes the API Request
      * @param String $this->params('JSON') command in JSON
      * @return JSONResponse 
-	 * @NoCSRFRequired
 	 * @NoAdminRequired
      */
     public function route(){

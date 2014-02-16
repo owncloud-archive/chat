@@ -117,7 +117,7 @@ class AppController extends Controller {
 	}
 
 	/**
-	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 */
 	public function getBackends(){
 		$backendMapper = new BackendMapper($this->app->getCoreApi());

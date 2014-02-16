@@ -42,7 +42,7 @@
 		<div id="app-navigation" >
 			<ul>
 				<li id="conv-list-new-conv">
-				    <form ng-submit="newConv(userToInvite, selectedBackend)">
+				    <form ng-submit="newConv(userToInvite)">
 				        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 				        </div>
 				        <button id="new-conv-button" class="primary tagger-button">
@@ -91,7 +91,7 @@
        	</div>
         <div id="app-content">
 	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
-                <div  ng-click="newConv(contact.displayname, 'och')" ng-repeat="contact in contacts | backendFilter:selectedBackend" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+                <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts | backendFilter:selectedBackend" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
                     <label>
                         {{ contact.displayname }}
                     </label>
@@ -105,7 +105,7 @@
     							{{ msg.time.hours }} : {{ msg.time.minutes }}
     						</div>
     						<div class="chat-msg">
-    							<div data-user="{{ msg.user }}" data-size="32" avatar>
+    							<div data-user="{{ msg.user }}" data-backend="{{ this.$parent.backend }}" data-size="32" avatar>
     							</div>
     							<p ng-bind-html="msg.msg">
                                     placeholder

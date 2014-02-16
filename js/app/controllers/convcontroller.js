@@ -20,13 +20,15 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
         	$scope.backends = data['backends'];
         	$scope.selectedBackend = $scope.backends[0];
         	$scope.$apply();
+        	// TOOD init every backend 
+            angular.forEach(data['backends'], function(backend, key){
+            	console.log('initin backends');
+                // For each backend call the init function of the Chat.{backend}.util.init() function
+                Chat[backend.name].util.init();
+            });
         });	
     	
-        // TOOD init every backend 
-        angular.forEach($scope.backends, function(backend, key){
-            // For each backend call the init function of the Chat.{backend}.util.init() function
-            Chat[backend].util.init();
-        });
+     
         $scope.initDone = true;
     };
     
@@ -149,7 +151,8 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
         }
 	};
 	
-    $scope.newConv = function(userToInvite, backend){
+    $scope.newConv = function(userToInvite){
+    	var backend = $scope.selectedBackend;
         if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
         	Chat.app.ui.alert('You can\'t start a conversation with yourself');
         } else if(userToInvite === ''){
@@ -198,8 +201,16 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 }).directive('avatar', function() {
     return {    
         restrict: 'A',
-        link: function (scope, element,attrs) {
-            element.avatar(attrs.user, attrs.size);
+        link: function ($scope, element,attrs) {
+        	var backendName;
+        	if($scope.$parent.conv !== undefined){
+        		backendName = $scope.$parent.conv.backend.name;
+        	} else {
+        		backendName = $scope.$parent.$parent.$parent.convs[$scope.$parent.$parent.$parent.activeConv].backend.name;
+        	}
+        		
+        	//console.log($scope.$parent.conv.backend.name);
+        	Chat[backendName].on.applyAvatar(element, attrs.user, attrs.size);
         }
     };
 }).filter('backendFilter', function() {

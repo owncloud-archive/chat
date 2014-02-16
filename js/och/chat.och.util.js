@@ -1,5 +1,6 @@
 Chat.och.util = {
     init : function(){
+    	console.log('initing och');
         Chat.och.sessionId = Chat.och.util.generateSessionId();
         Chat.och.api.command.greet(function(){
             //TODO add getConversation function

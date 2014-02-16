@@ -1,39 +1,38 @@
-Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',function($scope, contacts, backends) {
-	$scope.activeConv = null;
+Chat.angular.controller('ConvController', ['$scope',function($scope) {
 	$scope.convs = {}; 
-	$scope.currentUser = OC.currentUser;
-	$scope.debug = [];
 	$scope.contacts = [];
 	$scope.contactsList = [];
 	$scope.backends = [];
-	$scope.currentBackend = "test";
+	$scope.active = {
+		backend : {},
+		conv : {},
+		user : OC.currentUser
+	};
 	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
-	//$scope.selectedBackend // set in $scope.init // this is the selected backend in the backend choser in the new conv panel
+	
+	
 	
     $scope.init = function(){
-    	contacts(function(data){
-            $scope.contacts = data['contacts'];
-            $scope.contactsList = data['contactsList'];
-            $scope.$apply();
-        });
-        backends(function(data){
-        	$scope.backends = data['backends'];
-        	$scope.selectedBackend = $scope.backends[0];
-        	$scope.$apply();
+    	var initvar = JSON.parse($('#initvar').text());
+    	console.log(initvar);
+    	$scope.contacts = initvar['contacts'];
+        $scope.contactsList = initvar['contactsList'];
+       	$scope.backends = initvar['backends'];
+    	$scope.active.backend = $scope.backends[0];
+    	$scope.$apply();
         	// TOOD init every backend 
-            angular.forEach(data['backends'], function(backend, key){
-            	console.log('initin backends');
-                // For each backend call the init function of the Chat.{backend}.util.init() function
-                Chat[backend.name].util.init();
-            });
-        });	
-    	
+        angular.forEach(initvar['backends'], function(backend, key){
+            // For each backend call the init function of the Chat.{backend}.util.init() function
+        	if(backend.name === 'och'){
+        	Chat[backend.name].util.init();
+        	}
+        });
      
         $scope.initDone = true;
     };
     
     $scope.selectBackend = function(backend){
-      	$scope.selectedBackend = backend;
+      	$scope.active.backend = backend;
     };
     
     $scope.view = {
@@ -76,7 +75,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
             $scope.title = newTitle;
     	},
     	makeActive : function(convId){
-            $scope.activeConv = convId;
+            $scope.active.conv = convId;
             $scope.view.focusMsgInput();
 	    },
 	    addConv : function(convId, users, backend){
@@ -84,7 +83,6 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
                 id : convId,
                 users : users,
                 msgs : [],
-                currentUser : OC.currentUser,
                 backend : backend,
             };
             $scope.view.show('chat');
@@ -129,7 +127,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
                 Chat.app.ui.scrollDown();
             },1); // Give angular some time to apply the msg to scope
             // Edit tab title when the tab isn't active
-            if(user !== OC.currentUser) {
+            if(user !== $scope.active.user) {
                 Chat.tabTitle = 'New msg from ' + user;
             }
     	},
@@ -144,16 +142,16 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
     	
 	$scope.sendChatMsg = function(){
 	    if (this.chatMsg != ''){
-            $scope.view.addChatMsg($scope.activeConv, OC.currentUser, this.chatMsg,new Date().getTime() / 1000);
-            var backend = $scope.convs[$scope.activeConv].backend.name;
-            Chat[backend].on.sendChatMsg($scope.activeConv, this.chatMsg);
+            $scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000);
+            var backend = $scope.convs[$scope.active.conv].backend.name;
+            Chat[backend].on.sendChatMsg($scope.active.conv, this.chatMsg);
             this.chatMsg = '';
         }
 	};
 	
     $scope.newConv = function(userToInvite){
-    	var backend = $scope.selectedBackend;
-        if(userToInvite.toLowerCase() === OC.currentUser.toLowerCase()){
+    	var backend = $scope.active.backend;
+        if(userToInvite.toLowerCase() === $scope.active.user.toLowerCase()){
         	Chat.app.ui.alert('You can\'t start a conversation with yourself');
         } else if(userToInvite === ''){
         	Chat.app.ui.alert('Please provide an ownCloud user name');
@@ -180,7 +178,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 	
 	$scope.invite = function(userToInvite, convId){
         var backend = $scope.convs[convId].backend.name;
-        if(userToInvite === OC.currentUser){
+        if(userToInvite === $scope.active.user){
         	Chat.app.ui.alert('You can\'t invite yourself');
         } else if(userToInvite === ''){
             Chat.app.ui.alert('Please provide a user name');
@@ -190,23 +188,21 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
         $scope.view.hide('inviteInput');
 	};
 	
-}]).factory('contacts', function() {
-    return function(callback){
-        $.get(OC.Router.generate("chat_get_contacts")).then(callback);
-    };
-}).factory('backends', function() {
-    return function(callback){
-        $.get(OC.Router.generate("chat_get_backends")).then(callback);
-    };
-}).directive('avatar', function() {
+}]).directive('avatar', function() {
     return {    
         restrict: 'A',
-        link: function ($scope, element,attrs) {
+        link: function ($scope, element, attrs) {
         	var backendName;
-        	if($scope.$parent.conv !== undefined){
-        		backendName = $scope.$parent.conv.backend.name;
+        	if(attrs.backendName === undefined){
+	        	if($scope.$parent.conv !== undefined){
+	        		backendName = $scope.$parent.conv.backend.name;
+	        	} else {
+	        		backendName = $scope.$parent.$parent.$parent.convs[$scope.$parent.$parent.$parent.active.conv].backend.name;
+	        	}
         	} else {
-        		backendName = $scope.$parent.$parent.$parent.convs[$scope.$parent.$parent.$parent.activeConv].backend.name;
+        		console.log('undefiend');
+        		console.log(attrs);
+        		backendName = attrs.backendName;
         	}
         		
         	//console.log($scope.$parent.conv.backend.name);
@@ -219,7 +215,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 			// Not inited yet
 			return;
 		}
-		// backend = selectedbackend
+		// backend = the active backend
 		var output = [];
 		contacts.forEach(function(contact, index){
 			if(backend.protocol === 'email'){

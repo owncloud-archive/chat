@@ -43,62 +43,17 @@ class AppController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function index() {
+		$appApi = $this->app['AppApi'];
+		$contacts = $appApi->getContacts();
+		$backends = $appApi->getBackends();
+		
 		$params = array(
+			"initvar" => json_encode(array(	"contacts" => $contacts['contacts'],
+											"contactsList" => $contacts['contactsList'],
+											"backends" => $backends
+						))
 		);
 		return $this->render('main', $params);
-	}
-	
-	/**
-	 * @NoAdminRequired
-	 */
-	public function getContacts() {
-	    $cm = \OC::$server->getContactsManager();
-         // The API is not active -> nothing to do
-        if (!$cm->isEnabled()) {
-             $receivers = null;
-             $error = 'Please enable the contacts app.';
-        }
-        
-        $result = $cm->search('',array('FN'));
-        $receivers = array();
-        $contactList = array();
-        foreach ($result as $r) {
-            $data = array();
-            
-            $contactList[] = $r['FN'];
-            
-            $data['id'] = $r['id'];
-            $data['displayname'] = $r['FN'];
-
-            if(isset($r['EMAIL'])){
-                $email = $r['EMAIL'];
-                if (!is_array($email)) {
-                    $email = array($email);
-                }    
-                $data['email'] = $email;
-            } else {
-                $data['email'] = array();
-            }
-            
-            if(isset($r['IMPP'])){
-                $data['IMPP'] = array(); // Array with all IM contact information
-                foreach($r['IMPP'] as $IMPP){
-                    $array = array();
-                    $exploded = explode(":", $IMPP);
-                    if($exploded[0] === 'owncloud-handle'){
-                        $array['backend'] = 'ownCloud';
-                    } else {
-                        $array['backend'] = $exploded[0];
-                    }
-                    $array['value'] = $exploded[1];
-                    $data['IMPP'][] = $array;
-                }
-            } else {
-                $data['IMPP'] = array();
-            }
-            $receivers[] = $data;
-        }
-	    return new JSONResponse(array('contacts' => $receivers, 'contactsList' => $contactList));
 	}
 	
 	public function backend(){
@@ -114,16 +69,6 @@ class AppController extends Controller {
 
 		$backendMapper->update($backend);
 		return new JSONResponse(array("status" => "success"));
-	}
-
-	/**
-	 * @NoAdminRequired
-	 */
-	public function getBackends(){
-		$backendMapper = new BackendMapper($this->app->getCoreApi());
-		$backends = $backendMapper->getAllEnabled();
-
-		return new JSONResponse(array("backends" => $backends));
 	}
 
 }

@@ -38,11 +38,12 @@
 }
 #chat-window-footer {
     position: absolute;
-    height: 40px;
+    height: 45px;
     bottom: 0;
     width:100%;
-    background-color:#F8F8F8;
-    border-top:#AAAAAA solid 1px;
+    background-color:#EEE;
+    border-top:#D2D2D2 solid 1px;
+    box-sizing: border-box;
 }
 
 /* 3. Conversation List */
@@ -76,22 +77,29 @@
 	margin-bottom:0px;
 }
 #chat-msg-input{
-	width:65%;
+		margin-right:50px;
+
+	}
+
+#chat-msg-input input{
+	width:100%;
+	
 }
-#chat-msg-backend{
-	width:20%;	
-}
+
 #chat-msg-send{
-	width:10%;	
+	width:32px;	
+	height:32px;
+	float:right;
+	margin-right: 10px;
+}
+#chat-msg-send button{
+	width:32px;	
+	height:32px;
+}
+#chat-msg-form{
+	width:100%;	
 }
 
-#chat-leave{
-	width:10%;
-}
-
-#chat-invite{
-	width:10%;
-}
 .conv-new-msg {
 	border-radius: 50%;
 	width: 15px;

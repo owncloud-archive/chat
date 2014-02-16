@@ -35,6 +35,9 @@
 \OCP\Util::addScript('chat', 'handlers');
 ?>
 <div ng-click="view.hide('settings', $event, 'backend')" ng-controller="ConvController" ng-app="chat" id="app">
+    <div style="display:none;" id="initvar">
+		<?php echo $_['initvar']?>
+    </div>
     <div class="icon icon-loading" id="main-panel" ng-if="!initDone">
         &nbsp;
     </div>
@@ -50,18 +53,18 @@
 	                    </button>
 	            	</form>
 				</li>
-				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
+				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
 	                            <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-	                            <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
+	                            <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == active.conv" class="icon icon-add right icon-20">
 	                                &nbsp;
 	                            </div>
-	                            <div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
+	                            <div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
 	                                &nbsp;
 	                            </div>
-	                            <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" avatar data-size="32" data-user="{{ user }}">
+	                            <div ng-repeat="user in conv.users | filter:'!' + active.user" class="left" avatar data-size="32" data-user="{{ user }}">
 	                                
 	                            </div>
-	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" >
+	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + active.user" class="left" >
 	                    {{ user }}
 	                </span>
 	                <div style="clear:both;"></div>
@@ -83,7 +86,7 @@
 			</div>
 			<div  id="app-settings-content">
 				<ul>
-					<li ng-click="selectBackend(backend)" class="backend" ng-class="{'backend-selected': backend.name === selectedBackend.name}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
+					<li ng-click="selectBackend(backend)" class="backend" ng-class="{'backend-selected': backend.name === active.backend.name" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
 						{{ backend.displayname }}
 					</li>
 				</ul>
@@ -91,8 +94,9 @@
        	</div>
         <div id="app-content">
 	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
-                <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts | backendFilter:selectedBackend" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+                <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts | backendFilter:active.backend" class="contact" data-user="{{ contact.displayname}}" avatar data-backend-name="{{ contact.backend }}"> 
                     <label>
+                    {{ contact }}
                         {{ contact.displayname }}
                     </label>
                 </div>
@@ -100,7 +104,7 @@
         	<div ng-if="view.elements.chat" >
     			<section ng-click="focusMsgInput()" id="chat-window-body">
     				<div id="chat-window-msgs">
-    					<div class="chat-msg-container" ng-repeat="msg in convs[activeConv].msgs">
+    					<div class="chat-msg-container" ng-repeat="msg in convs[active.conv].msgs">
     						<div ng-if="msg.time" class="chat-msg-time">
     							{{ msg.time.hours }} : {{ msg.time.minutes }}
     						</div>
@@ -115,9 +119,13 @@
     				</div>
     			</section>
     			<footer id="chat-window-footer">
-    				<form ng-submit="sendChatMsg()"> 
-    					<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text" id="chat-msg-input" placeholder="Chat message">
-    					<input id="chat-msg-send" type="submit"  value="Send" />
+    				<form id="chat-msg-form" ng-submit="sendChatMsg()"> 
+    					<div id="chat-msg-send" >
+    						<button  type="submit"><div class="icon icon-play">&nbsp;</div></button>
+    					</div>
+    					<div id="chat-msg-input">
+    						<input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text"  placeholder="Chat message">
+    					</div>
     				</form>
     			</footer>
     		</div>

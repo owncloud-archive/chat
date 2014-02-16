@@ -39,18 +39,6 @@ $this->create('chat_och_api', '/och/api')->action(
 	}
 );
 
-$this->create('chat_get_contacts', '/getcontacts')->action(
-	function($params){
-		App::main('AppController', 'getContacts', new DIContainer('chat'), $params);
-	}
-);
-
-$this->create('chat_get_backends', '/backend/get')->action(
-		function($params){
-			//throw new \Exception("hoi2");
-			App::main('AppController', 'getBackends', new DIContainer('chat'), $params);
-		}
-);
 
 // Action can be enable or disable
 $this->create('chat_backend', '/backend/{do}/{backend}/{id}')->action(

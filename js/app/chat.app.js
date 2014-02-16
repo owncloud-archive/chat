@@ -1,6 +1,2 @@
 Chat.app = {
-    backends : [
-        'och',
-        
-    ],
 };

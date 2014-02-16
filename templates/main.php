@@ -34,53 +34,64 @@
 // At last load the main handlers file, this will boot up the Chat app
 \OCP\Util::addScript('chat', 'handlers');
 ?>
-<div ng-click="view.hide('backendSelect')" ng-controller="ConvController" ng-app="chat" id="app">
+<div ng-click="view.hide('settings', $event, 'backend')" ng-controller="ConvController" ng-app="chat" id="app">
     <div class="icon icon-loading" id="main-panel" ng-if="!initDone">
         &nbsp;
     </div>
 	<div ng-if="initDone" id="main-panel" >
-		<ul id="app-navigation" >
-			<li id="conv-list-new-conv">
-			    <form ng-submit="newConv(userToInvite, selectedBackend)">
-			        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
-			        </div>
-			        <button id="new-conv-button" class="primary tagger-button">
-                    	<div class="icon icon-add icon-20">&nbsp;</div>
-                    </button>
-                    <button ng-click="view.toggle('backendSelect', $event)" id="new-conv-backend-button" class="primary tagger-button-right tagger-button">
-                    	<div class="triangle-bottom">&nbsp;</div>
-                    </button>
-            	</form>
-			</li>
-			<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
-                            <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-                            <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
-                                &nbsp;
-                            </div>
-                            <div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
-                                &nbsp;
-                            </div>
-                            <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" avatar data-size="32" data-user="{{ user }}">
-                                
-                            </div>
-                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" >
-                    {{ user }}
-                </span>
-                <div style="clear:both;"></div>
-                <div id="invite-container" ng-if="view.elements.inviteInput">
-                    <form ng-submit="invite(userInvite, conv.id)">
-                        <div tagger ng-model="userInvite" options="contactsList" single disable-new id="new-conv-invite" class="tagger-input" placeholder="Contact name" type="text" >
-    			        </div>
-    			        <button id="new-conv-button" class="primary tagger-button">
-    		                <div class="icon icon-add icon-20">&nbsp;</div>
-    	    	        </button>
-                    </form>
-                </div>
-		    </li>
-		</ul>
+		<div id="app-navigation" >
+			<ul>
+				<li id="conv-list-new-conv">
+				    <form ng-submit="newConv(userToInvite, selectedBackend)">
+				        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
+				        </div>
+				        <button id="new-conv-button" class="primary tagger-button">
+	                    	<div class="icon icon-add icon-20">&nbsp;</div>
+	                    </button>
+	            	</form>
+				</li>
+				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === activeConv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
+	                            <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
+	                            <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == activeConv" class="icon icon-add right icon-20">
+	                                &nbsp;
+	                            </div>
+	                            <div ng-if="conv.id == activeConv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
+	                                &nbsp;
+	                            </div>
+	                            <div ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" avatar data-size="32" data-user="{{ user }}">
+	                                
+	                            </div>
+	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + currentUser" class="left" >
+	                    {{ user }}
+	                </span>
+	                <div style="clear:both;"></div>
+	                <div id="invite-container" ng-if="view.elements.inviteInput">
+	                    <form ng-submit="invite(userInvite, conv.id)">
+	                        <div tagger ng-model="userInvite" options="contactsList" single disable-new id="new-conv-invite" class="tagger-input" placeholder="Contact name" type="text" >
+	    			        </div>
+	    			        <button id="new-conv-button" class="primary tagger-button">
+	    		                <div class="icon icon-add icon-20">&nbsp;</div>
+	    	    	        </button>
+	                    </form>
+	                </div>
+			    </li>
+			</ul>
+        </div>
+        <div ng-class="{open: view.elements.settings}" id="app-settings">
+        	<div ng-click="view.toggle('settings', $event)" id="app-settings-header">
+				<button class="settings-button">Backend</button>
+			</div>
+			<div  id="app-settings-content">
+				<ul>
+					<li ng-click="selectBackend(backend)" class="backend" ng-class="{'backend-selected': backend.name === selectedBackend.name}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
+						{{ backend.displayname }}
+					</li>
+				</ul>
+			</div>
+       	</div>
         <div id="app-content">
 	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
-                <div  ng-click="newConv(contact.displayname, 'och')" ng-repeat="contact in contacts" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
+                <div  ng-click="newConv(contact.displayname, 'och')" ng-repeat="contact in contacts | backendFilter:selectedBackend" class="contact" style="background-image: url(/index.php/apps/contacts/addressbook/local/1/contact/{{ contact.id }}/photo);">
                     <label>
                         {{ contact.displayname }}
                     </label>
@@ -111,12 +122,5 @@
     			</footer>
     		</div>
 	    </div>
-	</div>
-	<div ng-if="view.elements.backendSelect" id="backend-select">
-		<ul>
-			<li ng-click="selectBackend(backend)" ng-class="{'backend-selected': backend.name === selectedBackend.name}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
-				{{ backend.displayname }}
-			</li>
-		</ul>
 	</div>
 </div>

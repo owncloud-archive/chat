@@ -27,6 +27,12 @@
 	      		<length>64</length>/length>
 	    	</field>
 	    	<field>
+	    		<name>protocol</name>
+	     	 	<type>text</type>
+	      		<notnull>true</notnull>
+	      		<length>64</length>/length>
+	    	</field>
+	    	<field>
 	    		<name>enabled</name>
 	     	 	<type>boolean</type>
 	      		<notnull>true</notnull>
@@ -35,7 +41,7 @@
    		</declaration>
 	</table>
  	<table>
- 		<name>*dbprefix*chat_push_messages</name>
+ 		<name>*dbprefix*chat_och_push_messages</name>
   		<declaration>
 	   		<field>
 	  			<name>id</name>
@@ -71,7 +77,7 @@
    		</declaration>
 	</table>
 	<table>
-  		<name>*dbprefix*chat_conversations</name>
+  		<name>*dbprefix*chat_och_conversations</name>
   		<declaration>
     		<field>
 	  			<name>conversation_id</name>
@@ -82,7 +88,7 @@
    		</declaration>
 	</table>
 	<table>
-		<name>*dbprefix*chat_users_in_conversation</name>
+		<name>*dbprefix*chat_och_users_in_conversation</name>
 	  	<declaration>
 		  	<field>
 		  		<name>conversation_id</name>
@@ -105,7 +111,7 @@
     	</declaration>
 	</table>
 	<table>
-		<name>*dbprefix*chat_users_online</name>
+		<name>*dbprefix*chat_och_users_online</name>
 	  	<declaration>
 	    	<field>
 	  			<name>user</name>

@@ -211,29 +211,12 @@
 	border-top: 10px solid #000000;
 }
 
-/* Backend selecter */
-#backend-select{
-	position:fixed;
-	top:84px;
-	left:164px;
-	width:190px;
-	margin-top:1px;
+.backend{
+	padding:10px;
 }
-
-#backend-select ul li {
-	border:1px solid #1d2d44;	
-	border-top:none;
-	background-color:#35537a;
-    padding: 10px;
-	height:40px;
-	color:#fff;
-	height:40px;
-}
-
-#backend-select ul li:hover{
-    background: #304d76;
-}
-
 .backend-selected {
-	background-color:#3B3F46 !important;
+        background-color: #dadada;
+}
+#app-settings-content{
+	padding:0px !important;
 }

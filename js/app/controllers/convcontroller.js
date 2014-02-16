@@ -6,11 +6,12 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 	$scope.contacts = [];
 	$scope.contactsList = [];
 	$scope.backends = [];
+	$scope.currentBackend = "test";
 	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
 	//$scope.selectedBackend // set in $scope.init // this is the selected backend in the backend choser in the new conv panel
 	
     $scope.init = function(){
-        contacts(function(data){
+    	contacts(function(data){
             $scope.contacts = data['contacts'];
             $scope.contactsList = data['contactsList'];
             $scope.$apply();
@@ -18,9 +19,11 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
         backends(function(data){
         	$scope.backends = data['backends'];
         	$scope.selectedBackend = $scope.backends[0];
-        });
+        	$scope.$apply();
+        });	
+    	
         // TOOD init every backend 
-        angular.forEach(Chat.app.backends, function(backend, key){
+        angular.forEach($scope.backends, function(backend, key){
             // For each backend call the init function of the Chat.{backend}.util.init() function
             Chat[backend].util.init();
         });
@@ -37,7 +40,7 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
 	        "contact" : true,
 	        "chat" : false,
     	    "initDone" : false,
-    	    "backendSelect" : false
+    	    "settings" : false,
         },        
         show : function(element, $event){
             $scope.view.elements[element] = true;
@@ -47,7 +50,16 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
                 }
         	}
         },
-        hide : function(element){
+        hide : function(element, $event, exception){
+        	if($event !== undefined){
+        		var classList = $event.target.classList;
+        		if(classList.contains(exception)){
+        			// the clicked item containted the exception class
+        			// this mean probably that we clicked on the item in side the viewed div
+        			// thus the div don't need to be hided;
+        			return;
+        		}
+        	}
             $scope.view.elements[element] = false;
         },
         toggle : function(element, $event){
@@ -190,4 +202,28 @@ Chat.angular.controller('ConvController', ['$scope', 'contacts', 'backends',func
             element.avatar(attrs.user, attrs.size);
         }
     };
-});;
+}).filter('backendFilter', function() {
+	return function(contacts, backend) {
+		if(contacts === null || backend === null){
+			// Not inited yet
+			return;
+		}
+		// backend = selectedbackend
+		var output = [];
+		contacts.forEach(function(contact, index){
+			if(backend.protocol === 'email'){
+				if(contact.email.length > 0){
+					output.push(contact);
+				}
+			} else {
+				contact.IMPP.forEach(function(protocol){
+					if(protocol.backend === backend.protocol){
+						output.push(contact);
+					}
+				});
+			}
+			
+		});
+		return output;
+	}
+});

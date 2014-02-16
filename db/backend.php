@@ -10,6 +10,7 @@ class Backend extends Entity {
 	public $name;
 	public $enabled;
 	public $checked;
+	public $protocol;
 	
 	public function __construct(){
 	}

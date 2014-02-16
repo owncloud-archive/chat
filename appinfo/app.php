@@ -41,5 +41,5 @@ $api->addNavigationEntry(array(
 
 $DIContainer = new DIContainer('chat');
 $appApi = $DIContainer['AppApi'];
-$appApi->registerBackend('ownCloud Handle', 'och', 'true');
-//$appApi->registerBackend('Email', 'email', 'true');
+$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
+$appApi->registerBackend('Email', 'email','email' , 'true');

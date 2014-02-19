@@ -4,9 +4,10 @@ Chat.app.view = {
             Chat.scope.view.addConv(convId, users, backend);
         });
     },
-    addChatMsg : function(convId, user, msg, timestamp){
+    addChatMsg : function(convId, contact, msg, timestamp, backend){
+    	alert(backend);
         Chat.scope.$apply(function(){
-            Chat.scope.view.addChatMsg(convId, user, msg, timestamp); 
+            Chat.scope.view.addChatMsg(convId, contact, msg, timestamp, backend);
         });
     },
     addUserToConv : function(convId, user){
@@ -16,7 +17,7 @@ Chat.app.view = {
     },
     getBackends : function(key){
     	var returnBackend;
-    	Chat.scope.backends.forEach(function(backend, index){
+    	angular.forEach(Chat.scope.backends, function(backend, index){
     		console.log(backend);
     		if(key === backend.name){
     			returnBackend = backend;

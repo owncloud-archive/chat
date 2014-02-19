@@ -28,4 +28,8 @@ class BackendMapper extends Mapper {
 			return false;
 		}
 	}
+	
+	public function findByProtocol($protocol){
+		return  $this->findEntity("SELECT * FROM " . $this->getTableName() . " WHERE protocol=?", array($protocol));
+	}
 }

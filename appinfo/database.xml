@@ -72,7 +72,7 @@
 	   			<name>command</name>
 	   			<type>text</type> 
 	   			<notnull>true</notnull>
-	   			<length>500</length>
+	   			<length>2000</length>
 	   		</field>
    		</declaration>
 	</table>

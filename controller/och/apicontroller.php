@@ -51,7 +51,7 @@ class ApiController extends Controller {
 					$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($request['data']['session_id'])){
-							if($request['data']['user'] === $this->app->getCoreApi()->getUserId()){
+							if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
 								
 								$commandClasses = array(
 									'greet' => '\OCA\Chat\OCH\Commands\Greet',
@@ -85,7 +85,7 @@ class ApiController extends Controller {
 
 					break;
 				case "push":
-   					if($request['data']['user'] === $this->app->getCoreApi()->getUserId()){
+   					if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
    						if(!empty($request['data']['session_id'])){
    							//throw new \Exception("good to go");
    							$pushClasses = array(

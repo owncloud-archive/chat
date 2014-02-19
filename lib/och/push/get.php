@@ -27,18 +27,19 @@ class Get extends ChatAPI{
 		session_write_close();
      	try {
             $mapper = new PushMessageMapper($this->api); // inject API class for db access
-            $this->pushMessages = $mapper->findBysSessionId($this->requestData['session_id']);                                        
+            $this->pushMessages = $mapper->findBysSessionId($this->requestData['session_id']);  
+            
         } catch(DoesNotExistException $e){
             sleep(1);
             $this->execute();
         }
-
+        
+        
         $commands = array();
         foreach($this->pushMessages as $pushMessage){
-                $command = json_decode($pushMessage->getCommand(), true);
-                $commands[$pushMessage->getId()] = $command;
+        	$command = json_decode($pushMessage->getCommand(), true);
+            $commands[$pushMessage->getId()] = $command;
         }
-        
         return new JSONResponse(array('push_msgs' => $commands));
 
 	}	

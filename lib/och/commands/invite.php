@@ -37,13 +37,13 @@ class Invite extends ChatAPI {
 			throw new RequestDataInvalid("USER-EQAUL-TO-USER-TO-INVITE");
 		}
 
-    	if(!in_array($requestData['user_to_invite'], \OCP\User::getUsers())){
+    	if(!in_array($requestData['user_to_invite']['backends']['och']['value'], \OCP\User::getUsers())){
     		throw new RequestDataInvalid("USER-TO-INVITE-NOT-OC-USER");
     	}
 
 		$userOnlineMapper = new UserOnlineMapper($this->api);
    		$usersOnline = $userOnlineMapper->getOnlineUsers();
-		if(!in_array($requestData['user_to_invite'], $usersOnline)){
+		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $usersOnline)){
 			throw new RequestDataInvalid('USER-TO-INVITE-NOT-ONLINE');
 		}
 

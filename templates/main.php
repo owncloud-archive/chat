@@ -8,6 +8,8 @@
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
 \OCP\Util::addScript('chat', 'vendor/tagger');
+\OCP\Util::addScript('chat', 'vendor/applycontactavatar');
+
 
 // Third load the Chat object definition
 \OCP\Util::addScript('chat', 'chat');
@@ -46,11 +48,11 @@
 			<ul>
 				<li id="conv-list-new-conv">
 				    <form ng-submit="newConv(userToInvite)">
-				        <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
+				        <-- <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 				        </div>
 				        <button id="new-conv-button" class="primary tagger-button">
 	                    	<div class="icon icon-add icon-20">&nbsp;</div>
-	                    </button>
+	                    </button> -->
 	            	</form>
 				</li>
 				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
@@ -93,14 +95,15 @@
 			</div>
        	</div>
         <div id="app-content">
-	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
-                <div  ng-click="newConv(contact.displayname)" ng-repeat="contact in contacts | backendFilter:active.backend" class="contact" data-user="{{ contact.displayname}}" avatar data-backend-name="{{ contact.backend }}"> 
-                    <label>
-                    {{ contact }}
-                        {{ contact.displayname }}
-                    </label>
-                </div>
-    	    </div>
+	        <div  ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
+                <div class="contact-container" ng-click="newConv(contact)"  ng-repeat="contact in contacts | backendFilter:active.backend">
+	                <div class="contact" data-size="199" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar> 
+	                </div>
+					<div class="contact-label">
+	                	{{ contact.displayname }}
+					</div>
+				</div>
+            </div>
         	<div ng-if="view.elements.chat" >
     			<section ng-click="focusMsgInput()" id="chat-window-body">
     				<div id="chat-window-msgs">
@@ -109,7 +112,7 @@
     							{{ msg.time.hours }} : {{ msg.time.minutes }}
     						</div>
     						<div class="chat-msg">
-    							<div data-user="{{ msg.user }}" data-backend="{{ this.$parent.backend }}" data-size="32" avatar>
+    							<div data-size="32" data-id="{{ msg.contact.id }}" data-displayname="{{ msg.contact.displayname }}" data-addressbook-backend="{{ msg.contact.address_book_backend }}" data-addressbook-id="{{ msg.contact.address_book_id  }}" avatar>
     							</div>
     							<p ng-bind-html="msg.msg">
                                     placeholder

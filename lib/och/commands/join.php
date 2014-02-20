@@ -35,7 +35,7 @@ class Join extends ChatAPI {
    			 
    			$user = new User();
    			$user->setConversationId($this->requestData['conv_id']);
-   			$user->setUser($this->requestData['user']);
+   			$user->setUser($this->requestData['user']['backends']['och']['value']);
 			$user->setSessionId($this->requestData['session_id']);
    			$userMapper = new UserMapper($this->api);
    			$userMapper->insert($user);
@@ -44,7 +44,7 @@ class Join extends ChatAPI {
    		} else { 
    			$user = new User();
    			$user->setConversationId($this->requestData['conv_id']);
-   			$user->setUser($this->requestData['user']);
+   			$user->setUser($this->requestData['user']['backends']['och']['value']);
 			$user->setSessionId($this->requestData['session_id']);
    			$userMapper = new UserMapper($this->api);
    			$userMapper->insert($user);

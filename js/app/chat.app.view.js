@@ -5,7 +5,6 @@ Chat.app.view = {
         });
     },
     addChatMsg : function(convId, contact, msg, timestamp, backend){
-    	alert(backend);
         Chat.scope.$apply(function(){
             Chat.scope.view.addChatMsg(convId, contact, msg, timestamp, backend);
         });
@@ -18,7 +17,6 @@ Chat.app.view = {
     getBackends : function(key){
     	var returnBackend;
     	angular.forEach(Chat.scope.backends, function(backend, index){
-    		console.log(backend);
     		if(key === backend.name){
     			returnBackend = backend;
     		}

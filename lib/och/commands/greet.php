@@ -26,7 +26,7 @@ class Greet extends ChatAPI {
 	public function execute(){	
 		$requestData = $this->getRequestData();
 		$userOnline = new UserOnline();
-		$userOnline->setUser($requestData['user']);
+		$userOnline->setUser($requestData['user']['backends']['och']['value']);
 		$userOnline->setSessionId($requestData['session_id']);
 		$userOnline->setLastOnline($requestData['timestamp']);
 		$mapper = new UserOnlineMapper($this->api);

@@ -46,7 +46,7 @@ class SendChatMsg extends ChatAPI {
 			)
 		);	
 				
-		$sender = $this->requestData['user']; 
+		$sender = $this->requestData['user']['backends']['och']['value']; 
 		$PushMessageMapper = new PushMessageMapper($this->api);
 		
 		foreach($users as $receiver){

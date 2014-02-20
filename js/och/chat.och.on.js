@@ -5,7 +5,7 @@ Chat.och.on = {
             Chat.och.api.command.invite(
                 userToInvite,
                 newConvId,
-                success(newConvId, [userToInvite, OC.currentUser]),
+                success(newConvId, [userToInvite]),
                 function(errorMsg){
                     if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
                         Chat.app.view.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO

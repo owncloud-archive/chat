@@ -48,7 +48,7 @@
 			<ul>
 				<li id="conv-list-new-conv">
 				    <form ng-submit="newConv(userToInvite)">
-				        <-- <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
+				        <!-- <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
 				        </div>
 				        <button id="new-conv-button" class="primary tagger-button">
 	                    	<div class="icon icon-add icon-20">&nbsp;</div>
@@ -56,18 +56,20 @@
 	            	</form>
 				</li>
 				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
-	                            <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-	                            <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == active.conv" class="icon icon-add right icon-20">
-	                                &nbsp;
-	                            </div>
-	                            <div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
-	                                &nbsp;
-	                            </div>
-	                            <div ng-repeat="user in conv.users | filter:'!' + active.user" class="left" avatar data-size="32" data-user="{{ user }}">
-	                                
-	                            </div>
-	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | filter:'!' + active.user" class="left" >
-	                    {{ user }}
+	                <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
+                    <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == active.conv" class="icon icon-add right icon-20">
+                  		&nbsp;
+                    </div>
+                    <div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
+	                	&nbsp;
+	                </div>
+		            <div ng-repeat="user in conv.users | userFilter:active.user" class="left"
+	                 avatar data-size="32" data-id="{{ user.id }}" data-displayname="{{ user.displayname }}" 
+	                 data-addressbook-backend="{{ user.address_book_backend }}" data-addressbook-id="{{ user.address_book_id  }}"
+					>
+	                </div>
+	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | userFilter:active.user" class="left" >
+	                    {{ user.displayname }}
 	                </span>
 	                <div style="clear:both;"></div>
 	                <div id="invite-container" ng-if="view.elements.inviteInput">

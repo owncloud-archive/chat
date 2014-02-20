@@ -23,7 +23,7 @@ Chat.och.api = {
         invite : function(data){
             // Here update the view
         	var backend = Chat.app.view.getBackends('och');
-            Chat.app.view.addConv(data.conv_id, [data.use], backend);
+            Chat.app.view.addConv(data.conv_id, [data.user], backend);
             Chat.och.api.command.join(data.conv_id, function(){});
             // TODO move this to the concontroller
             Chat.app.ui.alert('You auto started a new conversation with ' + data.user);

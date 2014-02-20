@@ -229,4 +229,14 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 		return output;
 	}
+}).filter('userFilter', function() {
+	return function(users, activeUser) {
+		var output = [];
+		users.forEach(function(user, index){
+			if(user !== activeUser){
+				output.push(user);
+			}
+		});
+		return output;
+	}
 });

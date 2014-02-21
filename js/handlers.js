@@ -2,12 +2,10 @@ $(function() {
     $(window).bind('beforeunload', function() {
     // TODO    Chat.util.quit();
     });
-	OC.Router.registerLoadedCallback(function(){
-        Chat.scope = angular.element($("#app")).scope();
-        Chat.scope.$apply(function(){
-            Chat.scope.init();            
-        });
-	});
+    Chat.scope = angular.element($("#app")).scope();
+    Chat.scope.$apply(function(){
+        Chat.scope.init();            
+    });
 	$(window).on("blur focus", function(e) {
 	    var prevType = $(this).data("prevType");
 

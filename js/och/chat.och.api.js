@@ -39,7 +39,7 @@ Chat.och.api = {
     },
     util : {
         doRequest : function(request, success, error){
-            $.post(OC.Router.generate("chat_och_api"), {JSON: JSON.stringify(request)}).done(function(response){
+            $.post('/index.php' + OC.linkTo("chat", "och/api"), {JSON: JSON.stringify(request)}).done(function(response){
              if(response.data.status === "success"){
                     success();
                 } else if (response.data.status === "error"){
@@ -76,12 +76,12 @@ Chat.och.api = {
     }*/
         },
         getPushMessages : function(success){
-            $.post(OC.Router.generate('chat_och_api'), {"JSON" : JSON.stringify({"type" : "push::get::request", "data" : { "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId}})}, function(data){
+            $.post('/index.php' + OC.linkTo("chat", "och/api"), {"JSON" : JSON.stringify({"type" : "push::get::request", "data" : { "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId}})}, function(data){
                 success(data);
             });
         },
         deletePushMessages : function(ids, success){
-            $.post(OC.Router.generate('chat_och_api'), {"JSON" : JSON.stringify({"type" : "push::delete::request", "data" : {"user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, ids: ids}})}, function(data){
+            $.post('/index.php' + OC.linkTo("chat", "och/api"), {"JSON" : JSON.stringify({"type" : "push::delete::request", "data" : {"user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, ids: ids}})}, function(data){
                success();
             });
         },

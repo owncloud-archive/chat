@@ -8,6 +8,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		conv : {},
 		//user :
 	};
+	$scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
 	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
 	
 	
@@ -76,8 +77,13 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
             $scope.title = newTitle;
     	},
     	makeActive : function(convId){
+    		$scope.view.hide('contact');
+    		$scope.view.show('chat');
             $scope.active.conv = convId;
             $scope.view.focusMsgInput();
+	    },
+	    unActive : function(){
+	    	$scope.active.conv = null;
 	    },
 	    addConv : function(convId, users, backend){
 	    	users.push($scope.active.user);
@@ -87,7 +93,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
                 msgs : [],
                 backend : backend,
             };
-            $scope.view.show('chat');
             $scope.view.makeActive(convId);
             $scope.$apply();
 	    },

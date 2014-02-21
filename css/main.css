@@ -68,7 +68,7 @@
      /*   height:70px !important;*/
 }
 .conv-list-active {
-        background-color: #dadada;
+        background-color: #dadada !important;
 }
 .chat-conversation-list-mini{
         display:none;
@@ -79,16 +79,6 @@
     height:60px;
 }
 
-/* 4. Buttons, forms, inputs*/
-#chat-conv-new{
-    text-align:center;        
-    margin:0;
-    padding:0 !important;
-}
-#chat-conv-new-button{
-	margin-top:0px;
-	margin-bottom:0px;
-}
 #chat-msg-input{
 		margin-right:50px;
 
@@ -158,15 +148,7 @@
 }
 
 #conv-list-new-conv{
-    border-bottom: 1px solid rgb(204, 204, 204);
     height:44px !important;
-    padding-top:5px !important;
-    position:relative;
-}
-
-#new-conv-text div{
-    /* ICON */
-    width:32px;
 }
 
 #container{
@@ -249,4 +231,23 @@
 .conv-list-item img{
 	widht:32px;
 	height:32px;	
+}
+.icon-32{
+	width:32px
+}
+#app-header-info{
+	height:44px;
+	padding:10px;
+	background-color:#EEEEEE;
+	text-align:center;
+	color: #333;
+	font-weight:bold;
+	font-size:1.2em;
+	position:absolute;
+	width:100%;
+	z-index:100;
+}
+.content-info{
+	position:absolute;
+	top:44px;
 }

@@ -46,16 +46,11 @@
 	<div ng-if="initDone" id="main-panel" >
 		<div id="app-navigation" >
 			<ul>
-				<li id="conv-list-new-conv">
-				    <form ng-submit="newConv(userToInvite)">
-				        <!-- <div tagger ng-model="userToInvite" options="contactsList" single disable-new id="new-conv-input" class="tagger-input" placeholder="Contact name" type="text" >
-				        </div>
-				        <button id="new-conv-button" class="primary tagger-button">
-	                    	<div class="icon icon-add icon-20">&nbsp;</div>
-	                    </button> -->
-	            	</form>
+				<li ng-class="{ 'conv-list-active' : view.elements.contact }" ng-click="view.unActive();view.show('contact');view.hide('chat');" id="conv-list-new-conv">
+					<div class="icon icon-add icon-32 left">&nbsp;</div>
+					<div class="left">New Conversation</div>
 				</li>
-				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv }" ng-click="view.makeActive(conv.id)" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
+				<li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv }" ng-click="view.makeActive(conv.id);" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
 	                <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
                     <div ng-click="view.toggle('inviteInput')" ng-if="conv.id == active.conv" class="icon icon-add right icon-20">
                   		&nbsp;
@@ -97,7 +92,10 @@
 			</div>
        	</div>
         <div id="app-content">
-	        <div  ng-class="{'icon loading icon-loading': contacts.length == 0}" ng-if="view.elements.contact" >
+        	<div ng-if="view.elements.contact" id="app-header-info">
+        		{{ headerInfo }}
+        	</div>
+	        <div  ng-class="{'icon loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
                 <div class="contact-container" ng-click="newConv(contact)"  ng-repeat="contact in contacts | backendFilter:active.backend">
 	                <div class="contact" data-size="199" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar> 
 	                </div>

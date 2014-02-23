@@ -1,17 +1,15 @@
 Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope, $filter) {
-	$scope.convs = {}; 
-	$scope.contacts = [];
-	$scope.contactsList = [];
-	$scope.backends = [];
-	$scope.active = {
-		backend : {},
-		conv : {},
-		//user :
-	};
-	$scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
-	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
-	
-	
+    $scope.convs = {}; 
+    $scope.contacts = [];
+    $scope.contactsList = [];
+    $scope.backends = [];
+    $scope.active = {
+            backend : {},
+            conv : {},
+            //user :
+    };
+    $scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
+    // $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
 	
     $scope.init = function(){
     	var initvar = JSON.parse($('#initvar').text());
@@ -39,46 +37,54 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     
     $scope.view = {
         elements : {
-            "inviteInput" : false,
-	        "contact" : true,
-	        "chat" : false,
+            "contact" : true,
+            "chat" : false,
     	    "initDone" : false,
     	    "settings" : false,
+    	    "invite" : false
         },        
-        show : function(element, $event){
-            $scope.view.elements[element] = true;
-            if ($event != null) {
-                if (typeof $event.stopPropagation === "function") {
-                  $event.stopPropagation();
+        show : function(element, $event, exception){
+            if($event !== undefined){
+                var classList = $event.target.classList;
+                if(classList.contains(exception)){
+                    // the clicked item containted the exception class
+                    // this mean probably that we clicked on the item in side the viewed div
+                    // thus the div don't need to be hided;
+                    return;
                 }
-        	}
+            }
+            $scope.view.elements[element] = true;
+            console.log('show' + element);
         },
         hide : function(element, $event, exception){
-        	if($event !== undefined){
-        		var classList = $event.target.classList;
-        		if(classList.contains(exception)){
-        			// the clicked item containted the exception class
-        			// this mean probably that we clicked on the item in side the viewed div
-        			// thus the div don't need to be hided;
-        			return;
-        		}
-        	}
+            if($event !== undefined){
+                var classList = $event.target.classList;
+                if(classList.contains(exception)){
+                    // the clicked item containted the exception class
+                    // this mean probably that we clicked on the item in side the viewed div
+                    // thus the div don't need to be hided;
+                    return;
+                }
+            }
             $scope.view.elements[element] = false;
         },
         toggle : function(element, $event){
-        	$scope.view.elements[element] = !$scope.view.elements[element];
-        	if ($event != null) {
+            $scope.view.elements[element] = !$scope.view.elements[element];
+            console.log(element);
+            if ($event !== undefined) {
                 if (typeof $event.stopPropagation === "function") {
                   $event.stopPropagation();
                 }
-        	}
+            }
+            console.log($scope.view.elements[element]);
         },
     	updateTitle : function(newTitle){
             $scope.title = newTitle;
     	},
-    	makeActive : function(convId){
-    		$scope.view.hide('contact');
-    		$scope.view.show('chat');
+    	makeActive : function(convId, $event, exception){
+            console.log('make active');
+            $scope.view.hide('contact');
+            $scope.view.show('chat', $event, exception);
             $scope.active.conv = convId;
             $scope.view.focusMsgInput();
 	    },

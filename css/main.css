@@ -22,8 +22,9 @@
     border-radius: 5px;
 }
 .contact img {
-	width:200px;
-	height:200px;
+	width:198px;
+	height:198px;
+	border-radius:5px;
 }
 .contact-label{
     text-shadow: 0px 0px 10px #000;

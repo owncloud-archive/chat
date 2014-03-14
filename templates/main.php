@@ -42,22 +42,22 @@
     <div style="display:none;" id="initvar">
         <?php echo $_['initvar']?>
     </div>
-    <div class="icon icon-loading" id="main-panel" ng-if="!initDone">
+    <div class="icon-loading" id="main-panel" ng-if="!initDone">
         &nbsp;
     </div>
 	<div ng-if="initDone" id="main-panel" >
             <div id="app-navigation" >
                 <ul>
                     <li ng-class="{ 'conv-list-active' : view.elements.contact }" ng-click="view.unActive();view.show('contact');view.hide('chat');" id="conv-list-new-conv">
-                        <div class="icon icon-add icon-32 left">&nbsp;</div>
+                        <div class="icon-add icon-32 left">&nbsp;</div>
                         <div class="left">New Conversation</div>
                     </li>
                     <li ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv }" ng-click="view.makeActive(conv.id, $event, 'invite-button');" ng-repeat="conv in convs" class="conv-list-item" id="conv-list-{{ conv.id }}">
 	                <span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-                        <div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon icon-add right icon-20 invite-button">
+                        <div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
                             &nbsp;
                         </div>
-                        <div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon icon-close right icon-20" >
+                        <div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
                             &nbsp;
 	                </div>
                         <div ng-repeat="user in conv.users | userFilter:active.user" class="left"
@@ -87,7 +87,7 @@
         	<div ng-if="view.elements.contact" id="app-header-info">
                     {{ headerInfo }}
         	</div>
-	        <div ng-class="{'icon loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
+	        <div ng-class="{'loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
                     <div class="contact-container" ng-click="newConv(contact)" ng-repeat="contact in contacts | backendFilter:active.backend">
                         <div class="contact" data-size="198" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar> 
                         </div>
@@ -125,7 +125,7 @@
     			<footer id="chat-window-footer">
                             <form id="chat-msg-form" ng-submit="sendChatMsg()"> 
                                 <div id="chat-msg-send" >
-                                    <button  type="submit"><div class="icon icon-play">&nbsp;</div></button>
+                                    <button  type="submit"><div class="icon-play">&nbsp;</div></button>
                                 </div>
                                 <div id="chat-msg-input">
                                     <input ng-focus="" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text"  placeholder="Chat message">

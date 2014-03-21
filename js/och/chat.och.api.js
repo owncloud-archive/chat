@@ -12,11 +12,20 @@ Chat.och.api = {
         sendChatMsg : function(msg, convId, success){
             Chat.och.api.util.doRequest({"type" : "command::send_chat_msg::request", "data" : {"conv_id" : convId, "chat_msg" : msg, "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000 }}, success);
         },
-        leave : function(convId, success){
-            Chat.och.api.util.doRequest({"type" : "command::leave::request", "data" : { "conv_id" : convId, "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000 }}, success);
-        },
         online : function(success){
-            Chat.och.api.util.doRequest({"type" : "command::online::request", "data" : { "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000}}, function(){});
+            Chat.och.api.util.doRequest({"type" : "command::online::request", "data" : { "user" : Chat.scope.active.user,
+                    "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000}}, function(){});
+        },
+        startConv : function(userToInvite, success){
+            Chat.och.api.util.doRequest({
+                "type" : "command::start_conv::request",
+                "data" : {
+                    "user" : Chat.scope.active.user,
+                    "session_id": Chat.och.sessionId,
+                    "timestamp" : (new Date).getTime() / 1000,
+                    "user_to_invite" : userToInvite
+                }
+            }, success);
         }
     },
     on : {
@@ -41,7 +50,7 @@ Chat.och.api = {
         doRequest : function(request, success, error){
             $.post('/index.php' + OC.linkTo("chat", "och/api"), {JSON: JSON.stringify(request)}).done(function(response){
              if(response.data.status === "success"){
-                    success();
+                    success(response);
                 } else if (response.data.status === "error"){
                  error(response.data.data.msg);
                 }

@@ -9,11 +9,6 @@ Chat.och.util = {
     quit : function(){
        
     },
-	generateConvId : function(){
-        var timestamp = "conversation" + (new Date).getTime();
-        var conversationID = md5(timestamp);
-        return conversationID.toString();
-    },
     generateSessionId : function(){
         var timestamp = "sessionID" + (new Date).getTime();
         var sessionID = md5(timestamp);

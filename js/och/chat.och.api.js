@@ -12,9 +12,6 @@ Chat.och.api = {
         sendChatMsg : function(msg, convId, success){
             Chat.och.api.util.doRequest({"type" : "command::send_chat_msg::request", "data" : {"conv_id" : convId, "chat_msg" : msg, "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000 }}, success);
         },
-        leave : function(convId, success){
-            Chat.och.api.util.doRequest({"type" : "command::leave::request", "data" : { "conv_id" : convId, "user" : Chat.scope.active.user, "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000 }}, success);
-        },
         online : function(success){
             Chat.och.api.util.doRequest({"type" : "command::online::request", "data" : { "user" : Chat.scope.active.user,
                     "session_id" : Chat.och.sessionId, "timestamp" : (new Date).getTime() / 1000}}, function(){});

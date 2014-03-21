@@ -22,19 +22,13 @@
 
 namespace OCA\Chat;
 
-use \OCA\Chat\Core\API;
-use \OCA\Chat\Core\AppApi;
 use \OCA\Chat\DependencyInjection\DIContainer;
 
-
-$api = new API('chat');
-
-$api->addNavigationEntry(array(
-	'id' => 'chat',
-	'order' => 10,
-	'href' => $api->linkToRoute('chat_index'),
-	'icon' => $api->imagePath('chat.png'),
-	'name' => $api->getTrans()->t('Chat')
+\OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
+    'order' => 10,
+    'href' => \OCP\Util::linkToRoute('chat_index'),
+    'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
+    'name' => \OCP\Util::getL10n()->t('Chat')
 ));
 
 \OCP\App::registerAdmin('chat', 'admin');

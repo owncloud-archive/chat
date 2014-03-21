@@ -48,7 +48,7 @@ class ApiController extends Controller {
 				case "command":
 					// $action is the type of the command
 
-					$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online');
+					$possibleCommands = array('greet', 'join', 'invite', 'leave', 'send_chat_msg', 'quit', 'online', 'start_conv');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($request['data']['session_id'])){
 							if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
@@ -60,16 +60,20 @@ class ApiController extends Controller {
 									'leave' => '\OCA\Chat\OCH\Commands\Leave',
 									'send_chat_msg' => '\OCA\Chat\OCH\Commands\SendChatMsg',
 									'quit' => '\OCA\Chat\OCH\Commands\Quit',
-									'online' => '\OCA\Chat\OCH\Commands\Online'
+									'online' => '\OCA\Chat\OCH\Commands\Online',
+                                                                        'start_conv' => '\OCA\Chat\OCH\Commands\StartConv'
 								);
 								
 								try{
 									$className = $commandClasses[$action];
 									$commandClass = new $className($this->app->getCoreApi());
 									$commandClass->setRequestData($request['data']);
-									$commandClass->execute();
-
-									return new Success("command", $action);
+									$data = $commandClass->execute();
+                                                                        if($data){
+                                                                            return new Success("command", $action, $data);
+                                                                        } else {
+                                                                            return new Success("command", $action);
+                                                                        }
 								}catch(RequestDataInvalid $e){
 									return new Error("command", $action, $e->getMessage());
 								}

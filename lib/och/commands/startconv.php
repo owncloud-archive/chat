@@ -8,7 +8,6 @@ use \OCA\Chat\OCH\Db\ConversationMapper;
 use \OCA\Chat\OCH\Commands\Join;
 use \OCA\Chat\OCH\Commands\Invite;
 
-
 class StartConv extends ChatAPI {
     
     public function setRequestData(array $requestData) {

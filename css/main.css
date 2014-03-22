@@ -9,22 +9,21 @@
     border-radius: 5px;
     border: 1px solid #CCC;
 }
-
 .contact-container:hover{
     border: 1px solid #1C2C43;
 }
 .contact{
-	position:absolute;
-	top:0px;
-	left:0px;
-	width: 198px;   
+    position:absolute;
+    top:0px;
+    left:0px;
+    width: 198px;   
     height: 198px;
     border-radius: 5px;
 }
 .contact img {
-	width:198px;
-	height:198px;
-	border-radius:5px;
+    width:198px;
+    height:198px;
+    border-radius:5px;
 }
 .contact-label{
     text-shadow: 0px 0px 10px #000;
@@ -38,11 +37,9 @@
     padding-bottom: 5px;
     
 }
-
 #main-panel{
     height:100%;
 }
-
 #chat-window-body {
     position: absolute;
     top: 0;
@@ -59,106 +56,91 @@
     border-top:#D2D2D2 solid 1px;
     box-sizing: border-box;
 }
-
-/* 3. Conversation List */
 #app-navigation {
     overflow:auto;
 }
 #app-navigation li {
-        padding: 10px;
-     /*   height:70px !important;*/
+    padding: 10px;
 }
 .conv-list-active {
-        background-color: #dadada !important;
+    background-color: #dadada !important;
 }
 .chat-conversation-list-mini{
-        display:none;
-          float:left;
+    display:none;
+    float:left;
 }
-
 .conv-list-item{
     height:60px;
 }
-
 #chat-msg-input{
-		margin-right:50px;
-
-	}
-
-#chat-msg-input input{
-	width:100%;
-	
+    margin-right:50px;
 }
-
+#chat-msg-input input{
+    width:100%;
+}
 #chat-msg-send{
-	width:32px;	
-	height:32px;
-	float:right;
-	margin-right: 10px;
+    width:32px;	
+    height:32px;
+    float:right;
+    margin-right: 10px;
 }
 #chat-msg-send button{
-	width:32px;	
-	height:32px;
+    width:32px;	
+    height:32px;
 }
 #chat-msg-form{
-	width:100%;	
+    width:100%;	
 }
-
 .conv-new-msg {
-	border-radius: 50%;
-	width: 15px;
-	height: 15px; 
+    border-radius: 50%;
+    width: 15px;
+    height: 15px; 
     background-color:#008000;
-	display:block;
-	float:right;
-	margin:0;
-	padding:0;
-	margin-top:4px;
-	display:none;
+    display:block;
+    float:right;
+    margin:0;
+    padding:0;
+    margin-top:4px;
+    display:none;
 }
-
-/* 5 Chat msgs */
 .chat-msg-container{
-	width:100%;
-	border-top:1px solid #EEEEEE;
-	float:left;
-	margin-top:10px;
+    width:100%;
+    border-top:1px solid #EEEEEE;
+    float:left;
+    margin-top:10px;
 }
 .chat-msg-time{
-	color:#383C43;
-	float:right;
-	padding-right:20px;
+    color:#383C43;
+    float:right;
+    padding-right:20px;
 }
 .chat-msg{
-	float:left;
+    float:left;
 }
 .chat-msg div, .chat-msg p{
-	float:left;	
+    float:left;	
 }
 .chat-msg p{
-	margin-left:10px;
-	word-wrap: break-word;
+    margin-left:10px;
+    word-wrap: break-word;
     white-space: pre-line;
 }
 #chat-window-msgs{
-	overflow-y:auto;
-	max-height:100%;
-	width:100%;
+    overflow-y:auto;
+    max-height:100%;
+    width:100%;
     bottom:0;
     position:absolute;
 }
-
 #conv-list-new-conv{
     height:44px !important;
 }
-
 #container{
     position: absolute;
     height: 100%;
     width: 100%;
     padding-left: 300px;
 }
-
 .tagger-input {
     float:left;
     margin-right: 0px;
@@ -178,22 +160,18 @@
     border-radius:0px;
 }
 .tagger-button-right {
-	border-top-right-radius:3px;
+    border-top-right-radius:3px;
     border-bottom-right-radius:3px;
 }
-
 .right{
     float:right;
 }
-
 .left{
     float:left;
 }
-
 .icon-20{
     width:20px;
 }
-
 .heightInvite{
     height:100px;
 }
@@ -208,47 +186,45 @@
     position:relative;
 }
 .triangle-bottom{
-	width: 0; 
-	height: 0; 
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
-	border-top: 10px solid #000000;
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #000000;
 }
-
 .backend{
-	padding:10px;
+    padding:10px;
 }
 .backend-selected {
-        background-color: #dadada;
+    background-color: #dadada;
 }
 #app-settings-content{
-	padding:0px !important;
+    padding:0px !important;
 }
-
 .chat-msg img{
-	width:32px;
-	height:32px;
+    width:32px;
+    height:32px;
 }
 .conv-list-item img{
-	widht:32px;
-	height:32px;	
+    width:32px;
+    height:32px;	
 }
 .icon-32{
-	width:32px
+    width:32px
 }
 #app-header-info{
-	height:44px;
-	padding:10px;
-	background-color:#EEEEEE;
-	text-align:center;
-	color: #333;
-	font-weight:bold;
-	font-size:1.2em;
-	position:absolute;
-	width:100%;
-	z-index:100;
+    height:44px;
+    padding:10px;
+    background-color:#EEEEEE;
+    text-align:center;
+    color: #333;
+    font-weight:bold;
+    font-size:1.2em;
+    position:absolute;
+    width:100%;
+    z-index:100;
 }
 .content-info{
-	position:absolute;
-	top:44px;
+    position:absolute;
+    top:44px;
 }

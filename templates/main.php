@@ -1,8 +1,6 @@
 <?php 
 // Fist load all style sheets
 \OCP\Util::addStyle('chat', 'bootstrap-stripped');
-\OCP\Util::addStyle('chat', 'tagger');
-\OCP\Util::addStyle('chat', 'main');
 
 // Second load all dependencies
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');

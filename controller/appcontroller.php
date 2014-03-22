@@ -22,7 +22,6 @@
 
 namespace OCA\Chat\Controller;
 
-use \OCA\Chat\Core\API;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
@@ -34,44 +33,42 @@ use \OCA\Chat\Db\BackendMapper;
 class AppController extends Controller {
 
     public function __construct(IAppContainer $app, IRequest $request){
-		parent::__construct($app, $request);
+        parent::__construct($app, $request);
+    }
 
-	}
+    /**
+     * @NoCSRFRequired
+     * @NoAdminRequired
+     */
+    public function index() {
+        $appApi = $this->app['AppApi'];
+        $contacts = $appApi->getContacts();
+        $backends = $appApi->getBackends();
+        $currentUser = $appApi->getCurrentUser();
 
-	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 */
-	public function index() {
-		$appApi = $this->app['AppApi'];
-		$contacts = $appApi->getContacts();
-		$backends = $appApi->getBackends();
-		$currentUser = $appApi->getCurrentUser();
-		
-		$params = array(
-			"initvar" => json_encode(array(	
-				"contacts" => $contacts['contacts'],
-				"contactsList" => $contacts['contactsList'],
-				"backends" => $backends,
-				"currentUser" => $currentUser,
-			))
-		);
-		return $this->render('main', $params);
-	}
+        $params = array(
+            "initvar" => json_encode(array(	
+                "contacts" => $contacts['contacts'],
+                "contactsList" => $contacts['contactsList'],
+                "backends" => $backends,
+                "currentUser" => $currentUser,
+            ))
+        );
+        return $this->render('main', $params);
+    }
 	
-	public function backend(){
-		$backendMapper = new BackendMapper($this->app->getCoreApi());
-		$backend = new Backend();
-		$backend->setId($this->params('id'));
-		
-		if($this->params('do') === 'enable'){
-			$backend->setEnabled('true');	
-		} elseif($this->params('do') === 'disable'){
-			$backend->setEnabled('false');
-		}
+    public function backend(){
+        $backendMapper = new BackendMapper($this->app->getCoreApi());
+        $backend = new Backend();
+        $backend->setId($this->params('id'));
 
-		$backendMapper->update($backend);
-		return new JSONResponse(array("status" => "success"));
-	}
+        if($this->params('do') === 'enable'){
+            $backend->setEnabled('true');	
+        } elseif($this->params('do') === 'disable'){
+            $backend->setEnabled('false');
+        }
 
+        $backendMapper->update($backend);
+        return new JSONResponse(array("status" => "success"));
+    }
 }

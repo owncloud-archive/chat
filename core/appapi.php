@@ -8,6 +8,7 @@ use \OCP\AppFramework\IAppContainer;
 class AppApi {
 	
     protected $app;
+    static $initConvs = array();
 
     public function __construct(IAppContainer $app){
         $this->app = $app;
@@ -147,4 +148,13 @@ class AppApi {
         $data['address_book_backend'] = $addressBookBackend;
         return $data;
     }
+    
+    public function getInitConvs(){
+        return self::$initConvs;
+    }
+
+    public function registerInitConv($key, $conv){
+        self::$initConvs[$key][] = $conv;
+    }
+    
 }

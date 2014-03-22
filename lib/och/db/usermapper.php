@@ -43,6 +43,20 @@ class UserMapper extends Mapper {
     	return $feeds;
     }
 	
+     public function findConvsIdByUser($user){
+        $sql = 'SELECT conversation_id FROM `' . $this->getTableName() . '` ' .
+    			'WHERE `user` = ? ';
+    	
+    	$result = $this->execute($sql, array($user));
+       
+        $ids = array();
+        while($row = $result->fetchRow()){
+            array_push($ids, $row['conversation_id']);
+        }
+       
+        $ids = array_unique($ids);
+        return $ids;
+    }
 		
     public function findBySessionId($sessionID){
         $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .

@@ -23,6 +23,7 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\DependencyInjection\DIContainer;
+use OCA\Chat\OCH\Db\UserMapper;
 
 \OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
     'order' => 10,
@@ -37,3 +38,9 @@ $DIContainer = new DIContainer('chat');
 $appApi = $DIContainer['AppApi'];
 $appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
 $appApi->registerBackend('Email', 'email','email' , 'true');
+
+$userMapper = new UserMapper($DIContainer->getCoreApi());
+$convs = $userMapper->findConvsIdByUser(\OCP\User::getUser());
+foreach($convs as $conv){
+    $appApi->registerInitConv('och', $conv);
+}

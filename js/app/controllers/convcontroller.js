@@ -3,6 +3,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     $scope.contacts = [];
     $scope.contactsList = [];
     $scope.backends = [];
+    $scope.initConvs = {};
     $scope.active = {
         backend : {},
         conv : {},
@@ -18,6 +19,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
         $scope.contactsList = initvar['contactsList'];
        	$scope.backends = initvar['backends'];
        	$scope.active.user = initvar['currentUser'];
+        $scope.initConvs = initvar['initConvs'];
        	for (active in $scope.backends) break;
     	$scope.active.backend =  $scope.backends[active];
     	$scope.$apply();

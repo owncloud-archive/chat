@@ -8,9 +8,9 @@ class User extends Entity {
     // Note: a field id is set automatically by the parent class
     public $conversationId;
     public $user;
-	public $sessionId;
+    public $sessionId;
 	
     public function __construct(){
+        
     }
-
 }

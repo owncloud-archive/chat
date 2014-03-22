@@ -10,10 +10,10 @@ Chat.app.util = {
     	var count = 0;
   		
     	for (var k in object) {
-      		if (object.hasOwnProperty(k)) {
-    	  		++count;
-      		}
-  		}
-  		return count;
+            if (object.hasOwnProperty(k)) {
+                ++count;
+            }
+        }
+        return count;
     }
 };

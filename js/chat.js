@@ -1,4 +1,4 @@
 var Chat = {
-  	tabActive : true, 
-	tabTitle : 'Chat - Owncloud',  
+    tabActive : true, 
+    tabTitle : 'Chat - Owncloud',  
 };

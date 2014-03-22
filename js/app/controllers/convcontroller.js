@@ -4,9 +4,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     $scope.contactsList = [];
     $scope.backends = [];
     $scope.active = {
-            backend : {},
-            conv : {},
-            //user :
+        backend : {},
+        conv : {},
+        //user :
     };
     $scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
     // $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
@@ -21,13 +21,11 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
        	for (active in $scope.backends) break;
     	$scope.active.backend =  $scope.backends[active];
     	$scope.$apply();
-        	// TOOD init every backend 
         angular.forEach($scope.backends, function(backend, namespace){
-        	if(namespace === 'och'){
-        		Chat[namespace].util.init();
-        	}
+            if(namespace === 'och'){
+                Chat[namespace].util.init();
+            }
         });
-     
         $scope.initDone = true;
     };
     
@@ -54,7 +52,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
                 }
             }
             $scope.view.elements[element] = true;
-            console.log('show' + element);
         },
         hide : function(element, $event, exception){
             if($event !== undefined){
@@ -70,19 +67,16 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
         },
         toggle : function(element, $event){
             $scope.view.elements[element] = !$scope.view.elements[element];
-            console.log(element);
             if ($event !== undefined) {
                 if (typeof $event.stopPropagation === "function") {
                   $event.stopPropagation();
                 }
             }
-            console.log($scope.view.elements[element]);
         },
     	updateTitle : function(newTitle){
             $scope.title = newTitle;
     	},
     	makeActive : function(convId, $event, exception){
-            console.log('make active');
             $scope.view.hide('contact');
             $scope.view.show('chat', $event, exception);
             $scope.active.conv = convId;
@@ -155,99 +149,98 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     };
     
     	
-	$scope.sendChatMsg = function(){
-	    if (this.chatMsg != ''){
+    $scope.sendChatMsg = function(){
+        if (this.chatMsg != ''){
             var backend = $scope.convs[$scope.active.conv].backend.name;
-	    	$scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000, backend);
+            $scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000, backend);
             Chat[backend].on.sendChatMsg($scope.active.conv, this.chatMsg);
             this.chatMsg = '';
         }
-	};
+    };
 	
     $scope.newConv = function(userToInvite){
     	var backend = $scope.active.backend;
         if(userToInvite === $scope.active.user){
-        	Chat.app.ui.alert('You can\'t start a conversation with yourself');
+            Chat.app.ui.alert('You can\'t start a conversation with yourself');
         } else if(userToInvite === ''){
-        	Chat.app.ui.alert('Please provide an ownCloud user name');
+            Chat.app.ui.alert('Please provide an ownCloud user name');
         } else {
-        	Chat[backend.name].on.newConv(userToInvite, function(convId, users){
+            Chat[backend.name].on.newConv(userToInvite, function(convId, users){
                 $scope.view.addConv(convId, users, backend);
             });
         }
         this.userToInvite = '';
-	};
+    };
 	
-	$scope.leave = function(convId){
+    $scope.leave = function(convId){
         var backend = $scope.convs[convId].backend.name;
-		Chat[backend].on.leave(convId, function(){
-		    delete $scope.convs[convId];
-	        if(Chat.app.util.countObjects($scope.convs) === 0){
-	            $scope.view.hide('chat');
-	            $scope.view.show('contact');
-	        } else {
-	            $scope.view.makeActive(Chat.app.ui.getFirstConv());
-	        }    		
-		});
-	};
+        Chat[backend].on.leave(convId, function(){
+            delete $scope.convs[convId];
+            if(Chat.app.util.countObjects($scope.convs) === 0){
+                $scope.view.hide('chat');
+                $scope.view.show('contact');
+            } else {
+                $scope.view.makeActive(Chat.app.ui.getFirstConv());
+            }    		
+        });
+    };
 	
-	$scope.invite = function(userToInvite, convId){
+    $scope.invite = function(userToInvite, convId){
         var backend = $scope.convs[convId].backend.name;
         if(userToInvite === $scope.active.user){
-        	Chat.app.ui.alert('You can\'t invite yourself');
+            Chat.app.ui.alert('You can\'t invite yourself');
         } else if(userToInvite === ''){
             Chat.app.ui.alert('Please provide a user name');
         } else {
             Chat[backend].on.invite(convId, userToInvite);
         }
         $scope.view.hide('inviteInput');
-	};
+    };
 	
-	$scope.findContactByUser = function(user, namespace){
-		console.log(namespace);
-		var backend = $scope.backends[namespace];
-		var result;
-		var contacts = $filter('backendFilter')($scope.contacts, backend);
-		contacts.forEach(function(contact, index){
-			if(contact.backends[namespace].value === user){
-				result = contact;
-			}
-		});
-		return result;
-	};
+    $scope.findContactByUser = function(user, namespace){
+        var backend = $scope.backends[namespace];
+        var result;
+        var contacts = $filter('backendFilter')($scope.contacts, backend);
+        contacts.forEach(function(contact, index){
+            if(contact.backends[namespace].value === user){
+                result = contact;
+            }
+        });
+        return result;
+    };
 	
 }]).directive('avatar', function() {
     return {    
         restrict: 'A',
         link: function ($scope, element, attrs) {
-        	element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
+            element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
         }
     };
 }).filter('backendFilter', function() {
-	return function(contacts, backend) {
-		if(contacts === null || backend === null){
-			// Not inited yet
-			return;
-		}
-		// backend = the active backend
-		var output = [];
-		contacts.forEach(function(contact, index){
-			angular.forEach(contact.backends, function(contactBackend, index){
-				if(contactBackend.protocol === backend.protocol){
-					output.push(contact);
-				}
-			});
-		});
-		return output;
-	}
+    return function(contacts, backend) {
+        if(contacts === null || backend === null){
+            // Not inited yet
+            return;
+        }
+        // backend = the active backend
+        var output = [];
+        contacts.forEach(function(contact, index){
+            angular.forEach(contact.backends, function(contactBackend, index){
+                if(contactBackend.protocol === backend.protocol){
+                    output.push(contact);
+                }
+            });
+        });
+        return output;
+    }
 }).filter('userFilter', function() {
-	return function(users, activeUser) {
-		var output = [];
-		users.forEach(function(user, index){
-			if(user !== activeUser){
-				output.push(user);
-			}
-		});
-		return output;
-	}
+    return function(users, activeUser) {
+        var output = [];
+        users.forEach(function(user, index){
+            if(user !== activeUser){
+                output.push(user);
+            }
+        });
+        return output;
+    }
 });

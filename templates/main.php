@@ -5,7 +5,6 @@
 // Second load all dependencies
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
-\OCP\Util::addScript('chat', 'vendor/tagger');
 \OCP\Util::addScript('chat', 'vendor/applycontactavatar');
 
 
@@ -26,7 +25,6 @@
 \OCP\Util::addScript('chat', 'och/chat.och.on');
 \OCP\Util::addScript('chat', 'och/chat.och.util');
 \OCP\Util::addScript('chat', 'och/chat.och.api');
-\OCP\Util::addScript('chat', 'och/handlers');
 /***************************/
 
 // Fifth load all angular files

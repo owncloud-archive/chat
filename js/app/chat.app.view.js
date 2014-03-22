@@ -17,9 +17,9 @@ Chat.app.view = {
     getBackends : function(key){
     	var returnBackend;
     	angular.forEach(Chat.scope.backends, function(backend, index){
-    		if(key === backend.name){
-    			returnBackend = backend;
-    		}
+            if(key === backend.name){
+                returnBackend = backend;
+            }
     	});
     	return returnBackend;
     },

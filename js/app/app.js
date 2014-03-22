@@ -1,1 +1,1 @@
-Chat.angular = angular.module('chat',['ngSanitize', 'tagger']);
+Chat.angular = angular.module('chat', ['ngSanitize']);

@@ -41,7 +41,7 @@
     <div class="icon-loading" id="main-panel" ng-if="!initDone">
         &nbsp;
     </div>
-	<div ng-if="initDone" id="main-panel" >
+        <div ng-if="initDone" id="main-panel" >
             <div id="app-navigation" >
                 <ul>
                     <li ng-class="{ 'conv-list-active' : view.elements.contact }" ng-click="view.unActive();view.show('contact');view.hide('chat');" id="conv-list-new-conv">

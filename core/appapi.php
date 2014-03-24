@@ -4,11 +4,12 @@ namespace OCA\Chat\Core;
 use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
 use \OCP\AppFramework\IAppContainer;
+use OCA\Chat\OCH\Db\UserMapper;
 
 class AppApi {
 	
     protected $app;
-    static $initConvs = array();
+    private static $contacts = array();
 
     public function __construct(IAppContainer $app){
         $this->app = $app;
@@ -33,33 +34,37 @@ class AppApi {
     }
 
     public function getContacts(){
-        $cm = \OC::$server->getContactsManager();
-        // The API is not active -> nothing to do
-        if (!$cm->isEnabled()) {
-            $receivers = null;
-            $error = 'Please enable the contacts app.';
+        if(count(self::$contacts) == 0){
+            $cm = \OC::$server->getContactsManager();
+            // The API is not active -> nothing to do
+            if (!$cm->isEnabled()) {
+                $receivers = null;
+                $error = 'Please enable the contacts app.';
+                throw new \Exception('errrrrrrrrrr');
+            }
+
+            $result = $cm->search('',array('FN'));
+            $receivers = array();
+            $contactList = array();
+            list($addressBookBackend, $addressBookId) = explode(':', $result['key']);
+            foreach ($result as $r) {
+                $data = array();
+
+                $contactList[] = $r['FN'];
+
+                $data['id'] = $r['id'];
+                $data['displayname'] = $r['FN'];
+
+                $data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
+                $data['address_book_id'] = $addressBookId;
+                $data['address_book_backend'] = $addressBookBackend;			
+                $receivers[] = $data;
+            }
+            self::$contacts = array('contacts' => $receivers, 'contactsList' => $contactList);
         }
-
-        $result = $cm->search('',array('FN'));
-        $receivers = array();
-        $contactList = array();
-        list($addressBookBackend, $addressBookId) = explode(':', $result['key']);
-        foreach ($result as $r) {
-            $data = array();
-
-            $contactList[] = $r['FN'];
-
-            $data['id'] = $r['id'];
-            $data['displayname'] = $r['FN'];
-
-            $data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
-            $data['address_book_id'] = $addressBookId;
-            $data['address_book_backend'] = $addressBookBackend;			
-            $receivers[] = $data;
-        }
-        return array('contacts' => $receivers, 'contactsList' => $contactList);
+        return self::$contacts;
     }
-
+    
     public function getBackends(){
         $backendMapper = new BackendMapper($this->app->getCoreApi());
         $backends = $backendMapper->getAllEnabled();
@@ -150,11 +155,17 @@ class AppApi {
     }
     
     public function getInitConvs(){
-        return self::$initConvs;
+        $r = array();
+        
+        $userMapper = new UserMapper($this->app->getCoreApi());
+        $convs = $userMapper->findConvsIdByUser(\OCP\User::getUser());
+        $contacts = $this->getContacts();
+        foreach($convs as $conv){
+            $users = $userMapper->findUsersInConv($conv);
+            // Find the correct contact for the correct user
+            $r['och'] = array("id" => $conv, "users"=> $users);
+        }
+        return $r;
     }
 
-    public function registerInitConv($key, $conv){
-        self::$initConvs[$key][] = $conv;
-    }
-    
 }

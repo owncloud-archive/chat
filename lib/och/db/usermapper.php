@@ -78,5 +78,20 @@ class UserMapper extends Mapper {
         $sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? AND `session_id` = ?';
         $this->execute($sql, array($conversationID, $sessionID));
     }
+    
+    public function findUsersInConv($id){
+        $sql = 'SELECT user FROM `' . $this->getTableName() . '` ' .
+    			'WHERE `conversation_id` = ? ';
+    	
+    	$result = $this->execute($sql, array($id));
+       
+        $users = array();
+        while($row = $result->fetchRow()){
+            array_push($users, $row['user']);
+        }
+       
+        $users = array_unique($users);
+        return $users;
+    }
 	
 }

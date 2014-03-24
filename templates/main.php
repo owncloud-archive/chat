@@ -1,4 +1,8 @@
 <?php 
+namespace OCA\Chat;
+
+use \OCA\Chat\DependencyInjection\DIContainer;
+use \OCA\Chat\OCH\Db\UserMapper;
 // Fist load all style sheets
 \OCP\Util::addStyle('chat', 'main');
 
@@ -33,6 +37,7 @@
 
 // At last load the main handlers file, this will boot up the Chat app
 \OCP\Util::addScript('chat', 'handlers');
+
 ?>
 <div ng-click="view.hide('settings', $event, 'backend')" ng-controller="ConvController" ng-app="chat" id="app">
     <div style="display:none;" id="initvar">

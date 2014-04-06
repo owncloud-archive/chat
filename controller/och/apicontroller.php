@@ -96,6 +96,29 @@ class ApiController extends Controller {
                     }
                     break;
                 case "data":
+		    if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+                        if(!empty($request['data']['session_id'])){
+                            $pushClasses = array(
+                                "messages" => "\OCA\Chat\OCH\Data\Messages",
+                            );
+                            $className = $pushClasses[$action];
+                            $dataClass = new $className($this->app->getCoreApi());
+
+                            $dataClass->setRequestData($request['data']);
+
+                            $data = $dataClass->execute();
+			    if($data){
+				return new Success("command", $action, $data);
+			    } else {
+				return new Success("command", $action);
+			    }
+                        } else{
+                            return new Error('push', 'session_id not provided');
+                            //@todo add better error reporting
+                        }
+                    } else {
+                        return new Error('push', 'user not ok');
+                    }
                     break;
             }
 

@@ -8,6 +8,8 @@ use \OCA\Chat\OCH\Db\UserMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
 use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use \OCA\Chat\OCH\Db\Message;
+use OCA\Chat\OCH\Db\MessageMapper;
 
 class SendChatMsg extends ChatAPI {
 	
@@ -52,6 +54,17 @@ class SendChatMsg extends ChatAPI {
                 $PushMessageMapper->insert($pushMessage);	
             }
         }
+	
+	// All done
+	// insert this chatMsg into the messages table
+	$messageMapper = new MessageMapper($this->api);
+	$message = new Message();
+	$message->setConvid($this->requestData['conv_id']);
+	$message->setTimestamp($this->requestData['timestamp']);
+	$message->setUser($this->requestData['user']['backends']['och']['value']);
+	$message->setMessage($this->requestData['chat_msg']);
+	$messageMapper->insert($message);
+		
         return;
     }	
 }

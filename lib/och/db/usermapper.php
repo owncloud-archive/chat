@@ -43,6 +43,20 @@ class UserMapper extends Mapper {
     	return $feeds;
     }
 	
+     public function findConvsIdByUser($user){
+        $sql = 'SELECT conversation_id FROM `' . $this->getTableName() . '` ' .
+    			'WHERE `user` = ? ';
+    	
+    	$result = $this->execute($sql, array($user));
+       
+        $ids = array();
+        while($row = $result->fetchRow()){
+            array_push($ids, $row['conversation_id']);
+        }
+       
+        $ids = array_unique($ids);
+        return $ids;
+    }
 		
     public function findBySessionId($sessionID){
         $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
@@ -63,6 +77,21 @@ class UserMapper extends Mapper {
     public function deleteBySessionId($conversationID, $sessionID){
         $sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? AND `session_id` = ?';
         $this->execute($sql, array($conversationID, $sessionID));
+    }
+    
+    public function findUsersInConv($id){
+        $sql = 'SELECT user FROM `' . $this->getTableName() . '` ' .
+    			'WHERE `conversation_id` = ? ';
+    	
+    	$result = $this->execute($sql, array($id));
+       
+        $users = array();
+        while($row = $result->fetchRow()){
+            array_push($users, $row['user']);
+        }
+       
+        $users = array_unique($users);
+        return $users;
     }
 	
 }

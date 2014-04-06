@@ -65,6 +65,16 @@ Chat.och.api = {
                     "user_to_invite" : userToInvite
                 }
             }, success);
+        },
+        getMessages : function(convId, success){
+            Chat.och.api.util.doRequest({
+               "type" : "data::messages::request",
+               "data" : {
+                   "user" : Chat.scope.active.user,
+                   "session_id" : Chat.och.sessionId,
+                   "conv_id" : convId
+               }
+            }, success);
         }
     },
     on : {

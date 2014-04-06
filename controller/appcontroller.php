@@ -45,13 +45,16 @@ class AppController extends Controller {
         $contacts = $appApi->getContacts();
         $backends = $appApi->getBackends();
         $currentUser = $appApi->getCurrentUser();
+        $initConvs = $appApi->getInitConvs();
 
         $params = array(
             "initvar" => json_encode(array(	
                 "contacts" => $contacts['contacts'],
                 "contactsList" => $contacts['contactsList'],
+		"contactsObj" => $contacts['contactsObj'],
                 "backends" => $backends,
                 "currentUser" => $currentUser,
+                "initConvs" => $initConvs
             ))
         );
         return $this->render('main', $params);

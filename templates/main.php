@@ -61,12 +61,12 @@ use \OCA\Chat\OCH\Db\UserMapper;
                         <div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
                             &nbsp;
 	                </div>
-                        <div ng-repeat="user in conv.users | userFilter:active.user" class="left"
+                        <div ng-repeat="user in conv.users | userFilter" class="left"
 	                avatar data-size="32" data-id="{{ user.id }}" data-displayname="{{ user.displayname }}" 
 	                data-addressbook-backend="{{ user.address_book_backend }}" data-addressbook-id="{{ user.address_book_id  }}"
                         >
 	                </div>
-	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | userFilter:active.user" class="left" >
+	                <span ng-if="conv.users.length == 2" ng-repeat="user in conv.users | userFilter" class="left" >
 	                    {{ user.displayname }}
 	                </span>
                     </li>

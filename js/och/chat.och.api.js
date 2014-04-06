@@ -81,6 +81,7 @@ Chat.och.api = {
         invite : function(data){
             // Here update the view
             var backend = Chat.app.view.getBackends('och');
+            // TODO check if data.user is a user or a contact
             Chat.app.view.addConv(data.conv_id, [data.user], backend);
             Chat.och.api.command.join(data.conv_id, function(){});
             // TODO move this to the concontroller
@@ -92,6 +93,7 @@ Chat.och.api = {
         joined : function(data){
             // TODO move this alert to convcontroller
             Chat.app.ui.alert('The user ' + data.user + ' joined this conversation');
+            // TODO check if data.user is a user or a contact
             Chat.app.view.addUserToConv(data.conv_id, data.user);           
         }
     },

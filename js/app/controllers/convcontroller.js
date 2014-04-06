@@ -14,16 +14,15 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	
     $scope.init = function(){
     	var initvar = JSON.parse($('#initvar').text());
-    	console.log(initvar);
     	$scope.contacts = initvar['contacts'];
         $scope.contactsList = initvar['contactsList'];
         $scope.contactsObj = initvar['contactsObj'];
        	$scope.backends = initvar['backends'];
        	$scope.active.user = initvar['currentUser'];
         $scope.initConvs = initvar['initConvs'];
+        $scope.$apply();
        	for (active in $scope.backends) break;
     	$scope.active.backend =  $scope.backends[active];
-    	$scope.$apply();
         angular.forEach($scope.backends, function(backend, namespace){
             if(namespace === 'och'){
                 Chat[namespace].util.init();
@@ -89,7 +88,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	    	$scope.active.conv = null;
 	    },
 	    addConv : function(convId, users, backend){
-	    	users.push($scope.active.user);
+	    	//users.push($scope.active.user);
 	    	$scope.convs[convId] = {
                 id : convId,
                 users : users,
@@ -237,10 +236,12 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
         return output;
     }
 }).filter('userFilter', function() {
-    return function(users, activeUser) {
+    return function(users) {
         var output = [];
         users.forEach(function(user, index){
-            if(user !== activeUser){
+            console.log(user);
+            console.log(Chat.scope.active.user);
+            if(user.id !== Chat.scope.active.user.id){
                 output.push(user);
             }
         });

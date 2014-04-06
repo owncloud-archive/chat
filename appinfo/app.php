@@ -28,7 +28,7 @@ use \OCA\Chat\DependencyInjection\DIContainer;
     'order' => 10,
     'href' => \OCP\Util::linkToRoute('chat_index'),
     'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
-    'name' => \OCP\Util::getL10n()->t('Chat')
+    'name' => \OCP\Util::getL10n('chat')->t('Chat')
 ));
 
 \OCP\App::registerAdmin('chat', 'admin');

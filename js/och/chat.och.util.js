@@ -7,7 +7,11 @@ Chat.och.util = {
         // Now join and add all the existing convs
         angular.forEach(Chat.scope.initConvs.och, function(conv){
             console.log('auto joining ' + conv.id);
-            Chat.app.view.addConv(conv.id, conv.users, Chat.scope.backends.och);
+            var contacts = [];
+            angular.forEach(conv.users, function(user){
+                contacts.push(Chat.scope.contactsObj[user]);
+            });
+            Chat.app.view.addConv(conv.id, contacts, Chat.scope.backends.och);
             Chat.och.api.command.join(conv.id, function(){});
             Chat.och.api.command.getMessages(conv.id, function(data){
                 data.data.messages.forEach(function(msg){

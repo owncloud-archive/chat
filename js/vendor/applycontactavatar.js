@@ -17,7 +17,7 @@
         } else {
             var url = '/index.php' + OC.linkTo('contacts', 'addressbook/' + addressbookBackend + '/' + addressBookId + '/contact/' + id +'/photo?requesttoken='+oc_requesttoken);
             $.get(url, function(result) {
-                if (typeof(result) === 'object') {
+                if (typeof(result) === 'string') {
                     Chat.app.cache.avatar[cacheId] = {};
                     $div.imageplaceholder(displayname);
                 } else {

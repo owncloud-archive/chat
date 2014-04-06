@@ -40,15 +40,12 @@ class AppApi {
             if (!$cm->isEnabled()) {
                 $receivers = null;
                 $error = 'Please enable the contacts app.';
-                throw new \Exception('errrrrrrrrrr');
             }
 
             $result = $cm->search('',array('FN'));
             $receivers = array();
             $contactList = array();
 	    $contactsObj = array();
-	    // TODO private key for every contact
-            list($addressBookBackend, $addressBookId) = explode(':', $result['key']);
             foreach ($result as $r) {
                 $data = array();
 
@@ -58,6 +55,7 @@ class AppApi {
                 $data['displayname'] = $r['FN'];
 
                 $data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
+		list($addressBookBackend, $addressBookId) = explode(':', $r['key']);
                 $data['address_book_id'] = $addressBookId;
                 $data['address_book_backend'] = $addressBookBackend;			
                 $receivers[] = $data;

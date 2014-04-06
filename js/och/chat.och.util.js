@@ -6,9 +6,9 @@ Chat.och.util = {
         });
         // Now join and add all the existing convs
         angular.forEach(Chat.scope.initConvs.och, function(conv){
-            console.log('auto joining ' + conv);
-            Chat.app.view.addConv(conv.id, conv.users, 'och');
-
+            console.log('auto joining ' + conv.id);
+            Chat.app.view.addConv(conv.id, conv.users, Chat.scope.backends.och);
+            Chat.och.api.command.join(conv.id, function(){});
         });
     },
     quit : function(){

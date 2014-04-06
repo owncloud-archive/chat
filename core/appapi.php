@@ -163,7 +163,7 @@ class AppApi {
         foreach($convs as $conv){
             $users = $userMapper->findUsersInConv($conv);
             // Find the correct contact for the correct user
-            $r['och'] = array("id" => $conv, "users"=> $users);
+            $r['och'][$conv] = array("id" => $conv, "users"=> $users, "backend" => "och");
         }
         return $r;
     }

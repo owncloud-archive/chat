@@ -17,6 +17,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     	console.log(initvar);
     	$scope.contacts = initvar['contacts'];
         $scope.contactsList = initvar['contactsList'];
+        $scope.contactsObj = initvar['contactsObj'];
        	$scope.backends = initvar['backends'];
        	$scope.active.user = initvar['currentUser'];
         $scope.initConvs = initvar['initConvs'];

@@ -11,8 +11,7 @@ Chat.och.util = {
             Chat.och.api.command.join(conv.id, function(){});
             Chat.och.api.command.getMessages(conv.id, function(data){
                 data.data.messages.forEach(function(msg){
-                    // TODO convert msg.user to a correct contact
-                    Chat.app.view.addChatMsg(conv.id, msg.user, msg.msg, msg.timestamp, Chat.scope.backends.och);
+                    Chat.app.view.addChatMsg(conv.id, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, Chat.scope.backends.och);
                 });
             })
             

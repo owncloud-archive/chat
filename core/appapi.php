@@ -46,6 +46,8 @@ class AppApi {
             $result = $cm->search('',array('FN'));
             $receivers = array();
             $contactList = array();
+	    $contactsObj = array();
+	    // TODO private key for every contact
             list($addressBookBackend, $addressBookId) = explode(':', $result['key']);
             foreach ($result as $r) {
                 $data = array();
@@ -59,8 +61,9 @@ class AppApi {
                 $data['address_book_id'] = $addressBookId;
                 $data['address_book_backend'] = $addressBookBackend;			
                 $receivers[] = $data;
+		$contactsObj[$r['id']] = $data;
             }
-            self::$contacts = array('contacts' => $receivers, 'contactsList' => $contactList);
+            self::$contacts = array('contacts' => $receivers, 'contactsList' => $contactList, 'contactsObj' => $contactsObj);
         }
         return self::$contacts;
     }

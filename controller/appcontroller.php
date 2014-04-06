@@ -51,6 +51,7 @@ class AppController extends Controller {
             "initvar" => json_encode(array(	
                 "contacts" => $contacts['contacts'],
                 "contactsList" => $contacts['contactsList'],
+		"contactsObj" => $contacts['contactsObj'],
                 "backends" => $backends,
                 "currentUser" => $currentUser,
                 "initConvs" => $initConvs

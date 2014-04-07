@@ -2,7 +2,7 @@
 
 namespace OCA\Chat\Core;
 
-use \OCP\AppFramework\IApi;
+use OCP\AppFramework\IApi;
 
 class API implements IApi{
 

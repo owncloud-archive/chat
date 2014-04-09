@@ -5,7 +5,7 @@ namespace OCA\Chat\OCH\Commands;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
-use \OCA\Chat\OCH\Commands\CheckOnline;
+use \OCA\Chat\OCH\Commands\SyncOnline;
 
 class Offline extends ChatAPI {
 	
@@ -21,7 +21,10 @@ class Offline extends ChatAPI {
     public function execute(){	
         $mapper = new UserOnlineMapper($this->api);
         $mapper->deleteBySessionId($this->requestData['session_id']);   		
-
-        return;
+	
+	$syncOnline = new SyncOnline($this->api);
+        $syncOnline->execute();
+        
+	return;
     }	
 }

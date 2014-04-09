@@ -31,7 +31,7 @@ Chat.och.util = {
         return sessionID.toString();
     },
     updateOnlineStatus : function(){
-        console.log('updating online status on : ' + (new Date).getTime() / 1000);
+        console.log('Updating online status add ' + (new Date).getTime() / 1000);
         Chat.och.api.command.online();
     },
 };

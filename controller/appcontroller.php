@@ -30,6 +30,10 @@ use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
 
 
+
+use OCA\Chat\OCH\Db\UserOnlineMapper;
+
+
 class AppController extends Controller {
 
     public function __construct($appName, IRequest $request, IAppContainer $app){
@@ -58,6 +62,7 @@ class AppController extends Controller {
                 "initConvs" => $initConvs
             ))
         );
+	
         return $this->render('main', $params);
     }
 	

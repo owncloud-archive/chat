@@ -1,8 +1,10 @@
 $(function() {
-    $(window).bind('beforeunload', function() {
-    // TODO    Chat.util.quit();
-    });
     Chat.scope = angular.element($("#app")).scope();
+    $(window).bind('beforeunload', function() {
+        Chat.scope.$apply(function(){
+            Chat.scope.quit();            
+        });
+    });
     Chat.scope.$apply(function(){
         Chat.scope.init();            
     });

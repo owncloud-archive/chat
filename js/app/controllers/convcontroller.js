@@ -31,6 +31,14 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
         $scope.initDone = true;
     };
     
+    $scope.quit = function(){
+        angular.forEach($scope.backends, function(backend, namespace){
+            if(namespace === 'och'){
+                Chat[namespace].util.quit();
+            }
+        });
+    }
+    
     $scope.selectBackend = function(backend){
       	$scope.active.backend = backend;
     };

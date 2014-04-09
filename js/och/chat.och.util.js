@@ -22,7 +22,7 @@ Chat.och.util = {
         });
     },
     quit : function(){
-       
+        Chat.och.api.command.offline();
     },
     generateSessionId : function(){
         var timestamp = "sessionID" + (new Date).getTime();

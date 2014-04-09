@@ -32,8 +32,9 @@ use \OCA\Chat\Db\BackendMapper;
 
 class AppController extends Controller {
 
-    public function __construct(IAppContainer $app, IRequest $request){
-        parent::__construct($app, $request);
+    public function __construct($appName, IRequest $request, IAppContainer $app){
+	parent::__construct($appName, $request);
+	$this->app = $app;
     }
 
     /**
@@ -42,7 +43,7 @@ class AppController extends Controller {
      */
     public function index() {
         $appApi = $this->app['AppApi'];
-        $contacts = $appApi->getContacts();
+	$contacts = $appApi->getContacts();
         $backends = $appApi->getBackends();
         $currentUser = $appApi->getCurrentUser();
         $initConvs = $appApi->getInitConvs();

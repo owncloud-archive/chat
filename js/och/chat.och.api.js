@@ -55,6 +55,16 @@ Chat.och.api = {
                 }
             }, function(){});
         },
+        offline : function(){
+            Chat.och.api.util.doRequest({
+                "type" : "command::offline::request", 
+                "data" : { 
+                    "user" : Chat.scope.active.user,
+                    "session_id" : Chat.och.sessionId, 
+                    "timestamp" : (new Date).getTime() / 1000
+                }
+            }, function(){});
+        },
         startConv : function(userToInvite, success){
             Chat.och.api.util.doRequest({
                 "type" : "command::start_conv::request",

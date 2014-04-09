@@ -5,6 +5,7 @@ use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
 use \OCP\AppFramework\IAppContainer;
 use OCA\Chat\OCH\Db\UserMapper;
+use OCA\Chat\OCH\Db\UserOnlineMapper;
 
 class AppApi {
 	
@@ -34,7 +35,13 @@ class AppApi {
     }
 
     public function getContacts(){
-        if(count(self::$contacts) == 0){
+        // the following code should be ported 
+	// so multiple backends are allowed
+	
+	$userOnlineMapper = new UserOnlineMapper($this->app->getCoreApi());
+	$usersOnline = $userOnlineMapper->getOnlineUsers();
+	
+	if(count(self::$contacts) == 0){
             $cm = \OC::$server->getContactsManager();
             // The API is not active -> nothing to do
             if (!$cm->isEnabled()) {
@@ -52,7 +59,8 @@ class AppApi {
                 $contactList[] = $r['FN'];
 
                 $data['id'] = $r['id'];
-                $data['displayname'] = $r['FN'];
+		$data['online'] = in_array($r['id'], $usersOnline);
+		$data['displayname'] = $r['FN'];
 
                 $data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
 		list($addressBookBackend, $addressBookId) = explode(':', $r['key']);

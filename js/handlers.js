@@ -24,6 +24,5 @@ $(function() {
         }
         $(this).data("prevType", e.type);
     });
-// TODO setInterval(Chat.util.titleHandler, 2000);
-// TODO	setInterval(Chat.util.updateOnlineStatus, 60000);
+    //setInterval(Chat.util.titleHandler, 2000);
 });

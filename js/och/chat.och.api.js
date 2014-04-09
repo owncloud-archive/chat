@@ -45,7 +45,7 @@ Chat.och.api = {
                 }
             }, success);
         },
-        online : function(success){
+        online : function(){
             Chat.och.api.util.doRequest({
                 "type" : "command::online::request", 
                 "data" : { 

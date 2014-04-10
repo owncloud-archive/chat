@@ -29,6 +29,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
             }
         });
         $scope.initDone = true;
+        setInterval($scope.updateContacts, 60000);
     };
     
     $scope.quit = function(){
@@ -217,6 +218,13 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
             }
         });
         return result;
+    };
+    
+    $scope.updateContacts = function(){
+        console.log('updating contact information');
+        $.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(response){
+            $scope.contacts = response;
+        });
     };
 	
 }]).directive('avatar', function() {

@@ -247,8 +247,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     return function(users) {
         var output = [];
         users.forEach(function(user, index){
-            console.log(user);
-            console.log(Chat.scope.active.user);
             if(user.id !== Chat.scope.active.user.id){
                 output.push(user);
             }

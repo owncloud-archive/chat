@@ -56,7 +56,7 @@ Chat.och.api = {
             }, function(){});
         },
         offline : function(){
-            Chat.och.api.util.doRequest({
+            Chat.och.api.util.doSyncRequest({
                 "type" : "command::offline::request", 
                 "data" : { 
                     "user" : Chat.scope.active.user,
@@ -85,7 +85,7 @@ Chat.och.api = {
                    "conv_id" : convId
                }
             }, success);
-        }
+        },
     },
     on : {
         invite : function(data){
@@ -116,6 +116,14 @@ Chat.och.api = {
                     error(response.data.data.msg);
                 }
             });
+        },
+        doSyncRequest : function(request, success, error){
+            $.ajax({
+                type: 'POST',
+                url: '/index.php' + OC.linkTo("chat", "och/api"),
+                async:false,
+                data: {JSON: JSON.stringify(request)}
+            }); 
         },
         longPoll : function(){
             this.getPushMessages(function(push_msgs){

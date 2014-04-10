@@ -15,5 +15,14 @@ Chat.app.util = {
             }
         }
         return count;
+    },
+    updateContacts : function(){
+        $.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(contacts){
+            console.log('request done');
+            Chat.scope.$apply(function(){
+               Chat.scope.contacts = contacts; 
+               console.log(Chat.scope.contacts);
+            });
+        });
     }
 };

@@ -80,4 +80,15 @@ class AppController extends Controller {
         $backendMapper->update($backend);
         return new JSONResponse(array("status" => "success"));
     }
+    
+    /**
+     * @NoAdminRequired
+     */
+    public function contacts(){
+	$appApi = $this->app['AppApi'];
+	$contacts = $appApi->getContacts();
+	
+	return new JSONResponse($contacts['contacts']);
+    }
+    
 }

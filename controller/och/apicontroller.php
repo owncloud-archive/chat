@@ -101,6 +101,7 @@ class ApiController extends Controller {
                         if(!empty($request['data']['session_id'])){
                             $pushClasses = array(
                                 "messages" => "\OCA\Chat\OCH\Data\Messages",
+				"contacts" => "\OCA\Chat\OCH\Data\Contacts",
                             );
                             $className = $pushClasses[$action];
                             $dataClass = new $className($this->app->getCoreApi());

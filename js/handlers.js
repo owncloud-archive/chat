@@ -1,6 +1,11 @@
 $(function() {
     Chat.scope = angular.element($("#app")).scope();
-    $(window).bind('beforeunload', function() {
+    /*$(window).bind('beforeunload', function() {
+        Chat.scope.$apply(function(){
+            Chat.scope.quit();            
+        });
+               });*/
+    $(window).unload(function(){
         Chat.scope.$apply(function(){
             Chat.scope.quit();            
         });

@@ -221,17 +221,26 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     };
     
     $scope.updateContacts = function(){
-        console.log('updating contact information');
         $.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(response){
-            $scope.contacts = response;
+            $scope.contacts = response.contacts;
+            $scope.contactsObj = response.contactsObj;
+            $scope.$apply();
+            console.log('Contact information updated');
         });
     };
 	
+   
+        
 }]).directive('avatar', function() {
     return {    
         restrict: 'A',
         link: function ($scope, element, attrs) {
             element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
+            element.online(attrs.isonline);
+
+            $scope.$watch('contactsObj', function(){
+                element.online(Chat.scope.contactsObj[attrs.id].online);
+            });
         }
     };
 }).filter('backendFilter', function() {

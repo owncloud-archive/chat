@@ -88,7 +88,7 @@ class AppController extends Controller {
 	$appApi = $this->app['AppApi'];
 	$contacts = $appApi->getContacts();
 	
-	return new JSONResponse($contacts['contacts']);
+	return new JSONResponse($contacts);
     }
     
 }

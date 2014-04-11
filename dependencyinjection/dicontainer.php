@@ -45,8 +45,6 @@ class DIContainer extends SimpleContainer implements IAppContainer{
         $this['AppName'] = $appName;
         $this['urlParams'] = $urlParams;
 
-        $this->registerParameter('ServerContainer', \OC::$server);
-
         $this['API'] = $this->share(function($c){
             return new API($c['AppName']);
         });

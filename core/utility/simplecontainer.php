@@ -3,7 +3,7 @@
 namespace OCA\Chat\Core\Utility;
 
 // register 3rdparty autoloaders
-require_once 'Pimple/Pimple.php';
+//require_once 'Pimple/Pimple.php';
 
 /**
 * Class SimpleContainer

@@ -2,7 +2,9 @@
 
 namespace OCA\Chat\OCH\Commands;
 
-include(__DIR__ . '/../../autoloader.php');
+include_once(__DIR__ . '/../../../autoloader.php');
+include_once(__DIR__ . '/../../../vendor/Pimple/Pimple.php');
+
 
 use OCA\Chat\Core\API;
 use OCA\Chat\OCH\Commands\StartConv;
@@ -14,18 +16,21 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
     
     public function setUp(){
 	$this->container = new DIContainer('chat');
+	$this->container['ConversationMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\ConversationMapper')
+	    ->disableOriginalConstructor()
+	    ->getMock();
 	
     }
     
-    public function testGenerateConvId(){
+    public function testConversationExists(){
 	// config
-	$api = new APIMock('chat');
-	$api->prepareQueryMustReturn($value);
-	$expectedResult = 'adimn';
+	$this->container['ConversationMapper']->expects($this->any())
+             ->method('exists')
+             ->will($this->returnValue(true));
 	
 	// logic
-	$startConv = new StartConv($api);
-	$result = $startConv->setRequestData(array(
+	$startConv = new StartConv($this->container);
+	$startConv->setRequestData(array(
 	    "user" => array(
 		"id" => "admin",
 		"displayname"=> "admin",
@@ -59,8 +64,8 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 		"address_book_backend" => "localusers"
 	    )
 	));
-	
-	$this->assertEquals($expectedResult, $result);
+	$result = $startConv->execute();
+	$this->assertEquals(array("conv_id" => 'addeimnpr'), $result);
     }
     
 }

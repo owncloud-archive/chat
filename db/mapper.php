@@ -10,14 +10,15 @@ use OCA\Chat\Core\API;
 */
 abstract class Mapper {
 
-    private $tableName;
+    protected $tableName;
+    public $api;
 
     /**
      * @param API $api Instance of the API abstraction layer
      * @param string $tableName the name of the table. set this to allow entity
      * queries without using sql
      */
-    public function __construct(API $api, $tableName){
+    public function __construct(/*API*/ $api, $tableName){
         $this->api = $api;
         $this->tableName = '*PREFIX*' . $tableName;
     }
@@ -169,7 +170,7 @@ abstract class Mapper {
      * @return \PDOStatement the database query result
      */
     protected function execute($sql, array $params=array(), $limit=null, $offset=null){
-        $query = $this->api->prepareQuery($sql, $limit, $offset);
+	$query = $this->api->prepareQuery($sql, $limit, $offset);
         return $query->execute($params);
     }
 

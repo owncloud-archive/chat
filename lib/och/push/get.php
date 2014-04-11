@@ -10,10 +10,6 @@ use \OCP\AppFramework\Http\JSONResponse;
 
 class Get extends ChatAPI{
 
-    public function __construct(API $api){
-        parent::__construct($api);
-    }
-
     public function setRequestData(array $requestData){
         $this->requestData = $requestData;
     }
@@ -21,7 +17,7 @@ class Get extends ChatAPI{
     public function execute(){
         session_write_close();
         try {
-            $mapper = new PushMessageMapper($this->api); // inject API class for db access
+	    $mapper = $this->app['PushMessageMapper']; // inject API class for db access
             $this->pushMessages = $mapper->findBysSessionId($this->requestData['session_id']);  
         } catch(DoesNotExistException $e){
             sleep(1);

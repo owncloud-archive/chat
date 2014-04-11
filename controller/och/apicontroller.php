@@ -11,10 +11,10 @@ use \OCP\AppFramework\IAppContainer;
 
 class ApiController extends Controller {	
 
-    public function __construct(IAppContainer $app, IRequest $request){
-        parent::__construct($app, $request);
-    }
-  
+    public function __construct($appName, IRequest $request, IAppContainer $app){
+	parent::__construct($appName, $request);
+	$this->app = $app;
+    }  
     /**
      * Routes the API Request
      * @param String $this->params('JSON') command in JSON
@@ -48,7 +48,7 @@ class ApiController extends Controller {
 
                                     try{
                                         $className = $commandClasses[$action];
-                                        $commandClass = new $className($this->app->getCoreApi());
+                                        $commandClass = new $className($this->app);
                                         $commandClass->setRequestData($request['data']);
                                         $data = $commandClass->execute();
                                         if($data){
@@ -79,7 +79,7 @@ class ApiController extends Controller {
                                 "delete" => "\OCA\Chat\OCH\Push\Delete"
                             );
                             $className = $pushClasses[$action];
-                            $pushClass = new $className($this->app->getCoreApi());
+                            $pushClass = new $className($this->app);
                             //throw new \Exception("ok");
 
                             $pushClass->setRequestData($request['data']);
@@ -102,7 +102,7 @@ class ApiController extends Controller {
                                 "messages" => "\OCA\Chat\OCH\Data\Messages",
                             );
                             $className = $pushClasses[$action];
-                            $dataClass = new $className($this->app->getCoreApi());
+                            $dataClass = new $className($this->app);
 
                             $dataClass->setRequestData($request['data']);
 

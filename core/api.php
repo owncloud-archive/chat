@@ -200,7 +200,7 @@ class API implements IApi{
          * @return \OCP\DB a query object
          */
         public function prepareQuery($sql, $limit=null, $offset=null){
-                return \OCP\DB::prepare($sql, $limit, $offset);
+	    return \OCP\DB::prepare($sql, $limit, $offset);
         }
 
  /**

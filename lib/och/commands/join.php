@@ -11,10 +11,6 @@ use \OCA\Chat\OCH\Db\PushMessageMapper;
 
 class Join extends ChatAPI {
 	
-    public function __construct(API $api){
-        parent::__construct($api);
-    }
-
     public function setRequestData(array $requestData){
         $this->requestData = $requestData;
     }		
@@ -24,7 +20,8 @@ class Join extends ChatAPI {
         $user->setConversationId($this->requestData['conv_id']);
         $user->setUser($this->requestData['user']['backends']['och']['value']);
         $user->setSessionId($this->requestData['session_id']);
-        $userMapper = new UserMapper($this->api);
+        $userMapper = $this->app['UserMapper'];
+	//throw new \Exception('oh');
         $userMapper->insert($user);
 
         if (count($users) == 2){

@@ -14,7 +14,12 @@ class ApiController extends Controller {
     public function __construct($appName, IRequest $request, IAppContainer $app){
 	parent::__construct($appName, $request);
 	$this->app = $app;
+<<<<<<< HEAD
+    }
+  
+=======
     }  
+>>>>>>> add_unit_tests
     /**
      * Routes the API Request
      * @param String $this->params('JSON') command in JSON

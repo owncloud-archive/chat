@@ -2,14 +2,13 @@
 namespace OCA\Chat\OCH\Db;
 
 use \OCA\Chat\Db\Mapper;
-use \OCA\Chat\Core\Api;
+use \OCA\Chat\Core\API;
 use OCA\Chat\Db\DoesNotExistException;
 
 class ConversationMapper extends Mapper {
 
     public function __construct(API $api) {
-        parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
-        $this->tableName = '*PREFIX*' . 'chat_conversations';
+	parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
     }
 
     public function deleteConversation($conversationID){
@@ -26,7 +25,7 @@ class ConversationMapper extends Mapper {
         $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
         try{
             $this->findEntity($sql, array($id));
-            return ture;
+            return true;
         } catch (DoesNotExistException $exception) {
             return false;
         }

@@ -8,10 +8,6 @@ use \OCA\Chat\OCH\Db\UserOnlineMapper;
 use \OCA\Chat\OCH\Commands\SyncOnline;
 
 class Offline extends ChatAPI {
-	
-    public function __construct(API $api){
-        parent::__construct($api);
-    }
 
 
     public function setRequestData(array $requestData){
@@ -19,7 +15,7 @@ class Offline extends ChatAPI {
     }
 
     public function execute(){	
-        $mapper = new UserOnlineMapper($this->api);
+        $mapper = $this->app['UserOnlineMapper'];
         $mapper->deleteBySessionId($this->requestData['session_id']);   		
 	
 	$syncOnline = new SyncOnline($this->api);

@@ -13,10 +13,6 @@ use OCA\Chat\OCH\Db\MessageMapper;
 
 class SendChatMsg extends ChatAPI {
 	
-    public function __construct(API $api){
-        parent::__construct($api);
-    }
-
     public function setRequestData(array $requestData){
         if(empty($requestData['chat_msg'])){
             throw new RequestDataInvalid("CHAT-MSG-MUST-BE-PROVIDED");
@@ -28,7 +24,7 @@ class SendChatMsg extends ChatAPI {
     }
 
     public function execute(){
-        $userMapper = new UserMapper($this->api);
+        $userMapper = $this->app['UserMapper'];
         $users = $userMapper->findByConversation($this->requestData['conv_id']);
 
         $command = json_encode(array(
@@ -42,11 +38,11 @@ class SendChatMsg extends ChatAPI {
         ));	
 
         $sender = $this->requestData['user']['backends']['och']['value']; 
-        $PushMessageMapper = new PushMessageMapper($this->api);
+        $PushMessageMapper = $this->app['PushMessageMapper'];
 
         foreach($users as $receiver){
             if($receiver->getUser() !== $sender){
-                $pushMessage = new PushMessage();
+                $pushMessage = $this->app['PushMessage'];
                 $pushMessage->setSender($sender);
                 $pushMessage->setReceiver($receiver->getUser());
                 $pushMessage->setReceiverSessionId($receiver->getSessionId());
@@ -57,8 +53,8 @@ class SendChatMsg extends ChatAPI {
 	
 	// All done
 	// insert this chatMsg into the messages table
-	$messageMapper = new MessageMapper($this->api);
-	$message = new Message();
+	$messageMapper = $this->app['MessageMapper'];
+	$message = $this->app['Message'];
 	$message->setConvid($this->requestData['conv_id']);
 	$message->setTimestamp($this->requestData['timestamp']);
 	$message->setUser($this->requestData['user']['backends']['och']['value']);

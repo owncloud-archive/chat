@@ -40,7 +40,7 @@ class AppController extends Controller {
 	parent::__construct($appName, $request);
 	$this->app = $app;
     }
-
+    
     /**
      * @NoCSRFRequired
      * @NoAdminRequired
@@ -49,7 +49,6 @@ class AppController extends Controller {
         $appApi = $this->app['AppApi'];
 	$contacts = $appApi->getContacts();
         $backends = $appApi->getBackends();
-        $currentUser = $appApi->getCurrentUser();
         $initConvs = $appApi->getInitConvs();
 
         $params = array(
@@ -58,7 +57,6 @@ class AppController extends Controller {
                 "contactsList" => $contacts['contactsList'],
 		"contactsObj" => $contacts['contactsObj'],
                 "backends" => $backends,
-                "currentUser" => $currentUser,
                 "initConvs" => $initConvs
             ))
         );

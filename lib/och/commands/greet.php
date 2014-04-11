@@ -9,10 +9,6 @@ use \OCA\Chat\OCH\Db\UserOnlineMapper;
 
 class Greet extends ChatAPI {
 	
-    public function __construct(API $api){
-        parent::__construct($api);
-    }
-
     /*
      * @param $requestData['user'] String user id of the client
      * @param $requestData['session_id'] String session_id of the client
@@ -24,11 +20,11 @@ class Greet extends ChatAPI {
 
     public function execute(){	
         $requestData = $this->getRequestData();
-        $userOnline = new UserOnline();
+        $userOnline = $this->app['UserOnline'];
         $userOnline->setUser($requestData['user']['backends']['och']['value']);
         $userOnline->setSessionId($requestData['session_id']);
         $userOnline->setLastOnline($requestData['timestamp']);
-        $mapper = new UserOnlineMapper($this->api);
+        $mapper = $this->app['UserOnlineMapper'];
         $mapper->insert($userOnline);   		
         return;
     }	

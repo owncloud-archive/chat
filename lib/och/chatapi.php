@@ -8,7 +8,7 @@ use \OCP\AppFramework\IAppContainer;
  */
 abstract class ChatAPI {
 
-    public $api;
+    public $app;
     protected $requestData;
 
     public function __construct(IAppContainer $app){

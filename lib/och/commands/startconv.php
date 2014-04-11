@@ -27,32 +27,32 @@ class StartConv extends ChatAPI {
         if($convMapper->exists($id)){
 	    
 	    // (3) join the already existing conv
-            $join = new Join($this->api);
+            $join = new Join($this->app);
             $this->requestData['conv_id'] = $id;
             $join->setRequestData($this->requestData);
 	    $join->execute();
 
              // (5) invite the user_to_invite since we just created the conv
-            $invite = new Invite($this->api);
+            $invite = new Invite($this->app);
             $invite->setRequestData($this->requestData);
             $invite->execute();
             
         } else {
 
 		// (3) Create the conv
-            $conversation = $this->app['Conversation'];
+            $conversation = new Conversation();
             $conversation->setConversationId($id);
             $mapper = $this->app['ConversationMapper']; 
             $mapper->insert($conversation);
            
             // (4) join the just created conv
-            $join = new Join($this->api);
+            $join = new Join($this->app);
             $this->requestData['conv_id'] = $id;
             $join->setRequestData($this->requestData);
             $join->execute();
             
             // (5) invite the user_to_invite since we just created the conv
-            $invite = new Invite($this->api);
+            $invite = new Invite($this->app);
             $invite->setRequestData($this->requestData);
             $invite->execute();
         }

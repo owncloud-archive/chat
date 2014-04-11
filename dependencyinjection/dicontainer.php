@@ -17,7 +17,7 @@ use \OCA\Chat\OCH\Db\ConversationMapper;
 use \OCA\Chat\OCH\Db\User;
 use \OCA\Chat\OCH\Db\UserMapper;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
-use \OCA\Chat\OCH\Db\PushMesage;
+use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
 use \OCA\Chat\OCH\Db\UserOnline;
 use \OCA\Chat\OCH\Db\MessageMapper;

@@ -21,6 +21,7 @@ class Join extends ChatAPI {
         $user->setUser($this->requestData['user']['backends']['och']['value']);
         $user->setSessionId($this->requestData['session_id']);
         $userMapper = $this->app['UserMapper'];
+	//throw new \Exception('oh');
         $userMapper->insert($user);
 
         if (count($users) == 2){
@@ -35,7 +36,7 @@ class Join extends ChatAPI {
             ));
 
             $sender = $this->requestData['user']; // copy the params('user') to a variable so it won't be called many times in a large conversation
-            $PushMessageMapper = $this->app['PushMessageMapper'];
+            $PushMessageMapper = new PushMessageMapper($this->api);
             foreach($users as $receiver){
                 if($receiver->getUser() !== $sender){
                     $pushMessage = new PushMessage();

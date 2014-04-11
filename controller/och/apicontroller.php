@@ -79,7 +79,7 @@ class ApiController extends Controller {
                                 "delete" => "\OCA\Chat\OCH\Push\Delete"
                             );
                             $className = $pushClasses[$action];
-                            $pushClass = new $className($this->app->getCoreApi());
+                            $pushClass = new $className($this->app);
                             //throw new \Exception("ok");
 
                             $pushClass->setRequestData($request['data']);
@@ -102,7 +102,7 @@ class ApiController extends Controller {
                                 "messages" => "\OCA\Chat\OCH\Data\Messages",
                             );
                             $className = $pushClasses[$action];
-                            $dataClass = new $className($this->app->getCoreApi());
+                            $dataClass = new $className($this->app);
 
                             $dataClass->setRequestData($request['data']);
 

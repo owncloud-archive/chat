@@ -11,10 +11,6 @@ use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 
 class Invite extends ChatAPI {
 	
-    public function __construct(API $api){
-            parent::__construct($api);
-    }
-
     /*
      * @param $requestData['user'] String user id of the client
      * @param $requestData['session_id'] String session_id of the client

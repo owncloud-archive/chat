@@ -29,7 +29,16 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
             }
         });
         $scope.initDone = true;
+        setInterval($scope.updateContacts, 60000);
     };
+    
+    $scope.quit = function(){
+        angular.forEach($scope.backends, function(backend, namespace){
+            if(namespace === 'och'){
+                Chat[namespace].util.quit();
+            }
+        });
+    }
     
     $scope.selectBackend = function(backend){
       	$scope.active.backend = backend;
@@ -210,12 +219,28 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
         });
         return result;
     };
+    
+    $scope.updateContacts = function(){
+        $.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(response){
+            $scope.contacts = response.contacts;
+            $scope.contactsObj = response.contactsObj;
+            $scope.$apply();
+            console.log('Contact information updated');
+        });
+    };
 	
+   
+        
 }]).directive('avatar', function() {
     return {    
         restrict: 'A',
         link: function ($scope, element, attrs) {
             element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
+            element.online(attrs.isonline);
+
+            $scope.$watch('contactsObj', function(){
+                element.online(Chat.scope.contactsObj[attrs.id].online);
+            });
         }
     };
 }).filter('backendFilter', function() {
@@ -239,8 +264,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     return function(users) {
         var output = [];
         users.forEach(function(user, index){
-            console.log(user);
-            console.log(Chat.scope.active.user);
             if(user.id !== Chat.scope.active.user.id){
                 output.push(user);
             }

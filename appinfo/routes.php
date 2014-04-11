@@ -47,3 +47,10 @@ $this->create('chat_backend', '/backend/{do}/{backend}/{id}')->action(
     }
 );
 
+$this->create('chat_get_contacts', '/contacts')->action(
+    function($params){
+        App::main('AppController', 'contacts', new DIContainer('chat'), $params);
+    }
+);
+
+

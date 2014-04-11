@@ -30,10 +30,15 @@ use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
 
 
+
+use OCA\Chat\OCH\Db\UserOnlineMapper;
+
+
 class AppController extends Controller {
 
-    public function __construct(IAppContainer $app, IRequest $request){
-        parent::__construct($app, $request);
+    public function __construct($appName, IRequest $request, IAppContainer $app){
+	parent::__construct($appName, $request);
+	$this->app = $app;
     }
 
     /**
@@ -42,7 +47,7 @@ class AppController extends Controller {
      */
     public function index() {
         $appApi = $this->app['AppApi'];
-        $contacts = $appApi->getContacts();
+	$contacts = $appApi->getContacts();
         $backends = $appApi->getBackends();
         $currentUser = $appApi->getCurrentUser();
         $initConvs = $appApi->getInitConvs();
@@ -57,6 +62,7 @@ class AppController extends Controller {
                 "initConvs" => $initConvs
             ))
         );
+	
         return $this->render('main', $params);
     }
 	
@@ -74,4 +80,15 @@ class AppController extends Controller {
         $backendMapper->update($backend);
         return new JSONResponse(array("status" => "success"));
     }
+    
+    /**
+     * @NoAdminRequired
+     */
+    public function contacts(){
+	$appApi = $this->app['AppApi'];
+	$contacts = $appApi->getContacts();
+	
+	return new JSONResponse($contacts);
+    }
+    
 }

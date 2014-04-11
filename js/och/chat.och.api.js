@@ -45,9 +45,19 @@ Chat.och.api = {
                 }
             }, success);
         },
-        online : function(success){
+        online : function(){
             Chat.och.api.util.doRequest({
                 "type" : "command::online::request", 
+                "data" : { 
+                    "user" : Chat.scope.active.user,
+                    "session_id" : Chat.och.sessionId, 
+                    "timestamp" : (new Date).getTime() / 1000
+                }
+            }, function(){});
+        },
+        offline : function(){
+            Chat.och.api.util.doSyncRequest({
+                "type" : "command::offline::request", 
                 "data" : { 
                     "user" : Chat.scope.active.user,
                     "session_id" : Chat.och.sessionId, 
@@ -75,7 +85,7 @@ Chat.och.api = {
                    "conv_id" : convId
                }
             }, success);
-        }
+        },
     },
     on : {
         invite : function(data){
@@ -106,6 +116,14 @@ Chat.och.api = {
                     error(response.data.data.msg);
                 }
             });
+        },
+        doSyncRequest : function(request, success, error){
+            $.ajax({
+                type: 'POST',
+                url: '/index.php' + OC.linkTo("chat", "och/api"),
+                async:false,
+                data: {JSON: JSON.stringify(request)}
+            }); 
         },
         longPoll : function(){
             this.getPushMessages(function(push_msgs){

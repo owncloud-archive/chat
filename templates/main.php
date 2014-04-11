@@ -10,6 +10,8 @@ use \OCA\Chat\OCH\Db\UserMapper;
 \OCP\Util::addScript('chat', 'vendor/angular/angular.min');
 \OCP\Util::addScript('chat', 'vendor/angular/angular-sanitize');
 \OCP\Util::addScript('chat', 'vendor/applycontactavatar');
+\OCP\Util::addScript('chat', 'vendor/online');
+
 
 
 // Third load the Chat object definition
@@ -114,7 +116,7 @@ use \OCA\Chat\OCH\Db\UserMapper;
                                         {{ msg.time.hours }} : {{ msg.time.minutes }}
                                 </div>
                                 <div class="chat-msg">
-                                    <div data-size="32" data-id="{{ msg.contact.id }}" data-displayname="{{ msg.contact.displayname }}" data-addressbook-backend="{{ msg.contact.address_book_backend }}" data-addressbook-id="{{ msg.contact.address_book_id  }}" avatar>
+                                    <div data-size="32" data-id="{{ msg.contact.id }}" isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}" data-displayname="{{ msg.contact.displayname }}" data-addressbook-backend="{{ msg.contact.address_book_backend }}" data-addressbook-id="{{ msg.contact.address_book_id  }}" avatar>
                                     </div>
                                     <p ng-bind-html="msg.msg">
                                         &nbsp;

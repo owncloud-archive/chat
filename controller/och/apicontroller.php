@@ -11,8 +11,9 @@ use \OCP\AppFramework\IAppContainer;
 
 class ApiController extends Controller {	
 
-    public function __construct(IAppContainer $app, IRequest $request){
-        parent::__construct($app, $request);
+    public function __construct($appName, IRequest $request, IAppContainer $app){
+	parent::__construct($appName, $request);
+	$this->app = $app;
     }
   
     /**
@@ -31,7 +32,7 @@ class ApiController extends Controller {
                 case "command":
                         // $action is the type of the command
 
-                        $possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'quit', 'online', 'start_conv');
+                        $possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv');
                         if(in_array($action, $possibleCommands)){
                             if(!empty($request['data']['session_id'])){
                                 if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
@@ -41,8 +42,8 @@ class ApiController extends Controller {
                                         'join' => '\OCA\Chat\OCH\Commands\Join',
                                         'invite' => '\OCA\Chat\OCH\Commands\Invite',
                                         'send_chat_msg' => '\OCA\Chat\OCH\Commands\SendChatMsg',
-                                        'quit' => '\OCA\Chat\OCH\Commands\Quit',
                                         'online' => '\OCA\Chat\OCH\Commands\Online',
+					'offline' => '\OCA\Chat\OCH\Commands\Offline',
                                         'start_conv' => '\OCA\Chat\OCH\Commands\StartConv'
                                     );
 
@@ -100,6 +101,7 @@ class ApiController extends Controller {
                         if(!empty($request['data']['session_id'])){
                             $pushClasses = array(
                                 "messages" => "\OCA\Chat\OCH\Data\Messages",
+				"contacts" => "\OCA\Chat\OCH\Data\Contacts",
                             );
                             $className = $pushClasses[$action];
                             $dataClass = new $className($this->app->getCoreApi());

@@ -20,13 +20,18 @@ Chat.och.util = {
             })
             
         });
+        setInterval(Chat.och.util.updateOnlineStatus, 60000);
     },
     quit : function(){
-       
+        Chat.och.api.command.offline();
     },
     generateSessionId : function(){
         var timestamp = "sessionID" + (new Date).getTime();
         var sessionID = md5(timestamp);
         return sessionID.toString();
-    } 
+    },
+    updateOnlineStatus : function(){
+        console.log('Updating online status add ' + (new Date).getTime() / 1000);
+        Chat.och.api.command.online();
+    },
 };

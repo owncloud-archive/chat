@@ -1,8 +1,15 @@
 $(function() {
-    $(window).bind('beforeunload', function() {
-    // TODO    Chat.util.quit();
-    });
     Chat.scope = angular.element($("#app")).scope();
+    /*$(window).bind('beforeunload', function() {
+        Chat.scope.$apply(function(){
+            Chat.scope.quit();            
+        });
+               });*/
+    $(window).unload(function(){
+        Chat.scope.$apply(function(){
+            Chat.scope.quit();            
+        });
+    });
     Chat.scope.$apply(function(){
         Chat.scope.init();            
     });
@@ -22,6 +29,5 @@ $(function() {
         }
         $(this).data("prevType", e.type);
     });
-// TODO setInterval(Chat.util.titleHandler, 2000);
-// TODO	setInterval(Chat.util.updateOnlineStatus, 60000);
+    //setInterval(Chat.util.titleHandler, 2000);
 });

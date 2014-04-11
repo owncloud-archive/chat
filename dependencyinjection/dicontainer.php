@@ -11,6 +11,8 @@ use \OCA\Chat\Core\Utility\TimeFactory;
 use \OCA\Chat\Controller\AppController;
 use \OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\Core\AppApi;
+use \OCA\Chat\OCH\Db\Conversation;
+use OCA\Chat\OCH\Db\ConversationMapper;
 
 use \OCP\AppFramework\Http\Request;
 use \OCP\AppFramework\IApi;
@@ -102,9 +104,18 @@ class DIContainer extends SimpleContainer implements IAppContainer{
 	    return new ApiController($c['AppName'], $c['Request'], $c['this']);
 	});
 	
-	 $this['AppApi'] = $this->share(function($c){    
+	$this['AppApi'] = $this->share(function($c){    
             return new AppApi($c['this']);
         });
+	
+	$this['Conversation'] = $this->share(function($c){
+	   return new Conversation(); 
+	});
+	
+	$this['ConversationMapper'] = $this->share(function($c){
+	   return new ConversationMapper($c->query('API')); 
+	});
+	
     }
 
     /**

@@ -23,7 +23,7 @@ class StartConv extends ChatAPI {
         );
 
         // (2) check if conv id exists
-        $convMapper = new ConversationMapper($this->api);
+        $convMapper = $this->app['ConversationMapper'];
         if($convMapper->exists($id)){
             // (3) join the already existing conv
             $join = new Join($this->api);
@@ -38,9 +38,9 @@ class StartConv extends ChatAPI {
             
         } else {
             // (3) Create the conv
-            $conversation = new Conversation();
+            $conversation = $this->app['Conversation'];
             $conversation->setConversationId($id);
-            $mapper = new ConversationMapper($this->api); 
+            $mapper = $this->app['ConversationMapper']; 
             $mapper->insert($conversation);
            
             // (4) join the just created conv

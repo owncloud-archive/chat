@@ -7,8 +7,15 @@ include(__DIR__ . '/../../autoloader.php');
 use OCA\Chat\Core\API;
 use OCA\Chat\OCH\Commands\StartConv;
 use OCA\Chat\Tests\Lib\Mocks\APIMock;
+use OCA\Chat\DependencyInjection\DIContainer;
 
 class StartConvTest extends \PHPUnit_Framework_TestCase {
+    
+    
+    public function setUp(){
+	$this->container = new DIContainer('chat');
+	
+    }
     
     public function testGenerateConvId(){
 	// config

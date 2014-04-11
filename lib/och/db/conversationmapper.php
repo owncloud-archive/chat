@@ -2,14 +2,14 @@
 namespace OCA\Chat\OCH\Db;
 
 use \OCA\Chat\Db\Mapper;
-use \OCA\Chat\Core\Api;
+use \OCA\Chat\Core\API;
 use OCA\Chat\Db\DoesNotExistException;
 
 class ConversationMapper extends Mapper {
 
     public function __construct(API $api) {
-        parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
-        $this->tableName = '*PREFIX*' . 'chat_conversations';
+	\OCP\Util::writeLog('chat', 'conv mapper : ' . $api->getUserId(), \OCP\Util::ERROR);
+	parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
     }
 
     public function deleteConversation($conversationID){

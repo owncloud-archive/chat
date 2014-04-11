@@ -48,7 +48,7 @@ class ApiController extends Controller {
 
                                     try{
                                         $className = $commandClasses[$action];
-                                        $commandClass = new $className($this->app->getCoreApi());
+                                        $commandClass = new $className($this->app);
                                         $commandClass->setRequestData($request['data']);
                                         $data = $commandClass->execute();
                                         if($data){

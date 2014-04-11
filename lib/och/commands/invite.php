@@ -39,7 +39,7 @@ class Invite extends ChatAPI {
             throw new RequestDataInvalid("USER-TO-INVITE-NOT-OC-USER");
         }
 
-        $userOnlineMapper = new UserOnlineMapper($this->api);
+        $userOnlineMapper = $this->app['UserOnlineMapper'];
         $usersOnline = $userOnlineMapper->getOnlineUsers();
         if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $usersOnline)){
             throw new RequestDataInvalid('USER-TO-INVITE-NOT-ONLINE');
@@ -50,8 +50,8 @@ class Invite extends ChatAPI {
 
     public function execute(){
         // First fetch every sessionID of the user to invite
-        $userOnlineMapper = new UserOnlineMapper($this->api);
-        $pushMessageMapper = new PushMessageMapper($this->api);
+        $userOnlineMapper = $this->app['UserOnlineMapper'];
+        $pushMessageMapper = $this->app['PushMessageMapper'];
 
         $command = json_encode(array(
             "type" => "invite",
@@ -65,13 +65,14 @@ class Invite extends ChatAPI {
         $UTISessionID = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']); // $UTISessionID = UserToInviteSessionId = array()
 
         foreach($UTISessionID as $userToInvite){
-            $pushMessage = new PushMessage();
-            $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
+        //    $pushMessage = $this->app['PushMessage'];
+          $pushMessage = new PushMessage();
+	    $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
             $pushMessage->setReceiver($userToInvite->getUser());
             $pushMessage->setReceiverSessionId($userToInvite->getSessionId());
-
             $pushMessage->setCommand($command);
-            $pushMessageMapper->insert($pushMessage);	
+	    echo $pushMessage->id;
+	    $pushMessageMapper->insert($pushMessage);	
         }
         return;					
     }	

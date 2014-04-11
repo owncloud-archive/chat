@@ -8,7 +8,6 @@ use OCA\Chat\Db\DoesNotExistException;
 class ConversationMapper extends Mapper {
 
     public function __construct(API $api) {
-	\OCP\Util::writeLog('chat', 'conv mapper : ' . $api->getUserId(), \OCP\Util::ERROR);
 	parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
     }
 
@@ -26,7 +25,7 @@ class ConversationMapper extends Mapper {
         $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
         try{
             $this->findEntity($sql, array($id));
-            return ture;
+            return true;
         } catch (DoesNotExistException $exception) {
             return false;
         }

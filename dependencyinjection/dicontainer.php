@@ -11,8 +11,17 @@ use \OCA\Chat\Core\Utility\TimeFactory;
 use \OCA\Chat\Controller\AppController;
 use \OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\Core\AppApi;
+
 use \OCA\Chat\OCH\Db\Conversation;
-use OCA\Chat\OCH\Db\ConversationMapper;
+use \OCA\Chat\OCH\Db\ConversationMapper;
+use \OCA\Chat\OCH\Db\User;
+use \OCA\Chat\OCH\Db\UserMapper;
+use \OCA\Chat\OCH\Db\PushMessageMapper;
+use \OCA\Chat\OCH\Db\PushMesage;
+use \OCA\Chat\OCH\Db\UserOnlineMapper;
+use \OCA\Chat\OCH\Db\UserOnline;
+use \OCA\Chat\OCH\Db\MessageMapper;
+use \OCA\Chat\OCH\Db\Message;
 
 use \OCP\AppFramework\Http\Request;
 use \OCP\AppFramework\IApi;
@@ -111,10 +120,39 @@ class DIContainer extends SimpleContainer implements IAppContainer{
 	$this['Conversation'] = $this->share(function($c){
 	   return new Conversation(); 
 	});
-	
 	$this['ConversationMapper'] = $this->share(function($c){
 	   return new ConversationMapper($c->query('API')); 
 	});
+	
+	$this['User'] = $this->share(function($c){
+	    return new User();
+	});
+	$this['UserMapper'] = $this->share(function($c){
+	    return new UserMapper($c->query('API'));
+	});
+	
+	$this['PushMessageMapper'] = $this->share(function($c){
+	    return new PushMessageMapper($c->query('API'));
+	});
+	$this['PushMessage'] = $this->share(function($c){
+	    return new \OCA\Chat\OCH\Db\PushMessage();
+	});
+	
+	$this['UserOnline'] = $this->share(function($c){
+	    return new UserOnline();
+	});
+	$this['UserOnlineMapper'] = $this->share(function($c){
+	   return new UserOnlineMapper($c->query('API')); 
+	});
+	
+	$this['Message'] = $this->share(function($c){
+	    return new Message();
+	});
+	$this['MessageMapper'] = $this->share(function($c){
+	    return new MessageMapper($c->query('API'));
+	});
+	
+	
 	
     }
 

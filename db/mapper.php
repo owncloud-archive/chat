@@ -20,7 +20,6 @@ abstract class Mapper {
      */
     public function __construct(/*API*/ $api, $tableName){
         $this->api = $api;
-	\OCP\Util::writeLog('chat', 'mapper : ' . $api->getUserId(), \OCP\Util::ERROR);
         $this->tableName = '*PREFIX*' . $tableName;
     }
 

@@ -92,15 +92,17 @@ class DIContainer extends SimpleContainer implements IAppContainer{
 
         $this['this'] = $this;
 
-        $this['AppController'] = $this->share(function($c){
-            return new AppController($c['this'], $c['Request']);
-        });
+	$this['AppController'] = $this->share(function($c){
+            return new AppController($c['AppName'], $c['Request'], $c['this']);
+	});
 
-        $this['ApiController'] = $this->share(function($c){
-            return new ApiController($c['this'], $c['Request']);
-        });
-        
-        $this['AppApi'] = $this->share(function($c){
+ 
+
+	$this['ApiController'] = $this->share(function($c){
+	    return new ApiController($c['AppName'], $c['Request'], $c['this']);
+	});
+	
+	 $this['AppApi'] = $this->share(function($c){    
             return new AppApi($c['this']);
         });
     }

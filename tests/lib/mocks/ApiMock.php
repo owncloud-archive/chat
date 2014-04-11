@@ -1,12 +1,14 @@
 <?php
 
-namespace OCA\Chat\Core;
+namespace OCA\Chat\Tests\Lib\Mocks;
 
-use \OCP\AppFramework\IApi;
+use OCP\AppFramework\IApi;
 
-class API implements IApi{
+class APIMock implements IApi{
 
         private $appName;
+	
+	private $queryReturn;
 
         /**
          * constructor
@@ -190,7 +192,11 @@ class API implements IApi{
                 \OCP\App::addNavigationEntry($entry);
         }
 
-
+	
+	public function prepareQueryMustReturn($value){
+	    $this->queryReturn = $value;
+	}
+	
 
         /**
          * Used to abstract the owncloud database access away
@@ -200,8 +206,8 @@ class API implements IApi{
          * @return \OCP\DB a query object
          */
         public function prepareQuery($sql, $limit=null, $offset=null){
-                return \OCP\DB::prepare($sql, $limit, $offset);
-        }
+	    return $this->queryReturn;
+	}
 
  /**
          * Used to get the id of the just inserted element

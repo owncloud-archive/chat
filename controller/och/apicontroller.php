@@ -11,10 +11,10 @@ use \OCP\AppFramework\IAppContainer;
 
 class ApiController extends Controller {	
 
-    public function __construct(IAppContainer $app, IRequest $request){
-        parent::__construct($app, $request);
-    }
-  
+    public function __construct($appName, IRequest $request, IAppContainer $app){
+	parent::__construct($appName, $request);
+	$this->app = $app;
+    }  
     /**
      * Routes the API Request
      * @param String $this->params('JSON') command in JSON

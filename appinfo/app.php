@@ -22,7 +22,7 @@
 
 namespace OCA\Chat;
 
-use \OCA\Chat\DependencyInjection\DIContainer;
+use \OCA\Chat\App\Chat;
 
 \OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
     'order' => 10,
@@ -33,7 +33,8 @@ use \OCA\Chat\DependencyInjection\DIContainer;
 
 \OCP\App::registerAdmin('chat', 'admin');
 
-$DIContainer = new DIContainer('chat');
-$appApi = $DIContainer['AppApi'];
+$app = new Chat();
+$container = $app->getContainer();
+$appApi = $container['AppApi'];
 $appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
 $appApi->registerBackend('Email', 'email','email' , 'true');

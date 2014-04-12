@@ -33,17 +33,17 @@ class Chat extends App {
 	 */
 	$container->registerService('AppController', function($c) {
 	    return new AppController(
-		$c->query('API'), 
-		$c->query('Request'),
-		$c
+			$c->query('API'), 
+			$c->query('Request'),
+			$c
 	    );
 	});
 
 	$container->registerService('ApiController', function($c) {
 	    return new ApiController(
-		$c->query('API'), 
-		$c->query('Request'),
-		$c
+			$c->query('API'), 
+			$c->query('Request'),
+			$c
 	    );
 	});
 
@@ -53,37 +53,37 @@ class Chat extends App {
 	
 	$container->registerService('ConversationMapper', function($c){
 	    return new ConversationMapper(
-               $c->query('API')
+            $c->query('API')
 	    );
 	});
 
 	$container->registerService('ConversationMapper', function($c){
 	    return new ConversationMapper(
-               $c->query('API')
+            $c->query('API')
 	    );
 	});
 	
 	$container->registerService('MessageMapper', function($c){
 	    return new MessageMapper(
-               $c->query('API')
+            $c->query('API')
 	    );
 	});
 	
 	$container->registerService('PushMessageMapper', function($c){
 	    return new PushMessageMapper(
-               $c->query('API')
+        	$c->query('API')
 	    );
 	});
 
 	$container->registerService('UserMapper', function($c){
 	    return new UserMapper(
-               $c->query('API')
+        	$c->query('API')
 	    );
 	});
 
 	$container->registerService('UserOnlineMapper', function($c){
 	    return new UserOnlineMapper(
-               $c->query('API')
+        	$c->query('API')
 	    );
 	});
 

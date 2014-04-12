@@ -36,8 +36,8 @@ use OCA\Chat\OCH\Db\UserOnlineMapper;
 
 class AppController extends Controller {
 
-    public function __construct($appName, IRequest $request, IAppContainer $app){
-	parent::__construct($appName, $request);
+    public function __construct(API $api, IRequest $request, IAppContainer $app){
+	parent::__construct($api->getAppName(), $request);
 	$this->app = $app;
     }
     

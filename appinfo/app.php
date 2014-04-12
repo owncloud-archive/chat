@@ -26,7 +26,7 @@ use \OCA\Chat\DependencyInjection\DIContainer;
 
 \OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
     'order' => 10,
-    'href' => \OCP\Util::linkToRoute('chat_index'),
+    'href' => \OCP\Util::linkToRoute('chat.app.index'),
     'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
     'name' => \OCP\Util::getL10n('chat')->t('Chat')
 ));

@@ -8,11 +8,12 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
+use OCA\Chat\Core\API;
 
 class ApiController extends Controller {	
 
-    public function __construct($appName, IRequest $request, IAppContainer $app){
-	parent::__construct($appName, $request);
+    public function __construct(API $api, IRequest $request, IAppContainer $app){
+	parent::__construct($api->getAppName(), $request);
 	$this->app = $app;
     }  
     /**

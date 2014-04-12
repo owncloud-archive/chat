@@ -1,8 +1,4 @@
 <?php 
-namespace OCA\Chat;
-
-use \OCA\Chat\DependencyInjection\DIContainer;
-use \OCA\Chat\OCH\Db\UserMapper;
 // Fist load all style sheets
 \OCP\Util::addStyle('chat', 'main');
 

@@ -211,4 +211,8 @@ class API implements IApi{
         public function getInsertId($tableName){
                 return \OCP\DB::insertid($tableName);
         }
+
+	public function getAppName(){
+	    return $this->appName;
+	}
 }

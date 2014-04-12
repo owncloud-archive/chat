@@ -22,35 +22,25 @@
 
 namespace OCA\Chat;
 
-use \OCA\Chat\Core\App;
-use \OCA\Chat\DependencyInjection\DIContainer;
+use \OCA\Chat\App\Chat;
 
 // Note that action can't be used as keyword
 
-$this->create('chat_index', '/')->get()->action(
-    function($params){
-        App::main('AppController', 'index', new DIContainer('chat'), $params);
-    }
-);
-
-$this->create('chat_och_api', '/och/api')->action(
-    function($params){
-        App::main('ApiController', 'route', new DIContainer('chat'), $params);
-    }
-);
-
-
-// Action can be enable or disable
-$this->create('chat_backend', '/backend/{do}/{backend}/{id}')->action(
-    function($params){
-        App::main('AppController', 'backend', new DIContainer('chat'), $params);
-    }
-);
-
-$this->create('chat_get_contacts', '/contacts')->action(
-    function($params){
-        App::main('AppController', 'contacts', new DIContainer('chat'), $params);
-    }
-);
-
-
+$application = new Chat();
+$application->registerRoutes($this, array('routes' => array(
+    array(  'name' => 'app#index',
+	    'url' => '/',
+	    'verb' => 'GET'),
+    array(  'name' => 'api#route',
+	    'url' => '/och/api',
+	    'verb' => 'post'
+    ),
+    array(  'name' => 'app#backend',
+	    'url' => '/backend/{do}/{backend}/{id}',
+	    'verb' => 'post'
+    ),
+    array(  'name' => 'app#contacts',
+	    'url' => '/contacts',
+	    'verb' => 'post' // TODO GET
+    )
+)));

@@ -8,10 +8,14 @@ use \OCA\Chat\OCH\Db\User;
 use \OCA\Chat\OCH\Db\UserMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
+use OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 
 class Join extends ChatAPI {
 	
     public function setRequestData(array $requestData){
+    	if(empty($requestData['conv_id'])){
+    		throw new RequestDataInvalid("CONV-ID-MUST-BE-PROVIDED");
+    	}
         $this->requestData = $requestData;
     }		
 
@@ -23,6 +27,7 @@ class Join extends ChatAPI {
         $userMapper = $this->app['UserMapper'];
         $userMapper->insert($user);
 
+        return true;
 	/*
 	 * TODO
         if (count($users) == 2){

@@ -9,6 +9,7 @@ use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
 use OCA\Chat\Core\API;
+use OCA\Chat\Db\DBException;
 
 class ApiController extends Controller {	
 
@@ -57,7 +58,10 @@ class ApiController extends Controller {
                                         } else {
                                             return new Success("command", $action);
                                         }
-                                    }catch(RequestDataInvalid $e){
+                                    }catch(DBException $e){
+                                    	return new Error("command", $action, "ERROR::DB::" . $e->getMessage());
+                                    }
+                                    catch(RequestDataInvalid $e){
                                         return new Error("command", $action, $e->getMessage());
                                     }
                                 } else {
@@ -74,19 +78,16 @@ class ApiController extends Controller {
                 case "push":
                     if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
                         if(!empty($request['data']['session_id'])){
-                            //throw new \Exception("good to go");
                             $pushClasses = array(
                                 "get" => "\OCA\Chat\OCH\Push\Get",
                                 "delete" => "\OCA\Chat\OCH\Push\Delete"
                             );
                             $className = $pushClasses[$action];
                             $pushClass = new $className($this->app);
-                            //throw new \Exception("ok");
 
                             $pushClass->setRequestData($request['data']);
 
                             return $pushClass->execute();
-                            //throw new \Exception("ok");
 
                         } else{
                             return new Error('push', 'session_id not provided');

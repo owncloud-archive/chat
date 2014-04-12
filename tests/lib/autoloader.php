@@ -48,17 +48,13 @@ spl_autoload_register(function ($className){
 			require_once $relPath;
 	    }
 	} elseif (strpos($className, 'OC\\') === 0) {
-	    		echo "Hoi";
 		$path = strtolower(str_replace('\\', '/', substr($className, 2)) . '.php');
 		$relPath = __DIR__ . '/../../../../lib/private/' . $path;
-		echo "\n\n\n" . $relPath . "\n\n\n";
 		if(file_exists($relPath)){
 			require_once $relPath;
 		}
 	} elseif (strpos($className, 'Pimple\Pimple' === 0)){
 		require_once("../vendor/Pimple/Pimple.php");
 	}
+	
 });
-
-//use OC\AppFramework\DependencyInjection\DIContainer;
-//new DIContainer();

@@ -34,6 +34,11 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
     }
     
+    public function testConversationExistsDBError(){
+    	
+    }
+    
+    
     public function testConversationExists(){
 		// config
 		$this->container['ConversationMapper']->expects($this->any())
@@ -102,6 +107,6 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 		));
 		$result = $startConv->execute();
 		$this->assertEquals(array("conv_id" => 'addeimnpr'), $result);
-	    }
+   }
     
 }

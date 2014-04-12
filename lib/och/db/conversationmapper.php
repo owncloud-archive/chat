@@ -8,7 +8,7 @@ use OCA\Chat\Db\DoesNotExistException;
 class ConversationMapper extends Mapper {
 
     public function __construct(API $api) {
-	parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
+		parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
     }
 
     public function deleteConversation($conversationID){

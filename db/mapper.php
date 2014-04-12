@@ -3,6 +3,7 @@
 namespace OCA\Chat\Db;
 
 use OCA\Chat\Core\API;
+use OCA\Chat\Db\DBException;
 
 /**
 * Simple parent class for inheriting your data access layer from. This class
@@ -18,7 +19,7 @@ abstract class Mapper {
      * @param string $tableName the name of the table. set this to allow entity
      * queries without using sql
      */
-    public function __construct(/*API*/ $api, $tableName){
+    public function __construct(API $api, $tableName){
         $this->api = $api;
         $this->tableName = '*PREFIX*' . $tableName;
     }
@@ -170,8 +171,21 @@ abstract class Mapper {
      * @return \PDOStatement the database query result
      */
     protected function execute($sql, array $params=array(), $limit=null, $offset=null){
-	$query = $this->api->prepareQuery($sql, $limit, $offset);
-        return $query->execute($params);
+		try {
+			$query = $this->api->prepareQuery($sql, $limit, $offset);
+			$result =  $query->execute($params);
+			        
+        	if (\OCP\DB::isError($result)) {
+        		$this->api->log(__METHOD__. 'DB error: ' . \OC_DB::getErrorMessage($result),'ERROR');
+				throw new DBException(\OC_DB::getErrorMessage($result));
+        	} else {
+        		return $result;
+        	}
+        
+        } catch(\Exception $e) {
+     		$this->api->log(__METHOD__ . ' exception: ' . $e->getMessage(), 'ERROR');
+        	throw new DBException($e->getMessage(), 0, $e);
+        }
     }
 
     /**

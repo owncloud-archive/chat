@@ -11,9 +11,8 @@ class MessageMapper extends Mapper{
     }
  
     public function getMessagesByConvId($convId){
-	$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `convid` = ?';
-	return $this->findEntities($sql, array($convId));
-
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `convid` = ?';
+		return $this->findEntities($sql, array($convId));
     }
     
 }

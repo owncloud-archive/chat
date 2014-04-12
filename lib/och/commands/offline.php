@@ -18,9 +18,9 @@ class Offline extends ChatAPI {
         $mapper = $this->app['UserOnlineMapper'];
         $mapper->deleteBySessionId($this->requestData['session_id']);   		
 	
-	$syncOnline = new SyncOnline($this->api);
+		$syncOnline = new SyncOnline($this->app);
         $syncOnline->execute();
         
-	return;
+		return;
     }	
 }

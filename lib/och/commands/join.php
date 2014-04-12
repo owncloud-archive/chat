@@ -21,9 +21,10 @@ class Join extends ChatAPI {
         $user->setUser($this->requestData['user']['backends']['och']['value']);
         $user->setSessionId($this->requestData['session_id']);
         $userMapper = $this->app['UserMapper'];
-	//throw new \Exception('oh');
         $userMapper->insert($user);
 
+	/*
+	 * TODO
         if (count($users) == 2){
             // Send a push message to all users in this conversation to inform about a new user which joined
             $command = json_encode(array(
@@ -36,7 +37,7 @@ class Join extends ChatAPI {
             ));
 
             $sender = $this->requestData['user']; // copy the params('user') to a variable so it won't be called many times in a large conversation
-            $PushMessageMapper = new PushMessageMapper($this->api);
+            $PushMessageMapper = $this->app['PushMessageMapper'];
             foreach($users as $receiver){
                 if($receiver->getUser() !== $sender){
                     $pushMessage = new PushMessage();
@@ -48,5 +49,6 @@ class Join extends ChatAPI {
                 }
             }
         } 
+	*/
     }	
 }

@@ -10,6 +10,7 @@ use OCA\Chat\Core\API;
 use OCA\Chat\OCH\Commands\StartConv;
 use OCA\Chat\Tests\Lib\Mocks\APIMock;
 use OCA\Chat\DependencyInjection\DIContainer;
+use \OCA\Chat\OCH\Db\UserOnline;
 
 class StartConvTest extends \PHPUnit_Framework_TestCase {
     
@@ -20,6 +21,14 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 	    ->disableOriginalConstructor()
 	    ->getMock();
 	
+	$this->container['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
+		->disableOriginalConstructor()
+		->getMock();
+	
+	$this->container['PushMessageMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\PushMessageMapper')
+		->disableOriginalConstructor()
+		->getMock();
+	
     }
     
     public function testConversationExists(){
@@ -27,6 +36,22 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 	$this->container['ConversationMapper']->expects($this->any())
              ->method('exists')
              ->will($this->returnValue(true));
+	
+	$this->container['UserOnlineMapper']->expects($this->any())
+		->method('insert')
+		->will($this->returnValue(true));
+	
+	$session1 = new UserOnline(); 
+	$session1->setUser("derp"); // = username of user_to_invite
+	$session1->setSessionId('87ce2b3faeb92f0fb745645e7827f51a');
+	
+	$this->container['UserOnlineMapper']->expects($this->any())
+		->method('findByUser')
+		->will($this->returnValue(array($session1, $session2)));
+	
+	$this->container['PushMessageMapper']->expects($this->any())
+		->method('insert')
+		->will($this->returnValue(true));
 	
 	// logic
 	$startConv = new StartConv($this->container);

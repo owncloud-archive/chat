@@ -61,13 +61,11 @@ class Invite extends ChatAPI {
         $UTISessionID = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']); // $UTISessionID = UserToInviteSessionId = array()
 
         foreach($UTISessionID as $userToInvite){
-        //    $pushMessage = $this->app['PushMessage'];
-          $pushMessage = new PushMessage();
+            $pushMessage = new PushMessage();
 	    $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
             $pushMessage->setReceiver($userToInvite->getUser());
             $pushMessage->setReceiverSessionId($userToInvite->getSessionId());
             $pushMessage->setCommand($command);
-	    echo $pushMessage->id;
 	    $pushMessageMapper->insert($pushMessage);	
         }
         return;					

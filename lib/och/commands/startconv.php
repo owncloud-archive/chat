@@ -30,12 +30,12 @@ class StartConv extends ChatAPI {
             $join = new Join($this->app);
             $this->requestData['conv_id'] = $id;
             $join->setRequestData($this->requestData);
-	    $join->execute();
+	    	$join->execute();
 
              // (5) invite the user_to_invite since we just created the conv
-         //   $invite = new Invite($this->app);
-         //   $invite->setRequestData($this->requestData);
-          //  $invite->execute();
+            $invite = new Invite($this->app);
+            $invite->setRequestData($this->requestData);
+         	$invite->execute();
             
         } else {
 

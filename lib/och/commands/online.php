@@ -9,11 +9,6 @@ use OCA\Chat\OCH\Commands\SyncOnline;
 
 class Online extends ChatAPI {
 	
-    public function __construct(API $api){
-        parent::__construct($api);
-    }
-
-
     public function setRequestData(array $requestData){
         $this->requestData = $requestData;
     }

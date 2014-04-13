@@ -22,88 +22,88 @@ if(!class_exists('\SimplePie')) {
 
 class Chat extends App {
 
-    public function __construct(array $urlParams=array()){
+	public function __construct(array $urlParams=array()){
 		parent::__construct('chat', $urlParams);
-	
+
 		$container = $this->getContainer();
-	
-	
+
+
 		/**
 		 * Controllers
 		 */
 		$container->registerService('AppController', function($c) {
-		    return new AppController(
-				$c->query('API'), 
+			return new AppController(
+				$c->query('API'),
 				$c->query('Request'),
 				$c
-		    );
+			);
 		});
-	
+
 		$container->registerService('ApiController', function($c) {
-		    return new ApiController(
-				$c->query('API'), 
+			return new ApiController(
+				$c->query('API'),
 				$c->query('Request'),
 				$c
-		    );
+			);
 		});
-	
+
 		/**
 		 * Mappers
 		 */
-		
+
 		$container->registerService('ConversationMapper', function($c){
-		    return new ConversationMapper(
-	            $c->query('API')
-		    );
+			return new ConversationMapper(
+				$c->query('API')
+			);
 		});
-	
+
 		$container->registerService('ConversationMapper', function($c){
-		    return new ConversationMapper(
-	            $c->query('API')
-		    );
+			return new ConversationMapper(
+				$c->query('API')
+			);
 		});
-		
+
 		$container->registerService('MessageMapper', function($c){
-		    return new MessageMapper(
-	            $c->query('API')
-		    );
+			return new MessageMapper(
+				$c->query('API')
+			);
 		});
-		
+
 		$container->registerService('PushMessageMapper', function($c){
-		    return new PushMessageMapper(
-	        	$c->query('API')
-		    );
+			return new PushMessageMapper(
+				$c->query('API')
+			);
 		});
-	
+
 		$container->registerService('UserMapper', function($c){
-		    return new UserMapper(
-	        	$c->query('API')
-		    );
+			return new UserMapper(
+				$c->query('API')
+			);
 		});
-	
+
 		$container->registerService('UserOnlineMapper', function($c){
-		    return new UserOnlineMapper(
-	        	$c->query('API')
-		    );
+			return new UserOnlineMapper(
+				$c->query('API')
+			);
 		});
-	
-	
-	
-		
+
+
+
+
 		/**
 		 * Utility
 		 */
 		$container->registerService('API', function($c){
-		    return new API(
+			return new API(
 			$c->query('AppName')
-		    );
+			);
 		});
-	
+
 		$container->registerService('AppApi', function($c){
-		    return new AppApi(
+			return new AppApi(
 			$c
-		    );
+			);
 		});
-    }
+	}
 }
 

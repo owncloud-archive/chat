@@ -26,14 +26,14 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		$this->container['API']->expects($this->any())
 			->method('log')
 			->will($this->returnValue(null));
-	
+
 	}
-	
+
 
 	/**
 	 * Testcase: if there is a PDOException in the datamapper a DBException must be thrown
 	 * with the same message as in the PDOException
-	 */ 
+	 */
 	public function testDBFailure(){
 		$this->setExpectedException('\OCA\Chat\Db\DBException', 'Something went wrong with the DB!');
 		// config
@@ -44,7 +44,7 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		$this->container['API']->expects($this->any())
 			->method('getUsers')
 			->will($this->returnValue(array("admin", "derp")));
-		
+
 		// logic
 		$invite = new Invite($this->container);
 		$invite->setRequestData(array(
@@ -86,7 +86,7 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		));
 		$result = $invite->execute();
 	}
-	 
+
 	public function testOmmittedConvId(){
 		$this->setExpectedException('\OCA\Chat\OCH\Exceptions\RequestDataInvalid', 'CONV-ID-MUST-BE-PROVIDED');
 
@@ -131,10 +131,10 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 				'address_book_id' => 'admin',
 				'address_book_backend' => 'localusers',
 			),
-			//'conv_id' => 'addeimnpr',	
+			//'conv_id' => 'addeimnpr',
 		));
 	}
-	
+
 	public function testOmmittedUserToInvite(){
 		$this->setExpectedException('\OCA\Chat\OCH\Exceptions\RequestDataInvalid', 'USER-TO-INVITE-MUST-BE-PROVIDED');
 
@@ -159,14 +159,14 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 			),
 			'session_id' => 'c08809598b01894c468873fab54291aa',
 			'timestamp' => 1397328934.658,
-			'conv_id' => 'addeimnpr',	
-		));	
+			'conv_id' => 'addeimnpr',
+		));
 	}
-	
+
 
 	public function testEmptyUserToInvite(){
 		$this->setExpectedException('\OCA\Chat\OCH\Exceptions\RequestDataInvalid', 'USER-TO-INVITE-MUST-BE-PROVIDED');
-	
+
 		// logic
 		$invite= new Invite($this->container);
 		$invite->setRequestData(array(
@@ -192,10 +192,10 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 				'user_to_invite' => array()
 		));
 	}
-	
+
 	public function testUserEqualsUserToInvite(){
 		$this->setExpectedException('\OCA\Chat\OCH\Exceptions\RequestDataInvalid', 'USER-EQAUL-TO-USER-TO-INVITE');
-	
+
 		// logic
 		$invite= new Invite($this->container);
 		$invite->setRequestData(array(
@@ -242,7 +242,7 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 			->method('getUsers')
 			->will($this->returnValue(array("admin", "herp"))); // Simulation of the OC users, derp is omitted
 		$this->setExpectedException('\OCA\Chat\OCH\Exceptions\RequestDataInvalid', 'USER-TO-INVITE-NOT-OC-USER');
-		
+
 		// logic
 		$invite= new Invite($this->container);
 		$invite->setRequestData(array(
@@ -283,9 +283,9 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 			'conv_id' => 'addeimnpr',
 		));
 	}
-	
-	
-	
+
+
+
 	public function testUserToInviteNotOnline(){
 		$this->container['API']->expects($this->once())
 			->method('getUsers')
@@ -296,9 +296,9 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		$this->container['UserOnlineMapper']->expects($this->any())
 			->method('getOnlineUsers')
 			->will($this->returnValue(array("admin"))); // Simulation of the online users -> derp is offline
-		
+
 		$this->setExpectedException('\OCA\Chat\OCH\Exceptions\RequestDataInvalid', 'USER-TO-INVITE-NOT-ONLINE');
-		
+
 		// logic
 		$invite= new Invite($this->container);
 		$invite->setRequestData(array(
@@ -338,9 +338,9 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 				'timestamp' => 1397328934.658,
 				'conv_id' => 'addeimnpr',
 		));
-		
+
 	}
-	
+
 	public function testExecute(){
 		$this->container['API']->expects($this->once())
 			->method('getUsers')
@@ -351,24 +351,24 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		$this->container['UserOnlineMapper']->expects($this->any())
 			->method('getOnlineUsers')
 			->will($this->returnValue(array("admin", "derp"))); // Simulation of the online users -> derp is offline
-		
+
 		$session1 = new UserOnline();
 		$session1->setUser('admin');
 		$session1->setSessionId('session1id'); // must be deleted
 		$session1->setLastOnline(time() - 200);
-		
+
 		$this->container['UserOnlineMapper']->expects($this->any())
 			->method('findByUser')
 			->will($this->returnValue(array($session1))); // Simulation of the online users -> derp is offline
-		
+
 		$this->container['PushMessageMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\PushMessageMapper')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->container['PushMessageMapper']->expects($this->any())
 			->method('insert')
 			->will($this->returnValue(true)); // Simulation of the online users -> derp is offline
-		
-				
+
+
 		// logic
 		$invite= new Invite($this->container);
 		$invite->setRequestData(array(

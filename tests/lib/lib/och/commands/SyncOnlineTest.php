@@ -14,7 +14,7 @@ use OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use OCA\Chat\OCH\Db\UserOnline;
 
 // DONE
-class GreetTest extends \PHPUnit_Framework_TestCase {
+class SyncOnlineTest extends \PHPUnit_Framework_TestCase {
 
 	public static $sessionIds;
 

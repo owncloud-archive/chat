@@ -14,7 +14,10 @@ use OCA\Chat\OCH\Db\MessageMapper;
 class SendChatMsg extends ChatAPI {
 	
     public function setRequestData(array $requestData){
-        if(empty($requestData['chat_msg'])){
+    	if(empty($requestData['conv_id'])){
+    		throw new RequestDataInvalid("CONV-ID-MUST-BE-PROVIDED");
+    	}
+    	if(empty($requestData['chat_msg']) || !array_key_exists('chat_msg', $requestData)){
             throw new RequestDataInvalid("CHAT-MSG-MUST-BE-PROVIDED");
         }
         if(empty($requestData['timestamp'])){
@@ -51,15 +54,15 @@ class SendChatMsg extends ChatAPI {
             }
         }
 	
-	// All done
-	// insert this chatMsg into the messages table
-	$messageMapper = $this->app['MessageMapper'];
-	$message = new Message();
-	$message->setConvid($this->requestData['conv_id']);
-	$message->setTimestamp($this->requestData['timestamp']);
-	$message->setUser($this->requestData['user']['backends']['och']['value']);
-	$message->setMessage($this->requestData['chat_msg']);
-	$messageMapper->insert($message);
+		// All done
+		// insert this chatMsg into the messages table
+		$messageMapper = $this->app['MessageMapper'];
+		$message = new Message();
+		$message->setConvid($this->requestData['conv_id']);
+		$message->setTimestamp($this->requestData['timestamp']);
+		$message->setUser($this->requestData['user']['backends']['och']['value']);
+		$message->setMessage($this->requestData['chat_msg']);
+		$messageMapper->insert($message);
 		
         return;
     }	

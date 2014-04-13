@@ -200,10 +200,10 @@ class API implements IApi{
          * @return \OCP\DB a query object
          */
         public function prepareQuery($sql, $limit=null, $offset=null){
-	    return \OCP\DB::prepare($sql, $limit, $offset);
+	    	return \OCP\DB::prepare($sql, $limit, $offset);
         }
 
- /**
+		/**
          * Used to get the id of the just inserted element
          * @param string $tableName the name of the table where we inserted the item
          * @return int the id of the inserted element
@@ -240,5 +240,9 @@ class API implements IApi{
 					break;
 			}
 			\OCP\Util::writeLog($this->appName, $msg, $level);
+		}
+		
+		public function getUsers(){
+			return \OCP\User::getUsers();
 		}
 }

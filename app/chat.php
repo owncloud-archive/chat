@@ -23,87 +23,87 @@ if(!class_exists('\SimplePie')) {
 class Chat extends App {
 
     public function __construct(array $urlParams=array()){
-	parent::__construct('chat', $urlParams);
-
-	$container = $this->getContainer();
-
-
-	/**
-	 * Controllers
-	 */
-	$container->registerService('AppController', function($c) {
-	    return new AppController(
-			$c->query('API'), 
-			$c->query('Request'),
+		parent::__construct('chat', $urlParams);
+	
+		$container = $this->getContainer();
+	
+	
+		/**
+		 * Controllers
+		 */
+		$container->registerService('AppController', function($c) {
+		    return new AppController(
+				$c->query('API'), 
+				$c->query('Request'),
+				$c
+		    );
+		});
+	
+		$container->registerService('ApiController', function($c) {
+		    return new ApiController(
+				$c->query('API'), 
+				$c->query('Request'),
+				$c
+		    );
+		});
+	
+		/**
+		 * Mappers
+		 */
+		
+		$container->registerService('ConversationMapper', function($c){
+		    return new ConversationMapper(
+	            $c->query('API')
+		    );
+		});
+	
+		$container->registerService('ConversationMapper', function($c){
+		    return new ConversationMapper(
+	            $c->query('API')
+		    );
+		});
+		
+		$container->registerService('MessageMapper', function($c){
+		    return new MessageMapper(
+	            $c->query('API')
+		    );
+		});
+		
+		$container->registerService('PushMessageMapper', function($c){
+		    return new PushMessageMapper(
+	        	$c->query('API')
+		    );
+		});
+	
+		$container->registerService('UserMapper', function($c){
+		    return new UserMapper(
+	        	$c->query('API')
+		    );
+		});
+	
+		$container->registerService('UserOnlineMapper', function($c){
+		    return new UserOnlineMapper(
+	        	$c->query('API')
+		    );
+		});
+	
+	
+	
+		
+		/**
+		 * Utility
+		 */
+		$container->registerService('API', function($c){
+		    return new API(
+			$c->query('AppName')
+		    );
+		});
+	
+		$container->registerService('AppApi', function($c){
+		    return new AppApi(
 			$c
-	    );
-	});
-
-	$container->registerService('ApiController', function($c) {
-	    return new ApiController(
-			$c->query('API'), 
-			$c->query('Request'),
-			$c
-	    );
-	});
-
-	/**
-	 * Mappers
-	 */
-	
-	$container->registerService('ConversationMapper', function($c){
-	    return new ConversationMapper(
-            $c->query('API')
-	    );
-	});
-
-	$container->registerService('ConversationMapper', function($c){
-	    return new ConversationMapper(
-            $c->query('API')
-	    );
-	});
-	
-	$container->registerService('MessageMapper', function($c){
-	    return new MessageMapper(
-            $c->query('API')
-	    );
-	});
-	
-	$container->registerService('PushMessageMapper', function($c){
-	    return new PushMessageMapper(
-        	$c->query('API')
-	    );
-	});
-
-	$container->registerService('UserMapper', function($c){
-	    return new UserMapper(
-        	$c->query('API')
-	    );
-	});
-
-	$container->registerService('UserOnlineMapper', function($c){
-	    return new UserOnlineMapper(
-        	$c->query('API')
-	    );
-	});
-
-
-
-	
-	/**
-	 * Utility
-	 */
-	$container->registerService('API', function($c){
-	    return new API(
-		$c->query('AppName')
-	    );
-	});
-
-	$container->registerService('AppApi', function($c){
-	    return new AppApi(
-		$c
-	    );
-	});
+		    );
+		});
     }
 }
 

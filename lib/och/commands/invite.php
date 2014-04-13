@@ -19,7 +19,8 @@ class Invite extends ChatAPI {
      * @param $requestData['user_to_invite'] String id of the user which need to be invited
     */
     public function setRequestData(array $requestData){
-        if(empty($requestData['conv_id'])){
+    	
+    	if(empty($requestData['conv_id'])){
             throw new RequestDataInvalid("CONV-ID-MUST-BE-PROVIDED");
         }
 
@@ -27,11 +28,11 @@ class Invite extends ChatAPI {
             throw new RequestDataInvalid("USER-TO-INVITE-MUST-BE-PROVIDED");	
         }
 
-        if($requestData['user'] === $requestData['user_to_invite']){
+        if($requestData['user']['backends']['och']['value'] === $requestData['user_to_invite']['backends']['och']['value']){
             throw new RequestDataInvalid("USER-EQAUL-TO-USER-TO-INVITE");
         }
 
-        if(!in_array($requestData['user_to_invite']['backends']['och']['value'], \OCP\User::getUsers())){
+        if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $this->app['API']->getUsers())){
             throw new RequestDataInvalid("USER-TO-INVITE-NOT-OC-USER");
         }
 
@@ -62,11 +63,11 @@ class Invite extends ChatAPI {
 
         foreach($UTISessionID as $userToInvite){
             $pushMessage = new PushMessage();
-	    $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
+	 	    $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
             $pushMessage->setReceiver($userToInvite->getUser());
             $pushMessage->setReceiverSessionId($userToInvite->getSessionId());
             $pushMessage->setCommand($command);
-	    $pushMessageMapper->insert($pushMessage);	
+	   		$pushMessageMapper->insert($pushMessage);	
         }
         return;					
     }	

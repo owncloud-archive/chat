@@ -95,8 +95,8 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(true));
 
 		// logic
-		$join = new Join($this->container);
-		$join->setRequestData(array(
+		$invite = new Invite($this->container);
+		$invite->setRequestData(array(
 			'user' => array (
 				'id' => 'admin',
 				'online' => false,

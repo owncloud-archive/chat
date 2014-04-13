@@ -39,8 +39,8 @@ class GreetTest extends \PHPUnit_Framework_TestCase {
 			->will($this->throwException(new \PDOException('Something went wrong with the DB!')));
 	
 		// logic
-		$invite = new Invite($this->container);
-		$invite->setRequestData(array(
+		$greet = new Greet($this->container);
+		$greet->setRequestData(array(
 			'user' => array (
 				'id' => 'admin',
 				'online' => false,
@@ -60,6 +60,6 @@ class GreetTest extends \PHPUnit_Framework_TestCase {
 			'session_id' => 'c08809598b01894c468873fab54291aa',
 			'timestamp' => 1397328934.658,
 		));
-		$result = $invite->execute();
+		$result = $greet->execute();
 	}
 }

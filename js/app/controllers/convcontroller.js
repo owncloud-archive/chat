@@ -236,10 +236,10 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		restrict: 'A',
 		link: function ($scope, element, attrs) {
 			element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
-			element.online(attrs.isonline);
+			element.online(attrs.isonline, attrs.onlinesize);
 
 			$scope.$watch('contactsObj', function(){
-				element.online(Chat.scope.contactsObj[attrs.id].online);
+				element.online(Chat.scope.contactsObj[attrs.id].online, attrs.onlinesize);
 			});
 		}
 	};

@@ -4,25 +4,24 @@
 	position:relative;
 	float:left;
 	position:relative;
-	width: 200px;
+	width: 220px;
 	height: 200px;
 	border-radius: 5px;
-	border: 1px solid #CCC;
 }
 .contact-container:hover{
-	border: 1px solid #1C2C43;
 }
 .contact{
 	position:absolute;
 	top:0px;
-	left:0px;
-	width: 198px;
-	height: 198px;
-	border-radius: 5px;
+	right:0px;
+	width: 200px;
+	height: 200px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 .contact img {
-	width:198px;
-	height:198px;
+	width:230px;
+	height:230px;
 	border-radius:5px;
 }
 .contact-label{
@@ -228,9 +227,19 @@
 	position:absolute;
 	top:44px;
 }
-.online {
-	border-left:0.25em solid #3CB371;
+.msg-avatar-container{
+	width:39px;
+	height:32px;
+	position:relative;
 }
-.offline {
-	border-left:0.25em solid #B22222;
+.msg-avatar-container div, .msg-avatar-container img {
+	right:0;
+}
+.avatar-list-container{
+	width:39px;
+	height:32px;
+	position:relative;
+}
+.avatar-list-container div, .avatar-list-container img {
+	right:0;
 }

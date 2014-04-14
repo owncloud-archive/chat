@@ -12,6 +12,7 @@ use OCA\Chat\OCH\Db\MessageMapper;
 use OCA\Chat\OCH\Db\PushMessageMapper;
 use OCA\Chat\OCH\Db\UserMapper;
 use OCA\Chat\OCH\Db\UserOnlineMapper;
+use OCA\Chat\Db\BackendMapper;
 
 
 /*// to prevent clashes with installed app framework versions
@@ -87,6 +88,11 @@ class Chat extends App {
 			);
 		});
 
+		$container->registerService('BackendMapper', function($c){
+			return new BackendMapper(
+					$c->query('API')
+			);
+		});
 
 
 

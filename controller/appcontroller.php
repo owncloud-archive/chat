@@ -28,65 +28,73 @@ use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
-
+use \OCA\Chat\OCH\Commands;
 
 
 use OCA\Chat\OCH\Db\UserOnlineMapper;
+use OCA\Chat\OCH\Commands\Greet;
 
 
 class AppController extends Controller {
 
-    public function __construct(API $api, IRequest $request, IAppContainer $app){
-	parent::__construct($api->getAppName(), $request);
-	$this->app = $app;
-    }
-    
-    /**
-     * @NoCSRFRequired
-     * @NoAdminRequired
-     */
-    public function index() {
-        $appApi = $this->app['AppApi'];
-	$contacts = $appApi->getContacts();
-        $backends = $appApi->getBackends();
-        $initConvs = $appApi->getInitConvs();
+	public function __construct(API $api, IRequest $request, IAppContainer $app){
+		parent::__construct($api->getAppName(), $request);
+		$this->app = $app;
+	}
 
-        $params = array(
-            "initvar" => json_encode(array(	
-                "contacts" => $contacts['contacts'],
-                "contactsList" => $contacts['contactsList'],
-		"contactsObj" => $contacts['contactsObj'],
-                "backends" => $backends,
-                "initConvs" => $initConvs
-            ))
-        );
-	
-        return $this->render('main', $params);
-    }
-	
-    public function backend(){
-        $backendMapper = new BackendMapper($this->app->getCoreApi());
-        $backend = new Backend();
-        $backend->setId($this->params('id'));
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 */
+	public function index() {
+		$appApi = $this->app['AppApi'];
+		$contacts = $appApi->getContacts();
+		$backends = $appApi->getBackends();
+		$initConvs = $appApi->getInitConvs();
+		$greet = new Greet($this->app);
+		$greet->setRequestData(array(
+			"timestamp" => time(),
+			"user" => $appApi->getCurrentUser(),
+		));
+		$sessionId = $greet->execute();
 
-        if($this->params('do') === 'enable'){
-            $backend->setEnabled('true');	
-        } elseif($this->params('do') === 'disable'){
-            $backend->setEnabled('false');
-        }
+		$params = array(
+			"initvar" => json_encode(array(
+				"contacts" => $contacts['contacts'],
+				"contactsList" => $contacts['contactsList'],
+				"contactsObj" => $contacts['contactsObj'],
+				"backends" => $backends,
+				"initConvs" => $initConvs,
+				"sessionId" => $sessionId['session_id'], // needs porting!
+			))
+		);
 
-        $backendMapper->update($backend);
-        return new JSONResponse(array("status" => "success"));
-    }
-    
-    /**
-     * @NoAdminRequired
-     */
-    public function contacts(){
+		return $this->render('main', $params);
+	}
+
+	public function backend(){
+		$backendMapper = new BackendMapper($this->app->getCoreApi());
+		$backend = new Backend();
+		$backend->setId($this->params('id'));
+
+		if($this->params('do') === 'enable'){
+			$backend->setEnabled('true');
+		} elseif($this->params('do') === 'disable'){
+			$backend->setEnabled('false');
+		}
+
+		$backendMapper->update($backend);
+		return new JSONResponse(array("status" => "success"));
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	public function contacts(){
 	$appApi = $this->app['AppApi'];
 	$contacts = $appApi->getContacts();
-	
+
 	return new JSONResponse($contacts);
-    }
-    
+	}
+
 }

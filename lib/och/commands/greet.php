@@ -19,13 +19,21 @@ class Greet extends ChatAPI {
 	}
 
 	public function execute(){
+		$sessionId = $this->generateSessionId($requestData['timestamp']);
 		$requestData = $this->getRequestData();
 		$userOnline = new UserOnline();
 		$userOnline->setUser($requestData['user']['backends']['och']['value']);
-		$userOnline->setSessionId($requestData['session_id']);
+		$userOnline->setSessionId($sessionId);
 		$userOnline->setLastOnline($requestData['timestamp']);
 		$mapper = $this->app['UserOnlineMapper'];
 		$mapper->insert($userOnline);
-		return;
+
+		return array("session_id" => $sessionId);
 	}
+
+	private function generateSessionId(){
+		$seed = "sessionID" . time();
+		return md5($seed);
+	}
+
 }

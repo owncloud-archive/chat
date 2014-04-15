@@ -30,6 +30,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 		$scope.initDone = true;
 		setInterval($scope.updateContacts, 60000);
+		console.log(initvar);
 	};
 
 	$scope.quit = function(){

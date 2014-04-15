@@ -20,6 +20,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		$scope.backends = initvar['backends'];
 		$scope.active.user = $scope.contactsObj[OC.currentUser];
 		$scope.initConvs = initvar['initConvs'];
+		$scope.initvar = initvar;
 		$scope.$apply();
 		for (active in $scope.backends) break;
 		$scope.active.backend =  $scope.backends[active];
@@ -29,8 +30,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			}
 		});
 		$scope.initDone = true;
-		setInterval($scope.updateContacts, 60000);
-		console.log(initvar);
+		setInterval($scope.updateContacts, 10000);
 	};
 
 	$scope.quit = function(){

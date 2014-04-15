@@ -48,15 +48,18 @@ class AppController extends Controller {
 	 */
 	public function index() {
 		$appApi = $this->app['AppApi'];
+
+		$greet = new Greet($this->app);
+		$greet->setRequestData(array(
+				"timestamp" => time(),
+				"user" => $appApi->getCurrentUser(),
+		));
+		$sessionId = $greet->execute();
+
 		$contacts = $appApi->getContacts();
 		$backends = $appApi->getBackends();
 		$initConvs = $appApi->getInitConvs();
-		$greet = new Greet($this->app);
-		$greet->setRequestData(array(
-			"timestamp" => time(),
-			"user" => $appApi->getCurrentUser(),
-		));
-		$sessionId = $greet->execute();
+
 
 		$params = array(
 			"initvar" => json_encode(array(

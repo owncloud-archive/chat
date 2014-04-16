@@ -152,7 +152,7 @@ class AppApi {
 			$error = 'Please enable the contacts app.';
 		}
 
-		$result = $cm->search(\OCP\User::getDisplayName(), array('FN'));
+		$result = $cm->search(\OCP\User::getUser(), array('FN'));
 		list($addressBookBackend, $addressBookId) = explode(':', $result['key']);
 		$r = $result[0];
 		$data = array();

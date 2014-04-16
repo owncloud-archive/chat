@@ -1,6 +1,7 @@
 Chat.och.util = {
 	init : function(){
 		Chat.och.sessionId = Chat.scope.initvar.sessionId;
+		Chat.och.api.util.longPoll();
 		// Now join and add all the existing convs
 		angular.forEach(Chat.scope.initConvs.och, function(conv){
 			console.log('auto joining ' + conv.id);

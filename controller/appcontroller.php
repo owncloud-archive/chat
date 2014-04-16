@@ -29,6 +29,7 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
 use \OCA\Chat\OCH\Commands;
+use \OCA\Chat\Core\API;
 
 
 use OCA\Chat\OCH\Db\UserOnlineMapper;

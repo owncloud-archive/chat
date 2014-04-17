@@ -95,10 +95,10 @@ class AppController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function contacts(){
-	$appApi = $this->app['AppApi'];
-	$contacts = $appApi->getContacts();
+		$appApi = $this->app['AppApi'];
+		$contacts = $appApi->getContacts();
 
-	return new JSONResponse($contacts);
+		return new JSONResponse($contacts);
 	}
 
 }

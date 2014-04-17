@@ -25,10 +25,10 @@ namespace OCA\Chat;
 use \OCA\Chat\App\Chat;
 
 \OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
-    'order' => 10,
-    'href' => \OCP\Util::linkToRoute('chat.app.index'),
-    'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
-    'name' => \OCP\Util::getL10n('chat')->t('Chat')
+	'order' => 10,
+	'href' => \OCP\Util::linkToRoute('chat.app.index'),
+	'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
+	'name' => \OCP\Util::getL10n('chat')->t('Chat')
 ));
 
 \OCP\App::registerAdmin('chat', 'admin');
@@ -36,5 +36,10 @@ use \OCA\Chat\App\Chat;
 $app = new Chat();
 $container = $app->getContainer();
 $appApi = $container['AppApi'];
-$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
-$appApi->registerBackend('Email', 'email','email' , 'true');
+$appApi->registerBackend(
+	\OCP\Util::getL10n('chat')->t('ownCloud Handle'),	// Displayname
+	'och',	// namespace
+	'x-owncloud-handle', // protocol name (used in the contacts app)
+	'true' //active
+);
+$appApi->registerBackend(\OCP\Util::getL10n('chat')->t('Email'), 'email' , 'true');

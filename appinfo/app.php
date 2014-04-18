@@ -36,10 +36,5 @@ use \OCA\Chat\App\Chat;
 $app = new Chat();
 $container = $app->getContainer();
 $appApi = $container['AppApi'];
-$appApi->registerBackend(
-	\OCP\Util::getL10n('chat')->t('ownCloud Handle'),	// Displayname
-	'och',	// namespace
-	'x-owncloud-handle', // protocol name (used in the contacts app)
-	'true' //active
-);
-$appApi->registerBackend(\OCP\Util::getL10n('chat')->t('Email'), 'email' , 'true');
+$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
+$appApi->registerBackend('Email', 'email','email' , 'true');

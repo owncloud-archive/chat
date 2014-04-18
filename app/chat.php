@@ -14,11 +14,11 @@ use OCA\Chat\OCH\Db\UserMapper;
 use OCA\Chat\OCH\Db\UserOnlineMapper;
 use OCA\Chat\Db\BackendMapper;
 
-
+/*
 // to prevent clashes with installed app framework versions
 if(!class_exists('\SimplePie')) {
 	require_once __DIR__ . '/../3rdparty/simplepie/autoloader.php';
-}
+}*/
 
 
 class Chat extends App {

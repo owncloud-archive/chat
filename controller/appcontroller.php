@@ -52,8 +52,8 @@ class AppController extends Controller {
 
 		$greet = new Greet($this->app);
 		$greet->setRequestData(array(
-				"timestamp" => time(),
-				"user" => $appApi->getCurrentUser(),
+			"timestamp" => time(),
+			"user" => $appApi->getCurrentUser(),
 		));
 		$sessionId = $greet->execute();
 

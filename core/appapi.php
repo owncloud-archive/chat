@@ -7,13 +7,30 @@ use \OCA\Chat\OCH\Commands\SyncOnline;
 
 class AppApi {
 
+	/**
+	 *
+	 * @var IAppContainer
+	 */
 	protected $app;
+
+	/**
+	 *
+	 * @var array to cache all contacts
+	 */
 	private static $contacts = array();
 
 	public function __construct(IAppContainer $app){
 		$this->app = $app;
 	}
 
+	/**
+	 * Register a backend, so it's automatically added to the DB.
+	 * Registering must be placed in the appinfo/app.php file.
+	 * @param string $displayName
+	 * @param string $name
+	 * @param string $protocol
+	 * @param string $enabled
+	 */
 	public function registerBackend($displayName, $name, $protocol, $enabled){
 		$backendMapper = $this->app['BackendMapper'];
 		if($backendMapper->exists($name)){
@@ -27,11 +44,19 @@ class AppApi {
 		}
 	}
 
+	/**
+	 * Get all backends which are enabled
+	 * @return array
+	 */
 	public function getEnabledBackends(){
 		$backendMapper = $this->app['BackendMapper'];
 		return $backendMapper->getAll();
 	}
 
+	/**
+	 * Retrieves all contacts from the ContactsManager and parse them to a usable format.
+	 * @return array Returns array with contacts, contacts as a list and contacts as an associative array
+	 */
 	public function getContacts(){
 		// ***
 		// the following code should be ported
@@ -75,6 +100,9 @@ class AppApi {
 		return self::$contacts;
 	}
 
+	/**
+	 * @todo
+	 */
 	public function getBackends(){
 		$backendMapper = $this->app['BackendMapper'];
 		$backends = $backendMapper->getAllEnabled();
@@ -87,25 +115,31 @@ class AppApi {
 		return $result;
 	}
 
-	private function contactBackendToBackend($emails, $IMPPS){
-		/*
-		 * backends : [
-		 *   0 : {
-		 *     id : 0,1,2
-		 *     displayname : "ownCloud Handle",
-		 *     protocol : "x-owncloud-handle" ,
-		 *     namespace : "och",
-		 *     value : "derp" // i.e. the owncloud username
-		 *   },
-		 *   1 {
-		 *     id : null,
-		 *     displayname : "E-mail",
-		 *     protocl : "email",
-		 *     namespace : "email",
-		 *     value : "name@domain.tld"
-		 *   }
-		 * ]
-		 */
+	/**
+	 * Parse the emails and IMPPS properties stored in the contacts app to
+	 * a format that can be used in the Chat client.
+	 * @param array $emails
+	 * @param array $IMPPS
+	 * @return array
+	 * @example of return value parsed to JSOn
+	 * backends : [
+	 *   0 : {
+	 *     id : 0,1,2
+	 *     displayname : "ownCloud Handle",
+	 *     protocol : "x-owncloud-handle" ,
+	 *     namespace : "och",
+	 *     value : "derp" // i.e. the owncloud username
+	 *   },
+	 *   1 {
+	 *     id : null,
+	 *     displayname : "E-mail",
+	 *     protocl : "email",
+	 *     namespace : "email",
+	 *     value : "name@domain.tld"
+	 *   }
+	 * ]
+	 */
+	private function contactBackendToBackend(array $emails=array(), array $IMPPS=array()){
 		$backends = array();
 
 		if(is_array($emails)){
@@ -135,6 +169,11 @@ class AppApi {
 		return $backends;
 	}
 
+	/**
+	 * Get Metadata from a backend
+	 * @param string $protocol
+	 * @return array
+	 */
 	private function getBackendInfo($protocol){
 		$backendMapper = $this->app['BackendMapper'];
 		$backend = $backendMapper->findByProtocol($protocol);
@@ -144,6 +183,10 @@ class AppApi {
 		return $info;
 	}
 
+	/**
+	 * Get the contact of the current ownCloud user
+	 * @return array
+	 */
 	public function getCurrentUser(){
 		$cm = \OC::$server->getContactsManager();
 		// The API is not active -> nothing to do
@@ -164,6 +207,10 @@ class AppApi {
 		return $data;
 	}
 
+	/**
+	 * @return array
+	 * @todo porting
+	 */
 	public function getInitConvs(){
 		$r = array();
 

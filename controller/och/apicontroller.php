@@ -34,7 +34,7 @@ class ApiController extends Controller {
 				case "command":
 					// $action is the type of the command
 
-				$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv');
+				$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($request['data']['session_id'])){
 							if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
@@ -46,7 +46,8 @@ class ApiController extends Controller {
 									'send_chat_msg' => '\OCA\Chat\OCH\Commands\SendChatMsg',
 									'online' => '\OCA\Chat\OCH\Commands\Online',
 									'offline' => '\OCA\Chat\OCH\Commands\Offline',
-									'start_conv' => '\OCA\Chat\OCH\Commands\StartConv'
+									'start_conv' => '\OCA\Chat\OCH\Commands\StartConv',
+									'delete_init_conv' => '\OCA\Chat\OCH\Commands\DeleteInitConv',
 								);
 
 								try{

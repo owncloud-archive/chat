@@ -23,6 +23,7 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
+use OCA\Chat\OCH\Commands\DeleteInitConv;
 
 \OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
 	'order' => 10,

@@ -39,6 +39,11 @@ class InitConvMapper extends Mapper{
 		));
 
 	}
+	
+	public function findByUser($user){
+		$sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `user` = ?';
+		return $this->findEntities($sql, array($user));
+	}
 
 }
 

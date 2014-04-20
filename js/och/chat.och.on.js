@@ -39,7 +39,9 @@ Chat.och.on = {
      );
     },
     leave : function(convId, success){
-        success();
+    	console.log('deleting ' + convId + ' from initconvs');
+    	Chat.och.api.command.deleteInitConv(convId, function(){});
+    	success();
     },
         applyAvatar : function(element, user, size){
         element.avatar(user, size);

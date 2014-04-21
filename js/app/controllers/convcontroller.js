@@ -11,6 +11,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 	$scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
 	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
+	$scope.title = "Custom Title";
+	$scope.defaultTitle = "Chat - ownCloud";
 
 	$scope.init = function(){
 		var initvar = JSON.parse($('#initvar').text());
@@ -230,8 +232,19 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 	};
 
-
-
+	
+    setInterval(function(){
+    	if($scope.title == ''){
+        	$('title').text($scope.defaultTitle);
+    	} else {
+    	  	$('title').text($scope.title);
+    	}
+    }, 1000);
+	
+    setInterval(function(){
+    	$('title').text($scope.defaultTitle);
+    }, 2000);
+    
 }]).directive('avatar', function() {
 	return {
 		restrict: 'A',

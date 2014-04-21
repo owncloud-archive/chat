@@ -11,8 +11,10 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 	$scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
 	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
-	$scope.title = "Custom Title";
-	$scope.defaultTitle = "Chat - ownCloud";
+	$scope.title = {};
+	$scope.title.title = "";
+	$scope.title.default = "Chat - ownCloud";
+	$scope.title.new_msgs = [];
 
 	$scope.init = function(){
 		var initvar = JSON.parse($('#initvar').text());
@@ -111,6 +113,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.$apply();
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend){
+			if(user.id !== $scope.active.user.id){
+				$scope.notify(user.displayname);
+			}
 			// Check if the user is equal to the user of the last msg
 			// First get the last msg
 			var contact = user;
@@ -234,16 +239,36 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 
 	
     setInterval(function(){
-    	if($scope.title == ''){
-        	$('title').text($scope.defaultTitle);
+    	$scope.$apply();
+    	if($scope.title.title == ''){
+        	$('title').text($scope.title.default);
     	} else {
-    	  	$('title').text($scope.title);
+    	  	$('title').text($scope.title.title);
     	}
     }, 1000);
 	
     setInterval(function(){
-    	$('title').text($scope.defaultTitle);
+    	$('title').text($scope.title.default);
     }, 2000);
+    
+    $scope.$watchCollection('title.new_msgs', function(){
+    	var title = 'New messages from ';
+    	if($scope.title.new_msgs.length == 0 ){
+    		title = '';
+    	} else {
+			angular.forEach($scope.title.new_msgs, function(user){
+				title = title + user + " ";
+			});
+    	}	
+    	$scope.title.title = title;
+    	$scope.$apply();
+    });
+    
+    $scope.notify = function(user){
+    	if($scope.title.new_msgs.indexOf(user) == -1){
+    	  	$scope.title.new_msgs.push(user);
+    	}
+    };
     
 }]).directive('avatar', function() {
 	return {

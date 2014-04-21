@@ -72,18 +72,18 @@
 					</li>
 				</ul>
 			</div>
-			<div ng-if="view.elements.contact" ng-class="{open: view.elements.settings}" id="app-settings">
-			<div ng-click="view.toggle('settings', $event)" id="app-settings-header">
-					<button class="settings-button">Backend</button>
-				</div>
-				<div  id="app-settings-content">
-					<ul>
-						<li ng-click="selectBackend(backend)" class="backend" ng-class="{'backend-selected': backend === active.backend}" data-backend="{{ backend.name }}" ng-repeat="backend in backends">
-							{{ backend.displayname }}
-						</li>
-					</ul>
-				</div>
-			</div>
+<!-- 			<div ng-if="view.elements.contact" ng-class="{open: view.elements.settings}" id="app-settings"> -->
+<!-- 			<div ng-click="view.toggle('settings', $event)" id="app-settings-header"> -->
+<!-- 					<button class="settings-button">Backend</button> -->
+<!-- 				</div> -->
+<!-- 				<div  id="app-settings-content"> -->
+<!-- 					<ul> -->
+<!-- 						<li ng-click="selectBackend(backend)" class="backend" ng-class="{'backend-selected': backend === active.backend}" data-backend="{{ backend.name }}" ng-repeat="backend in backends"> -->
+<!-- 							{{ backend.displayname }} -->
+<!-- 						</li> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div id="app-content">
 			<div ng-if="view.elements.contact" id="app-header-info">
 					{{ headerInfo }}

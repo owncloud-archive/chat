@@ -253,7 +253,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     }, 2000);
     
     $scope.$watchCollection('title.new_msgs', function(){
-    	console.log('title watched active: ' + $scope.active.window);
     	if($scope.active.window === false){
 	    	var title = 'New messages from ';
 	    	if($scope.title.new_msgs.length == 0 ){
@@ -275,11 +274,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     	  	$scope.title.new_msgs.push(user);
     	}
     	$scope.$apply();
-    	console.log('notitified');
     };
     
     window.onfocus = function () { 
-    	console.log('onfocus ');
 		$scope.title.title = '';
 		$scope.title.new_msgs = [];
     	$scope.active.window = true; 
@@ -287,7 +284,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
   	}; 
 
   	window.onblur = function () { 
-    	console.log('onblur ');
 		$scope.active.window = false; 
   	};
     

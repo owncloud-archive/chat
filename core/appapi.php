@@ -89,7 +89,7 @@ class AppApi {
 				$data['displayname'] = $r['FN'];
 
 				$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
-				list($addressBookBackend, $addressBookId) = explode(':', $r['key']);
+				list($addressBookBackend, $addressBookId) = explode(':', $r['addressbook-key']);
 				$data['address_book_id'] = $addressBookId;
 				$data['address_book_backend'] = $addressBookBackend;
 				$receivers[] = $data;
@@ -196,7 +196,7 @@ class AppApi {
 		}
 
 		$result = $cm->search(\OCP\User::getUser(), array('FN'));
-		list($addressBookBackend, $addressBookId) = explode(':', $result['key']);
+		list($addressBookBackend, $addressBookId) = explode(':', $result['addressbook-key']);
 		$r = $result[0];
 		$data = array();
 		$data['id'] = $r['id'];

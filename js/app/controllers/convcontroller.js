@@ -7,6 +7,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.active = {
 		backend : {},
 		conv : {},
+		window : true,
 		//user :
 	};
 	$scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
@@ -252,23 +253,43 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
     }, 2000);
     
     $scope.$watchCollection('title.new_msgs', function(){
-    	var title = 'New messages from ';
-    	if($scope.title.new_msgs.length == 0 ){
-    		title = '';
+    	console.log('title watched active: ' + $scope.active.window);
+    	if($scope.active.window === false){
+	    	var title = 'New messages from ';
+	    	if($scope.title.new_msgs.length == 0 ){
+	    		title = '';
+	    	} else {
+				angular.forEach($scope.title.new_msgs, function(user){
+					title = title + user + " ";
+				});
+	    	}	
+	    	$scope.title.title = title;
     	} else {
-			angular.forEach($scope.title.new_msgs, function(user){
-				title = title + user + " ";
-			});
-    	}	
-    	$scope.title.title = title;
+    		$scope.title.tile = '';
+    	}
     	$scope.$apply();
-    });
+	});
     
     $scope.notify = function(user){
     	if($scope.title.new_msgs.indexOf(user) == -1){
     	  	$scope.title.new_msgs.push(user);
     	}
+    	$scope.$apply();
+    	console.log('notitified');
     };
+    
+    window.onfocus = function () { 
+    	console.log('onfocus ');
+		$scope.title.title = '';
+		$scope.title.new_msgs = [];
+    	$scope.active.window = true; 
+    	$scope.$apply();
+  	}; 
+
+  	window.onblur = function () { 
+    	console.log('onblur ');
+		$scope.active.window = false; 
+  	};
     
 }]).directive('avatar', function() {
 	return {

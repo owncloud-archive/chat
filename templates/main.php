@@ -89,7 +89,7 @@
 					{{ headerInfo }}
 			</div>
 			<div ng-class="{'loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
-					<div class="contact-container" ng-click="newConv(contact)" ng-repeat="contact in contacts | backendFilter:active.backend">
+					<div class="contact-container" ng-click="newConv(contact)" ng-repeat="contact in contacts | backendFilter:active.backend | userFilter">
 						<div class="contact" data-size="200" data-onlinesize="20" data-parent="true" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar>
 						</div>
 						<div class="contact-label">
@@ -98,7 +98,7 @@
 					</div>
 				</div>
 				<div ng-if="view.elements.invite" >
-					<div class="contact-container" ng-click="invite(contact)" ng-repeat="contact in contacts | backendFilter:convs[active.conv].backend">
+					<div class="contact-container" ng-click="invite(contact)" ng-repeat="contact in contacts | backendFilter:convs[active.conv].backend | userFilter">
 					<div class="contact" data-size="230" data-onlinesize="20" data-parent="true" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar>
 					</div>
 						<div class="contact-label">

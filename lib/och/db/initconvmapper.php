@@ -4,6 +4,7 @@ namespace OCA\Chat\OCH\Db;
 
 use OCA\Chat\Db\Entity;
 use OCA\Chat\Db\Mapper;
+use OCA\Chat\Core\API;
 
 class InitConvMapper extends Mapper{
 

@@ -30,6 +30,10 @@ class OfflineTest extends \PHPUnit_Framework_TestCase {
 		$this->container['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->container['UserMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserMapper')
+			->disableOriginalConstructor()
+			->getMock();
 		
 		$this->container['UserOnlineMapper']->expects($this->any())
 			->method('deleteBySessionId')
@@ -39,6 +43,9 @@ class OfflineTest extends \PHPUnit_Framework_TestCase {
 			->method('getAll')
 			->will($this->returnValue(array()));
 		
+		$this->container['UserMapper']->expects($this->any())
+			->method('findBySessionId')
+			->will($this->returnValue(array()));
 		
 		$offline = new Offline($this->container);
 		$offline->execute();

@@ -37,6 +37,10 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->container['InitConvMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\InitConvMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		
 		$this->container['API']->expects($this->any())
 			->method('log')
 			->will($this->returnValue(null));
@@ -75,6 +79,11 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 			->method('findByUser')
 			->will($this->returnValue(array($session1))); // Simulation of the online users -> derp is offline
 
+		$this->container['InitConvMapper']->expects($this->any())
+			->method('insertUnique')
+			->will($this->returnValue(true)); // Simulation of the online users -> derp is offline
+		
+		
 		$this->container['PushMessageMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\PushMessageMapper')
 			->disableOriginalConstructor()
 			->getMock();

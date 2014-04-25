@@ -25,7 +25,8 @@ class SyncOnline extends ChatAPI {
 
 		foreach($users as $user){
 			if((time() - $user->getLastOnline()) > 70){
-				\OCP\Util::writeLog('chat', 'Deleting offline user in SyncOnline add ' . time() . ' with session_id '
+				
+				$this->app['API']->log('chat', 'Deleting offline user in SyncOnline add ' . time() . ' with session_id '
 				. $user->getSessionId()
 				. ' and username ' . $user->getUser()
 				. ' which was last online at ' . $user->getLastOnline(), \OCP\Util::ERROR);

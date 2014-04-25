@@ -142,8 +142,8 @@ class SendChatMsgTest extends \PHPUnit_Framework_TestCase {
 		$this->container['PushMessageMapper']->expects($this->any())
 			->method('insert')
 			->will($this->returnCallback(function($pushMessage){
-				self::$command = $pushMessage->getCommand();
-				self::$pushMessageCount++;
+				SendChatMsgTest::$command = $pushMessage->getCommand();
+				SendChatMsgTest::$pushMessageCount++;
 			}));
 			
 			
@@ -220,8 +220,8 @@ class SendChatMsgTest extends \PHPUnit_Framework_TestCase {
             )
         ));	
 		
-		$this->assertEquals($expectedCommand, self::$command);
-		$this->assertEquals(1, self::$pushMessageCount);
+		$this->assertEquals($expectedCommand, SendChatMsgTest::$command);
+		$this->assertEquals(1, SendChatMsgTest::$pushMessageCount);
 		
 		
 	}

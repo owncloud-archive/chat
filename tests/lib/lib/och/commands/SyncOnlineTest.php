@@ -73,14 +73,14 @@ class SyncOnlineTest extends \PHPUnit_Framework_TestCase {
 		$this->container['UserOnlineMapper']->expects($this->any())
 			->method('deleteBySessionId')
 			->will($this->returnCallback(function($sessionId){
-				self::$sessionIds[] = $sessionId;
+				SyncOnlineTest::$sessionIds[] = $sessionId;
 		}));
 			
 		$synConline = new SyncOnline($this->container);
 		$synConline->setRequestData(array());
 		$result = $synConline->execute();
 		
-		$this->assertEquals(array('session1id', 'session2id'), self::$sessionIds);		
+		$this->assertEquals(array('session1id', 'session2id'), SyncOnlineTest::$sessionIds);		
 
 	}
 }

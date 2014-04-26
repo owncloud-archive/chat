@@ -241,9 +241,14 @@
 	padding: 0px !important;
 }
 
-.chat-msg img {
+.msg-avatar-container img {
 	width: 32px;
 	height: 32px;
+}
+
+.chat-msg a {
+	border-bottom:1px dotted;
+	clear:left;
 }
 
 .conv-list-item img {

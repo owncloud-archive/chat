@@ -24,5 +24,22 @@ Chat.app.util = {
                console.log(Chat.scope.contacts);
             });
         });
+    },
+    isYoutubeUrl : function(url) {
+    	if(	url.indexOf('https://youtube.com') > -1 
+    		|| url.indexOf('https://youtube.com') > -1 
+			|| url.indexOf('https://www.youtube.com') > -1 
+			|| url.indexOf('http://www.youtube.com') > -1 
+			|| url.indexOf('http://youtu.be') > -1
+    		){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    },
+    isImageUrl : function(url){
+    	var imgRegex = /((?:https?):\/\/\S*\.(?:gif|jpg|jpeg|tiff|png|svg|webp))/gi;
+    	return imgRegex.test(url);
+    	
     }
 };

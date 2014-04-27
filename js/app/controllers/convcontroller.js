@@ -56,7 +56,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			"chat" : false,
 			"initDone" : false,
 			"settings" : false,
-			"invite" : false
+			"invite" : false,
+			"emojiContainer" : false
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -193,11 +194,24 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 
 
 	$scope.sendChatMsg = function(){
+		console.log('submit function calle' + this.chatMsg);
 		if (this.chatMsg != ''){
 			var backend = $scope.convs[$scope.active.conv].backend.name;
 			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000, backend);
 			Chat[backend].on.sendChatMsg($scope.active.conv, this.chatMsg);
 			this.chatMsg = '';
+		} else {
+			// HACK to solve emojis
+			var val = $('#chat-msg-input-field').val();
+			if(val !== ''){
+				console.warn('hacking');
+				this.chatMsg = val;
+				var backend = $scope.convs[$scope.active.conv].backend.name;
+				$scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000, backend);
+				Chat[backend].on.sendChatMsg($scope.active.conv, this.chatMsg);
+				this.chatMsg = '';
+				$('#chat-msg-input-field').val('')
+			}
 		}
 	};
 
@@ -309,6 +323,15 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
   	window.onblur = function () { 
 		$scope.active.window = false; 
   	};
+  	
+  	$scope.addEmoji = function(name){
+		var element = $("#chat-msg-input-field");
+		element.focus(); //ie
+		var selection = element.getSelection();
+		element.insertText(name, selection.start);
+  	} 
+  	
+  	$scope.emojis = Chat.app.util.emojis;
     
 }]).directive('avatar', function() {
 	return {

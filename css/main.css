@@ -85,23 +85,28 @@
 }
 
 #chat-msg-input {
-	margin-right: 50px;
+	margin-right: 90px;
 }
 
 #chat-msg-input input {
 	width: 100%;
 }
 
-#chat-msg-send {
+.chat-msg-button {
 	width: 32px;
 	height: 32px;
 	float: right;
 	margin-right: 10px;
 }
 
-#chat-msg-send button {
+.chat-msg-button button {
 	width: 32px;
 	height: 32px;
+}
+
+.chat-msg-button img{
+	 width: 16px;
+	 height: 16px;
 }
 
 #chat-msg-form {
@@ -241,9 +246,14 @@
 	padding: 0px !important;
 }
 
-.chat-msg img {
+.msg-avatar-container img {
 	width: 32px;
 	height: 32px;
+}
+
+.chat-msg a {
+	border-bottom:1px dotted;
+	clear:left;
 }
 
 .conv-list-item img {
@@ -291,4 +301,27 @@
 
 .avatar-list-container div,.avatar-list-container img {
 	right: 0;
+}
+#emoji-container {
+	position: absolute;
+	height: 190px;
+	width: 300px;
+	right: 20px;
+	bottom: 50px;
+	background-color: #eeeeee;
+	border-radius: 5px;
+	border: 1px solid #D2D2D2;
+	padding: 10px;
+	overflow:auto;
+}
+#emoji-list {
+   	-webkit-column-count: 3;
+   	-moz-column-count: 3;
+	column-count: 3;
+}
+#emoji-list li {
+	display: inline-block; 
+}
+#emoji-search {
+	width:265px;
 }

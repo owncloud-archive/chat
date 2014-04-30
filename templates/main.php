@@ -120,7 +120,7 @@
 										<div data-size="32" data-onlinesize="5" data-id="{{ msg.contact.id }}" isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}" data-displayname="{{ msg.contact.displayname }}" data-addressbook-backend="{{ msg.contact.address_book_backend }}" data-addressbook-id="{{ msg.contact.address_book_id  }}" avatar>
 										</div>
 									</div>
-									<p ng-bind-html="msg.msg | enhanceText">
+									<p class="chat-msg-msg" ng-bind-html="msg.msg | enhanceText">
 										&nbsp;
 									</p>
 								</div>

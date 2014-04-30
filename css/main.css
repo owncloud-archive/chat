@@ -325,6 +325,6 @@
 #emoji-search {
 	width:265px;
 }
-.chat-msg-msg video, .chat-msg-msg img, .chat-msg-msg p iframe, .chat-msg-msg a img {
+.chat-msg-msg video, .chat-msg-msg img, .chat-msg-msg iframe, .chat-msg-msg a img {
 	display:block;
 }

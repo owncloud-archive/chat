@@ -16,7 +16,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.title.title = "";
 	$scope.title.default = "Chat - ownCloud";
 	$scope.title.new_msgs = [];
-
+	$scope.chatMsg = 'PLACEHOLDER'; // TODO Remove me!
+	
 	$scope.init = function(){
 		var initvar = JSON.parse($('#initvar').text());
 		$scope.contacts = initvar['contacts'];
@@ -115,6 +116,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.$apply();
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend){
+			console.log('ADDING addCHatMsg ' + msg)
 			if(user.id !== $scope.active.user.id){
 				$scope.notify(user.displayname);
 			}
@@ -147,7 +149,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 							});
 						}
 					} else {
-						lastMsg.msg = lastMsg.msg + "\n" + $.trim(msg);
+						console.log('add msg to last msg ' + msg);
+						lastMsg.msg = lastMsg.msg + "\n" + msg;
 						$scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
 					}
 				} else if (Chat.app.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.app.util.timeStampToDate(timestamp).minutes
@@ -194,25 +197,11 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 
 
 	$scope.sendChatMsg = function(){
-		console.log('submit function calle' + this.chatMsg);
-		if (this.chatMsg != ''){
-			var backend = $scope.convs[$scope.active.conv].backend.name;
-			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000, backend);
-			Chat[backend].on.sendChatMsg($scope.active.conv, this.chatMsg);
-			this.chatMsg = '';
-		} else {
-			// HACK to solve emojis
-			var val = $('#chat-msg-input-field').val();
-			if(val !== ''){
-				console.warn('hacking');
-				this.chatMsg = val;
-				var backend = $scope.convs[$scope.active.conv].backend.name;
-				$scope.view.addChatMsg($scope.active.conv, $scope.active.user, this.chatMsg,new Date().getTime() / 1000, backend);
-				Chat[backend].on.sendChatMsg($scope.active.conv, this.chatMsg);
-				this.chatMsg = '';
-				$('#chat-msg-input-field').val('')
-			}
-		}
+		console.log('submit function calle' + $scope.chatMsg);
+		var backend = $scope.convs[$scope.active.conv].backend.name;
+		$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.chatMsg,new Date().getTime() / 1000, backend);
+		Chat[backend].on.sendChatMsg($scope.active.conv, $scope.chatMsg);
+		$scope.chatMsg = '';
 	};
 
 	$scope.newConv = function(userToInvite){
@@ -328,8 +317,11 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		var element = $("#chat-msg-input-field");
 		element.focus(); //ie
 		var selection = element.getSelection();
-		element.insertText(name, selection.start);
-  	} 
+		var textBefore = $scope.chatMsg.substr(0, selection.start);
+		var textAfter = $scope.chatMsg.substr(selection.end);
+		$scope.chatMsg = textBefore + name + textAfter;
+  	}
+  	
   	
   	$scope.emojis = Chat.app.util.emojis;
     

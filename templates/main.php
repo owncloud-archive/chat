@@ -120,7 +120,7 @@
 										<div data-size="32" data-onlinesize="5" data-id="{{ msg.contact.id }}" isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}" data-displayname="{{ msg.contact.displayname }}" data-addressbook-backend="{{ msg.contact.address_book_backend }}" data-addressbook-id="{{ msg.contact.address_book_id  }}" avatar>
 										</div>
 									</div>
-									<p ng-bind-html="msg.msg | enhanceText">
+									<p class="chat-msg-msg" ng-bind-html="msg.msg | enhanceText">
 										&nbsp;
 									</p>
 								</div>
@@ -136,7 +136,7 @@
 									<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 								</div>
 								<div id="chat-msg-input">
-									<input ng-focus="" id="chat-msg-input-field" ng-blur="" ng-model="chatMsg" autocomplete="off" type="text"  placeholder="Chat message">
+									<textarea  id="chat-msg-input-field" autocomplete="off" ng-model="fields.chatMsg"  ng-enter="sendChatMsg()" placeholder="Chat message"></textarea>	
 								</div>
 							</form>
 				</footer>
@@ -151,4 +151,11 @@
 			</div>
 		</div>
 	</div>
+<div>
+	<ul>
+		<li ng-repeat="msg in debug">
+			{{ msg }}
+		</li>
+	</ul>
 </div>
+	</div>

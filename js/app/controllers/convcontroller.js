@@ -324,7 +324,11 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
   	
   	
   	$scope.emojis = Chat.app.util.emojis;
-    
+  	
+  	$scope.updateChatMsg = function(chatMsg){
+  		$scope.chatMsg = chatMsg;
+  	}
+  	
 }]).directive('avatar', function() {
 	return {
 		restrict: 'A',

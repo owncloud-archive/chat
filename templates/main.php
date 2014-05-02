@@ -136,7 +136,7 @@
 									<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 								</div>
 								<div id="chat-msg-input">
-									<textarea  id="chat-msg-input-field" autocomplete="off" type="text"  placeholder="Chat message">{{ chatMsg }}</textarea>	
+									<textarea  id="chat-msg-input-field" autocomplete="off" type="text" ng-model="chatMsg" ng-change="updateChatMsg(chatMsg)" placeholder="Chat message"></textarea>	
 									<div>{{ chatMsg }}</div>
 								</div>
 							</form>

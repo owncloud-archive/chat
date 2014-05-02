@@ -136,8 +136,7 @@
 									<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 								</div>
 								<div id="chat-msg-input">
-									<textarea  id="chat-msg-input-field" autocomplete="off" type="text" ng-model="chatMsg" ng-change="updateChatMsg(chatMsg)" placeholder="Chat message"></textarea>	
-									<div>{{ chatMsg }}</div>
+									<textarea  id="chat-msg-input-field" autocomplete="off" ng-model="fields.chatMsg"  ng-enter="sendChatMsg()" placeholder="Chat message"></textarea>	
 								</div>
 							</form>
 				</footer>
@@ -152,4 +151,11 @@
 			</div>
 		</div>
 	</div>
+<div>
+	<ul>
+		<li ng-repeat="msg in debug">
+			{{ msg }}
+		</li>
+	</ul>
 </div>
+	</div>

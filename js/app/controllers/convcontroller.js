@@ -16,7 +16,10 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.title.title = "";
 	$scope.title.default = "Chat - ownCloud";
 	$scope.title.new_msgs = [];
-	$scope.chatMsg = 'PLACEHOLDER'; // TODO Remove me!
+	$scope.debug = [];
+	$scope.fields = {
+		'chatMsg' : 'test',
+	};
 	
 	$scope.init = function(){
 		var initvar = JSON.parse($('#initvar').text());
@@ -197,11 +200,13 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 
 
 	$scope.sendChatMsg = function(){
-		console.log('submit function calle' + $scope.chatMsg);
-		var backend = $scope.convs[$scope.active.conv].backend.name;
-		$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.chatMsg,new Date().getTime() / 1000, backend);
-		Chat[backend].on.sendChatMsg($scope.active.conv, $scope.chatMsg);
-		$scope.chatMsg = '';
+		if ($scope.fields.chatMsg != ''){
+			var backend = $scope.convs[$scope.active.conv].backend.name;
+			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, new Date().getTime() / 1000, backend);
+			Chat[backend].on.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
+			$scope.debug.push($scope.fields.chatMsg);
+			$scope.fields.chatMsg = '';
+		}
 	};
 
 	$scope.newConv = function(userToInvite){
@@ -317,17 +322,13 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		var element = $("#chat-msg-input-field");
 		element.focus(); //ie
 		var selection = element.getSelection();
-		var textBefore = $scope.chatMsg.substr(0, selection.start);
-		var textAfter = $scope.chatMsg.substr(selection.end);
-		$scope.chatMsg = textBefore + name + textAfter;
+		var textBefore = $scope.fields.chatMsg.substr(0, selection.start);
+		var textAfter = $scope.fields.chatMsg.substr(selection.end);
+		$scope.fields.chatMsg = textBefore + name + textAfter;
   	}
   	
   	
   	$scope.emojis = Chat.app.util.emojis;
-  	
-  	$scope.updateChatMsg = function(chatMsg){
-  		$scope.chatMsg = chatMsg;
-  	}
   	
 }]).directive('avatar', function() {
 	return {
@@ -368,4 +369,17 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 		return output;
 	}
+}).directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+            	if (event.shiftKey === false){
+            		scope.$apply(function (){
+                        scope.$eval(attrs.ngEnter);
+                    });
+                    event.preventDefault();
+            	}
+            }
+        });
+    };
 });

@@ -237,14 +237,14 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 	};
 
-	$scope.invite = function(userToInvite, convId){
-		var backend = $scope.convs[convId].backend.name;
+	$scope.invite = function(userToInvite){
+		var backend = $scope.convs[$scope.active.conv].backend.name;
 		if(userToInvite === $scope.active.user){
 			Chat.app.ui.alert('You can\'t invite yourself');
 		} else if(userToInvite === ''){
 			Chat.app.ui.alert('Please provide a user name');
 		} else {
-			Chat[backend].on.invite(convId, userToInvite);
+			Chat[backend].on.invite($scope.active.conv, userToInvite);
 		}
 		$scope.view.hide('inviteInput');
 	};

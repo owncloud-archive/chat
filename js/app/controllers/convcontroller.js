@@ -119,7 +119,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.$apply();
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend){
-			console.log('ADDING addCHatMsg ' + msg)
 			if(user.id !== $scope.active.user.id){
 				$scope.notify(user.displayname);
 			}
@@ -152,7 +151,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 							});
 						}
 					} else {
-						console.log('add msg to last msg ' + msg);
 						lastMsg.msg = lastMsg.msg + "\n" + msg;
 						$scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
 					}
@@ -265,7 +263,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.contacts = response.contacts;
 			$scope.contactsObj = response.contactsObj;
 			$scope.$apply();
-			console.log('Contact information updated');
 		});
 	};
 

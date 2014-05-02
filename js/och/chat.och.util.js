@@ -4,7 +4,6 @@ Chat.och.util = {
 		Chat.och.api.util.longPoll();
 		// Now join and add all the existing convs
 		angular.forEach(Chat.scope.initConvs.och, function(conv){
-			console.log('auto joining ' + conv.id);
 			var contacts = [];
 			angular.forEach(conv.users, function(user){
 				contacts.push(Chat.scope.contactsObj[user]);
@@ -24,7 +23,6 @@ Chat.och.util = {
 		Chat.och.api.command.offline();
 	},
 	updateOnlineStatus : function(){
-		console.log('Updating online status add ' + (new Date).getTime() / 1000);
 		Chat.och.api.command.online();
 	},
 };

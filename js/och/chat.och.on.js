@@ -22,7 +22,6 @@ Chat.och.on = {
         Chat.och.api.command.sendChatMsg(msg, convId, function(){});
     },
     invite : function(convId, userToInvite){
-        console.log('Chat.och.on.invite called');
         Chat.och.api.command.invite(
             userToInvite,
             convId,
@@ -39,7 +38,6 @@ Chat.och.on = {
      );
     },
     leave : function(convId, success){
-    	console.log('deleting ' + convId + ' from initconvs');
     	Chat.och.api.command.deleteInitConv(convId, function(){});
     	success();
     },

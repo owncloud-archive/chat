@@ -9,6 +9,7 @@
 \OCP\Util::addScript('chat', 'vendor/online');
 \OCP\Util::addScript('chat', 'vendor/angular-enhance-text.min');
 \OCP\Util::addScript('chat', 'vendor/rangyinputs');
+\OCP\Util::addScript('chat', 'vendor/jquery.autosize.min');
 
 
 
@@ -151,11 +152,4 @@
 			</div>
 		</div>
 	</div>
-<div>
-	<ul>
-		<li ng-repeat="msg in debug">
-			{{ msg }}
-		</li>
-	</ul>
-</div>
 	</div>

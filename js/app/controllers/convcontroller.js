@@ -18,7 +18,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.title.new_msgs = [];
 	$scope.debug = [];
 	$scope.fields = {
-		'chatMsg' : 'test',
+		'chatMsg' : '',
 	};
 	
 	$scope.init = function(){
@@ -204,6 +204,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			Chat[backend].on.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 			$scope.debug.push($scope.fields.chatMsg);
 			$scope.fields.chatMsg = '';
+			setTimeout(function(){
+				$('#chat-msg-input-field').trigger('autosize.resize');
+			},1)
 		}
 	};
 

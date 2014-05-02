@@ -48,14 +48,14 @@
 #chat-window-body {
 	position: absolute;
 	top: 0;
-	bottom: 41px;
+	bottom: 80px;
 	width: 100%;
 	background-color: white;
 }
 
 #chat-window-footer {
 	position: absolute;
-	height: 45px;
+	height: 80px;
 	bottom: 0;
 	width: 100%;
 	background-color: #EEE;
@@ -88,7 +88,7 @@
 	margin-right: 90px;
 }
 
-#chat-msg-input input {
+#chat-msg-input-field {
 	width: 100%;
 }
 

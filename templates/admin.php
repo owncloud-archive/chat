@@ -1,4 +1,4 @@
-<fieldset class="personalblock" id="chat">
+<div id="chat" class="section">
     <h2>Chat</h2>
     <p>
         <div id="chat-backends">
@@ -17,5 +17,4 @@
             <?php endforeach;?>
         </div>
     </p>
-</fieldset>
-
+</div>

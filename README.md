@@ -7,9 +7,10 @@ Have chats in your ownCloud!
 
 ## Installation
 1. Clone the repo to the apps directory of your owncloud installation
-2. Activate the chat app in owncloud
-3. Go to the chat app in owncloud. You will see a yellow 'Connected to the server' message in the top of the screen
-4. Start Chatting!
+2. Activate the Contacts app in ownCloud
+3. Activate the Chat app in owncloud
+4. Load the Contacts app one time before the Chat app
+5. Start Chatting!
 
 ## Live Example
 A live example of the Chat app can be viewed on [OpenShift](http://chat-ledfan.rhcloud.com/).
@@ -25,6 +26,8 @@ foo | foo
 foobar | foobar
 herp | herp
 herpina | herpina
+
+Note: the preview isn't always online or up to date.
 
 ## API
 The API Documentation can be found in the [wiki](https://github.com/owncloud/chat/wiki/Api).

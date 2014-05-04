@@ -1,7 +1,8 @@
 <?php
-use \OCA\Chat\DependencyInjection\DIContainer;
-$DIContainer = new DIContainer('chat');
-$appApi = $DIContainer['AppApi'];
+use \OCA\Chat\App\Chat;
+$chat = new Chat();
+$container = $chat->getContainer();
+$appApi = $container['AppApi'];
 
 
 \OCP\User::checkAdminUser();

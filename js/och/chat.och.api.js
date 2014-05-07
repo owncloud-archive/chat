@@ -110,7 +110,7 @@ Chat.och.api = {
 			Chat.app.ui.alert('The user ' + data.user
 					+ ' joined this conversation');
 			// TODO check if data.user is a user or a contact
-			Chat.app.view.addUserToConv(data.conv_id, data.user);
+			Chat.app.view.addUserToConv(data.conv_id, Chat.scope.contactsObj[data.user]);
 		}
 	},
 	util : {

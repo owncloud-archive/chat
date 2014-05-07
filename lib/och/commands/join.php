@@ -34,22 +34,19 @@ class Join extends ChatAPI {
 		$initConv->setUser($this->requestData['user']['backends']['och']['value']);
 		$initConvMapper = $this->app['InitConvMapper'];
 		$initConvMapper->insertUnique($initConv);
-
-		return true;
-	/*
-	 * TODO
-		if (count($users) == 2){
+		
+		$users = $userMapper->findByConversation($this->requestData['conv_id']);
+		if (count($users) > 2){
 			// Send a push message to all users in this conversation to inform about a new user which joined
 			$command = json_encode(array(
 				"type" => 'joined',
 				"data" => array(
-					"user" => $this->requestData['user'],
+					"user" => $this->requestData['user']['backends']['och']['value'],
 					"timestamp" => $this->requestData['timestamp'],
 					"conv_id" => $this->requestData['conv_id']
 				)
 			));
-
-			$sender = $this->requestData['user']; // copy the params('user') to a variable so it won't be called many times in a large conversation
+			$sender = $this->requestData['user']['backends']['och']['value']; // copy the params('user') to a variable so it won't be called many times in a large conversation
 			$PushMessageMapper = $this->app['PushMessageMapper'];
 			foreach($users as $receiver){
 				if($receiver->getUser() !== $sender){
@@ -62,6 +59,6 @@ class Join extends ChatAPI {
 				}
 			}
 		}
-	*/
+		return true;
 	}
 }

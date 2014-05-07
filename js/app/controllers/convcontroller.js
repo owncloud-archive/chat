@@ -189,7 +189,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			}
 		},
 		addUserToConv : function(convId, user){
-			$scope.convs[convId].users.push(user);
+			if($scope.convs[convId].users.indexOf(user) === -1){
+				$scope.convs[convId].users.push(user);
+			}
 		},
 		focusMsgInput : function(){
 			Chat.app.ui.focusMsgInput();

@@ -17,10 +17,13 @@ class StartConv extends ChatAPI {
     public function execute(){
         
         // (1) generate a conv id
-        $id = $this->generateConvId(array(
-            $this->requestData['user']['backends']['och']['value'], 
-            $this->requestData['user_to_invite']['backends']['och']['value'])
-        );
+        $ids = array();
+       	foreach($this->requestData['user_to_invite'] as $userToInvite){
+       		$ids[] = $userToInvite['backends']['och']['value'];
+       	}
+        // always add our selve to the array for the conv id 
+        $ids[] = $this->requestData['user']['backends']['och']['value'];
+        $id = $this->generateConvId($ids);
 
         // (2) check if conv id exists
         $convMapper = $this->app['ConversationMapper'];
@@ -32,10 +35,17 @@ class StartConv extends ChatAPI {
             $join->setRequestData($this->requestData);
 	    	$join->execute();
 
-             // (5) invite the user_to_invite since we just created the conv
-            $invite = new Invite($this->app);
-            $invite->setRequestData($this->requestData);
-         	$invite->execute();
+            // (5) invite the user_to_invite since we just created the conv
+            // foreach user to invite
+	    	$invite = new Invite($this->app);
+	    	$reuqestData = array();
+	    	$requestData['conv_id'] = $id;
+	    	$requestData['user'] = $this->requestData['user'];
+	    	foreach($this->requestData['user_to_invite'] as $userToInvite){
+	    		$requestData['user_to_invite'] = $userToInvite;	    		
+	    		$invite->setRequestData($requestData);
+	    		$invite->execute();
+	    	}
             
         } else {
 
@@ -52,9 +62,16 @@ class StartConv extends ChatAPI {
             $join->execute();
             
             // (5) invite the user_to_invite since we just created the conv
-            $invite = new Invite($this->app);
-            $invite->setRequestData($this->requestData);
-            $invite->execute();
+            // foreach user to invite
+        	$invite = new Invite($this->app);
+	    	$reuqestData = array();
+	    	$requestData['conv_id'] = $id;
+	    	$requestData['user'] = $this->requestData['user'];
+	    	foreach($this->requestData['user_to_invite'] as $userToInvite){
+	    		$requestData['user_to_invite'] = $userToInvite;	    		
+	    		$invite->setRequestData($requestData);
+	    		$invite->execute();
+	    	}
         }
         return array("conv_id" => $id);
         

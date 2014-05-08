@@ -1,9 +1,12 @@
 Chat.och.on = {
     newConv : function(userToInvite, success){
+    	if(!Array.isArray(userToInvite)){
+    		userToInvite = [userToInvite];
+    	}
         Chat.och.api.command.startConv(
             userToInvite,
             function(response){
-                success(response.data.conv_id, [userToInvite]);
+                success(response.data.conv_id, userToInvite);
             },
             function(errorMsg){
                 if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
@@ -22,20 +25,15 @@ Chat.och.on = {
         Chat.och.api.command.sendChatMsg(msg, convId, function(){});
     },
     invite : function(convId, userToInvite){
-        Chat.och.api.command.invite(
-            userToInvite,
-            convId,
-            function(){ // Success
-            
-            },
-            function(errorMsg){ // Error
-                if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
-                    Chat.app.view.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO
-                } else if(errorMsg === 'USER-TO-INVITE-NOT-OC-USER'){
-                    Chat.app.view.alert('The user you tried to invite isn\'t a valid owncloud user')
-                }
-            }
-     );
+    	var users = [];
+    	angular.forEach(Chat.scope.convs[convId].users, function(user){
+    		users.push(user);
+    	});
+    	users.push(userToInvite);
+    	Chat.och.on.newConv(users, function(convId, users){
+			Chat.app.view.addConv(convId, users, Chat.scope.backends.och);
+    	});
+    	
     },
     leave : function(convId, success){
     	Chat.och.api.command.deleteInitConv(convId, function(){});

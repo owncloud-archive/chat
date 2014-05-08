@@ -104,6 +104,7 @@ class ApiController extends Controller {
 							$pushClasses = array(
 								"messages" => "\OCA\Chat\OCH\Data\Messages",
 								"contacts" => "\OCA\Chat\OCH\Data\Contacts",
+								"get_users" => "\OCA\Chat\OCH\Data\GetUsers",
 							);
 							$className = $pushClasses[$action];
 							$dataClass = new $className($this->app);

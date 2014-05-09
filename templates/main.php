@@ -89,26 +89,38 @@
 <!-- 			</div> -->
 			<div id="app-content">
 			<div ng-if="view.elements.contact" id="app-header-info">
-					{{ headerInfo }}
+				{{ headerInfo }}
 			</div>
 			<div ng-class="{'loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
-					<div class="contact-container" ng-click="newConv(contact)" ng-repeat="contact in contacts | backendFilter:active.backend | userFilter">
-						<div class="contact" data-size="200" data-onlinesize="20" data-parent="true" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar>
-						</div>
-						<div class="contact-label">
-							{{ contact.displayname }}
+				<div 
+					class="contact-container"
+					ng-repeat="contact in contacts | backendFilter:active.backend | userFilter"
+					ng-click="updateContactsToStartConvWith(contact)"
+				>
+					<div 
+						class="contact" 
+						data-size="200" 
+						data-onlinesize="20" 
+						data-parent="true" 
+						data-id="{{ contact.id }}" 
+						data-displayname="{{ contact.displayname }}" 
+						data-addressbook-backend="{{ contact.address_book_backend }}" 
+						data-addressbook-id="{{ contact.address_book_id  }}"
+						avatar
+					>
 					</div>
+					<div class="contact-label">
+						{{ contact.displayname }}
+					</div>
+					<div class="contact-checkbox">
+						<input
+							type="checkbox"
+							ng-checked="fields.contactsToStartConvWith[contact.id]"
+							ng-change="updateContactsToStartConvWith(contact)"
+						>
 					</div>
 				</div>
-				<div ng-if="view.elements.invite" >
-					<div class="contact-container" ng-click="invite(contact)" ng-repeat="contact in contacts | backendFilter:convs[active.conv].backend | userFilter">
-					<div class="contact" data-size="230" data-onlinesize="20" data-parent="true" data-id="{{ contact.id }}" data-displayname="{{ contact.displayname }}" data-addressbook-backend="{{ contact.address_book_backend }}" data-addressbook-id="{{ contact.address_book_id  }}" avatar>
-					</div>
-						<div class="contact-label">
-							{{ contact.displayname }}
-						</div>
-					</div>
-				</div>
+			</div>
 			<div ng-if="view.elements.chat" >
 					<section ng-click="focusMsgInput()" id="chat-window-body">
 						<div id="chat-window-msgs">

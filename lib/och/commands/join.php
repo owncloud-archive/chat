@@ -26,7 +26,7 @@ class Join extends ChatAPI {
 		$user->setUser($this->requestData['user']['backends']['och']['value']);
 		$user->setSessionId($this->requestData['session_id']);
 		$userMapper = $this->app['UserMapper'];
-		$userMapper->insert($user);
+		$userMapper->insertUnique($user);
 
 		// mark this conv as a init conv => the conv is auto joined on refresh
 		$initConv = new InitConv();

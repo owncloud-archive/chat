@@ -21,14 +21,6 @@ class Offline extends ChatAPI {
 		$syncOnline = new SyncOnline($this->app);
         $syncOnline->execute();
         
-        // we have to "leave" every conversation we joined in this sessionid
-        // fetch every conv we joined
-        $userMapper = $this->app['UserMapper'];
-        $convs = $userMapper->findBySessionId($this->requestData['session_id']);
-        foreach($convs as $conv){
-        	$userMapper->deleteBySessionId($conv->getConversationId(), $this->requestData['session_id']);
-        }
-        
 		return;
     }	
 }

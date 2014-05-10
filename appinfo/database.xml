@@ -107,12 +107,6 @@
 				<notnull>true</notnull>
 				<length>64</length>
 			</field>
-			<field>
-				<name>session_id</name>
-				<type>text</type>
-				<notnull>true</notnull>
-				<length>2000</length>
-			</field>
 		</declaration>
 	</table>
 	<table>

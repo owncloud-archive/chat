@@ -28,7 +28,7 @@ class SendChatMsg extends ChatAPI {
 
 	public function execute(){
 		$userMapper = $this->app['UserMapper'];
-		$users = $userMapper->findByConversation($this->requestData['conv_id']);
+		$users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
 
 		$command = json_encode(array(
 			'type' => 'send_chat_msg',

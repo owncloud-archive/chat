@@ -3,6 +3,7 @@ namespace OCA\Chat\OCH\Db;
 
 use \OCA\Chat\Db\Mapper;
 use \OCA\Chat\Core\Api;
+use \OCA\Chat\Db\Entity;
 
 class UserMapper extends Mapper {
 
@@ -11,10 +12,13 @@ class UserMapper extends Mapper {
         parent::__construct($api, 'chat_och_users_in_conversation'); // tablename is news_feeds
     }
 
-    public function findByConversation($conversationId){
-        $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
-                        'WHERE `conversation_id` = ? ';
-
+    public function findSessionsByConversation($conversationId){
+		$sql = 'SELECT *PREFIX*chat_och_users_online.user, *PREFIX*chat_och_users_online.session_id'
+			 . ' FROM *PREFIX*chat_och_users_in_conversation '
+			 . ' LEFT OUTER JOIN *PREFIX*chat_och_users_online'
+			 . ' ON *PREFIX*chat_och_users_in_conversation.user = *PREFIX*chat_och_users_online.user'
+			 . ' AND *PREFIX*chat_och_users_in_conversation.conversation_id = ? ';
+    	
         $result = $this->execute($sql, array($conversationId));
 
         $feeds = array();
@@ -58,26 +62,6 @@ class UserMapper extends Mapper {
         return $ids;
     }
 		
-    public function findBySessionId($sessionID){
-        $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
-    			'WHERE `session_id` = ? ';
-    	
-    	$result = $this->execute($sql, array($sessionID));
-    	
-        $feeds = array();
-        while($row = $result->fetchRow()){
-            $feed = new User();
-            $feed->fromRow($row);
-            array_push($feeds, $feed);
-        }
-
-    	return $feeds;
-    }
-	
-    public function deleteBySessionId($conversationID, $sessionID){
-        $sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? AND `session_id` = ?';
-        $this->execute($sql, array($conversationID, $sessionID));
-    }
     
     public function findUsersInConv($id){
         $sql = 'SELECT user FROM `' . $this->getTableName() . '` ' .
@@ -92,6 +76,22 @@ class UserMapper extends Mapper {
        
         $users = array_unique($users);
         return $users;
+    }
+    
+    public function insertUnique(Entity $entity){
+    	$sql = 'INSERT INTO ' . $this->getTableName() 
+			 . ' SELECT * FROM (SELECT ?,?) AS tmp
+				WHERE NOT EXISTS (
+					SELECT  conversation_id, `user` FROM `' . $this->getTableName() .'` WHERE conversation_id = ? AND `user` = ?
+				) LIMIT 1';
+
+    	$this->execute($sql, array(
+    			$entity->getConversationId(),
+    			$entity->getUser(),
+    			$entity->getConversationId(),
+    			$entity->getUser(),
+    	));
+    	 
     }
 	
 }

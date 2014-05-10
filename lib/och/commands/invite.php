@@ -32,9 +32,6 @@ class Invite extends ChatAPI {
             throw new RequestDataInvalid("USER-EQAUL-TO-USER-TO-INVITE");
         }
         
-//         var_export($requestData['user_to_invite']);
-//         die();
-
         if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $this->app['API']->getUsers())){
             throw new RequestDataInvalid("USER-TO-INVITE-NOT-OC-USER");
         }

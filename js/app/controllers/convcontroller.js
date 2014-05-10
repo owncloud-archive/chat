@@ -213,12 +213,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 
 	$scope.newConv = function(){
-		console.log('new conv');
 		var backend = $scope.active.backend;
 		var usersToInvite = $scope.fields.contactsToStartConvWith;
-		
-		console.log({backend : backend, usersToInvite: usersToInvite});
-		
 		Chat[backend.name].on.newConv(usersToInvite, function(convId, users){
 			$scope.view.addConv(convId, users, backend);
 		});

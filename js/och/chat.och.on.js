@@ -1,8 +1,8 @@
 Chat.och.on = {
     newConv : function(userToInvite, success){
-    	if(!Array.isArray(userToInvite)){
-    		userToInvite = [userToInvite];
-    	}
+//    	if(!Array.isArray(userToInvite)){
+//    		userToInvite = [userToInvite];
+//    	}
         Chat.och.api.command.startConv(
             userToInvite,
             function(response){

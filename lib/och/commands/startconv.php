@@ -46,7 +46,6 @@ class StartConv extends ChatAPI {
 	    		$invite->setRequestData($requestData);
 	    		$invite->execute();
 	    	}
-            
         } else {
 
 		// (3) Create the conv

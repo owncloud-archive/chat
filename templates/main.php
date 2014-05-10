@@ -88,8 +88,12 @@
 <!-- 				</div> -->
 <!-- 			</div> -->
 			<div id="app-content">
-			<div ng-if="view.elements.contact" id="app-header-info">
-				{{ headerInfo }}
+			<div ng-if="view.elements.contact" id="controls">
+				<div class="center">
+					<button ng-click="newConv()" >
+						Chose some contacts and start conversation
+					</button>
+				</div>
 			</div>
 			<div ng-class="{'loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
 				<div 

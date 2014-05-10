@@ -10,7 +10,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		window : true,
 		//user :
 	};
-	$scope.headerInfo = "Chose a contact to conversate with. Select a backend in the right bottom";
 	// $scope.userToInvite // generated in main.php // this is the user to invite in the new conv panel
 	$scope.title = {};
 	$scope.title.title = "";
@@ -20,7 +19,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.fields = {
 		'chatMsg' : '',
 		contactsToStartConvWith : {
-			'derp' : {}
 		},
 	};
 	
@@ -214,18 +212,17 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		}
 	};
 
-	$scope.newConv = function(userToInvite){
+	$scope.newConv = function(){
+		console.log('new conv');
 		var backend = $scope.active.backend;
-		if(userToInvite === $scope.active.user){
-			Chat.app.ui.alert('You can\'t start a conversation with yourself');
-		} else if(userToInvite === ''){
-			Chat.app.ui.alert('Please provide an ownCloud user name');
-		} else {
-			Chat[backend.name].on.newConv(userToInvite, function(convId, users){
-				$scope.view.addConv(convId, users, backend);
-			});
-		}
-		this.userToInvite = '';
+		var usersToInvite = $scope.fields.contactsToStartConvWith;
+		
+		console.log({backend : backend, usersToInvite: usersToInvite});
+		
+		Chat[backend.name].on.newConv(usersToInvite, function(convId, users){
+			$scope.view.addConv(convId, users, backend);
+		});
+		$scope.fields.contactsToStartConvWith = {};
 	};
 
 	$scope.leave = function(convId){

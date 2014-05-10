@@ -271,19 +271,6 @@
 	width: 32px
 }
 
-#app-header-info {
-	height: 44px;
-	padding: 10px;
-	background-color: #EEEEEE;
-	text-align: center;
-	color: #333;
-	font-weight: bold;
-	font-size: 1.2em;
-	position: absolute;
-	width: 100%;
-	z-index: 100;
-}
-
 .content-info {
 	position: absolute;
 	top: 44px;
@@ -333,4 +320,14 @@
 }
 .chat-msg-msg video, .chat-msg-msg img, .chat-msg-msg iframe, .chat-msg-msg a img {
 	display:block;
+}
+
+#controls {
+	left:380px !important;
+	width:auto;
+	padding-left:0px !important;
+}
+
+#controls .center {
+	text-align:center;
 }

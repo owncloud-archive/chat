@@ -3,9 +3,13 @@ Chat.och.on = {
         Chat.och.api.command.startConv(
             userToInvite,
             function(response){
-            	Chat.och.api.command.getUsers(response.data.conv_id, function(data){
-            		console.log(data);
-            		success(response.data.conv_id, data.data.users);
+            	var convId = response.data.conv_id;
+            	Chat.och.api.command.getUsers(convId, function(data){
+            		var users = data.data.users;
+            		Chat.och.api.command.getMessages(convId, function(data){
+            			var msgs = data.data.messages;
+            			success(convId, users, msgs);
+            		});
             	});
             },
             function(errorMsg){

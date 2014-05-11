@@ -107,7 +107,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		unActive : function(){
 			$scope.active.conv = null;
 		},
-		addConv : function(convId, users, backend){
+		addConv : function(convId, users, backend, msgs){
 			//users.push($scope.active.user);
 			$scope.convs[convId] = {
 				id : convId,
@@ -116,7 +116,13 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 				backend : backend,
 			};
 			$scope.view.makeActive(convId);
+			if(msgs !== undefined){
+				angular.forEach(msgs, function(msg){
+					$scope.view.addChatMsg(convId, msg.user, msg.msg, msg.timestamp, backend);
+				});
+			}
 			$scope.$apply();
+			
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend){
 			if(user.id !== $scope.active.user.id){
@@ -215,8 +221,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.newConv = function(){
 		var backend = $scope.active.backend;
 		var usersToInvite = $scope.fields.contactsToStartConvWith;
-		Chat[backend.name].on.newConv(usersToInvite, function(convId, users){
-			$scope.view.addConv(convId, users, backend);
+		Chat[backend.name].on.newConv(usersToInvite, function(convId, users, msgs){
+			$scope.view.addConv(convId, users, backend, msgs);
 		});
 		$scope.fields.contactsToStartConvWith = {};
 	};

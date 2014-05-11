@@ -27,8 +27,8 @@ Chat.och.on = {
     		users.push(user);
     	});
     	users.push(userToInvite);
-    	Chat.och.on.newConv(users, function(convId, users){
-			Chat.app.view.addConv(convId, users, Chat.scope.backends.och);
+    	Chat.och.on.newConv(users, function(convId, users, msgs){
+			Chat.app.view.addConv(convId, users, Chat.scope.backends.och, msgs);
     	});
     	
     },

@@ -10,6 +10,9 @@ use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
 use OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use OCA\Chat\OCH\Db\InitConv;
+use \OCA\Chat\OCH\Data\GetUsers;
+use \OCA\Chat\OCH\Data\Messages;
+
 
 class Join extends ChatAPI {
 
@@ -59,6 +62,20 @@ class Join extends ChatAPI {
 				}
 			}
 		}*/
-		return true;
+		
+		// Fetch users in conv
+		$getUsers = new GetUsers($this->app);
+		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $getUsers->execute();
+		$users = $users['users'];
+		
+		// Fetch messages in conv
+		$getMessages = new Messages($this->app);
+		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$messages = $getMessages->execute();
+		$messages = $messages['messages'];
+		
+		return array("messages" => $messages,
+					 "users" => $users );
 	}
 }

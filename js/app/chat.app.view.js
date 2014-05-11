@@ -1,7 +1,7 @@
 Chat.app.view = {
-    addConv : function(convId, users, backend){
+    addConv : function(convId, users, backend, msgs){
         Chat.scope.$apply(function(){
-            Chat.scope.view.addConv(convId, users, backend);
+            Chat.scope.view.addConv(convId, users, backend, msgs);
         });
     },
     addChatMsg : function(convId, contact, msg, timestamp, backend){

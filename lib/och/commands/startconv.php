@@ -7,6 +7,9 @@ use \OCA\Chat\OCH\Db\Conversation;
 use \OCA\Chat\OCH\Db\ConversationMapper;
 use \OCA\Chat\OCH\Commands\Join;
 use \OCA\Chat\OCH\Commands\Invite;
+use \OCA\Chat\OCH\Data\GetUsers;
+use \OCA\Chat\OCH\Data\Messages;
+
 
 class StartConv extends ChatAPI {
     
@@ -72,8 +75,23 @@ class StartConv extends ChatAPI {
 	    		$invite->execute();
 	    	}
         }
-        return array("conv_id" => $id);
         
+        // Fetch users in conv
+        $getUsers = new GetUsers($this->app);
+        $getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+        $users = $getUsers->execute();
+        $users = $users['users'];
+        
+        // Fetch messages in conv
+        $getMessages = new Messages($this->app);
+        $getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$messages = $getMessages->execute();
+		$messages = $messages['messages'];
+        
+        return array("conv_id" => $id,
+        			 "users" => $users,
+        			 "messages" => $messages
+        );
     }
     
     private function generateConvId($users){

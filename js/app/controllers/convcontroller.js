@@ -118,7 +118,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.view.makeActive(convId);
 			if(msgs !== undefined){
 				angular.forEach(msgs, function(msg){
-					$scope.view.addChatMsg(convId, msg.user, msg.msg, msg.timestamp, backend);
+					$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
 				});
 			}
 			$scope.$apply();

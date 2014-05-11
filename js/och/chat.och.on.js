@@ -3,14 +3,7 @@ Chat.och.on = {
         Chat.och.api.command.startConv(
             userToInvite,
             function(response){
-            	var convId = response.data.conv_id;
-            	Chat.och.api.command.getUsers(convId, function(data){
-            		var users = data.data.users;
-            		Chat.och.api.command.getMessages(convId, function(data){
-            			var msgs = data.data.messages;
-            			success(convId, users, msgs);
-            		});
-            	});
+    			success(response.data.conv_id, response.data.users, response.data.messages);
             },
             function(errorMsg){
                 if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){

@@ -6,20 +6,21 @@ use \OCA\Chat\Core\Api;
 use \OCA\Chat\Db\Entity;
 
 class UserMapper extends Mapper {
-
+	
+	private $userOnlineTable = '*PREFIX*chat_och_users_online';
 
     public function __construct(API $api) {
         parent::__construct($api, 'chat_och_users_in_conversation'); // tablename is news_feeds
     }
 
     public function findSessionsByConversation($conversationId){
-		$sql = 'SELECT *PREFIX*chat_och_users_online.user, *PREFIX*chat_och_users_online.session_id'
-			 . ' FROM *PREFIX*chat_och_users_in_conversation '
-			 . ' LEFT OUTER JOIN *PREFIX*chat_och_users_online'
-			 . ' ON *PREFIX*chat_och_users_in_conversation.user = *PREFIX*chat_och_users_online.user'
-			 . ' AND *PREFIX*chat_och_users_in_conversation.conversation_id = ? ';
-    	
-        $result = $this->execute($sql, array($conversationId));
+    	$sql = 'SELECT ' . $this->getTableName() . '.user,
+      			' . $this->userOnlineTable . '.session_id '
+    	     . ' FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->userOnlineTable
+    	     . ' ON ' . $this->getTableName() . '.user = ' . $this->userOnlineTable . '.user '
+    	     . ' AND ' . $this->getTableName() . '.conversation_id = ? ';
+        
+    	$result = $this->execute($sql, array($conversationId));
 
         $feeds = array();
         while($row = $result->fetchRow()){

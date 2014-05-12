@@ -9,6 +9,7 @@ use \OCA\Chat\OCH\Commands\Join;
 use \OCA\Chat\OCH\Commands\Invite;
 use \OCA\Chat\OCH\Data\GetUsers;
 use \OCA\Chat\OCH\Data\Messages;
+use \OCA\Chat\OCH\Db\User;
 
 
 class StartConv extends ChatAPI {
@@ -32,26 +33,15 @@ class StartConv extends ChatAPI {
         $convMapper = $this->app['ConversationMapper'];
         if($convMapper->exists($id)){
 	    
-	    // (3) join the already existing conv
+	    	// (3) join the already existing conv
             $join = new Join($this->app);
             $this->requestData['conv_id'] = $id;
             $join->setRequestData($this->requestData);
 	    	$join->execute();
 
-            // (5) invite the user_to_invite since we just created the conv
-            // foreach user to invite
-	    	$invite = new Invite($this->app);
-	    	$reuqestData = array();
-	    	$requestData['conv_id'] = $id;
-	    	$requestData['user'] = $this->requestData['user'];
-	    	foreach($this->requestData['user_to_invite'] as $userToInvite){
-	    		$requestData['user_to_invite'] = $userToInvite;	    		
-	    		$invite->setRequestData($requestData);
-	    		$invite->execute();
-	    	}
         } else {
 
-		// (3) Create the conv
+			// (3) Create the conv
             $conversation = new Conversation();
             $conversation->setConversationId($id);
             $mapper = $this->app['ConversationMapper']; 
@@ -63,17 +53,27 @@ class StartConv extends ChatAPI {
             $join->setRequestData($this->requestData);
             $join->execute();
             
-            // (5) invite the user_to_invite since we just created the conv
-            // foreach user to invite
-        	$invite = new Invite($this->app);
-	    	$reuqestData = array();
-	    	$requestData['conv_id'] = $id;
-	    	$requestData['user'] = $this->requestData['user'];
-	    	foreach($this->requestData['user_to_invite'] as $userToInvite){
-	    		$requestData['user_to_invite'] = $userToInvite;	    		
-	    		$invite->setRequestData($requestData);
-	    		$invite->execute();
-	    	}
+        }
+        
+        // (5) invite the user_to_invite since we just created the conv
+        // foreach user to invite
+        $invite = new Invite($this->app);
+        $reuqestData = array();
+        $requestData['conv_id'] = $id;
+        $requestData['user'] = $this->requestData['user'];
+        foreach($this->requestData['user_to_invite'] as $userToInvite){
+        	$requestData['user_to_invite'] = $userToInvite;
+        	$invite->setRequestData($requestData);
+        	$invite->execute();
+        }
+        
+        // (6) Add every user to the users_in_conversation table
+        $userMapper = $this->app['UserMapper'];
+        $user = new User();
+        $user->setConversationId($id);
+        foreach($ids as $userId){
+        	$user->setUser($userId);
+        	$userMapper->insertUnique($user);
         }
         
         // Fetch users in conv

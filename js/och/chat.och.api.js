@@ -119,13 +119,6 @@ Chat.och.api = {
 			Chat.app.view.addChatMsg(data.conv_id, data.user, data.chat_msg,
 					data.timestamp, 'och');
 		},
-		joined : function(data) {
-			// TODO move this alert to convcontroller
-			Chat.app.ui.alert('The user ' + data.user
-					+ ' joined this conversation');
-			// TODO check if data.user is a user or a contact
-			Chat.app.view.addUserToConv(data.conv_id, Chat.scope.contactsObj[data.user]);
-		}
 	},
 	util : {
 		doRequest : function(request, success, error) {

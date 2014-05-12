@@ -40,7 +40,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			}
 		});
 		$scope.initDone = true;
-		setInterval($scope.updateContacts, 10000);
+		setInterval($scope.updateContacts, 20000);
 	};
 
 	$scope.quit = function(){

@@ -3,6 +3,7 @@ Chat.och.on = {
         Chat.och.api.command.startConv(
             userToInvite,
             function(response){
+            	console.log(response);
     			success(response.data.conv_id, response.data.users, response.data.messages);
             },
             function(errorMsg){

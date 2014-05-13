@@ -14,4 +14,6 @@ before_install:
   - cd apps/chat
 
 script:
-  - phpunit tests/
+  - phpunit --coverage-clover=coverage.clover tests/
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -108,21 +108,21 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.active.conv = null;
 		},
 		addConv : function(convId, users, backend, msgs){
-			//users.push($scope.active.user);
-			$scope.convs[convId] = {
-				id : convId,
-				users : users,
-				msgs : [],
-				backend : backend,
-			};
-			$scope.view.makeActive(convId);
-			if(msgs !== undefined){
-				angular.forEach(msgs, function(msg){
-					$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
-				});
+			if($scope.convs.indexOf(convId) === -1) {
+				$scope.convs[convId] = {
+					id : convId,
+					users : users,
+					msgs : [],
+					backend : backend,
+				};
+				$scope.view.makeActive(convId);
+				if(msgs !== undefined){
+					angular.forEach(msgs, function(msg){
+						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
+					});
+				}
+				$scope.$apply();
 			}
-			$scope.$apply();
-			
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend){
 			if(user.id !== $scope.active.user.id){

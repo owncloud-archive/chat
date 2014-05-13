@@ -1,11 +1,11 @@
 filter:
-	excluded_paths:
-        - 'l10n/*'
-		- 'js/vendor/angular/*'
-		- 'js/vendor/angular-enhance-text.min.js'
-		- 'js/vendor/jquery.autosize.min.js'
-		- 'js/vendor/rangyinputs.js.js'
-		        
+  excluded_paths:
+    - 'l10n/*'
+    - 'js/vendor/angular/*'
+    - 'js/vendor/angular-enhance-text.min.js'
+    - 'js/vendor/jquery.autosize.min.js'
+    - 'js/vendor/rangyinputs.js.js'
+
 imports:
     - javascript
     - php

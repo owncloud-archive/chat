@@ -96,7 +96,7 @@ Chat.och.api = {
 					"session_id" : Chat.och.sessionId,
 					"conv_id" : convId
 				}
-			}, success);	
+			}, success);
 		},
 	},
 	on : {

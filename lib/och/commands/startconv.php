@@ -62,9 +62,11 @@ class StartConv extends ChatAPI {
         $requestData['conv_id'] = $id;
         $requestData['user'] = $this->requestData['user'];
         foreach($this->requestData['user_to_invite'] as $userToInvite){
-        	$requestData['user_to_invite'] = $userToInvite;
-        	$invite->setRequestData($requestData);
-        	$invite->execute();
+            if($userToInvite['backends']['och']['value'] !== $this->requestData['user']['backends']['och']['value']){
+                $requestData['user_to_invite'] = $userToInvite;
+                $invite->setRequestData($requestData);
+                $invite->execute();
+            }
         }
         
         // (6) Add every user to the users_in_conversation table

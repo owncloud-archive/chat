@@ -59,7 +59,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			"chat" : false,
 			"initDone" : false,
 			"settings" : false,
-			"emojiContainer" : false
+			"emojiContainer" : false,
+            "invite" : false,
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -245,8 +246,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		} else {
 			Chat[backend].on.invite($scope.active.conv, userToInvite);
 		}
-		$scope.view.hide('inviteInput');
-
+		$scope.view.hide('invite');
 	};
 
 	$scope.findContactByUser = function(user, namespace){

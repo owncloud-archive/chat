@@ -62,7 +62,7 @@
 						id="conv-list-{{ conv.id }}"
 					>
 						<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-						<div ng-if="conv.users > 2" ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
+						<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
 							&nbsp;
 						</div>
 						<div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
@@ -135,6 +135,38 @@
 					</div>
 				</div>
 			</div>
+            <div ng-if="view.elements.invite" id="controls">
+                <div class="center">
+                    Chose some contacts and start conversation
+                </div>
+            </div>
+            <div
+                ng-class="{'loading icon-loading': contacts.length == 0}"
+                class="content-info"
+                ng-if="view.elements.invite"
+                >
+                <div
+                    class="contact-container"
+                    ng-repeat="contact in contacts | backendFilter:active.backend | userFilter"
+                    ng-click="invite(contact)"
+                    >
+                    <div
+                        class="contact"
+                        data-size="200"
+                        data-onlinesize="20"
+                        data-parent="true"
+                        data-id="{{ contact.id }}"
+                        data-displayname="{{ contact.displayname }}"
+                        data-addressbook-backend="{{ contact.address_book_backend }}"
+                        data-addressbook-id="{{ contact.address_book_id  }}"
+                        avatar
+                        >
+                    </div>
+                    <div class="contact-label">
+                        {{ contact.displayname }}
+                    </div>
+                </div>
+            </div>
 			<div ng-if="view.elements.chat" >
 					<section ng-click="focusMsgInput()" id="chat-window-body">
 						<div id="chat-window-msgs">

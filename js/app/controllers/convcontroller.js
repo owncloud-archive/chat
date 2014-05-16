@@ -18,8 +18,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.debug = [];
 	$scope.fields = {
 		'chatMsg' : '',
-		contactsToStartConvWith : {
-		},
 	};
 	
 	$scope.init = function(){
@@ -57,7 +55,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 
 	$scope.view = {
 		elements : {
-			"contact" : true,
+			"newConv" : true,
 			"chat" : false,
 			"initDone" : false,
 			"settings" : false,
@@ -99,7 +97,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.title = newTitle;
 		},
 		makeActive : function(convId, $event, exception){
-			$scope.view.hide('contact');
+			$scope.view.hide('newConv');
 			$scope.view.show('chat', $event, exception);
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
@@ -108,7 +106,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.active.conv = null;
 		},
 		addConv : function(convId, users, backend, msgs){
-			if($scope.convs.indexOf(convId) === -1) {
+			if($scope.convs[convId] === undefined) {
 				$scope.convs[convId] = {
 					id : convId,
 					users : users,
@@ -218,13 +216,11 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		}
 	};
 
-	$scope.newConv = function(){
+	$scope.startNewConv = function(userToInvite){
 		var backend = $scope.active.backend;
-		var usersToInvite = $scope.fields.contactsToStartConvWith;
-		Chat[backend.name].on.newConv(usersToInvite, function(convId, users, msgs){
+		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs){
 			$scope.view.addConv(convId, users, backend, msgs);
 		});
-		$scope.fields.contactsToStartConvWith = {};
 	};
 
 	$scope.leave = function(convId){
@@ -233,7 +229,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			delete $scope.convs[convId];
 			if(Chat.app.util.countObjects($scope.convs) === 0){
 				$scope.view.hide('chat');
-				$scope.view.show('contact');
+				$scope.view.show('newConv');
 			} else {
 				$scope.view.makeActive(Chat.app.ui.getFirstConv());
 			}
@@ -241,7 +237,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 
 	$scope.invite = function(userToInvite){
-		/*var backend = $scope.convs[$scope.active.conv].backend.name;
+		var backend = $scope.convs[$scope.active.conv].backend.name;
 		if(userToInvite === $scope.active.user){
 			Chat.app.ui.alert('You can\'t invite yourself');
 		} else if(userToInvite === ''){
@@ -250,7 +246,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			Chat[backend].on.invite($scope.active.conv, userToInvite);
 		}
 		$scope.view.hide('inviteInput');
-	*/
+
 	};
 
 	$scope.findContactByUser = function(user, namespace){
@@ -333,14 +329,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
   	
   	
   	$scope.emojis = Chat.app.util.emojis;
-  	
-  	$scope.updateContactsToStartConvWith = function(contact){
-  		if($scope.fields.contactsToStartConvWith[contact.id]){
-  			delete $scope.fields.contactsToStartConvWith[contact.id];
-  		} else {
-  			$scope.fields.contactsToStartConvWith[contact.id] = contact;
-  		}
-  	};
   	
 }]).directive('avatar', function() {
 	return {

@@ -50,7 +50,7 @@
 		<div ng-if="initDone" id="main-panel" >
 			<div id="app-navigation" >
 				<ul>
-					<li ng-class="{ 'conv-list-active' : view.elements.contact }" ng-click="view.unActive();view.show('contact');view.hide('chat');" id="conv-list-new-conv">
+					<li ng-class="{ 'conv-list-active' : view.elements.newConv }" ng-click="view.unActive();view.show('newConv');view.hide('chat');" id="conv-list-new-conv">
 						<div class="icon-add icon-32 left">&nbsp;</div>
 						<div class="left">New Conversation</div>
 					</li>
@@ -101,18 +101,22 @@
 <!-- 				</div> -->
 <!-- 			</div> -->
 			<div id="app-content">
-			<div ng-if="view.elements.contact" id="controls">
+			<div ng-if="view.elements.newConv" id="controls">
 				<div class="center">
 					<button ng-click="newConv()" >
 						Chose some contacts and start conversation
 					</button>
 				</div>
 			</div>
-			<div ng-class="{'loading icon-loading': contacts.length == 0}" class="content-info" ng-if="view.elements.contact" >
-				<div 
+			<div
+                ng-class="{'loading icon-loading': contacts.length == 0}"
+                class="content-info"
+                ng-if="view.elements.newConv"
+                >
+                <div
 					class="contact-container"
 					ng-repeat="contact in contacts | backendFilter:active.backend | userFilter"
-					ng-click="updateContactsToStartConvWith(contact)"
+					ng-click="startNewConv(contact)"
 				>
 					<div 
 						class="contact" 
@@ -128,13 +132,6 @@
 					</div>
 					<div class="contact-label">
 						{{ contact.displayname }}
-					</div>
-					<div class="contact-checkbox">
-						<input
-							type="checkbox"
-							ng-checked="fields.contactsToStartConvWith[contact.id]"
-							ng-change="updateContactsToStartConvWith(contact)"
-						>
 					</div>
 				</div>
 			</div>

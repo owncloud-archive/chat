@@ -40,12 +40,6 @@
 	font-size: 18px;
 	padding-bottom: 5px;
 }
-.contact-checkbox {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index:100;
-}
 
 #main-panel {
 	height: 100%;

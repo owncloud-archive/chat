@@ -73,6 +73,7 @@ class StartConv extends ChatAPI {
         $userMapper = $this->app['UserMapper'];
         $user = new User();
         $user->setConversationId($id);
+        $user->setJoined(time());
         foreach($ids as $userId){
         	$user->setUser($userId);
         	$userMapper->insertUnique($user);

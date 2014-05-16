@@ -81,7 +81,7 @@ class UserMapper extends Mapper {
     
     public function insertUnique(Entity $entity){
     	$sql = 'INSERT INTO ' . $this->getTableName() 
-			 . ' SELECT * FROM (SELECT ?,?) AS tmp
+			 . ' SELECT * FROM (SELECT ?,?,?) AS tmp
 				WHERE NOT EXISTS (
 					SELECT  conversation_id, `user` FROM `' . $this->getTableName() .'` WHERE conversation_id = ? AND `user` = ?
 				) LIMIT 1';
@@ -89,6 +89,7 @@ class UserMapper extends Mapper {
     	$this->execute($sql, array(
     			$entity->getConversationId(),
     			$entity->getUser(),
+                $entity->getJoined(),
     			$entity->getConversationId(),
     			$entity->getUser(),
     	));

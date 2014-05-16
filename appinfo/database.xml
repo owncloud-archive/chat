@@ -107,6 +107,12 @@
 				<notnull>true</notnull>
 				<length>64</length>
 			</field>
+            <field>
+                <name>joined</name>
+                <type>bigint</type>
+                <notnull>true</notnull>
+                <length>64</length>
+             </field>
 		</declaration>
 	</table>
 	<table>

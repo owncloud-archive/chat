@@ -9,7 +9,8 @@ class User extends Entity {
     public $conversationId;
     public $user;
     public $sessionId;
-	
+	public $joined;
+
     public function __construct(){
         
     }

@@ -119,6 +119,11 @@ Chat.och.api = {
 			Chat.app.view.addChatMsg(data.conv_id, data.user, data.chat_msg,
 					data.timestamp, 'och');
 		},
+        joined : function(data){
+            console.log('hoi');
+            console.log(data);
+            Chat.app.view.replaceUsers(data.conv_id, data.users);
+        }
 	},
 	util : {
 		doRequest : function(request, success, error) {

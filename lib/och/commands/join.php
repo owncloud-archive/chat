@@ -42,6 +42,31 @@ class Join extends ChatAPI {
 		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$messages = $getMessages->execute();
 		$messages = $messages['messages'];
+
+        if(count($users) > 2){
+            // we are in a group conv this mean we have to let the other users now we joined it
+            $pushMessageMapper = $this->app['PushMessageMapper'];
+            $userMapper = $this->app['UserMapper'];
+            $command = json_encode(array(
+                "type" => "joined",
+                "data" => array(
+                    "conv_id" => $this->requestData['conv_id'],
+                    "messages" => $messages,
+                    "users" => $users
+                )
+            ));
+
+            $sessions = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
+            foreach($sessions as $session){
+                $pushMessage = new PushMessage();
+                $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
+                $pushMessage->setReceiver($session->getUser());
+                $pushMessage->setReceiverSessionId($session->getSessionId());
+                $pushMessage->setCommand($command);
+                $pushMessageMapper->insert($pushMessage);
+            }
+
+        }
 		
 		return array("messages" => $messages,
 					 "users" => $users );

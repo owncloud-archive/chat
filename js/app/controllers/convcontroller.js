@@ -201,6 +201,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		focusMsgInput : function(){
 			Chat.app.ui.focusMsgInput();
 		},
+        replaceUsers : function(convId, users){
+            $scope.convs[convId].users = users;
+        }
 	};
 
 

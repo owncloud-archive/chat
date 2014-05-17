@@ -25,5 +25,10 @@ Chat.app.view = {
     },
     alert : function(text){
         Chat.app.ui.alert(text);
+    },
+    replaceUsers : function(convId, users){
+        Chat.scope.$apply(function(){
+           Chat.scope.view.replaceUsers(convId, users);
+        });
     }
 };

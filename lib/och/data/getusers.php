@@ -21,11 +21,11 @@ class GetUsers extends ChatAPI {
 		$contacts = $appApi->getContacts();
 		$contacts = $contacts['contactsObj'];
 		
-		$users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
+		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
 		
 		$return = array();
 		foreach($users as $user){
-			$return[] = $contacts[$user->getUser()];	
+			$return[] = $contacts[$user];
 		}
 		
 		// Note: users are full contacts

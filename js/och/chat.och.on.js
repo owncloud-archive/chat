@@ -23,15 +23,23 @@ Chat.och.on = {
         Chat.och.api.command.sendChatMsg(msg, convId, function(){});
     },
     invite : function(convId, userToInvite){
-    	var users = [];
-    	angular.forEach(Chat.scope.convs[convId].users, function(user){
-    		users.push(user);
-    	});
-    	users.push(userToInvite);
-    	Chat.och.on.newConv(users, function(convId, users, msgs){
-			Chat.app.view.addConv(convId, users, Chat.scope.backends.och, msgs);
-    	});
-    	
+        if(Chat.scope.convs[convId].users.length > 2){
+            // We are in a group conversation
+            Chat.och.api.command.invite(userToInvite, convId, function(data){
+                console.log(data);
+                var users = data.data.users;
+                Chat.app.view.replaceUsers(convId, users);
+            });
+        } else {
+            var users = [];
+            angular.forEach(Chat.scope.convs[convId].users, function(user){
+                users.push(user);
+            });
+            users.push(userToInvite);
+            Chat.och.on.newConv(users, function(convId, users, msgs){
+                Chat.app.view.addConv(convId, users, Chat.scope.backends.och, msgs);
+            });
+        }
     },
     leave : function(convId, success){
     	Chat.och.api.command.deleteInitConv(convId, function(){});

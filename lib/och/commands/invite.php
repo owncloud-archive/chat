@@ -8,6 +8,7 @@ use \OCA\Chat\OCH\Db\UserOnlineMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
 use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use \OCA\Chat\OCH\Db\User;
 
 class Invite extends ChatAPI {
 	
@@ -46,6 +47,15 @@ class Invite extends ChatAPI {
     }
 
     public function execute(){
+
+        // We are going to add the user to the conv
+        $userMapper = $this->app['UserMapper'];
+        $user = new User();
+        $user->setConversationId($this->requestData['conv_id']);
+        $user->setJoined(time());
+        $user->setUser($this->requestData['user_to_invite']['backends']['och']['value']);
+        $userMapper->insertUnique($user);
+
         // First fetch every sessionID of the user to invite
         $userOnlineMapper = $this->app['UserOnlineMapper'];
         $pushMessageMapper = $this->app['PushMessageMapper'];
@@ -59,9 +69,9 @@ class Invite extends ChatAPI {
             )
         ));
 
-        $UTISessionID = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']); // $UTISessionID = UserToInviteSessionId = array()
+        $UTISession = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']); // $UTISessionID = UserToInviteSessionId = array()
 
-        foreach($UTISessionID as $userToInvite){
+        foreach($UTISession as $userToInvite){
             $pushMessage = new PushMessage();
 	 	    $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
             $pushMessage->setReceiver($userToInvite->getUser());

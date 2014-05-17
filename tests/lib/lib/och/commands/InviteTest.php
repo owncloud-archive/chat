@@ -348,18 +348,6 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		$this->container['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->container['UserOnlineMapper']->expects($this->any())
-			->method('getOnlineUsers')
-			->will($this->returnValue(array("admin", "derp"))); // Simulation of the online users -> derp is offline
-
-		$session1 = new UserOnline();
-		$session1->setUser('admin');
-		$session1->setSessionId('session1id'); // must be deleted
-		$session1->setLastOnline(time() - 200);
-
-		$this->container['UserOnlineMapper']->expects($this->any())
-			->method('findByUser')
-			->will($this->returnValue(array($session1))); // Simulation of the online users -> derp is offline
 
 		$this->container['PushMessageMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\PushMessageMapper')
 			->disableOriginalConstructor()
@@ -367,7 +355,6 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 		$this->container['PushMessageMapper']->expects($this->any())
 			->method('insert')
 			->will($this->returnValue(true)); // Simulation of the online users -> derp is offline
-
 
 		// logic
 		$invite= new Invite($this->container);

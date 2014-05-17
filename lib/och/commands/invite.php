@@ -37,12 +37,6 @@ class Invite extends ChatAPI {
             throw new RequestDataInvalid("USER-TO-INVITE-NOT-OC-USER");
         }
 
-        $userOnlineMapper = $this->app['UserOnlineMapper'];
-        $usersOnline = $userOnlineMapper->getOnlineUsers();
-        if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $usersOnline)){
-            throw new RequestDataInvalid('USER-TO-INVITE-NOT-ONLINE');
-        }
-
         $this->requestData = $requestData;
     }
 

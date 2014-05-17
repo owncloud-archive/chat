@@ -34,25 +34,12 @@ class ApiController extends Controller {
 				case "command":
 					// $action is the type of the command
 
-				$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
+				    $possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($request['data']['session_id'])){
 							if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
-
-								$commandClasses = array(
-									'greet' => '\OCA\Chat\OCH\Commands\Greet',
-									'join' => '\OCA\Chat\OCH\Commands\Join',
-									'invite' => '\OCA\Chat\OCH\Commands\Invite',
-									'send_chat_msg' => '\OCA\Chat\OCH\Commands\SendChatMsg',
-									'online' => '\OCA\Chat\OCH\Commands\Online',
-									'offline' => '\OCA\Chat\OCH\Commands\Offline',
-									'start_conv' => '\OCA\Chat\OCH\Commands\StartConv',
-									'delete_init_conv' => '\OCA\Chat\OCH\Commands\DeleteInitConv',
-								);
-
 								try{
-									$className = $commandClasses[$action];
-									$commandClass = new $className($this->app);
+									$commandClass = $this->app[$this->convertClassName($action) . 'Command'];
 									$commandClass->setRequestData($request['data']);
 									$data = $commandClass->execute();
 									if($data){
@@ -78,51 +65,45 @@ class ApiController extends Controller {
 
 					break;
 				case "push":
-					if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
-						if(!empty($request['data']['session_id'])){
-							$pushClasses = array(
-								"get" => "\OCA\Chat\OCH\Push\Get",
-								"delete" => "\OCA\Chat\OCH\Push\Delete"
-							);
-							$className = $pushClasses[$action];
-							$pushClass = new $className($this->app);
-
-							$pushClass->setRequestData($request['data']);
-
-							return $pushClass->execute();
-
-						} else{
-							return new Error('push', 'SESSION-ID-NOT-PROVIDED');
-						}
-					} else {
-						return new Error('push', 'USER-NOT-EQUAL-TO-OC-USER');
-					}
+                    $possibleCommands = array('get', 'delete');
+                    if(in_array($action, $possibleCommands)){
+                        if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+                            if(!empty($request['data']['session_id'])){
+                                $pushClass = $this->app[$this->convertClassName($action) . 'Push'];
+                                $pushClass->setRequestData($request['data']);
+                                return $pushClass->execute();
+                            } else{
+                                return new Error('push', $action, 'SESSION-ID-NOT-PROVIDED');
+                            }
+                        } else {
+                            return new Error('push', $action, 'USER-NOT-EQUAL-TO-OC-USER');
+					    }
+                    } else {
+                        return new Error("command", $action, "PUSH-ACTION-NOT-FOUND");
+                    }
 					break;
 				case "data":
-					if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
-						if(!empty($request['data']['session_id'])){
-							$pushClasses = array(
-								"messages" => "\OCA\Chat\OCH\Data\Messages",
-								"contacts" => "\OCA\Chat\OCH\Data\Contacts",
-								"get_users" => "\OCA\Chat\OCH\Data\GetUsers",
-							);
-							$className = $pushClasses[$action];
-							$dataClass = new $className($this->app);
-
-							$dataClass->setRequestData($request['data']);
-
-							$data = $dataClass->execute();
-							if($data){
-								return new Success("command", $action, $data);
-							} else {
-								return new Success("command", $action);
-							}
-						} else{
-							return new Error('data', 'SESSION-ID-NOT-PROVIDED');
-						}
-					} else {
-						return new Error('data', 'USER-NOT-EQUAL-TO-OC-USER');
-					}
+                    $possibleCommands = array('messages', 'get_users');
+                    if(in_array($action, $possibleCommands)){
+                        if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+                            if(!empty($request['data']['session_id'])){
+                                $dataClass = $this->app[$this->convertClassName($action) . 'Data'];
+                                $dataClass->setRequestData($request['data']);
+                                $data = $dataClass->execute();
+                                if($data){
+                                    return new Success("command", $action, $data);
+                                } else {
+                                    return new Success("command", $action);
+                                }
+                            } else{
+                                return new Error('data', $action, 'SESSION-ID-NOT-PROVIDED');
+                            }
+                        } else {
+                            return new Error('data', $action, 'USER-NOT-EQUAL-TO-OC-USER');
+                        }
+                    } else {
+                        return new Error("command", $action, "DATA-ACTION-NOT-FOUND");
+                    }
 					break;
 				}
 
@@ -130,4 +111,13 @@ class ApiController extends Controller {
 			return new Error($requestType, $action, "HTTP-TYPE-INVALID");
 		}
 	}
+
+    private function convertClassName($class){
+        $newClass = '';
+        $parts = explode("_", $class);
+        foreach($parts as $part){
+            $newClass .= ucfirst($part);
+        }
+        return $newClass;
+    }
 }

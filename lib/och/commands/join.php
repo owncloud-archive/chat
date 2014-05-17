@@ -32,13 +32,13 @@ class Join extends ChatAPI {
 		$initConvMapper->insertUnique($initConv);
 		
 		// Fetch users in conv
-		$getUsers = new GetUsers($this->app);
+		$getUsers = $this->app['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$users = $getUsers->execute();
 		$users = $users['users'];
 		
 		// Fetch messages in conv
-		$getMessages = new Messages($this->app);
+		$getMessages = $this->app['MessagesData'];
 		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$messages = $getMessages->execute();
 		$messages = $messages['messages'];

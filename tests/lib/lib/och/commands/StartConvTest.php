@@ -109,20 +109,22 @@ class StartConvTest extends \PHPUnit_Framework_TestCase {
 			"session_id" => "87ce2b3faeb92f0fb745645e7827f51a",
 			"timestamp" => 1397193430.516,
 			"user_to_invite" => array(
-				"id" => "derp",
-				"displayname" => "derp",
-				"backends" => array(
-					"och" => array(
-						"id" => NULL,
-						"displayname" => "wnCloud Handle",
-						"protocol" => "x-owncloud-handle",
-						"namespace" => "och",
-						"value" => "derp"
-					)
-				),
-				"address_book_id" => "admin",
-				"address_book_backend" => "localusers"
-			)
+                    array(
+                    "id" => "derp",
+                    "displayname" => "derp",
+                    "backends" => array(
+                        "och" => array(
+                            "id" => NULL,
+                            "displayname" => "wnCloud Handle",
+                            "protocol" => "x-owncloud-handle",
+                            "namespace" => "och",
+                            "value" => "derp"
+                        )
+                    ),
+                    "address_book_id" => "admin",
+                    "address_book_backend" => "localusers"
+                )
+            )
 		));
 		$result = $startConv->execute();
 		$this->assertEquals(array("conv_id" => 'addeimnpr'), $result);

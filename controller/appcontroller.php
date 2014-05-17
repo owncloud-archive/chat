@@ -50,7 +50,7 @@ class AppController extends Controller {
 	public function index() {
 		$appApi = $this->app['AppApi'];
 
-		$greet = new Greet($this->app);
+		$greet = $this->app['GreetCommand'];
 		$greet->setRequestData(array(
 			"timestamp" => time(),
 			"user" => $appApi->getCurrentUser(),

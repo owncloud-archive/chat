@@ -14,7 +14,19 @@ use OCA\Chat\OCH\Db\UserMapper;
 use OCA\Chat\OCH\Db\UserOnlineMapper;
 use OCA\Chat\Db\BackendMapper;
 use OCA\Chat\OCH\Db\InitConvMapper;
-
+use OCA\Chat\OCH\Commands\DeleteInitConv;
+use OCA\Chat\OCH\Commands\Greet;
+use OCA\Chat\OCH\Commands\Invite;
+use OCA\Chat\OCH\Commands\Join;
+use OCA\Chat\OCH\Commands\Offline;
+use OCA\Chat\OCH\Commands\Online;
+use OCA\Chat\OCH\Commands\SendChatMsg;
+use OCA\Chat\OCH\Commands\StartConv;
+use OCA\Chat\OCH\Commands\SyncOnline;
+use OCA\Chat\OCH\Data\GetUsers;
+use OCA\Chat\OCH\Data\Messages;
+use OCA\Chat\OCH\Push\Get;
+use OCA\Chat\OCH\Push\Delete;
 /*
  * // to prevent clashes with installed app framework versions if(!class_exists('\SimplePie')) { require_once __DIR__ . '/../3rdparty/simplepie/autoloader.php'; }
  */
@@ -37,7 +49,7 @@ class Chat extends App{
 		});
 
 		/**
-		 * Mappers
+		 * DataMappers
 		 */
 
 		$container->registerService('ConversationMapper', function ($c) {
@@ -72,7 +84,68 @@ class Chat extends App{
 			return new BackendMapper($c->query('API'));
 		});
 
-		/**
+        /**
+         * Command API Requests
+         */
+        $container->registerService('DeleteInitConvCommand', function ($c) {
+            return new DeleteInitConv($c);
+        });
+
+        $container->registerService('GreetCommand', function ($c) {
+            return new Greet($c);
+        });
+
+        $container->registerService('InviteCommand', function ($c) {
+            return new Invite($c);
+        });
+
+        $container->registerService('JoinCommand', function ($c) {
+            return new Join($c);
+        });
+
+        $container->registerService('OfflineCommand', function ($c) {
+            return new Offline($c);
+        });
+
+        $container->registerService('OnlineCommand', function ($c) {
+            return new Online($c);
+        });
+
+        $container->registerService('SendChatMsgCommand', function ($c) {
+            return new SendChatMsg($c);
+        });
+
+        $container->registerService('StartConvCommand', function ($c) {
+            return new StartConv($c);
+        });
+
+        $container->registerService('SyncOnlineCommand', function ($c) {
+            return new SyncOnline($c);
+        });
+
+        /**
+         * Push API Requests
+         */
+        $container->registerService('GetPush', function ($c) {
+            return new Get($c);
+        });
+
+        $container->registerService('DeletePush', function ($c) {
+            return new Delete($c);
+        });
+
+        /**
+         * Data API Requests
+         */
+        $container->registerService('GetUsersData', function ($c) {
+            return new GetUsers($c);
+        });
+
+        $container->registerService('MessagesData', function ($c) {
+            return new Messages($c);
+        });
+
+        /**
 		 * Utility
 		 */
 		$container->registerService('API', function ($c) {

@@ -162,7 +162,7 @@ class SendChatMsgTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 		
 		$this->container['UserMapper']->expects($this->any())
-			->method('findByConversation')
+			->method('findSessionsByConversation')
 			->will($this->returnValue(array($user1, $user2)));
 
 	

@@ -63,7 +63,7 @@ class AppApi {
 		// so multiple backends are allowed
 		$userOnlineMapper = $this->app['UserOnlineMapper'];
 		$usersOnline = $userOnlineMapper->getOnlineUsers();
-		$syncOnline = new SyncOnline($this->app);
+		$syncOnline = $this->app['SyncOnlineCommand'];
 		$syncOnline->execute();
 		// ***
 

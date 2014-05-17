@@ -15,9 +15,9 @@ class Online extends ChatAPI {
 
     public function execute(){	
         $mapper = $this->app['UserOnlineMapper'];
-        $mapper->updateLastOnline($this->requestData['session_id'], $this->requestData['timestamp']);   		
+        $mapper->updateLastOnline($this->requestData['session_id'], $this->requestData['timestamp']);
 
-        $syncOnline = new SyncOnline($this->app);
+        $syncOnline = $this->app['SyncOnlineCommand'];
         $syncOnline->execute();
         return;
     }	

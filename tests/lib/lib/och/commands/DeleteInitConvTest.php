@@ -8,6 +8,8 @@ include_once(__DIR__ . '/../../../vendor/Pimple/Pimple.php');
 use OCA\Chat\App\Chat;
 use OCA\Chat\OCH\Db\InitConv;
 
+// Refer to GreetTest::testDBFailure for a DBFailure test
+// This almost the same for every unit test
 class DeleteInitConvTest extends \PHPUnit_Framework_TestCase {
 
 	private static $initConv;

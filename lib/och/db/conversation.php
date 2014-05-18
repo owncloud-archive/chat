@@ -5,9 +5,9 @@ use \OCA\Chat\Db\Entity;
 
 class Conversation extends Entity {
 
-    public $conversationId;
+	public $conversationId;
 	
-    public function __construct(){
+	public function __construct(){
    
-    }
+	}
 }

@@ -9,7 +9,7 @@ Chat.app.util = {
 	updateContacts : function(){
 		$.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(contacts){
 			Chat.scope.$apply(function(){
-			   Chat.scope.contacts = contacts;
+		   		Chat.scope.contacts = contacts;
 			});
 		});
 	},
@@ -28,18 +28,6 @@ Chat.app.util = {
 	isImageUrl : function(url){
 		var imgRegex = /((?:https?):\/\/\S*\.(?:gif|jpg|jpeg|tiff|png|svg|webp))/gi;
 		return imgRegex.test(url);
-
-	},
-	array_diff : function(a1, a2){
-	  var a=[], diff=[];
-	  for(var i=0;i<a1.length;i++)
-		a[a1[i]]=true;
-	  for(var i=0;i<a2.length;i++)
-		if(a[a2[i]]) delete a[a2[i]];
-		else a[a2[i]]=true;
-	  for(var k in a)
-		diff.push(k);
-	  return diff;
 	},
 	emojis : [
 		{ "name" : ":+1:", "url" : "/apps/chat/img/emoji/+1.png" } ,

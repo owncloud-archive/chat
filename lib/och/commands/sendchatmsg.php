@@ -41,7 +41,7 @@ class SendChatMsg extends ChatAPI {
 		));
 
 		$sender = $this->requestData['user']['backends']['och']['value'];
-		$PushMessageMapper = $this->app['PushMessageMapper'];
+		$pushMessageMapper = $this->app['PushMessageMapper'];
 
 		foreach($users as $receiver){
 			if($receiver->getUser() !== $sender){
@@ -50,7 +50,7 @@ class SendChatMsg extends ChatAPI {
 				$pushMessage->setReceiver($receiver->getUser());
 				$pushMessage->setReceiverSessionId($receiver->getSessionId());
 				$pushMessage->setCommand($command);
-				$PushMessageMapper->insert($pushMessage);
+				$pushMessageMapper->insert($pushMessage);
 			}
 		}
 

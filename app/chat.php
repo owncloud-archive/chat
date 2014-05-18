@@ -32,129 +32,129 @@ use OCA\Chat\OCH\Push\Delete;
  */
 class Chat extends App{
 
-    public function __construct(array $urlParams = array()) {
-        parent::__construct('chat', $urlParams);
+	public function __construct(array $urlParams = array()) {
+		parent::__construct('chat', $urlParams);
 
-        $container = $this->getContainer();
+		$container = $this->getContainer();
 
-        /**
-         * Controllers
-         */
-        $container->registerService('AppController', function ($c) {
-            return new AppController($c->query('API'), $c->query('Request'), $c);
-        });
+		/**
+		 * Controllers
+		 */
+		$container->registerService('AppController', function ($c) {
+			return new AppController($c->query('API'), $c->query('Request'), $c);
+		});
 
-        $container->registerService('ApiController', function ($c) {
-            return new ApiController($c->query('API'), $c->query('Request'), $c);
-        });
+		$container->registerService('ApiController', function ($c) {
+			return new ApiController($c->query('API'), $c->query('Request'), $c);
+		});
 
-        /**
-         * DataMappers
-         */
+		/**
+		 * DataMappers
+		 */
 
-        $container->registerService('ConversationMapper', function ($c) {
-            return new ConversationMapper($c->query('API'));
-        });
+		$container->registerService('ConversationMapper', function ($c) {
+			return new ConversationMapper($c->query('API'));
+		});
 
-        $container->registerService('ConversationMapper', function ($c) {
-            return new ConversationMapper($c->query('API'));
-        });
+		$container->registerService('ConversationMapper', function ($c) {
+			return new ConversationMapper($c->query('API'));
+		});
 
-        $container->registerService('MessageMapper', function ($c) {
-            return new MessageMapper($c->query('API'));
-        });
+		$container->registerService('MessageMapper', function ($c) {
+			return new MessageMapper($c->query('API'));
+		});
 
-        $container->registerService('PushMessageMapper', function ($c) {
-            return new PushMessageMapper($c->query('API'));
-        });
+		$container->registerService('PushMessageMapper', function ($c) {
+			return new PushMessageMapper($c->query('API'));
+		});
 
-        $container->registerService('UserMapper', function ($c) {
-            return new UserMapper($c->query('API'));
-        });
+		$container->registerService('UserMapper', function ($c) {
+			return new UserMapper($c->query('API'));
+		});
 
-        $container->registerService('UserOnlineMapper', function ($c) {
-            return new UserOnlineMapper($c->query('API'));
-        });
+		$container->registerService('UserOnlineMapper', function ($c) {
+			return new UserOnlineMapper($c->query('API'));
+		});
 
-        $container->registerService('InitConvMapper', function ($c) {
-            return new InitConvMapper($c->query('API'));
-        });
+		$container->registerService('InitConvMapper', function ($c) {
+			return new InitConvMapper($c->query('API'));
+		});
 
-        $container->registerService('BackendMapper', function ($c) {
-            return new BackendMapper($c->query('API'));
-        });
+		$container->registerService('BackendMapper', function ($c) {
+			return new BackendMapper($c->query('API'));
+		});
 
-        /**
-         * Command API Requests
-         */
-        $container->registerService('DeleteInitConvCommand', function ($c) {
-            return new DeleteInitConv($c);
-        });
+		/**
+		 * Command API Requests
+		 */
+		$container->registerService('DeleteInitConvCommand', function ($c) {
+			return new DeleteInitConv($c);
+		});
 
-        $container->registerService('GreetCommand', function ($c) {
-            return new Greet($c);
-        });
+		$container->registerService('GreetCommand', function ($c) {
+			return new Greet($c);
+		});
 
-        $container->registerService('InviteCommand', function ($c) {
-            return new Invite($c);
-        });
+		$container->registerService('InviteCommand', function ($c) {
+			return new Invite($c);
+		});
 
-        $container->registerService('JoinCommand', function ($c) {
-            return new Join($c);
-        });
+		$container->registerService('JoinCommand', function ($c) {
+			return new Join($c);
+		});
 
-        $container->registerService('OfflineCommand', function ($c) {
-            return new Offline($c);
-        });
+		$container->registerService('OfflineCommand', function ($c) {
+			return new Offline($c);
+		});
 
-        $container->registerService('OnlineCommand', function ($c) {
-            return new Online($c);
-        });
+		$container->registerService('OnlineCommand', function ($c) {
+			return new Online($c);
+		});
 
-        $container->registerService('SendChatMsgCommand', function ($c) {
-            return new SendChatMsg($c);
-        });
+		$container->registerService('SendChatMsgCommand', function ($c) {
+			return new SendChatMsg($c);
+		});
 
-        $container->registerService('StartConvCommand', function ($c) {
-            return new StartConv($c);
-        });
+		$container->registerService('StartConvCommand', function ($c) {
+			return new StartConv($c);
+		});
 
-        $container->registerService('SyncOnlineCommand', function ($c) {
-            return new SyncOnline($c);
-        });
+		$container->registerService('SyncOnlineCommand', function ($c) {
+			return new SyncOnline($c);
+		});
 
-        /**
-         * Push API Requests
-         */
-        $container->registerService('GetPush', function ($c) {
-            return new Get($c);
-        });
+		/**
+		 * Push API Requests
+		 */
+		$container->registerService('GetPush', function ($c) {
+			return new Get($c);
+		});
 
-        $container->registerService('DeletePush', function ($c) {
-            return new Delete($c);
-        });
+		$container->registerService('DeletePush', function ($c) {
+			return new Delete($c);
+		});
 
-        /**
-         * Data API Requests
-         */
-        $container->registerService('GetUsersData', function ($c) {
-            return new GetUsers($c);
-        });
+		/**
+		 * Data API Requests
+		 */
+		$container->registerService('GetUsersData', function ($c) {
+			return new GetUsers($c);
+		});
 
-        $container->registerService('MessagesData', function ($c) {
-            return new Messages($c);
-        });
+		$container->registerService('MessagesData', function ($c) {
+			return new Messages($c);
+		});
 
-        /**
-        * Utility
-        */
-        $container->registerService('API', function ($c) {
-           return new API($c->query('AppName'));
-        });
+		/**
+		* Utility
+		*/
+		$container->registerService('API', function ($c) {
+		   return new API($c->query('AppName'));
+		});
 
-        $container->registerService('AppApi', function ($c) {
-            return new AppApi($c);
-        });
-    }
+		$container->registerService('AppApi', function ($c) {
+			return new AppApi($c);
+		});
+	}
 
 }

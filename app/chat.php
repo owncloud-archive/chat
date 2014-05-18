@@ -149,7 +149,7 @@ class Chat extends App{
 		* Utility
 		*/
 		$container->registerService('API', function ($c) {
-		   return new API($c->query('AppName'));
+			return new API($c->query('AppName'));
 		});
 
 		$container->registerService('AppApi', function ($c) {

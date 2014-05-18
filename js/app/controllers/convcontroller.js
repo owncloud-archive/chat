@@ -22,12 +22,12 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	
 	$scope.init = function(){
 		var initvar = JSON.parse($('#initvar').text());
-		$scope.contacts = initvar['contacts'];
-		$scope.contactsList = initvar['contactsList'];
-		$scope.contactsObj = initvar['contactsObj'];
-		$scope.backends = initvar['backends'];
+		$scope.contacts = initvar.contacts;
+		$scope.contactsList = initvar.contactsList;
+		$scope.contactsObj = initvar.contactsObj;
+		$scope.backends = initvar.backends;
 		$scope.active.user = $scope.contactsObj[OC.currentUser];
-		$scope.initConvs = initvar['initConvs'];
+		$scope.initConvs = initvar.initConvs;
 		$scope.initvar = initvar;
 		$scope.$apply();
 		for (active in $scope.backends) break;
@@ -47,7 +47,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 				Chat[namespace].util.quit();
 			}
 		});
-	}
+	};
 
 	$scope.selectBackend = function(backend){
 		$scope.active.backend = backend;
@@ -60,7 +60,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			"initDone" : false,
 			"settings" : false,
 			"emojiContainer" : false,
-            "invite" : false,
+			"invite" : false,
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -201,14 +201,14 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		focusMsgInput : function(){
 			Chat.app.ui.focusMsgInput();
 		},
-        replaceUsers : function(convId, users){
-            $scope.convs[convId].users = users;
-        }
+		replaceUsers : function(convId, users){
+			$scope.convs[convId].users = users;
+		}
 	};
 
 
 	$scope.sendChatMsg = function(){
-		if ($scope.fields.chatMsg != ''){
+		if ($scope.fields.chatMsg !== ''){
 			var backend = $scope.convs[$scope.active.conv].backend.name;
 			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, new Date().getTime() / 1000, backend);
 			Chat[backend].on.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
@@ -216,7 +216,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.fields.chatMsg = '';
 			setTimeout(function(){
 				$('#chat-msg-input-field').trigger('autosize.resize');
-			},1)
+			},1);
 		}
 	};
 
@@ -273,66 +273,66 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 
 	
-    setInterval(function(){
-    	$scope.$apply();
-    	if($scope.title.title == ''){
-        	$('title').text($scope.title.default);
-    	} else {
-    	  	$('title').text($scope.title.title);
-    	}
-    }, 1000);
+	setInterval(function(){
+		$scope.$apply();
+		if($scope.title.title === ''){
+			$('title').text($scope.title.default);
+		} else {
+			$('title').text($scope.title.title);
+		}
+	}, 1000);
 	
-    setInterval(function(){
-    	$('title').text($scope.title.default);
-    }, 2000);
-    
-    $scope.$watchCollection('title.new_msgs', function(){
-    	if($scope.active.window === false){
-	    	var title = 'New messages from ';
-	    	if($scope.title.new_msgs.length == 0 ){
-	    		title = '';
-	    	} else {
+	setInterval(function(){
+		$('title').text($scope.title.default);
+	}, 2000);
+
+	$scope.$watchCollection('title.new_msgs', function(){
+		if($scope.active.window === false){
+			var title = 'New messages from ';
+			if($scope.title.new_msgs.length === 0 ){
+				title = '';
+			} else {
 				angular.forEach($scope.title.new_msgs, function(user){
 					title = title + user + " ";
 				});
-	    	}	
-	    	$scope.title.title = title;
-    	} else {
-    		$scope.title.tile = '';
-    	}
-    	$scope.$apply();
+			}
+			$scope.title.title = title;
+		} else {
+			$scope.title.tile = '';
+		}
+		$scope.$apply();
 	});
-    
-    $scope.notify = function(user){
-    	if($scope.title.new_msgs.indexOf(user) == -1){
-    	  	$scope.title.new_msgs.push(user);
-    	}
-    	$scope.$apply();
-    };
-    
-    window.onfocus = function () { 
+
+	$scope.notify = function(user){
+		if($scope.title.new_msgs.indexOf(user) == -1){
+			$scope.title.new_msgs.push(user);
+		}
+		$scope.$apply();
+	};
+
+	window.onfocus = function () {
 		$scope.title.title = '';
 		$scope.title.new_msgs = [];
-    	$scope.active.window = true; 
-    	$scope.$apply();
-  	}; 
+		$scope.active.window = true;
+		$scope.$apply();
+	};
 
-  	window.onblur = function () { 
+	window.onblur = function () {
 		$scope.active.window = false; 
-  	};
-  	
-  	$scope.addEmoji = function(name){
+	};
+
+	$scope.addEmoji = function(name){
 		var element = $("#chat-msg-input-field");
 		element.focus(); //ie
 		var selection = element.getSelection();
 		var textBefore = $scope.fields.chatMsg.substr(0, selection.start);
 		var textAfter = $scope.fields.chatMsg.substr(selection.end);
 		$scope.fields.chatMsg = textBefore + name + textAfter;
-  	}
-  	
-  	
-  	$scope.emojis = Chat.app.util.emojis;
-  	
+	};
+
+
+	$scope.emojis = Chat.app.util.emojis;
+
 }]).directive('avatar', function() {
 	return {
 		restrict: 'A',
@@ -361,7 +361,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			});
 		});
 		return output;
-	}
+	};
 }).filter('userFilter', function() {
 	return function(users) {
 		var output = [];
@@ -371,18 +371,18 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			}
 		});
 		return output;
-	}
+	};
 }).directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-            	if (event.shiftKey === false){
-            		scope.$apply(function (){
-                        scope.$eval(attrs.ngEnter);
-                    });
-                    event.preventDefault();
-            	}
-            }
-        });
-    };
+	return function (scope, element, attrs) {
+		element.bind("keydown keypress", function (event) {
+			if(event.which === 13) {
+				if (event.shiftKey === false){
+					scope.$apply(function (){
+						scope.$eval(attrs.ngEnter);
+					});
+					event.preventDefault();
+				}
+			}
+		});
+	};
 });

@@ -16,7 +16,7 @@ Chat.app.ui = {
         return convId;
     },
     getConvListIndex : function(convId){
-        return $("#conv-list-" + convId).index() + 1
+        return $("#conv-list-" + convId).index() + 1;
     },
     newMsg : function(convId){
         $('#conv-new-msg-' + convId).fadeIn();

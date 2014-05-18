@@ -10,7 +10,7 @@ use OCA\Chat\OCH\Db\InitConv;
 
 class DeleteInitConvTest extends \PHPUnit_Framework_TestCase {
 
-    private static $initConv;
+	private static $initConv;
 
 	public function setUp(){
 		$app =  new Chat();
@@ -23,19 +23,19 @@ class DeleteInitConvTest extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(null));
 	}
 
-    public function testDeleteInitConv(){
-        $this->container['InitConvMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\InitConvMapper')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->container['InitConvMapper']->expects($this->any())
-            ->method('deleteByConvAndUser')
-            ->will($this->returnCallback(function($initConv){
-                DeleteInitConvTest::$initConv = $initConv;
-            }));
+	public function testDeleteInitConv(){
+		$this->container['InitConvMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\InitConvMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->container['InitConvMapper']->expects($this->any())
+			->method('deleteByConvAndUser')
+			->will($this->returnCallback(function($initConv){
+				DeleteInitConvTest::$initConv = $initConv;
+			}));
 
-        $requestData = array(
-            'conv_id' => 'random-conv-id',
-            'user' => array (
+		$requestData = array(
+			'conv_id' => 'random-conv-id',
+			'user' => array (
 				'id' => 'admin',
 				'online' => false,
 				'displayname' => 'admin',
@@ -51,18 +51,18 @@ class DeleteInitConvTest extends \PHPUnit_Framework_TestCase {
 				'address_book_id' => 'admin',
 				'address_book_backend' => 'localusers',
 			),
-        );
+		);
 
-        $expectedInitConv = new InitConv();
-        $expectedInitConv->setConvId('random-conv-id');
-        $expectedInitConv->setUser('admin');
+		$expectedInitConv = new InitConv();
+		$expectedInitConv->setConvId('random-conv-id');
+		$expectedInitConv->setUser('admin');
 
 
-        $deleteInitConv = new DeleteInitConv($this->container);
-        $deleteInitConv->setRequestData($requestData);
-        $deleteInitConv->execute();
+		$deleteInitConv = new DeleteInitConv($this->container);
+		$deleteInitConv->setRequestData($requestData);
+		$deleteInitConv->execute();
 
-        $this->assertEquals($expectedInitConv, DeleteInitConvTest::$initConv);
+		$this->assertEquals($expectedInitConv, DeleteInitConvTest::$initConv);
 
-    }
+	}
 }

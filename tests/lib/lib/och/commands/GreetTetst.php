@@ -6,15 +6,12 @@ include_once(__DIR__ . '/../../../autoloader.php');
 include_once(__DIR__ . '/../../../vendor/Pimple/Pimple.php');
 
 
-use OCA\Chat\Core\API;
-use OCA\Chat\OCH\Commands\Greet;
 use OCA\Chat\App\Chat;
-use OCA\Chat\Db\DBException;
-use OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use OCA\Chat\OCH\Db\UserOnline;
 
-// DONE
 class GreetTest extends \PHPUnit_Framework_TestCase {
 
+	private static $userOnline;
 
 	public function setUp(){
 		$app =  new Chat();
@@ -61,5 +58,82 @@ class GreetTest extends \PHPUnit_Framework_TestCase {
 			'timestamp' => 1397328934.658,
 		));
 		$result = $greet->execute();
+	}
+
+	public function testGeneratedSessionId(){
+		$this->container['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->container['UserOnlineMapper']->expects($this->any())
+			->method('insert')
+			->will($this->returnValue(true));
+
+		$time = time();
+		$greet = new Greet($this->container);
+		$greet->setRequestData(array(
+			'timestamp' => $time,
+			'user' => array (
+				'id' => 'admin',
+				'online' => false,
+				'displayname' => 'admin',
+				'backends' => array (
+					'och' => array (
+						'id' => NULL,
+						'displayname' => 'ownCloud Handle',
+						'protocol' => 'x-owncloud-handle',
+						'namespace' => 'och',
+						'value' => 'admin',
+					),
+				),
+				'address_book_id' => 'admin',
+				'address_book_backend' => 'localusers',
+			),
+		));
+		$result = $greet->execute();
+		$expectedSessionId = md5("sessionID" . $time);
+
+		$this->assertEquals($expectedSessionId, $result['session_id']);
+	}
+
+	public function testUserOnlineMapperInsert(){
+		$this->container['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->container['UserOnlineMapper']->expects($this->any())
+			->method('insert')
+			->will($this->returnCallback(function($userOnline){
+				GreetTest::$userOnline = $userOnline;
+			}));
+
+		$time = time();
+		$greet = new Greet($this->container);
+		$greet->setRequestData(array(
+			'timestamp' => $time,
+			'user' => array (
+				'id' => 'admin',
+				'online' => false,
+				'displayname' => 'admin',
+				'backends' => array (
+					'och' => array (
+						'id' => NULL,
+						'displayname' => 'ownCloud Handle',
+						'protocol' => 'x-owncloud-handle',
+						'namespace' => 'och',
+						'value' => 'admin',
+					),
+				),
+				'address_book_id' => 'admin',
+				'address_book_backend' => 'localusers',
+			),
+		));
+		$greet->execute();
+
+		$expectedUserOnline = new UserOnline();
+		$expectedUserOnline->setUser('admin');
+		$expectedUserOnline->setSessionId(md5("sessionID" . $time));
+		$expectedUserOnline->setLastOnline($time);
+
+		$this->assertEquals($expectedUserOnline, GreetTest::$userOnline);
+
 	}
 }

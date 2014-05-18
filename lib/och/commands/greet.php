@@ -19,8 +19,8 @@ class Greet extends ChatAPI {
 	}
 
 	public function execute(){
-		$sessionId = $this->generateSessionId($requestData['timestamp']);
 		$requestData = $this->getRequestData();
+		$sessionId = $this->generateSessionId($requestData['timestamp']);
 		$userOnline = new UserOnline();
 		$userOnline->setUser($requestData['user']['backends']['och']['value']);
 		$userOnline->setSessionId($sessionId);
@@ -31,8 +31,8 @@ class Greet extends ChatAPI {
 		return array("session_id" => $sessionId);
 	}
 
-	private function generateSessionId(){
-		$seed = "sessionID" . time();
+	private function generateSessionId($timestamp){
+		$seed = "sessionID" . $timestamp;
 		return md5($seed);
 	}
 

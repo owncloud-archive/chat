@@ -43,7 +43,8 @@ class Join extends ChatAPI {
 		$messages = $getMessages->execute();
 		$messages = $messages['messages'];
 
-        if(count($users) > 2){
+		if(count($users) > 2){
+//			echo "more than 2 users";
             // we are in a group conv this mean we have to let the other users now we joined it
             $pushMessageMapper = $this->app['PushMessageMapper'];
             $userMapper = $this->app['UserMapper'];
@@ -57,7 +58,8 @@ class Join extends ChatAPI {
             ));
 
             $sessions = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
-            foreach($sessions as $session){
+//            var_export($sessions);
+			foreach($sessions as $session){
                 $pushMessage = new PushMessage();
                 $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
                 $pushMessage->setReceiver($session->getUser());
@@ -67,7 +69,8 @@ class Join extends ChatAPI {
             }
 
         }
-		
+
+
 		return array("messages" => $messages,
 					 "users" => $users );
 	}

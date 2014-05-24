@@ -6,17 +6,15 @@ include_once(__DIR__ . '/../../../autoloader.php');
 include_once(__DIR__ . '/../../../vendor/Pimple/Pimple.php');
 
 
-use OCA\Chat\Core\API;
-use OCA\Chat\OCH\Commands\Invite;
 use OCA\Chat\App\Chat;
-use \OCA\Chat\OCH\Db\UserOnline;
-use OCA\Chat\Db\DBException;
-use OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use OCA\Chat\OCH\Db\PushMessage;
 use OCA\Chat\OCH\Db\User;
 
-// DONE
+// Refer to GreetTest::testDBFailure for a DBFailure test
+// This almost the same for every unit test
 class InviteTest extends \PHPUnit_Framework_TestCase {
 
+	private static $pushMessage;
 
 	public function setUp(){
 		$app =  new Chat();
@@ -28,64 +26,6 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 			->method('log')
 			->will($this->returnValue(null));
 
-	}
-
-
-	/**
-	 * Testcase: if there is a PDOException in the datamapper a DBException must be thrown
-	 * with the same message as in the PDOException
-	 */
-	public function testDBFailure(){
-		$this->setExpectedException('\OCA\Chat\Db\DBException', 'Something went wrong with the DB!');
-		// config
-		$this->container['API']->expects($this->any())
-			->method('prepareQuery')
-			->will($this->throwException(new \PDOException('Something went wrong with the DB!')));
-
-		$this->container['API']->expects($this->any())
-			->method('getUsers')
-			->will($this->returnValue(array("admin", "derp")));
-
-		// logic
-		$invite = new Invite($this->container);
-		$invite->setRequestData(array(
-			'user' => array (
-				'id' => 'admin',
-				'online' => false,
-				'displayname' => 'admin',
-				'backends' => array (
-					'och' => array (
-						'id' => NULL,
-						'displayname' => 'ownCloud Handle',
-						'protocol' => 'x-owncloud-handle',
-						'namespace' => 'och',
-						'value' => 'admin',
-					),
-				),
-				'address_book_id' => 'admin',
-				'address_book_backend' => 'localusers',
-			),
-			'session_id' => 'c08809598b01894c468873fab54291aa',
-			'timestamp' => 1397328934.658,
-			'user_to_invite' => array (
-				'id' => 'derp',
-				'online' => false,
-				'displayname' => 'derp',
-				'backends' => array (
-					'och' => array (
-						'id' => NULL,
-						'displayname' => 'ownCloud Handle',
-						'protocol' => 'x-owncloud-handle',
-						'namespace' => 'och',
-						'value' => 'derp',
-					),
-				),
-				'address_book_id' => 'admin',
-				'address_book_backend' => 'localusers',
-			),
-			'conv_id' => 'addeimnpr',
-		));
-		$result = $invite->execute();
 	}
 
 	public function testOmmittedConvId(){
@@ -300,7 +240,9 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->container['PushMessageMapper']->expects($this->any())
 			->method('insert')
-			->will($this->returnValue(true)); // Simulation of the online users -> derp is offline
+			->will($this->returnCallback(function($pushMessage){
+				InviteTest::$pushMessage = $pushMessage;
+			}));
 
         $this->container['UserMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserMapper')
             ->disableOriginalConstructor()
@@ -324,6 +266,49 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
                     $userToInviteSession
                 )
             ));
+
+		$expectedPushMessage = new PushMessage();
+		$expectedPushMessage->setSender('admin');
+		$expectedPushMessage->setReceiver('foo');
+		$expectedPushMessage->setReceiverSessionId(md5(time()));
+		$expectedPushMessage->setCommand(json_encode(array(
+			'type' => 'invite',
+			'data' => array(
+				'user' => 	array (
+					'id' => 'admin',
+					'online' => false,
+					'displayname' => 'admin',
+					'backends' => array (
+						'och' => array (
+							'id' => NULL,
+							'displayname' => 'ownCloud Handle',
+							'protocol' => 'x-owncloud-handle',
+							'namespace' => 'och',
+							'value' => 'admin',
+						),
+					),
+					'address_book_id' => 'admin',
+					'address_book_backend' => 'localusers',
+				),
+				'conv_id' => 'addeimnpr',
+				'user_to_invite' => array (
+						'id' => 'derp',
+						'online' => false,
+						'displayname' => 'derp',
+						'backends' => array (
+						'och' => array (
+							'id' => NULL,
+							'displayname' => 'ownCloud Handle',
+							'protocol' => 'x-owncloud-handle',
+							'namespace' => 'och',
+							'value' => 'derp',
+						),
+					),
+					'address_book_id' => 'admin',
+					'address_book_backend' => 'localusers',
+				),
+			)
+		)));
 
         // logic
 		$invite= new Invite($this->container);
@@ -365,6 +350,8 @@ class InviteTest extends \PHPUnit_Framework_TestCase {
 			'conv_id' => 'addeimnpr',
 		));
 		$invite->execute();
+
+		$this->assertEquals($expectedPushMessage, InviteTest::$pushMessage);
 	}
 
 }

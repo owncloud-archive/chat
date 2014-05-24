@@ -27,7 +27,7 @@ class GetUsers extends ChatAPI {
 		foreach($users as $user){
 			$return[] = $contacts[$user];
 		}
-		
+
 		// Note: users are full contacts
 		return array("users" => $return);
 	}

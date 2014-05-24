@@ -11,7 +11,7 @@ use OCA\Chat\OCH\Db\UserOnline;
 
 class GreetTest extends \PHPUnit_Framework_TestCase {
 
-	private static $userOnline;
+	public static $userOnline;
 
 	public function setUp(){
 		$app =  new Chat();

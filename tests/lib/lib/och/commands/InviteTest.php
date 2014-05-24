@@ -14,7 +14,7 @@ use OCA\Chat\OCH\Db\User;
 // This almost the same for every unit test
 class InviteTest extends \PHPUnit_Framework_TestCase {
 
-	private static $pushMessage;
+	public static $pushMessage;
 
 	public function setUp(){
 		$app =  new Chat();

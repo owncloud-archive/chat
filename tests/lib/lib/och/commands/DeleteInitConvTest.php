@@ -12,7 +12,7 @@ use OCA\Chat\OCH\Db\InitConv;
 // This almost the same for every unit test
 class DeleteInitConvTest extends \PHPUnit_Framework_TestCase {
 
-	private static $initConv;
+	public static $initConv;
 
 	public function setUp(){
 		$app =  new Chat();

@@ -21,10 +21,10 @@ use OCA\Chat\OCH\Db\User;
 
 // The GetUsers and Messages commands are tested in their testClassess
 class JoinTest extends \PHPUnit_Framework_TestCase {
-    
-	private static $initConv;
-	private static $pushMessages;
-	private static $pushMessageNoGroup;
+
+	public static $initConv;
+	public static $pushMessages;
+	public static $pushMessageNoGroup;
 
     public function setUp(){
 		$app =  new Chat();

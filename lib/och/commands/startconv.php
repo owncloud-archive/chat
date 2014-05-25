@@ -100,13 +100,10 @@ class StartConv extends ChatAPI {
 	private function generateConvId($users){
 
 		$id = '';
+		sort($users);
 		foreach($users as $user){
-			$id .= $user;
+			$id .= ":" . $user . ":";
 		}
-
-		$id = str_split($id);
-		sort($id);
-		$id = implode($id);
 
 		return $id;
 

@@ -25,6 +25,7 @@ class ApiController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function route(){
+		session_write_close();
 		$request = json_decode($this->params('JSON'), true);
 		list($requestType, $action, $httpType) = explode("::", $request['type']);
 

@@ -48,6 +48,7 @@ class AppController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function index() {
+		session_write_close();
 		$appApi = $this->app['AppApi'];
 
 		$greet = $this->app['GreetCommand'];
@@ -95,6 +96,7 @@ class AppController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function contacts(){
+		session_write_close();
 		$appApi = $this->app['AppApi'];
 		$contacts = $appApi->getContacts();
 

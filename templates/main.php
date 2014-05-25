@@ -61,30 +61,32 @@
 						class="conv-list-item" 
 						id="conv-list-{{ conv.id }}"
 					>
-						<span id="conv-new-msg-{{ conv.id }}" class="conv-new-msg">&nbsp;</span>
-						<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
-							&nbsp;
-						</div>
-						<div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
-							&nbsp;
-						</div>
-						<div class="avatar-list-container">
-							<div
-								ng-repeat="user in conv.users | userFilter"
-								class="left"
-								avatar 
-								data-onlinesize="5" 
-								data-size="32" 
-								data-id="{{ user.id }}" 
-								data-displayname="{{ user.displayname }}"
-								data-addressbook-backend="{{ user.address_book_backend }}" 
-								data-addressbook-id="{{ user.address_book_id  }}"
-							>
+						<div class="conv-list-item-avatar">
+							<div class="avatar-list-container"  ng-if="key < 3" ng-repeat="(key, user) in conv.users | userFilter">
+								<div
+									class="left"
+									avatar
+									data-onlinesize="5"
+									data-size="32"
+									data-id="{{ user.id }}"
+									data-displayname="{{ user.displayname }}"
+									data-addressbook-backend="{{ user.address_book_backend }}"
+									data-addressbook-id="{{ user.address_book_id  }}"
+								>
+								</div>
+							</div>
+							<div ng-if="conv.users.length > 5" class="avatar-list-more">
+								+ {{ conv.users.length - 4 }}
 							</div>
 						</div>
-						<span ng-if="conv.users.length > 2" ng-repeat="user in conv.users | userFilter" class="left" >
-							{{ user.displayname }}
-						</span>
+						<div class="conv-list-item-buttons">
+							<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
+								&nbsp;
+							</div>
+							<div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
+								&nbsp;
+							</div>
+						</div>
 					</li>
 				</ul>
 			</div>

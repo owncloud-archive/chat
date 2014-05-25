@@ -65,10 +65,11 @@
 
 #app-navigation {
 	overflow: auto;
+	width:230px;
 }
 
-#app-navigation li {
-	padding: 10px;
+#app-navigation ul li {
+	padding:10px;
 }
 
 .conv-list-active {
@@ -284,6 +285,8 @@
 	width: 39px;
 	height: 32px;
 	position: relative;
+	float:left;
+	margin-right:5px;
 }
 
 .avatar-list-container div,.avatar-list-container img {
@@ -324,4 +327,26 @@
 
 #controls .center {
 	text-align:center;
+}
+.conv-list-item-avatar {
+	float:left;
+	width:180px;
+}
+
+.conv-list-item-buttons{
+	float:right;
+	width:20px;
+}
+
+.avatar-list-more {
+	width: 32px;
+	height: 32px;
+	position: relative;
+	float:left;
+	background-color: #F69055;
+	color: #FFF;
+	font-weight: bold;
+	text-align: center;
+	line-height: 32px;
+	font-size: 17.6px;
 }

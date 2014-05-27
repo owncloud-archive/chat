@@ -21,18 +21,16 @@ class StartConv extends ChatAPI {
 	public function execute(){
 
 		// (1) generate a conv id
-		$ids = array();
 		foreach($this->requestData['user_to_invite'] as $userToInvite){
 			$ids[] = $userToInvite['backends']['och']['value'];
 		}
 		// always add our selve to the array for the conv id
 		$ids[] = $this->requestData['user']['backends']['och']['value'];
-		$id = $this->generateConvId($ids);
 
 		// (2) check if conv id exists
 		$convMapper = $this->app['ConversationMapper'];
-		if($convMapper->exists($id)){
-
+		if($id = $convMapper->existsByUsers($ids)){
+			$id = $id['conv_id'];
 			// (3) join the already existing conv
 			$join = $this->app['JoinCommand'];
 			$this->requestData['conv_id'] = $id;
@@ -40,6 +38,7 @@ class StartConv extends ChatAPI {
 			$join->execute();
 
 		} else {
+			$id = $this->generateConvId();
 
 			// (3) Create the conv
 			$conversation = new Conversation();
@@ -86,8 +85,11 @@ class StartConv extends ChatAPI {
 		$users = $users['users'];
 
 		// Fetch messages in conv
-		$getMessages = new Messages($this->app);
-		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$getMessages = $this->app['MessagesData'];
+		$getMessages->setRequestData(array(
+			"conv_id" => $this->requestData['conv_id'],
+			'user' => $this->requestData['user']
+		));
 		$messages = $getMessages->execute();
 		$messages = $messages['messages'];
 
@@ -97,16 +99,13 @@ class StartConv extends ChatAPI {
 		);
 	}
 
-	private function generateConvId($users){
-
-		$id = '';
-		sort($users);
-		foreach($users as $user){
-			$id .= ":" . $user . ":";
+	private function generateConvId(){
+		$convMapper = $this->app['ConversationMapper'];
+		$id = 'CONV_ID_' . time() . '_' . rand(1, 99);
+		if($convMapper->existsByConvId($id)){
+			return $this->generateConvId();
+		} else {
+			return $id;
 		}
-
-		return $id;
-
 	}
-
 }

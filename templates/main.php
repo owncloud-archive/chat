@@ -62,7 +62,7 @@
 						id="conv-list-{{ conv.id }}"
 					>
 						<div class="conv-list-item-avatar">
-							<div class="avatar-list-container"  title="{{ user.displayname }}" ng-if="key < 3" ng-repeat="(key, user) in conv.users | userFilter">
+							<div class="avatar-list-container"  title="{{ user.displayname }}" ng-if="key < 4" ng-repeat="(key, user) in conv.users | userFilter">
 								<div
 									class="left"
 									avatar

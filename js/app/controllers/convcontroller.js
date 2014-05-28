@@ -30,7 +30,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		$scope.initConvs = initvar.initConvs;
 		$scope.initvar = initvar;
 		$scope.$apply();
-		for (active in $scope.backends) break;
+		for (var active in $scope.backends) break;
 		$scope.active.backend =  $scope.backends[active];
 		angular.forEach($scope.backends, function(backend, namespace){
 			if(namespace === 'och'){

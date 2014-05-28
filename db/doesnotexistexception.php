@@ -9,12 +9,4 @@ namespace OCA\Chat\Db;
 */
 class DoesNotExistException extends \Exception {
 
-	/**
-	 * Constructor
-	 * @param string $msg the error message
-	 */
-	public function __construct($msg){
-		parent::__construct($msg);
-	}
-
 }

@@ -121,7 +121,7 @@ class AppApi {
 	 * Parse the emails and IMPPS properties stored in the contacts app to
 	 * a format that can be used in the Chat client.
 	 * @param array $emails
-	 * @param array $IMPPS
+	 * @param array $impps
 	 * @return array
 	 * @example of return value parsed to JSOn
 	 * backends : [
@@ -141,7 +141,7 @@ class AppApi {
 	 *   }
 	 * ]
 	 */
-	private function contactBackendToBackend(array $emails=array(), array $IMPPS=array()){
+	private function contactBackendToBackend(array $emails=array(), array $impps=array()){
 		$backends = array();
 
 		if(is_array($emails)){
@@ -154,10 +154,10 @@ class AppApi {
 			$backends['email'] = $backend;
 		}
 
-		if(isset($IMPPS)){
-			foreach($IMPPS as $IMPP){
+		if(isset($impps)){
+			foreach($impps as $impp){
 				$backend = array();
-				$exploded = explode(":", $IMPP);
+				$exploded = explode(":", $impp);
 				$info = $this->getBackendInfo($exploded[0]);
 				$backend['id'] = null;
 				$backend['displayname'] = $info['displayname'];

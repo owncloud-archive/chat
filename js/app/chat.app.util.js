@@ -9,15 +9,15 @@ Chat.app.util = {
 	updateContacts : function(){
 		$.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(contacts){
 			Chat.scope.$apply(function(){
-		   		Chat.scope.contacts = contacts;
+				Chat.scope.contacts = contacts;
 			});
 		});
 	},
 	isYoutubeUrl : function(url) {
-		if(	url.indexOf('https://youtube.com') > -1
+		if(url.indexOf('https://youtube.com') > -1
 			|| url.indexOf('https://youtube.com') > -1
-			|| url.indexOf('https://www.youtube.com') > -1 
-			|| url.indexOf('http://www.youtube.com') > -1 
+			|| url.indexOf('https://www.youtube.com') > -1
+			|| url.indexOf('http://www.youtube.com') > -1
 			|| url.indexOf('http://youtu.be') > -1
 			){
 			return true;

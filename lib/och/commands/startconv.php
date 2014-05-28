@@ -21,6 +21,7 @@ class StartConv extends ChatAPI {
 	public function execute(){
 
 		// (1) generate a conv id
+		$ids = array();
 		foreach($this->requestData['user_to_invite'] as $userToInvite){
 			$ids[] = $userToInvite['backends']['och']['value'];
 		}

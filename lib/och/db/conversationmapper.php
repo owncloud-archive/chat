@@ -1,25 +1,26 @@
 <?php
 namespace OCA\Chat\OCH\Db;
 
+use Doctrine\DBAL\Sharding\SQLAzure\SQLAzureFederationsSynchronizer;
 use \OCA\Chat\Db\Mapper;
 use \OCA\Chat\Core\API;
 use OCA\Chat\Db\DoesNotExistException;
 
 class ConversationMapper extends Mapper {
 
-    public function __construct(API $api) {
+	public function __construct(API $api) {
 		parent::__construct($api, 'chat_och_conversations'); // tablename is news_feeds
-    }
+	}
 
-    public function deleteConversation($conversationID){
-        $sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? ';
-        $this->execute($sql, array($conversationID));
-    }
+	public function deleteConversation($conversationID){
+		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `conversation_id` = ? ';
+		$this->execute($sql, array($conversationID));
+	}
 
-    public function findByConversationId($conversationID){
-        $sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
-        return $this->findEntity($sql, array($conversationID));
-    }
+	public function findByConversationId($conversationID){
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
+		return $this->findEntity($sql, array($conversationID));
+	}
 
 	public function existsByConvId($id){
 		$sql = 'SELECT conversation_id FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
@@ -32,34 +33,62 @@ class ConversationMapper extends Mapper {
 	}
 
 	public function existsByUsers($users){
-		$sql = " SELECT DISTINCT c1.conversation_id AS conv_id"
-			 . " FROM   chat_och_users_in_conversation    c1"
-			 . " WHERE EXISTS ("
-				. " SELECT 1 FROM chat_och_users_in_conversation  c2"
-				. " WHERE c1.conversation_id = c2.conversation_id"
-				. " AND   c2.user = ?"
-			. " )";
-		for($i = 0; $i < (count($users) -1); $i++){
-			$sql .= " AND EXISTS ("
-				  	. " SELECT 1 FROM chat_och_users_in_conversation  c2"
-					. " WHERE c1.conversation_id = c2.conversation_id"
-					. " AND   c2.user = ? "
-				    . " )";
+		$usersCount = count($users);
+		$sql = <<<SQL
+			SELECT
+				DISTINCT c1.conversation_id AS conv_id
+			FROM
+				chat_och_users_in_conversation c1
+			WHERE EXISTS (
+				SELECT
+					1
+				FROM
+					chat_och_users_in_conversation c2
+				WHERE
+					c1.conversation_id = c2.conversation_id
+				AND
+				 	c2.user = ?
+			)
+SQL;
+
+		for($i = 0; $i < ($usersCount -1); $i++){
+			$sql .= <<<SQL
+			AND EXISTS (
+				SELECT
+					1
+				FROM
+				 	chat_och_users_in_conversation c2
+				WHERE
+					c1.conversation_id = c2.conversation_id
+				AND
+					c2.user = ?
+			)
+SQL;
 		}
 
-		$sql .= " AND NOT EXISTS ("
-			. " SELECT 1 FROM chat_och_users_in_conversation  c2"
-				. " WHERE c1.conversation_id = c2.conversation_id"
-			. " AND   c2.user NOT IN (";
-			foreach($users as $key=>$user){
-				if($key === (count($users)-1)){
-					$sql .= " ?";
-				} else {
-					$sql .= " ?,";
-				}
+		$sql .= <<<SQL
+			AND NOT EXISTS (
+				SELECT
+					1
+				FROM
+					chat_och_users_in_conversation  c2
+			 	WHERE
+			 		c1.conversation_id = c2.conversation_id
+			 	AND
+			 		c2.user NOT IN (
+SQL;
+
+		foreach($users as $key=>$user){
+			if($key === $usersCount-1){
+				$sql .= " ?";
+			} else {
+				$sql .= " ?,";
 			}
-		$sql .=")"
-		. " )";
+		}
+		$sql .= <<<SQL
+				)
+			)
+SQL;
 
 		$params = array();
 
@@ -71,18 +100,13 @@ class ConversationMapper extends Mapper {
 			$params[] = $user;
 		}
 
-//		echo "<pre>";
-//		var_dump($sql);
-//		var_dump($params);
-
 		try{
-            $result = $this->execute($sql, $params);
+			$result = $this->execute($sql, $params);
 			$row = $result->fetchRow();
 			return $row;
-
 		} catch (DoesNotExistException $exception) {
 			var_dump($exception);
-            return false;
-        }
-    }	
+			return false;
+		}
+	}
 }

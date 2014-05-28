@@ -30,10 +30,7 @@ use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
 use \OCA\Chat\OCH\Commands;
 use \OCA\Chat\Core\API;
-
-
-use OCA\Chat\OCH\Db\UserOnlineMapper;
-use OCA\Chat\OCH\Commands\Greet;
+use \OCP\AppFramework\Http\TemplateResponse;
 
 
 class AppController extends Controller {
@@ -46,6 +43,7 @@ class AppController extends Controller {
 	/**
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
+	 * @return
 	 */
 	public function index() {
 		session_write_close();
@@ -73,14 +71,19 @@ class AppController extends Controller {
 				"sessionId" => $sessionId['session_id'], // needs porting!
 			))
 		);
-
-		return $this->render('main', $params);
+		return new TemplateResponse($this->appName, 'main', $params);
 	}
 
-	public function backend(){
+	/**
+	 * @param string $do
+	 * @param string $backend
+	 * @param int $id
+	 * @return JSONResponse
+	 */
+	public function backend($do, $backend, $id){
 		$backendMapper = new BackendMapper($this->app->getCoreApi());
 		$backend = new Backend();
-		$backend->setId($this->params('id'));
+		$backend->setId($id);
 
 		if($this->params('do') === 'enable'){
 			$backend->setEnabled('true');
@@ -94,6 +97,7 @@ class AppController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 * @return JSONResponse
 	 */
 	public function contacts(){
 		session_write_close();

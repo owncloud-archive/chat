@@ -1,8 +1,8 @@
 <?php
 
-class OC {
-	public static $server;
-}
+//class OC {
+//	public static $server;
+//}
 
 set_include_path(__DIR__ . "/vendor");
 // to execute without owncloud, we need to create our own classloader

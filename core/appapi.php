@@ -69,11 +69,6 @@ class AppApi {
 
 		if(count(self::$contacts) == 0){
 			$cm = \OC::$server->getContactsManager();
-			// The API is not active -> nothing to do
-			if (!$cm->isEnabled()) {
-				$receivers = null;
-				$error = 'Please enable the contacts app.';
-			}
 
 			$result = $cm->search('',array('FN'));
 			$receivers = array();
@@ -197,10 +192,6 @@ class AppApi {
 	public function getCurrentUser(){
 		$cm = \OC::$server->getContactsManager();
 		// The API is not active -> nothing to do
-		if (!$cm->isEnabled()) {
-			$receivers = null;
-			$error = 'Please enable the contacts app.';
-		}
 
 		$result = $cm->search(\OCP\User::getUser(), array('FN'));
 		$r = $result[0];

@@ -33,9 +33,14 @@ SQL;
 	}
 
 	public function findByUser($user){
-		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
-				'WHERE `user` = ? ';
-
+		$sql = <<<SQL
+			SELECT
+				*
+			FROM
+				$this->table
+			WHERE
+				user = ?
+SQL;
 		$result = $this->findEntities($sql, array($user));
 		return $result;
 	}

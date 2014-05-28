@@ -2,11 +2,12 @@
 
 namespace OCA\Chat\OCH\Db;
 
-use OCA\Chat\Db\Mapper;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
 
 class MessageMapper extends Mapper{
 
-	public function __construct(API $api) {
+	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_och_messages'); // tablename is news_feeds
 	}
  

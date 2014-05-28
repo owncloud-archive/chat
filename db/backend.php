@@ -1,7 +1,7 @@
 <?php
 namespace OCA\Chat\Db;
 
-use \OCA\Chat\Db\Entity;
+use \OCP\AppFramework\Db\Entity;
 
 class Backend extends Entity {
 

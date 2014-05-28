@@ -53,35 +53,35 @@ class Chat extends App{
 		 */
 
 		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper($c->query('API'));
+			return new ConversationMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper($c->query('API'));
+			return new ConversationMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('MessageMapper', function ($c) {
-			return new MessageMapper($c->query('API'));
+			return new MessageMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('PushMessageMapper', function ($c) {
-			return new PushMessageMapper($c->query('API'));
+			return new PushMessageMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('UserMapper', function ($c) {
-			return new UserMapper($c->query('API'));
+			return new UserMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('UserOnlineMapper', function ($c) {
-			return new UserOnlineMapper($c->query('API'));
+			return new UserOnlineMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('InitConvMapper', function ($c) {
-			return new InitConvMapper($c->query('API'));
+			return new InitConvMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('BackendMapper', function ($c) {
-			return new BackendMapper($c->query('API'));
+			return new BackendMapper($c->query('ServerContainer')->getDb());
 		});
 
 		/**

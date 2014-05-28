@@ -1,13 +1,13 @@
 <?php
 namespace OCA\Chat\Db;
 
-use \OCA\Chat\Db\Mapper;
-use \OCA\Chat\Core\Api;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
 
 
 class BackendMapper extends Mapper {
 
-	public function __construct(API $api) {
+	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_backends'); // tablename is news_feeds
 		$this->tableName = '*PREFIX*' . 'chat_backends';
 	}

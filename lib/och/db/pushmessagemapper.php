@@ -1,13 +1,13 @@
 <?php
 namespace OCA\Chat\OCH\Db;
 
-use \OCA\Chat\Db\Mapper;
-use \OCA\Chat\Core\Api;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
 use \OCA\Chat\Db\DoesNotExistException;
 
 class PushMessageMapper extends Mapper {
 
-	public function __construct(API $api) {
+	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_och_push_messages'); // tablename is news_feeds
 	}
 

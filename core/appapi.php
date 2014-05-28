@@ -88,6 +88,13 @@ class AppApi {
 				$data['online'] = in_array($r['id'], $usersOnline);
 				$data['displayname'] = $r['FN'];
 
+				if(!isset($r['EMAIL'])){
+					$r['EMAIL'] = array();
+				}
+
+				if(!isset($r['IMPP'])){
+					$r['IMPP'] = array();
+				}
 				$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
 				list($addressBookBackend, $addressBookId) = explode(':', $r['addressbook-key']);
 				$data['address_book_id'] = $addressBookId;
@@ -196,12 +203,19 @@ class AppApi {
 		}
 
 		$result = $cm->search(\OCP\User::getUser(), array('FN'));
-		list($addressBookBackend, $addressBookId) = explode(':', $result['addressbook-key']);
 		$r = $result[0];
 		$data = array();
 		$data['id'] = $r['id'];
 		$data['displayname'] = $r['FN'];
+		if(!isset($r['EMAIL'])){
+			$r['EMAIL'] = array();
+		}
+
+		if(!isset($r['IMPP'])){
+			$r['IMPP'] = array();
+		}
 		$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
+		list($addressBookBackend, $addressBookId) = explode(':', $r['addressbook-key']);
 		$data['address_book_id'] = $addressBookId;
 		$data['address_book_backend'] = $addressBookBackend;
 		return $data;

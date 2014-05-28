@@ -1,51 +1,43 @@
 <?php
 namespace OCA\Chat\OCH\Db;
 
-use \OCA\Chat\Db\Mapper;
-use \OCA\Chat\Core\Api;
-use \OCA\Chat\Db\Entity;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
+use \OCP\AppFramework\Db\Entity;
 
 class UserMapper extends Mapper {
 	
 	private $userOnlineTable = '*PREFIX*chat_och_users_online';
 
-	public function __construct(API $api) {
-		parent::__construct($api, 'chat_och_users_in_conversation'); // tablename is news_feeds
+	public function __construct(IDb $api) {
+		parent::__construct($api, 'chat_och_users_in_conversation');
+		$this->table = 'chat_och_users_in_conversation';
 	}
 
 	public function findSessionsByConversation($conversationId){
-		$sql = 'SELECT ' . $this->getTableName() . '.user,
-				' . $this->userOnlineTable . '.session_id '
-			 . ' FROM ' . $this->getTableName() . ' INNER JOIN ' . $this->userOnlineTable
-			 . ' ON ' . $this->getTableName() . '.user = ' . $this->userOnlineTable . '.user '
-			 . ' AND ' . $this->getTableName() . '.conversation_id = ? ';
-
-		$result = $this->execute($sql, array($conversationId));
-
-		$feeds = array();
-		while($row = $result->fetchRow()){
-			$feed = new User();
-			$feed->fromRow($row);
-			array_push($feeds, $feed);
-		}
-
-		return $feeds;
+		$sql = <<<SQL
+			SELECT
+				$this->table.user,
+				$this->userOnlineTable.session_id
+			FROM
+				$this->table
+			INNER JOIN
+				$this->userOnlineTable
+			ON
+				$this->table.user = $this->userOnlineTable.user
+			AND
+				$this->table.conversation_id = ?
+SQL;
+		$result = $this->findEntities($sql, array($conversationId));
+		return $result;
 	}
 
 	public function findByUser($user){
 		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
 				'WHERE `user` = ? ';
 
-		$result = $this->execute($sql, array($user));
-
-		$feeds = array();
-		while($row = $result->fetchRow()){
-			$feed = new User();
-			$feed->fromRow($row);
-			array_push($feeds, $feed);
-		}
-
-		return $feeds;
+		$result = $this->findEntities($sql, array($user));
+		return $result;
 	}
 	
 	 public function findConvsIdByUser($user){
@@ -71,7 +63,7 @@ class UserMapper extends Mapper {
 		$result = $this->execute($sql, array($id));
 
 		$users = array();
-		while($row = $result->fetchRow()){
+		while($row = $result->fetch()){
 			array_push($users, $row['user']);
 		}
 

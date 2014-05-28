@@ -1,12 +1,12 @@
 <?php
 namespace OCA\Chat\OCH\Db;
 
-use \OCA\Chat\Db\Mapper;
-use \OCA\Chat\Core\Api;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
 
 class UserOnlineMapper extends Mapper {
 
-	public function __construct(API $api) {
+	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_och_users_online'); // tablename is news_feeds
 	}
 	

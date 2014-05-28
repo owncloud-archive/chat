@@ -2,7 +2,7 @@
 
 namespace OCA\Chat\OCH\Db;
 
-use OCA\Chat\Db\Entity;
+use \OCP\AppFramework\Db\Entity;
 
 class Message extends Entity{
 

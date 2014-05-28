@@ -2,13 +2,13 @@
 
 namespace OCA\Chat\OCH\Db;
 
-use OCA\Chat\Db\Entity;
-use OCA\Chat\Db\Mapper;
-use OCA\Chat\Core\API;
+use \OCP\AppFramework\Db\Entity;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\IDb;
 
 class InitConvMapper extends Mapper{
 
-	public function __construct(API $api) {
+	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_och_init_convs');
 	}
 

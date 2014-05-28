@@ -63,9 +63,8 @@ class Invite extends ChatAPI {
 			)
 		));
 
-		$UTISession = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']); // $UTISessionID = UserToInviteSessionId = array()
-
-		foreach($UTISession as $userToInvite){
+		$UserToInviteSessionId = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']);
+		foreach($UserToInviteSessionId as $userToInvite){
 			$pushMessage = new PushMessage();
 			$pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
 			$pushMessage->setReceiver($userToInvite->getUser());
@@ -73,6 +72,5 @@ class Invite extends ChatAPI {
 			$pushMessage->setCommand($command);
 			$pushMessageMapper->insert($pushMessage);
 		}
-		return;
 	}
 }

@@ -13,6 +13,6 @@ class Conversation extends Entity {
 	public $conversationId;
 	
 	public function __construct(){
-   
+
 	}
 }

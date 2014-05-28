@@ -63,7 +63,5 @@ class SendChatMsg extends ChatAPI {
 		$message->setUser($this->requestData['user']['backends']['och']['value']);
 		$message->setMessage($this->requestData['chat_msg']);
 		$messageMapper->insert($message);
-
-		return;
 	}
 }

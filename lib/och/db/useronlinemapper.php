@@ -11,11 +11,17 @@ class UserOnlineMapper extends Mapper {
 	}
 	
 	public function getOnlineUsers(){
-		$result = $this->execute('SELECT * FROM `' . $this->getTableName() . '`');
+		$sql = <<<SQL
+			SELECT
+				`user`
+			FROM
+				`*PREFIX*chat_och_users_online`
+SQL;
+		$result = $this->execute($sql);
 
 		$rows = array();
 
-		while($row = $result->fetchRow()){
+		while($row = $result->fetch()){
 			array_push($rows, $row['user']);
 		}
 		return $rows;
@@ -26,19 +32,15 @@ class UserOnlineMapper extends Mapper {
 	}
 	
 	public function findByUser($user){
-		$sql = 'SELECT * FROM `' . $this->getTableName() . '` ' .
-				'WHERE `user` = ? ';
-
-		$result = $this->execute($sql, array($user));
-
-		$feeds = array();
-		while($row = $result->fetchRow()){
-			$feed = new UserOnline();
-			$feed->fromRow($row);
-			array_push($feeds, $feed);
-		}
-
-		return $feeds;
+		$sql = <<<SQL
+			SELECT
+				*
+			FROM `*PREFIX*chat_och_users_online`
+			WHERE
+				`user` = ?
+SQL;
+		$result = $this->findEntities($sql, array($user));
+		return $result;
 	}
 
 	public function deleteBySessionId($sessionID){

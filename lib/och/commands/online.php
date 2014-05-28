@@ -19,6 +19,5 @@ class Online extends ChatAPI {
 
 		$syncOnline = $this->app['SyncOnlineCommand'];
 		$syncOnline->execute();
-		return;
 	}
 }

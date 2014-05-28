@@ -12,7 +12,25 @@ class MessageMapper extends Mapper{
 	}
  
 	public function getMessagesByConvId($convId, $user){
-		$sql = 'SELECT * FROM  *PREFIX*chat_och_messages WHERE `convid` = ? AND `timestamp` > (SELECT joined FROM *PREFIX*chat_och_users_in_conversation  WHERE `user` = ? AND `conversation_id` = ?)';
+		$sql = <<<SQL
+			SELECT
+				*
+			FROM
+				*PREFIX*chat_och_messages
+			WHERE
+				`convid` = ?
+			AND
+				`timestamp` > (
+					SELECT
+						joined
+					FROM
+						*PREFIX*chat_och_users_in_conversation
+					WHERE
+						`user` = ?
+					AND `conversation_id` = ?
+				)
+SQL;
+
 		return $this->findEntities($sql, array($convId, $user, $convId));
 	}
 

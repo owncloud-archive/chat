@@ -58,7 +58,7 @@ class StartConv extends ChatAPI {
 		// (5) invite the user_to_invite since we just created the conv
 		// foreach user to invite
 		$invite = $this->app['InviteCommand'];
-		$reuqestData = array();
+		$requestData = array();
 		$requestData['conv_id'] = $id;
 		$requestData['user'] = $this->requestData['user'];
 		foreach($this->requestData['user_to_invite'] as $userToInvite){
@@ -94,9 +94,10 @@ class StartConv extends ChatAPI {
 		$messages = $getMessages->execute();
 		$messages = $messages['messages'];
 
-		return array("conv_id" => $id,
-					 "users" => $users,
-					 "messages" => $messages
+		return array(
+			"conv_id" => $id,
+			"users" => $users,
+			"messages" => $messages
 		);
 	}
 

@@ -43,7 +43,7 @@ class AppController extends Controller {
 	/**
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
-	 * @return
+	 * @return TemplateResponse
 	 */
 	public function index() {
 		session_write_close();

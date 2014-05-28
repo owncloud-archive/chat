@@ -103,8 +103,6 @@ SQL;
 		try{
 			$result = $this->execute($sql, $params);
 			$row = $result->fetchRow();
-			echo get_class($result);
-			die();
 			return $row;
 		} catch (DoesNotExistException $exception) {
 			var_dump($exception);

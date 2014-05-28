@@ -20,14 +20,14 @@ class ApiController extends Controller {
 
 	/**
 	 * Routes the API Request
-	 * @param String $this->params('JSON') command in JSON
+	 * @param string $type
+	 * @param array $data
 	 * @return JSONResponse
 	 * @NoAdminRequired
 	 */
-	public function route(){
+	public function route($type, $data){
 		session_write_close();
-		$request = json_decode($this->params('JSON'), true);
-		list($requestType, $action, $httpType) = explode("::", $request['type']);
+		list($requestType, $action, $httpType) = explode("::", $type);
 
 		if($httpType === "request"){
 			// Check request type
@@ -37,11 +37,11 @@ class ApiController extends Controller {
 
 					$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
 					if(in_array($action, $possibleCommands)){
-						if(!empty($request['data']['session_id'])){
-							if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+						if(!empty($data['session_id'])){
+							if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
 								try{
 									$commandClass = $this->app[$this->convertClassName($action) . 'Command'];
-									$commandClass->setRequestData($request['data']);
+									$commandClass->setRequestData($data);
 									$data = $commandClass->execute();
 									if($data){
 										return new Success("command", $action, $data);
@@ -68,10 +68,10 @@ class ApiController extends Controller {
 				case "push":
 					$possibleCommands = array('get', 'delete');
 					if(in_array($action, $possibleCommands)){
-						if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
-							if(!empty($request['data']['session_id'])){
+						if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+							if(!empty($data['session_id'])){
 								$pushClass = $this->app[$this->convertClassName($action) . 'Push'];
-								$pushClass->setRequestData($request['data']);
+								$pushClass->setRequestData($data);
 								return $pushClass->execute();
 							} else{
 								return new Error('push', $action, 'SESSION-ID-NOT-PROVIDED');
@@ -86,10 +86,10 @@ class ApiController extends Controller {
 				case "data":
 					$possibleCommands = array('messages', 'get_users');
 					if(in_array($action, $possibleCommands)){
-						if($request['data']['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
-							if(!empty($request['data']['session_id'])){
+						if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+							if(!empty($data['session_id'])){
 								$dataClass = $this->app[$this->convertClassName($action) . 'Data'];
-								$dataClass->setRequestData($request['data']);
+								$dataClass->setRequestData($data);
 								$data = $dataClass->execute();
 								if($data){
 									return new Success("command", $action, $data);

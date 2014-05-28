@@ -11,7 +11,7 @@ Chat.och.api = {
 				}
 			}, success);
 		},
-		invite : function(userToInvite, convId, success, error) {
+		invite : function(userToInvite, convId, success) {
 			Chat.och.api.util.doRequest({
 				"type" : "command::invite::request",
 				"data" : {
@@ -21,7 +21,7 @@ Chat.och.api = {
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId
 				}
-			}, success, error);
+			}, success);
 		},
 		sendChatMsg : function(msg, convId, success) {
 			Chat.och.api.util.doRequest({
@@ -97,7 +97,7 @@ Chat.och.api = {
 					"conv_id" : convId
 				}
 			}, success);
-		},
+		}
 	},
 	on : {
 		invite : function(data) {
@@ -120,31 +120,25 @@ Chat.och.api = {
 					data.timestamp, 'och');
 		},
         joined : function(data){
-            console.log('hoi');
-            console.log(data);
             Chat.app.view.replaceUsers(data.conv_id, data.users);
         }
 	},
 	util : {
-		doRequest : function(request, success, error) {
-			$.post('/index.php' + OC.linkTo("chat", "och/api"), {
-				JSON : JSON.stringify(request)
-			}).done(function(response) {
-				if (response.data.status === "success") {
-					success(response);
-				} else if (response.data.status === "error") {
-					error(response.data.data.msg);
-				}
-			});
+		doRequest : function(request, success) {
+			$.ajax({
+				type: "POST",
+				url: '/index.php' + OC.linkTo("chat", "och/api"),
+				data: JSON.stringify(request),
+				headers: {'Content-Type' : 'application/json'}
+			}).done(success);
 		},
 		doSyncRequest : function(request, success, error) {
 			$.ajax({
-				type : 'POST',
-				url : '/index.php' + OC.linkTo("chat", "och/api"),
-				async : false,
-				data : {
-					JSON : JSON.stringify(request)
-				}
+				type: "POST",
+				url: '/index.php' + OC.linkTo("chat", "och/api"),
+				data: JSON.stringify(request),
+				headers: {'Content-Type' : 'application/json'},
+				async: true
 			});
 		},
 		longPoll : function() {
@@ -175,28 +169,22 @@ Chat.och.api = {
 				 */
 		},
 		getPushMessages : function(success) {
-			$.post('/index.php' + OC.linkTo("chat", "och/api"), {
-				"JSON" : JSON.stringify({
-					"type" : "push::get::request",
-					"data" : {
-						"user" : Chat.scope.active.user,
-						"session_id" : Chat.och.sessionId
-					}
-				})
-			}, function(data) {
-				success(data);
-			});
+			Chat.och.api.util.doRequest({
+				"type" : "push::get::request",
+				"data" : {
+					"user" : Chat.scope.active.user,
+					"session_id" : Chat.och.sessionId
+				}
+			}, success);
 		},
 		deletePushMessages : function(ids, success) {
-			$.post('/index.php' + OC.linkTo("chat", "och/api"), {
-				"JSON" : JSON.stringify({
-					"type" : "push::delete::request",
-					"data" : {
-						"user" : Chat.scope.active.user,
-						"session_id" : Chat.och.sessionId,
-						ids : ids
-					}
-				})
+			Chat.och.api.util.doRequest({
+				"type" : "push::delete::request",
+				"data" : {
+					"user" : Chat.scope.active.user,
+					"session_id" : Chat.och.sessionId,
+					ids : ids
+				}
 			}, function(data) {
 				success();
 			});

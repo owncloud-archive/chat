@@ -3,9 +3,16 @@ namespace OCA\Chat\OCH\Db;
 
 use \OCP\AppFramework\Db\Entity;
 
+/**
+ * @method null setUser( string $user)
+ * @method string getUser()
+ * @method null setSessionId(string $sessionId)
+ * @method string getSessionId()
+ * @method null setLastOnline(int $timestamp)
+ * @method int getLastOnline()
+ */
 class UserOnline extends Entity {
 
-	// Note: a field id is set automatically by the parent class
 	public $user;
 	public $sessionId;
 	public $lastOnline;

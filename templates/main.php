@@ -75,6 +75,9 @@
 								>
 								</div>
 							</div>
+							<span ng-if="conv.users.length === 2" ng-repeat="user in conv.users | userFilter" class="left" >
+								{{ user.displayname }}
+							</span>
 							<div title="{{ conv.users.length - 4 }} users are hidden" ng-if="conv.users.length > 5" class="avatar-list-more">
 								+ {{ conv.users.length - 4 }}
 							</div>

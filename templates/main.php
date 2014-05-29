@@ -62,7 +62,7 @@
 						id="conv-list-{{ conv.id }}"
 					>
 						<div class="conv-list-item-avatar">
-							<div class="avatar-list-container"  title="{{ user.displayname }}" ng-if="key < 4" ng-repeat="(key, user) in conv.users | userFilter">
+							<div class="avatar-list-container" tipsy title="{{ user.displayname }}" ng-if="key < 3" ng-repeat="(key, user) in conv.users | userFilter">
 								<div
 									class="left"
 									avatar
@@ -78,7 +78,7 @@
 							<span ng-if="conv.users.length === 2" ng-repeat="user in conv.users | userFilter" class="left" >
 								{{ user.displayname }}
 							</span>
-							<div title="{{ conv.users.length - 4 }} users are hidden" ng-if="conv.users.length > 5" class="avatar-list-more">
+							<div title="" more-users users="{{ conv.users }}"  tipsy ng-if="conv.users.length > 5" class="avatar-list-more">
 								+ {{ conv.users.length - 4 }}
 							</div>
 						</div>

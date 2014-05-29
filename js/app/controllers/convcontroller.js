@@ -385,4 +385,30 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			}
 		});
 	};
+}).directive('tipsy', function () {
+	return {
+		restrict: 'A',
+		link: function ($scope, element, attrs) {
+			element.tipsy();
+		}
+	};
+}).directive('moreUsers', function () {
+	return {
+		restrict: 'A',
+		link: function ($scope, element, attrs) {
+			var msg = '';
+			users = JSON.parse(attrs.users);
+			angular.forEach(users, function(user, key){
+				if(key > 3){
+					if(key === users.length-1){
+						msg += user.displayname;
+					} else {
+						msg += user.displayname + ', ';
+					}
+				}
+			});
+			element.attr('title', msg);
+		}
+	};
 });
+

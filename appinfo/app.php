@@ -23,7 +23,6 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
-use OCA\Chat\OCH\Commands\DeleteInitConv;
 
 if(\OCP\App::isEnabled('contacts')){
 

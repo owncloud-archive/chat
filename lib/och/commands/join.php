@@ -24,13 +24,6 @@ class Join extends ChatAPI {
 	}
 
 	public function execute(){
-		// mark this conv as a init conv => the conv is auto joined on refresh
-		$initConv = new InitConv();
-		$initConv->setConvId($this->requestData['conv_id']);
-		$initConv->setUser($this->requestData['user']['backends']['och']['value']);
-		$initConvMapper = $this->app['InitConvMapper'];
-		$initConvMapper->insertUnique($initConv);
-		
 		// Fetch users in conv
 		$getUsers = $this->app['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));

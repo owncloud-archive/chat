@@ -13,8 +13,6 @@ use OCA\Chat\OCH\Db\PushMessageMapper;
 use OCA\Chat\OCH\Db\UserMapper;
 use OCA\Chat\OCH\Db\UserOnlineMapper;
 use OCA\Chat\Db\BackendMapper;
-use OCA\Chat\OCH\Db\InitConvMapper;
-use OCA\Chat\OCH\Commands\DeleteInitConv;
 use OCA\Chat\OCH\Commands\Greet;
 use OCA\Chat\OCH\Commands\Invite;
 use OCA\Chat\OCH\Commands\Join;
@@ -76,10 +74,6 @@ class Chat extends App{
 			return new UserOnlineMapper($c->query('ServerContainer')->getDb());
 		});
 
-		$container->registerService('InitConvMapper', function ($c) {
-			return new InitConvMapper($c->query('ServerContainer')->getDb());
-		});
-
 		$container->registerService('BackendMapper', function ($c) {
 			return new BackendMapper($c->query('ServerContainer')->getDb());
 		});
@@ -87,10 +81,6 @@ class Chat extends App{
 		/**
 		 * Command API Requests
 		 */
-		$container->registerService('DeleteInitConvCommand', function ($c) {
-			return new DeleteInitConv($c);
-		});
-
 		$container->registerService('GreetCommand', function ($c) {
 			return new Greet($c);
 		});

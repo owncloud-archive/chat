@@ -78,16 +78,6 @@ Chat.och.api = {
 				}
 			}, success);
 		},
-		deleteInitConv : function(convId, success) {
-			Chat.och.api.util.doRequest({
-				"type" : "command::delete_init_conv::request",
-				"data" : {
-					"user" : Chat.scope.active.user,
-					"session_id" : Chat.och.sessionId,
-					"conv_id" : convId
-				}
-			}, success);
-		},
 		getUsers : function(convId, success){
 			Chat.och.api.util.doRequest({
 				"type" : "data::get_users::request",

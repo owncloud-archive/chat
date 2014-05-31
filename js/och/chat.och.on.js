@@ -41,10 +41,6 @@ Chat.och.on = {
 			});
 		}
 	},
-//	leave : function(convId, success){
-//		Chat.och.api.command.deleteInitConv(convId, function(){});
-//		success();
-//	},
 	archive : function(convId){
 		console.log('ARCHIVE');
 	},

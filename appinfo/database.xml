@@ -172,21 +172,4 @@
 			</field>
 		</declaration>
 	</table>
-	<table>
-		<name>*dbprefix*chat_och_init_convs</name>
-		<declaration>
-			<field>
-				<name>conv_id</name>
-				<type>text</type>
-				<notnull>true</notnull>
-				<length>200</length>
-			</field>
-			<field>
-				<name>user</name>
-				<type>text</type>
-				<notnull>true</notnull>
-				<length>200</length>
-			</field>
-		</declaration>
-	</table>
 </database>

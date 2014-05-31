@@ -219,14 +219,13 @@ class AppApi {
 	public function getInitConvs(){
 		$r = array();
 
-		$initConvMapper = $this->app['InitConvMapper'];
 		$userMapper = $this->app['UserMapper'];
-		$convs = $initConvMapper->findByUser(\OCP\User::getUser());
+		$convs = $userMapper->findByUser(\OCP\User::getUser());
 		
 		foreach($convs as $conv){
-			$users = $userMapper->findUsersInConv($conv->getConvId());
+			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$r['och'][$conv->getConvId()] = array("id" => $conv->getConvId(), "users"=> $users, "backend" => "och");
+			$r['och'][$conv->getConversationId()] = array("id" => $conv->getConversationId(), "users"=> $users, "backend" => "och");
 		}
 		return $r;
 	}

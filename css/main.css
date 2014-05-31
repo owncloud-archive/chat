@@ -66,6 +66,7 @@
 #app-navigation {
 	overflow: auto;
 	width:230px;
+	position: relative;
 }
 
 #app-navigation ul li {
@@ -164,6 +165,9 @@
 
 #conv-list-new-conv {
 	height: 44px !important;
+	color: #555;
+	font-weight: bold;
+	font-size: 1.1em;
 }
 
 #container {
@@ -320,13 +324,18 @@
 }
 
 #controls {
-	left:380px !important;
+	left:310px !important;
 	width:auto;
 	padding-left:0px !important;
 }
 
-#controls .center {
+#controls p {
 	text-align:center;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #555;
+	position: relative;
+	top: 12px;
 }
 .conv-list-item-avatar {
 	float:left;
@@ -347,4 +356,22 @@
 	text-align: center;
 	line-height: 32px;
 	font-size: 17.6px;
+}
+#conv-list-archived{
+	bottom: 0px;
+	position: absolute !important;
+	padding:0px !important;
+}
+#app-navigation > ul ul {
+	display: block;
+}
+#archived-button {
+	height: 44px !important;
+	color: #555;
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+.archived {
+	opacity:0.6;
 }

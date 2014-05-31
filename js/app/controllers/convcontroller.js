@@ -61,6 +61,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			"settings" : false,
 			"emojiContainer" : false,
 			"invite" : false,
+			'archived' : false,
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -113,6 +114,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 					users : users,
 					msgs : [],
 					backend : backend,
+					archived : false
 				};
 				$scope.view.makeActive(convId);
 				if(msgs !== undefined){
@@ -230,7 +232,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	$scope.leave = function(convId){
 		var backend = $scope.convs[convId].backend.name;
 		Chat[backend].on.leave(convId, function(){
-			delete $scope.convs[convId];
+			$scope.convs[convId].archived = true;
 			if(Chat.app.util.countObjects($scope.convs) === 0){
 				$scope.view.hide('chat');
 				$scope.view.show('newConv');

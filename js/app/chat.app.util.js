@@ -25,6 +25,16 @@ Chat.app.util = {
 			return false;
 		}
 	},
+	countObjects : function(objects){
+		var count = 0;
+
+		for (var k in object) {
+			if (object.hasOwnProperty(k)) {
+				++count;
+			}
+		}
+		return count;
+	},
 	isImageUrl : function(url){
 		var imgRegex = /((?:https?):\/\/\S*\.(?:gif|jpg|jpeg|tiff|png|svg|webp))/gi;
 		return imgRegex.test(url);

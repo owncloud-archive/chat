@@ -10,11 +10,6 @@ Chat.app.ui = {
             Chat.app.ui.focus('#chat-msg-input');
         }
     },
-    getFirstConv : function(){
-        id = $("#app-navigation li:nth-child(2)").attr('id'); // conv-id-...
-        convId = id.substr(10, id.length); // strip conv-id-
-        return convId;
-    },
     getConvListIndex : function(convId){
         return $("#conv-list-" + convId).index() + 1;
     },

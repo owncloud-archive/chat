@@ -5,6 +5,7 @@ use Doctrine\DBAL\Sharding\SQLAzure\SQLAzureFederationsSynchronizer;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 use \OCP\AppFramework\Db\Entity;
+use \OCP\AppFramework\Db\DoesNotExistException;
 
 class UserMapper extends Mapper {
 	
@@ -78,20 +79,41 @@ SQL;
 	}
 
 	public function insertUnique(Entity $entity){
-		$sql = 'INSERT INTO ' . $this->getTableName()
-			 . ' SELECT * FROM (SELECT ?,?,?) AS tmp
-				WHERE NOT EXISTS (
-					SELECT  conversation_id, `user` FROM `' . $this->getTableName() .'` WHERE conversation_id = ? AND `user` = ?
-				) LIMIT 1';
-
-		$this->execute($sql, array(
-				$entity->getConversationId(),
+		// First check $entity is already in DB
+		$sql = <<<SQL
+			SELECT
+				`user`
+			FROM
+				`*PREFIX*chat_och_users_in_conversation`
+			WHERE
+				`user` = ?
+			AND
+				`conversation_id` = ?
+SQL;
+		try {
+			$result = $this->findOneQuery($sql, array($entity->getUser(), $entity->getConversationId()));
+			// The user already joined the conv -> nothing to do
+		} catch (\Exception $exception) {
+			// The user isn't in this conversation -> add it
+			$sql = <<<SQL
+			INSERT
+			INTO `*PREFIX*chat_och_users_in_conversation`
+			(
+				`user`,
+				`conversation_id`,
+				`joined`
+			) VALUES (
+				?,
+				?,
+				?
+			)
+SQL;
+			$this->execute($sql, array(
 				$entity->getUser(),
-				$entity->getJoined(),
 				$entity->getConversationId(),
-				$entity->getUser(),
-		));
-
+				$entity->getJoined()
+			));
+		}
 	}
 
 	public function setArchived($convid, $archived, $user){

@@ -23,6 +23,7 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
+use \OCA\Chat\OCH\Db\User;
 
 if(\OCP\App::isEnabled('contacts')){
 

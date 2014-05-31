@@ -108,6 +108,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.active.conv = null;
 		},
 		addConv : function(convId, users, backend, msgs, archived){
+			if(archived === undefined){
+				archived = false;
+			}
 			if($scope.convs[convId] === undefined) {
 				$scope.convs[convId] = {
 					id : convId,
@@ -238,13 +241,24 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		} else if ($scope.convs[convId].archived === false){
 			Chat[backend].on.unArchive(convId);
 		}
-		if(Chat.app.util.countObjects($scope.convs) === 0){
+
+		firstConv = Chat.scope.getFristConv();
+		if(firstConv === undefined){
 			$scope.view.hide('chat');
 			$scope.view.show('newConv');
 		} else {
-			$scope.view.makeActive(Chat.app.ui.getFirstConv());
+			$scope.view.makeActive(firstConv);
 		}
 	};
+
+	$scope.getFristConv = function(){
+		for (firstConv in $scope.convs) break;
+		if($scope.convs[firstConv].archived === true){
+			return undefined;
+		} else {
+			return firstConv;
+		}
+	}
 
 	$scope.invite = function(userToInvite){
 		var backend = $scope.convs[$scope.active.conv].backend.name;

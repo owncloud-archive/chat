@@ -229,17 +229,20 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 	};
 
-	$scope.leave = function(convId){
+	$scope.toggleArchive = function(convId){
 		var backend = $scope.convs[convId].backend.name;
-		Chat[backend].on.leave(convId, function(){
-			$scope.convs[convId].archived = true;
-			if(Chat.app.util.countObjects($scope.convs) === 0){
-				$scope.view.hide('chat');
-				$scope.view.show('newConv');
-			} else {
-				$scope.view.makeActive(Chat.app.ui.getFirstConv());
-			}
-		});
+		$scope.convs[convId].archived = !$scope.convs[convId].archived;
+		if($scope.convs[convId].archived === true){
+			Chat[backend].on.archive(convId);
+		} else if ($scope.convs[convId].archived === false){
+			Chat[backend].on.unArchive(convId);
+		}
+		if(Chat.app.util.countObjects($scope.convs) === 0){
+			$scope.view.hide('chat');
+			$scope.view.show('newConv');
+		} else {
+			$scope.view.makeActive(Chat.app.ui.getFirstConv());
+		}
 	};
 
 	$scope.invite = function(userToInvite){

@@ -41,11 +41,17 @@ Chat.och.on = {
 			});
 		}
 	},
-	leave : function(convId, success){
-		Chat.och.api.command.deleteInitConv(convId, function(){});
-		success();
+//	leave : function(convId, success){
+//		Chat.och.api.command.deleteInitConv(convId, function(){});
+//		success();
+//	},
+	archive : function(convId){
+		console.log('ARCHIVE');
 	},
-		applyAvatar : function(element, user, size){
+	unArchive : function(convId){
+		console.log('UNARCHIVE');
+	},
+	applyAvatar : function(element, user, size){
 		element.avatar(user, size);
 	}
 };

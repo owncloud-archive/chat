@@ -87,7 +87,7 @@
 							<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
 								&nbsp;
 							</div>
-							<div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
+							<div ng-if="conv.id == active.conv" ng-click="toggleArchive(conv.id)" class="icon-close right icon-20" >
 								&nbsp;
 							</div>
 						</div>
@@ -125,7 +125,7 @@
 							<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
 								&nbsp;
 							</div>
-							<div ng-if="conv.id == active.conv" ng-click="leave(conv.id)" class="icon-close right icon-20" >
+							<div ng-if="conv.id == active.conv" ng-click="toggleArchive(conv.id)" class="icon-close right icon-20" >
 								&nbsp;
 							</div>
 						</div>

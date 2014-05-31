@@ -97,6 +97,16 @@ Chat.och.api = {
 					"conv_id" : convId
 				}
 			}, success);
+		},
+		unArchive : function(convId, success){
+			Chat.och.api.util.doRequest({
+				"type" : "command::un_archive::request",
+				"data" : {
+					"user" : Chat.scope.active.user,
+					"session_id" : Chat.och.sessionId,
+					"conv_id" : convId
+				}
+			}, success);
 		}
 	},
 	on : {

@@ -6,6 +6,7 @@ use OCA\Chat\Core\API;
 use OCA\Chat\Controller\AppController;
 use OCA\Chat\Controller\OCH\ApiController;
 use OCA\Chat\OCH\Commands\Archive;
+use OCA\Chat\OCH\Commands\UnArchive;
 use OCP\AppFramework\App;
 use OCA\Chat\Core\AppApi;
 use OCA\Chat\OCH\Db\ConversationMapper;
@@ -89,6 +90,11 @@ class Chat extends App{
 		$container->registerService('ArchiveCommand', function ($c) {
 			return new Archive($c);
 		});
+
+		$container->registerService('UnArchiveCommand', function ($c) {
+			return new UnArchive($c);
+		});
+
 		$container->registerService('InviteCommand', function ($c) {
 			return new Invite($c);
 		});

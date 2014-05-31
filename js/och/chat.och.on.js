@@ -42,10 +42,10 @@ Chat.och.on = {
 		}
 	},
 	archive : function(convId){
-		console.log('ARCHIVE');
+		Chat.och.api.command.archive(convId);
 	},
 	unArchive : function(convId){
-		console.log('UNARCHIVE');
+		Chat.och.api.command.unArchive(convId);
 	},
 	applyAvatar : function(element, user, size){
 		element.avatar(user, size);

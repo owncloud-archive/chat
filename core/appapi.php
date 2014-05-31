@@ -225,7 +225,7 @@ class AppApi {
 		foreach($convs as $conv){
 			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$r['och'][$conv->getConversationId()] = array("id" => $conv->getConversationId(), "users"=> $users, "backend" => "och");
+			$r['och'][$conv->getConversationId()] = array("id" => $conv->getConversationId(), "users"=> $users, "backend" => "och", "archived" => (bool)$conv->getArchived());
 		}
 		return $r;
 	}

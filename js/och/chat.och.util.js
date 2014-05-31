@@ -8,7 +8,8 @@ Chat.och.util = {
 			angular.forEach(conv.users, function(user){
 				contacts.push(Chat.scope.contactsObj[user]);
 			});
-			Chat.app.view.addConv(conv.id, contacts, Chat.scope.backends.och);
+			Chat.app.view.addConv(conv.id, contacts, Chat.scope.backends.och, [], conv.archived);
+			console.log(conv);
 			Chat.och.api.command.join(conv.id, function(){});
 			Chat.och.api.command.getMessages(conv.id, function(data){
 				data.data.messages.forEach(function(msg){

@@ -107,15 +107,16 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		unActive : function(){
 			$scope.active.conv = null;
 		},
-		addConv : function(convId, users, backend, msgs){
+		addConv : function(convId, users, backend, msgs, archived){
 			if($scope.convs[convId] === undefined) {
 				$scope.convs[convId] = {
 					id : convId,
 					users : users,
 					msgs : [],
 					backend : backend,
-					archived : false
+					archived : archived
 				};
+				console.log(archived);
 				$scope.view.makeActive(convId);
 				if(msgs !== undefined){
 					angular.forEach(msgs, function(msg){

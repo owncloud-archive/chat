@@ -1,6 +1,7 @@
 <?php
 namespace OCA\Chat\OCH\Db;
 
+use Doctrine\DBAL\Sharding\SQLAzure\SQLAzureFederationsSynchronizer;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 use \OCP\AppFramework\Db\Entity;
@@ -91,6 +92,20 @@ SQL;
 				$entity->getUser(),
 		));
 
+	}
+
+	public function setArchived($convid, $archived, $user){
+		$sql = <<<SQL
+			UPDATE
+				`*PREFIX*chat_och_users_in_conversation`
+			SET
+				archived = ?
+			WHERE
+				conversation_id = ?
+			AND
+				user = ?
+SQL;
+		$result = $this->execute($sql, array($archived, $convid, $user));
 	}
 	
 }

@@ -39,7 +39,6 @@
 				<type>boolean</type>
 				<notnull>true</notnull>
 				<length>64</length>
-				/length>
 			</field>
 		</declaration>
 	</table>
@@ -113,7 +112,13 @@
                 <notnull>true</notnull>
                 <length>64</length>
              </field>
-		</declaration>
+            <field>
+                <name>archived</name>
+                <type>boolean</type>
+                <notnull>false</notnull>
+                <default>false</default>
+            </field>
+            </declaration>
 	</table>
 	<table>
 		<name>*dbprefix*chat_och_users_online</name>

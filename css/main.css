@@ -63,12 +63,6 @@
 	box-sizing: border-box;
 }
 
-#app-navigation {
-	overflow: auto;
-	width:230px;
-	position: relative;
-}
-
 #app-navigation ul li {
 	padding:10px;
 }
@@ -324,7 +318,7 @@
 }
 
 #controls {
-	left:310px !important;
+	left:230px !important;
 	width:auto;
 	padding-left:0px !important;
 }

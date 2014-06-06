@@ -10,9 +10,10 @@ Have chats in your ownCloud!
 ## Installation
 1. Clone the repo to the apps directory of your owncloud installation
 2. Activate the Contacts app in ownCloud
-3. Activate the Chat app in owncloud
-4. Load the Contacts app one time before the Chat app
-5. Start Chatting!
+3. You'll have to uncomment line `59` in the file `lib/app.php` in the contacts. This will active the `LocalUsers` backend for the contacts app. The `LocalUsers` backend will be ported into core soon.
+4. Activate the Chat app in owncloud
+5. Load the Contacts app one time before the Chat app
+6. Start Chatting!
 
 ## Live Example
 A live example of the Chat app can be viewed on [OpenShift](http://chat-ledfan.rhcloud.com/).

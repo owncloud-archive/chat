@@ -25,22 +25,16 @@ namespace OCA\Chat;
 use \OCA\Chat\App\Chat;
 use \OCA\Chat\OCH\Db\User;
 
-if(\OCP\App::isEnabled('contacts')){
+\OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
+	'order' => 10,
+	'href' => \OCP\Util::linkToRoute('chat.app.index'),
+	'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
+	'name' => \OCP\Util::getL10n('chat')->t('Chat')
+));
 
-	\OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
-		'order' => 10,	
-		'href' => \OCP\Util::linkToRoute('chat.app.index'),
-		'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
-		'name' => \OCP\Util::getL10n('chat')->t('Chat')
-	));
-
-	\OCP\App::registerAdmin('chat', 'admin');
-	$app = new Chat();
-	$container = $app->getContainer();
-	$appApi = $container['AppApi'];
-	$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
-	$appApi->registerBackend('Email', 'email','email' , 'true');
-} else {
-	$msg = 'Can not enable the Chat app because the Contacts app is disabled';
-	\OCP\Util::writeLog('news', $msg, \OCP\Util::ERROR);
-}
+\OCP\App::registerAdmin('chat', 'admin');
+$app = new Chat();
+$container = $app->getContainer();
+$appApi = $container['AppApi'];
+$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
+$appApi->registerBackend('Email', 'email','email' , 'true');

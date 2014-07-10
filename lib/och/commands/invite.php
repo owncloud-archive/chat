@@ -72,5 +72,14 @@ class Invite extends ChatAPI {
 			$pushMessage->setCommand($command);
 			$pushMessageMapper->insert($pushMessage);
 		}
+
+		$getUsers = $this->app['GetUsersData'];
+		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $getUsers->execute();
+		$users = $users['users'];
+
+		return array(
+			"users" => $users
+		);
 	}
 }

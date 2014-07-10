@@ -12,12 +12,15 @@
 		ng-if="conv.archived === false"
 		>
 		<div class="conv-list-item-avatar">
-			<div class="avatar-list-container" tipsy title="{{ user.displayname }}" ng-if="key < 3" ng-repeat="(key, user) in conv.users | userFilter">
+			<div class="avatar-list-container" >
 				<div
-					class="left"
+					tipsy
+					title="{{ user.displayname }}"
+					ng-if="key < 4"
+					ng-repeat="(key, user) in conv.users | userFilter"
+					class="avatar-list-avatar"
 					avatar
-					data-onlinesize="5"
-					data-size="32"
+					data-size="20"
 					data-id="{{ user.id }}"
 					data-displayname="{{ user.displayname }}"
 					data-addressbook-backend="{{ user.address_book_backend }}"
@@ -25,12 +28,8 @@
 					>
 				</div>
 			</div>
-							<span ng-if="conv.users.length === 2" ng-repeat="user in conv.users | userFilter" class="left" >
-								{{ user.displayname }}
-							</span>
-			<div title="" more-users users="{{ conv.users }}"  tipsy ng-if="conv.users.length > 5" class="avatar-list-more">
-				+ {{ conv.users.length - 4 }}
-			</div>
+			<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" >
+			</span>
 		</div>
 		<div class="conv-list-item-buttons">
 			<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
@@ -49,13 +48,16 @@
 		class="conv-list-item archived"
 		id="conv-list-{{ conv.id }}"
 		>
-		<div class="conv-list-item-avatar">
-			<div class="avatar-list-container" tipsy title="{{ user.displayname }}" ng-if="key < 3" ng-repeat="(key, user) in conv.users | userFilter">
+				<div class="conv-list-item-avatar">
+			<div class="avatar-list-container" >
 				<div
-					class="left"
+					tipsy
+					title="{{ user.displayname }}"
+					ng-if="key < 4"
+					ng-repeat="(key, user) in conv.users | userFilter"
+					class="avatar-list-avatar"
 					avatar
-					data-onlinesize="5"
-					data-size="32"
+					data-size="20"
 					data-id="{{ user.id }}"
 					data-displayname="{{ user.displayname }}"
 					data-addressbook-backend="{{ user.address_book_backend }}"
@@ -63,11 +65,9 @@
 					>
 				</div>
 			</div>
-							<span ng-if="conv.users.length === 2" ng-repeat="user in conv.users | userFilter" class="left" >
-								{{ user.displayname }}
-							</span>
-			<div title="" more-users users="{{ conv.users }}"  tipsy ng-if="conv.users.length > 5" class="avatar-list-more">
-				+ {{ conv.users.length - 4 }}
+			<div class="avatar-list-displayname-container">
+				<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" >
+				</span>
 			</div>
 		</div>
 		<div class="conv-list-item-buttons">

@@ -280,11 +280,24 @@
 }
 
 .avatar-list-container {
-	width: 39px;
-	height: 32px;
+	width:40px;
+	height: 40px;
 	position: relative;
 	float:left;
-	margin-right:5px;
+}
+
+.avatar-list-avatar {
+	width:16px;
+	height:16px;
+	float:left;
+}
+
+.avatar-list-displayname{
+	margin-left:2px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 130px;
 }
 
 .avatar-list-container div,.avatar-list-container img {

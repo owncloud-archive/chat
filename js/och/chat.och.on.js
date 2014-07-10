@@ -26,7 +26,6 @@ Chat.och.on = {
 		if(Chat.scope.convs[convId].users.length > 2){
 			// We are in a group conversation
 			Chat.och.api.command.invite(userToInvite, convId, function(data){
-				console.log(data);
 				var users = data.data.users;
 				Chat.app.view.replaceUsers(convId, users);
 			});

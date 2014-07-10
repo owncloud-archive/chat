@@ -140,7 +140,9 @@ Chat.och.api = {
 				url: '/index.php' + OC.linkTo("chat", "och/api"),
 				data: JSON.stringify(request),
 				headers: {'Content-Type' : 'application/json'}
-			}).done(success);
+			}).always(function(data){
+				success(data);
+			});
 		},
 		doSyncRequest : function(request, success, error) {
 			$.ajax({

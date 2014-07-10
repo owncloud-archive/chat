@@ -358,11 +358,12 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		restrict: 'A',
 		link: function ($scope, element, attrs) {
 			element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
-			element.online(attrs.isonline, attrs.onlinesize);
-
-			$scope.$watch('contactsObj', function(){
-				element.online(Chat.scope.contactsObj[attrs.id].online, attrs.onlinesize);
-			});
+			if(attrs.onlinesize !== undefined){
+				element.online(attrs.isonline, attrs.onlinesize);
+				$scope.$watch('contactsObj', function(){
+					element.online(Chat.scope.contactsObj[attrs.id].online, attrs.onlinesize);
+				});
+			}
 		}
 	};
 }).filter('backendFilter', function() {
@@ -428,6 +429,20 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 				}
 			});
 			element.attr('title', msg);
+		}
+	};
+}).directive('displayname', function () {
+	return {
+		restrict: 'A',
+		link: function ($scope, element, attrs) {
+			var text  = '';
+			users = JSON.parse(attrs.users);
+			angular.forEach(users, function(user, key){
+				if(user.id !== Chat.scope.active.user.id){
+					text += user.displayname + ' ';
+				}
+			});
+			element.text(text);
 		}
 	};
 });

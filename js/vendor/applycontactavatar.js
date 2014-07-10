@@ -12,21 +12,21 @@
                 $div.imageplaceholder(displayname);
             } else {
                 $div.show();
-				$div.html('<img src="data:image/gif;base64,' + Chat.app.cache.avatar[cacheId] + '" >');
-            }
+				$div.html('<img width="' + size + '" height="' + size + '" src="'+Chat.app.cache.avatar[cacheId]+'">');
+
+			}
         } else {
-			var url = '/index.php' + OC.linkTo('contacts', 'addressbook/' + addressbookBackend + '/' + addressBookId + '/contact/' + id +'/photo/base64?requesttoken='+oc_requesttoken);
-            $.get(url, function(result) {
-                if (result.data === '') {
+			var url = OC.generateUrl(
+				'/avatar/{user}/{size}?requesttoken={requesttoken}',
+				{user: id, size: size * window.devicePixelRatio, requesttoken: oc_requesttoken});
+			$.get(url, function(result) {
+				if (typeof(result) === 'object') {
                     Chat.app.cache.avatar[cacheId] = '';
                     $div.imageplaceholder(displayname);
                 } else {
-					Chat.app.cache.avatar[cacheId] = result.data;
+					Chat.app.cache.avatar[cacheId] = url;
                     $div.show();
-//            <img width="16" height="16" alt="star" src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7"
-// />
-                    $div.html('<img src="data:image/gif;base64,' + result.data + '" >');
-//					$div.css('background-image', 'url(data:image/png;base64,' + result.data + ')');
+					$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'">');
 				}
             });
         }

@@ -376,9 +376,12 @@
 	height: 44px !important;
 	color: #555;
 	text-align: center;
-	font-weight: bold;
 	font-size: 1.1em;
 }
 .archived {
 	opacity:0.6;
+}
+
+.bold {
+	font-weight: bold;
 }

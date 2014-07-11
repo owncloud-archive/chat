@@ -62,6 +62,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			"emojiContainer" : false,
 			"invite" : false,
 			'archived' : false,
+			'showArchived' : {'bold' : false}
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -103,6 +104,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.view.show('chat', $event, exception);
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
+			$scope.convs[convId].new_msg = false;
 		},
 		unActive : function(){
 			$scope.active.conv = null;
@@ -117,7 +119,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 					users : users,
 					msgs : [],
 					backend : backend,
-					archived : archived
+					archived : archived,
+					new_msg : false
 				};
 				console.log(archived);
 				$scope.view.makeActive(convId);
@@ -129,10 +132,21 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 				$scope.$apply();
 			}
 		},
-		addChatMsg : function(convId, user, msg, timestamp, backend){
+		addChatMsg : function(convId, user, msg, timestamp, backend, noNotify){
 			if(user.id !== $scope.active.user.id){
 				$scope.notify(user.displayname);
 			}
+
+			if(noNotify === undefined){
+				var noNotify = false;
+			}
+
+			if(convId !== $scope.active.conv && noNotify === false){
+				// this ins't the active conv
+				// we have to notify the user of new messages in this conv
+				$scope.view.notifyMsgInConv(convId);
+			}
+
 			// Check if the user is equal to the user of the last msg
 			// First get the last msg
 			var contact = user;
@@ -209,6 +223,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		},
 		replaceUsers : function(convId, users){
 			$scope.convs[convId].users = users;
+		},
+		notifyMsgInConv : function(convId){
+			$scope.convs[convId].new_msg = true;
 		}
 	};
 
@@ -350,6 +367,24 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		$scope.fields.chatMsg = textBefore + name + textAfter;
 	};
 
+	$scope.$watch('convs', function(){
+		var bold  = false;
+		var forLoop = true;
+		for(index in $scope.convs){
+			conv = $scope.convs[index];
+			if(forLoop === true){
+				if(conv.archived === true && conv.new_msg === true) {
+					bold = true;
+					forLoop = false;
+				}
+			}
+		}
+		if(bold){
+			$scope.view.elements.showArchived.bold = true;
+		} else {
+			$scope.view.elements.showArchived.bold = false;
+		}
+	}, true);
 
 	$scope.emojis = Chat.app.util.emojis;
 

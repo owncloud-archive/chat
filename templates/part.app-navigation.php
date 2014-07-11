@@ -28,7 +28,7 @@
 					>
 				</div>
 			</div>
-			<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" >
+			<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" ng-class="{bold : conv.new_msg === true}" >
 			</span>
 		</div>
 		<div class="conv-list-item-buttons">
@@ -48,7 +48,7 @@
 		class="conv-list-item archived"
 		id="conv-list-{{ conv.id }}"
 		>
-				<div class="conv-list-item-avatar">
+		<div class="conv-list-item-avatar">
 			<div class="avatar-list-container" >
 				<div
 					tipsy
@@ -65,10 +65,8 @@
 					>
 				</div>
 			</div>
-			<div class="avatar-list-displayname-container">
-				<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" >
-				</span>
-			</div>
+			<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" ng-class="{bold : conv.new_msg === true}" >
+			</span>
 		</div>
 		<div class="conv-list-item-buttons">
 			<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">
@@ -83,6 +81,7 @@
 		ng-if="view.elements.archived === true"
 		ng-click="view.toggle('archived');"
 		id="archived-button"
+		ng-class="{bold : view.elements.showArchived.bold === true}"
 		>
 		Hide Archived Conversations
 	</li>
@@ -90,6 +89,7 @@
 		ng-if="view.elements.archived === false"
 		ng-click="view.toggle('archived');"
 		id="archived-button"
+		ng-class="{bold : view.elements.showArchived.bold === true}"
 		>
 		Show Archived Conversations
 	</li>

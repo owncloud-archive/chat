@@ -13,7 +13,7 @@ Chat.och.util = {
 			Chat.och.api.command.join(conv.id, function(){});
 			Chat.och.api.command.getMessages(conv.id, function(data){
 				data.data.messages.forEach(function(msg){
-					Chat.app.view.addChatMsg(conv.id, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, Chat.scope.backends.och);
+					Chat.app.view.addChatMsg(conv.id, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, Chat.scope.backends.och, true);
 				});
 			})
 

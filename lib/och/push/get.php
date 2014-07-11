@@ -26,9 +26,13 @@ class Get extends ChatAPI{
 
 		$commands = array();
 		foreach($this->pushMessages as $pushMessage){
-			$command = json_decode($pushMessage->getCommand(), true);
+//			var_dump($pushMessage->getCommand());
+			$command = json_decode($pushMessage->getCommand());
+//			var_dump($command);
 			$commands[$pushMessage->getId()] = $command;
 		}
+
+//		die();
 		return new JSONResponse(array('push_msgs' => $commands));
 	}
 }

@@ -4,9 +4,9 @@ Chat.app.view = {
 			Chat.scope.view.addConv(convId, users, backend, msgs, archived);
 		});
 	},
-	addChatMsg : function(convId, contact, msg, timestamp, backend){
+	addChatMsg : function(convId, contact, msg, timestamp, backend, noNotify){
 		Chat.scope.$apply(function(){
-			Chat.scope.view.addChatMsg(convId, contact, msg, timestamp, backend);
+			Chat.scope.view.addChatMsg(convId, contact, msg, timestamp, backend, noNotify);
 		});
 	},
 	addUserToConv : function(convId, user){

@@ -154,9 +154,9 @@ Chat.och.api = {
 			});
 		},
 		longPoll : function() {
-			this.getPushMessages(function(push_msgs) {
+			this.getPushMessages(function(data) {
 				var ids_del = [];
-				$.each(push_msgs.push_msgs, function(push_id, push_msg) {
+				angular.forEach(data.push_msgs, function(push_msg, push_id) {
 					ids_del.push(push_id);
 					Chat.och.api.util.handlePushMessage(push_msg);
 				});

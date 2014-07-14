@@ -11,7 +11,7 @@
 		id="conv-list-{{ conv.id }}"
 		ng-if="conv.archived === false"
 		>
-		<div class="conv-list-item-avatar">
+		<div ng-if="conv.id !== $parent.active.conv && conv.users" class="conv-list-item-avatar">
 			<div class="avatar-list-container" >
 				<div
 					tipsy
@@ -30,6 +30,29 @@
 			</div>
 			<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" ng-class="{bold : conv.new_msg === true}" >
 			</span>
+		</div>
+		<div class="conv-list-item-avatar" ng-if="conv.id === $parent.active.conv">
+			<ul>
+				<li
+					ng-repeat="(key, user) in conv.users | userFilter"
+					class="avatar-list-expanded-item"
+				>
+					<div
+						tipsy
+						title="{{ user.displayname }}"
+						class="avatar-list-avatar"
+						avatar
+						data-size="20"
+						data-id="{{ user.id }}"
+						data-displayname="{{ user.displayname }}"
+						data-addressbook-backend="{{ user.address_book_backend }}"
+						data-addressbook-id="{{ user.address_book_id  }}"
+						>
+					</div>
+					{{ user.displayname }}
+				</li>
+			</ul>
+
 		</div>
 		<div class="conv-list-item-buttons">
 			<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv" class="icon-add right icon-20 invite-button">

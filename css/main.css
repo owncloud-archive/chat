@@ -385,3 +385,12 @@
 .bold {
 	font-weight: bold;
 }
+
+.avatar-list-expanded-item{
+	padding:0px !important;
+	margin:0px;
+}
+
+.avatar-list-expanded-item div {
+	margin-right:10px;
+}

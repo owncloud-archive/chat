@@ -77,7 +77,7 @@ class AppApi {
 			foreach ($result as $r) {
 				$data = array();
 
-				$contactList[] = $r['FN'];
+				$contactList[] = $r['id'];
 
 				$data['id'] = $r['id'];
 				$data['online'] = in_array($r['id'], $usersOnline);

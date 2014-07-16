@@ -255,11 +255,6 @@
 	clear:left;
 }
 
-.conv-list-item img {
-	width: 20px;
-	height: 20px;
-}
-
 .icon-32 {
 	width: 32px
 }
@@ -286,9 +281,18 @@
 	float:left;
 }
 
+.avatar-list-expanded-item .avatar-list-avatar {
+	margin-right:22px;
+}
 .avatar-list-avatar {
-	width:16px;
-	height:16px;
+	width:20px;
+	height:20px;
+	float:left;
+}
+
+.avatar-list-avatar-big {
+	width:40px;
+	height:40px;
 	float:left;
 }
 

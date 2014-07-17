@@ -10,6 +10,7 @@
 \OCP\Util::addScript('chat', 'vendor/angular-enhance-text.min');
 \OCP\Util::addScript('chat', 'vendor/rangyinputs');
 \OCP\Util::addScript('chat', 'vendor/jquery.autosize.min');
+\OCP\Util::addScript('chat', 'vendor/cache');
 
 
 

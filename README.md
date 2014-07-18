@@ -10,8 +10,8 @@ Have chats in your ownCloud!
 ## Screenshots
 **Choosing a contact to start a conversation with**
 [![Choosing a contact to start a conversation with](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0bc794c964049b0dfc72b768426255755a6393f8/startup.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0bc794c964049b0dfc72b768426255755a6393f8/startup.png)
-**Conversation with between two users**
-[![Conversation with 2 users](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/30f409a62c68ff0a9fc3a885b174ada651ae8a6b/1-1-conv.png)](https://gist.githubusercontent.com/LEDfan/346d401f75fee2f02dff/raw/30f409a62c68ff0a9fc3a885b174ada651ae8a6b/1-1-conv.png)
+**Conversation between two users**
+[![Conversation between 2 users](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/30f409a62c68ff0a9fc3a885b174ada651ae8a6b/1-1-conv.png)](https://gist.githubusercontent.com/LEDfan/346d401f75fee2f02dff/raw/30f409a62c68ff0a9fc3a885b174ada651ae8a6b/1-1-conv.png)
 **Group Conversation**
 [![Group Conversation](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/76a2c5b26a22293abccf1eb3e038110eaf4ddc19/group-conv.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/76a2c5b26a22293abccf1eb3e038110eaf4ddc19/group-conv.png)
 **Notication of a new message in another conversation**
@@ -19,7 +19,7 @@ Have chats in your ownCloud!
 **Online and offline state of contacts are updated every 10 seconds**
 [![Offline and Online state of contacts are updated every 10 seconds](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/65ad49ac360606ab3abc5136a3122d7f4fef13ad/ofline-online.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/65ad49ac360606ab3abc5136a3122d7f4fef13ad/ofline-online.png)
 **Inline video and image support**
-[![Inline video and image support]https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)
+[![Inline video and image support(]https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)
 
 
 ## Features
@@ -44,7 +44,7 @@ After enabling the Chat app you can immediately start with chatting!
 
 ## Contribute
 Contriubtions are very welcome! You can contribute on many ways:
- - Test the app (see #Installation) and report any issue and problem you encore in the [Issue tracker](https://github.com/owncloud/chat/issues)
+ - Test the app (see [Installation](https://github.com/owncloud/chat#installation)) and report any issue and problem you encore in the [Issue tracker](https://github.com/owncloud/chat/issues)
  - Improve code or add new features
  - Help with design by commenting on issues
  - Solve bugs

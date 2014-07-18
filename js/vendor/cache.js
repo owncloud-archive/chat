@@ -1,11 +1,14 @@
 var Cache = (function () {
 	var cache = {};
 
+	function time(){
+		return parseInt(new Date().getTime() / 1000);
+	}
+
 	cache.storage = {};
 	cache.set = function (key, value, expire) {
 		key = 'cache' + key;
-		var date = new Date().getTime() / 1000;
-		date = parseInt(date) + expire;
+		var date = time() + expire;
 		cache.storage[key] = {
 			"key" : key,
 			"value": value,
@@ -14,7 +17,19 @@ var Cache = (function () {
 	};
 
 	cache.get = function (key) {
-		return cache.storage[key];
+		var value = cache.storage['cache' + key];
+		if(value !== undefined){
+			if((value.expire - time()) <=0 ) {
+				// Expired
+				delete cache.storage['cache' + key];
+				return undefined;
+			} else {
+				return value.value;
+			}
+		} else {
+			return undefined;
+		}
+
 	};
 	return cache;
 }());

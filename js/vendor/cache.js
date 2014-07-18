@@ -16,6 +16,9 @@ var Cache = (function () {
 				get : function(key){
 					var value = localStorage[key];
 					return JSON.parse(value);
+				},
+				remove : function(key){
+					localStorage.removeItem(key);
 				}
 			};
 		} else {
@@ -25,6 +28,9 @@ var Cache = (function () {
 				},
 				get : function(key){
 					return this[key];
+				},
+				remove : function(key){
+					delete this[key];
 				}
 			};
 		}
@@ -60,7 +66,7 @@ var Cache = (function () {
 				return value.value;
 			} else if ((value.expire - time()) <=0 ) {
 				// Expired
-				delete cache.storage['cache' + key];
+				cache.storage.remove('cache' + key);
 				return undefined;
 			} else {
 				return value.value;

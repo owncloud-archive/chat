@@ -15,7 +15,11 @@ var Cache = (function () {
 				},
 				get : function(key){
 					var value = localStorage[key];
-					return JSON.parse(value);
+					if(value !== undefined){
+						return JSON.parse(value);
+					} else {
+						return undefined;
+					}
 				},
 				remove : function(key){
 					localStorage.removeItem(key);

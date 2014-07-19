@@ -81,6 +81,18 @@ var Cache = (function () {
 
 	};
 
+	cache.day = function(count){
+		return 86400 * count;
+	};
+
+	cache.hour = function(count){
+		return 3600 * count;
+	};
+
+	cache.minute = function(count){
+		return 60 * count;
+	};
+
 	if(!cache.initialized){
 		init();
 	}

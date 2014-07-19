@@ -1,7 +1,8 @@
 (function ($) {
     $.fn.applyContactAvatar = function(addressbookBackend, addressBookId, id, displayname, size) {
         var $div = this;
-        $div.height(size);
+        var cacheTime = Cache.day(1);
+		$div.height(size);
         $div.width(size);
 
         // First generate an id of this contact which is used in the cache
@@ -22,10 +23,10 @@
 				{user: id, size: size * window.devicePixelRatio, requesttoken: oc_requesttoken});
 			$.get(url, function(result) {
 				if (typeof(result) === 'object') {
-                    Cache.set(cacheId, {"noAvatar" : true}, 86400);
+                    Cache.set(cacheId, {"noAvatar" : true}, cacheTime);
                     $div.imageplaceholder(displayname);
                 } else {
-					Cache.set(cacheId, {"noAvatar" : false, "base64" : url}, 86400);
+					Cache.set(cacheId, {"noAvatar" : false, "base64" : url}, cacheTime);
                     $div.show();
 					$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'">');
 				}

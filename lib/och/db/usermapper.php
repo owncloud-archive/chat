@@ -13,7 +13,7 @@ class UserMapper extends Mapper {
 
 	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_och_users_in_conversation');
-		$this->table = 'chat_och_users_in_conversation';
+		$this->table = '*PREFIX*chat_och_users_in_conversation';
 	}
 
 	public function findSessionsByConversation($conversationId){

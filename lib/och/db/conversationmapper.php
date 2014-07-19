@@ -37,12 +37,12 @@ class ConversationMapper extends Mapper {
 			SELECT
 				DISTINCT c1.conversation_id AS conv_id
 			FROM
-				chat_och_users_in_conversation c1
+				*PREFIX*chat_och_users_in_conversation c1
 			WHERE EXISTS (
 				SELECT
 					1
 				FROM
-					chat_och_users_in_conversation c2
+					*PREFIX*chat_och_users_in_conversation c2
 				WHERE
 					c1.conversation_id = c2.conversation_id
 				AND
@@ -56,7 +56,7 @@ SQL;
 				SELECT
 					1
 				FROM
-				 	chat_och_users_in_conversation c2
+				 	*PREFIX*chat_och_users_in_conversation c2
 				WHERE
 					c1.conversation_id = c2.conversation_id
 				AND
@@ -70,7 +70,7 @@ SQL;
 				SELECT
 					1
 				FROM
-					chat_och_users_in_conversation  c2
+					*PREFIX*chat_och_users_in_conversation  c2
 			 	WHERE
 			 		c1.conversation_id = c2.conversation_id
 			 	AND

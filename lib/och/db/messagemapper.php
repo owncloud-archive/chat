@@ -11,7 +11,7 @@ class MessageMapper extends Mapper{
 		parent::__construct($api, 'chat_och_messages'); // tablename is news_feeds
 	}
  
-	public function getMessagesByConvId($convId, $user){
+	public function getMessagesByConvId($convId, $user, $startpoint=0){
 		$sql = <<<SQL
 			SELECT
 				*
@@ -30,8 +30,16 @@ class MessageMapper extends Mapper{
 					AND `conversation_id` = ?
 				)
 SQL;
+		if($startpoint !== 0){
+			$sql = $sql . <<<SQL
+			AND
+				`timestamp` > ?
+SQL;
+			return $this->findEntities($sql, array($convId, $user, $convId, $startpoint));
+		} else {
+			return $this->findEntities($sql, array($convId, $user, $convId));
+		}
 
-		return $this->findEntities($sql, array($convId, $user, $convId));
 	}
 
 }

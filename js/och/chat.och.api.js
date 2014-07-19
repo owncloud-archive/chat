@@ -68,13 +68,14 @@ Chat.och.api = {
 				}
 			}, success);
 		},
-		getMessages : function(convId, success) {
+		getMessages : function(convId, startpoint, success) {
 			Chat.och.api.util.doRequest({
 				"type" : "data::messages::request",
 				"data" : {
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId,
-					"conv_id" : convId
+					"conv_id" : convId,
+					"startpoint" : startpoint
 				}
 			}, success);
 		},

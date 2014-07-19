@@ -20,7 +20,13 @@ class Messages extends ChatAPI {
 	public function execute(){
 		$return = array();
 		$messageMapper = $this->app['MessageMapper'];
-		$msgs = $messageMapper->getMessagesByConvId($this->requestData['conv_id'], $this->requestData['user']['backends']['och']['value']);
+		if(isset($this->requestData['startpoint']) && trim($this->requestData['startpoint']) !== ''){
+			$startpoint = $this->requestData['startpoint'];
+		} else {
+			$startpoint = 0;
+		}
+
+		$msgs = $messageMapper->getMessagesByConvId($this->requestData['conv_id'], $this->requestData['user']['backends']['och']['value'], $startpoint);
 
 		foreach($msgs as $msg){
 			$return[] = array(

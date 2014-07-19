@@ -120,7 +120,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 					msgs : [],
 					backend : backend,
 					archived : archived,
-					new_msg : false
+					new_msg : false,
+					raw_msgs : []
 				};
 				console.log(archived);
 				if(!archived){
@@ -214,6 +215,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			if(user !== $scope.active.user) {
 				Chat.tabTitle = 'New msg from ' + user;
 			}
+
+			// Add raw msgs to raw_msgs
+			$scope.convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
 		},
 		addUserToConv : function(convId, user){
 			if($scope.convs[convId].users.indexOf(user) === -1){

@@ -123,7 +123,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 					new_msg : false
 				};
 				console.log(archived);
-				$scope.view.makeActive(convId);
+				if(!archived){
+					$scope.view.makeActive(convId);
+				}
 				if(msgs !== undefined){
 					angular.forEach(msgs, function(msg){
 						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);

@@ -105,6 +105,10 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
 			$scope.convs[convId].new_msg = false;
+			if($scope.convs[convId].archived && $scope.view.elements.archived === false ){
+				$scope.view.show('archived');
+			}
+
 		},
 		unActive : function(){
 			$scope.active.conv = null;

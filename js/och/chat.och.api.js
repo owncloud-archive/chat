@@ -116,15 +116,17 @@ Chat.och.api = {
 			var backend = Chat.app.view.getBackends('och');
 			var convId = data.conv_id;
 			// TODO check if data.user is a user or a contact
-			Chat.och.api.command.join(data.conv_id, function(dataJoin) {
-				// After we joined we should update the users array with all users in this conversation
-				var users = dataJoin.data.users;
-				var msgs = dataJoin.data.messages;
-				Chat.app.view.addConv(convId, users, backend, msgs);
-			});
-			// TODO move this to the concontroller
-			Chat.app.ui.alert('You auto started a new conversation with '
-					+ data.user);
+			if(Chat.scope.convs[convId] === undefined){
+				Chat.och.api.command.join(data.conv_id, function(dataJoin) {
+					// After we joined we should update the users array with all users in this conversation
+					var users = dataJoin.data.users;
+					var msgs = dataJoin.data.messages;
+					Chat.app.view.addConv(convId, users, backend, msgs);
+				});
+				// TODO move this to the concontroller
+				Chat.app.ui.alert('You auto started a new conversation with '
+						+ data.user);
+			}
 		},
 		chatMessage : function(data) {
 			Chat.app.view.addChatMsg(data.conv_id, data.user, data.chat_msg,

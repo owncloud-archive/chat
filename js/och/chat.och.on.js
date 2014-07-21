@@ -3,8 +3,14 @@ Chat.och.on = {
 		Chat.och.api.command.startConv(
 			userToInvite,
 			function(response){
-				console.log(response);
-				success(response.data.conv_id, response.data.users, response.data.messages);
+				// check if we are already in the conv
+				if(Chat.scope.convs[response.data.conv_id] === undefined){
+					console.log(response);
+					success(response.data.conv_id, response.data.users, response.data.messages);
+				} else {
+					// we are already in the conv -> make it active
+					Chat.app.view.makeActive(response.data.conv_id);
+				}
 			},
 			function(errorMsg){
 				if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){

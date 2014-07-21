@@ -30,5 +30,10 @@ Chat.app.view = {
 		Chat.scope.$apply(function(){
 	 		Chat.scope.view.replaceUsers(convId, users);
 		});
+	},
+	makeActive : function(convId, $event, exception){
+		Chat.scope.$apply(function(){
+			Chat.scope.view.makeActive(convId, $event, exception);
+		});
 	}
 };

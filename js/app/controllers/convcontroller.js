@@ -292,6 +292,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 			Chat[backend].on.invite($scope.active.conv, userToInvite);
 		}
 		$scope.view.hide('invite');
+		$scope.view.makeActive($scope.active.conv);
 	};
 
 	$scope.findContactByUser = function(user, namespace){

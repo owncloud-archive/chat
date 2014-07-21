@@ -140,7 +140,7 @@ Chat.och.api = {
 		doRequest : function(request, success) {
 			$.ajax({
 				type: "POST",
-				url: '/index.php' + OC.linkTo("chat", "och/api"),
+				url: OC.generateUrl('/apps/chat/och/api'),
 				data: JSON.stringify(request),
 				headers: {'Content-Type' : 'application/json'}
 			}).always(function(data){
@@ -150,7 +150,7 @@ Chat.och.api = {
 		doSyncRequest : function(request, success, error) {
 			$.ajax({
 				type: "POST",
-				url: '/index.php' + OC.linkTo("chat", "och/api"),
+				url: OC.generateUrl('/apps/chat/och/api'),
 				data: JSON.stringify(request),
 				headers: {'Content-Type' : 'application/json'},
 				async: true

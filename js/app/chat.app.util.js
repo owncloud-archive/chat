@@ -7,7 +7,7 @@ Chat.app.util = {
 		return	{hours : date.getHours(), minutes : date.getMinutes(), seconds : date.getSeconds()};
 	},
 	updateContacts : function(){
-		$.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(contacts){
+		$.post(OC.generateUrl('/apps/chat/contacts')).done(function(contacts){
 			Chat.scope.$apply(function(){
 				Chat.scope.contacts = contacts;
 			});

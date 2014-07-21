@@ -312,7 +312,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 
 	$scope.updateContacts = function(){
-		$.post('/index.php' + OC.linkTo("chat", "contacts")).done(function(response){
+		$.post(OC.generateUrl('/apps/chat/contacts')).done(function(response){
 			$scope.contacts = response.contacts;
 			$scope.contactsObj = response.contactsObj;
 			$scope.$apply();

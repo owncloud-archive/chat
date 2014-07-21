@@ -123,7 +123,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 					new_msg : false,
 					raw_msgs : []
 				};
-				console.log(archived);
 				if(!archived){
 					$scope.view.makeActive(convId);
 				}

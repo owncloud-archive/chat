@@ -10,7 +10,6 @@
 		// Next check if the cacheId occurs in the cache
 		var value = Cache.get(cacheId)
 		if(value !== undefined){
-			console.log(value);
             if (value.noAvatar == true) {
                 $div.imageplaceholder(displayname);
             } else {

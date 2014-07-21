@@ -40,7 +40,7 @@ Chat.app.util = {
 		return imgRegex.test(url);
 	},
 	emojis : [
-		{ "name" : ":+1:", "url" : "/apps/chat/img/emoji/+1.png" } ,
+		{ "name" : ":+1:", "url" :	OC.imagePath('chat', 'emoji/+1.png')},
 		{ "name" : ":-1:", "url" : "/apps/chat/img/emoji/-1.png" } ,
 		{ "name" : ":alien:", "url" : "/apps/chat/img/emoji/alien.png" } ,
 		{ "name" : ":angry:", "url" : "/apps/chat/img/emoji/angry.png" } ,

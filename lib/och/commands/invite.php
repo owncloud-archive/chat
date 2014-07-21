@@ -42,13 +42,15 @@ class Invite extends ChatAPI {
 
 	public function execute(){
 
-		// We are going to add the user to the conv
-		$userMapper = $this->app['UserMapper'];
-		$user = new User();
-		$user->setConversationId($this->requestData['conv_id']);
-		$user->setJoined(time());
-		$user->setUser($this->requestData['user_to_invite']['backends']['och']['value']);
-		$userMapper->insertUnique($user);
+		// add the user to thx	e conv
+		// this is done by executing the join command
+		$join = $this->app['JoinCommand'];
+		$requestData = array(
+			"user" => $this->requestData['user_to_invite'],
+			"conv_id" => $this->requestData['conv_id']
+		);
+		$join->setRequestData($requestData);
+		$join->execute();
 
 		// First fetch every sessionID of the user to invite
 		$userOnlineMapper = $this->app['UserOnlineMapper'];

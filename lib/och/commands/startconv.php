@@ -69,16 +69,6 @@ class StartConv extends ChatAPI {
 			}
 		}
 
-		// (6) add our selv to the conv
-		// the other users will be added in the invite command
-		$userMapper = $this->app['UserMapper'];
-		$user = new User();
-		$user->setConversationId($this->requestData['conv_id']);
-		$user->setJoined(time());
-		$user->setUser($this->requestData['user']['backends']['och']['value']);
-		$userMapper->insertUnique($user);
-
-
 		// Fetch users in conv
 		$getUsers = $this->app['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));

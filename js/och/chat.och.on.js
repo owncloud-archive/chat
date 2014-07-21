@@ -13,7 +13,7 @@ Chat.och.on = {
 					Chat.app.view.alert('The user you tried to invite isn\'t a valid owncloud user');
 					// Leave the already joined conversation
 					Chat.och.api.command.leave(newConvId, function(){});
-				} else {
+				} else if (errorMsg === 'SESSION-ALREADY-JOINED') {
 					Chat.app.view.alert(errorMsg);
 				}
 			}

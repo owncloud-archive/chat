@@ -19,7 +19,7 @@
 	</section>
 	<footer id="chat-window-footer">
 		<div class="chat-msg-button" >
-			<button ng-click="view.toggle('emojiContainer')" ><img src="/apps/chat/img/emoji/smile.png"></button>
+			<button ng-click="view.toggle('emojiContainer')" ><img src=" <?php echo \OCP\Util::imagePath('chat', 'emoji/smile.png'); ?>"></button>
 		</div>
 		<form id="chat-msg-form" ng-submit="sendChatMsg()">
 			<div class="chat-msg-button" >

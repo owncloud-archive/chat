@@ -3,6 +3,9 @@
 echo "smilies: { ";
 foreach (glob("*.png") as $emoji) {
 	$name = substr($emoji, 0, -4);
-	echo "':" . $name . ":' : OC.imagePath('chat', '". $emoji . "/+1.png') ,\n";
+	$code = <<<CODE
+	':$name:' : OC.imagePath('chat', '/emoji/$emoji'), \n
+CODE;
+	echo $code;
 }
 echo "}\n";

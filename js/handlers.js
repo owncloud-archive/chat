@@ -5,9 +5,9 @@ $(function() {
             Chat.scope.quit();            
         });
     });
-    Chat.scope.$apply(function(){
-        Chat.scope.init();            
-    });
+//    Chat.scope.$apply(function(){
+//        Chat.scope.init();
+//    });
 	$("#chat-msg-input-field").autosize({
 		callback : function(){
 			var height = $("#chat-msg-input-field").height();

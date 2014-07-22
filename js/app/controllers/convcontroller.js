@@ -20,7 +20,8 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		'chatMsg' : '',
 	};
 	
-	$scope.init = function(){
+	$(function() {
+
 		var initvar = JSON.parse($('#initvar').text());
 		$scope.contacts = initvar.contacts;
 		$scope.contactsList = initvar.contactsList;
@@ -29,7 +30,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		$scope.active.user = $scope.contactsObj[OC.currentUser];
 		$scope.initConvs = initvar.initConvs;
 		$scope.initvar = initvar;
-		$scope.$apply();
+//		$scope.$apply();
 		for (var active in $scope.backends) break;
 		$scope.active.backend =  $scope.backends[active];
 		angular.forEach($scope.backends, function(backend, namespace){
@@ -39,7 +40,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 		$scope.initDone = true;
 		setInterval($scope.updateContacts, 20000);
-	};
+	});
 
 	$scope.quit = function(){
 		angular.forEach($scope.backends, function(backend, namespace){
@@ -135,7 +136,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
 					});
 				}
-				$scope.$apply();
+//				$scope.$apply();
 			}
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend, noNotify){
@@ -315,13 +316,13 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		$.post(OC.generateUrl('/apps/chat/contacts')).done(function(response){
 			$scope.contacts = response.contacts;
 			$scope.contactsObj = response.contactsObj;
-			$scope.$apply();
+//			$scope.$apply();
 		});
 	};
 
 	
 	setInterval(function(){
-		$scope.$apply();
+//		$scope.$apply();
 		if($scope.title.title === ''){
 			$('title').text($scope.title.default);
 		} else {
@@ -347,21 +348,21 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		} else {
 			$scope.title.tile = '';
 		}
-		$scope.$apply();
+//		$scope.$apply();
 	});
 
 	$scope.notify = function(user){
 		if($scope.title.new_msgs.indexOf(user) == -1){
 			$scope.title.new_msgs.push(user);
 		}
-		$scope.$apply();
+//		$scope.$apply();
 	};
 
 	window.onfocus = function () {
 		$scope.title.title = '';
 		$scope.title.new_msgs = [];
 		$scope.active.window = true;
-		$scope.$apply();
+//		$scope.$apply();
 	};
 
 	window.onblur = function () {

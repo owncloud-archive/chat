@@ -10,25 +10,24 @@ Chat.och.util = {
 			});
 			Chat.app.view.addConv(conv.id, contacts, Chat.scope.backends.och, [], conv.archived);
 			Chat.och.api.command.join(conv.id, function(){});
-//			var cachedMsgs = Cache.get(conv.id);
-//			cachedMsgs = cachedMsgs.msgs;
-//			if(cachedMsgs !== undefined){
-//				for (var i = 0; i < cachedMsgs.length; i++) {
-//					var msg = cachedMsgs[i];
-//					Chat.app.view.addChatMsg(conv.id, msg.user, msg.msg, msg.timestamp, Chat.scope.backends.och, true);
-//					if(i === cachedMsgs.length -1){
-//						var timestampLatestMsg = msg.timestamp;
-//					}
-//				}
-//			} else {
-//				var timestampLatestMsg = 0;
-//			}
-//			Chat.och.api.command.getMessages(conv.id, timestampLatestMsg, function(data){
-			Chat.och.api.command.getMessages(conv.id, 0, function(data){
+			var cachedMsgs = Cache.get(conv.id);
+			if(cachedMsgs !== undefined){
+				cachedMsgs = cachedMsgs.msgs;
+				for (var i = 0; i < cachedMsgs.length; i++) {
+					var msg = cachedMsgs[i];
+					Chat.app.view.addChatMsg(conv.id, msg.user, msg.msg, msg.timestamp, Chat.scope.backends.och, true);
+					if(i === cachedMsgs.length -1){
+						var timestampLatestMsg = msg.timestamp;
+					}
+				}
+			} else {
+				var timestampLatestMsg = 0;
+			}
+			Chat.och.api.command.getMessages(conv.id, timestampLatestMsg, function(data){
 				data.data.messages.forEach(function(msg){
 					Chat.app.view.addChatMsg(conv.id, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, Chat.scope.backends.och, true);
 				});
-			})
+			});
 
 		});
 		setInterval(Chat.och.util.updateOnlineStatus, 60000);

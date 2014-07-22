@@ -1,4 +1,4 @@
-Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope, $filter) {
+Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
 	$scope.convs = {};
 	$scope.contacts = [];
 	$scope.contactsList = [];
@@ -311,10 +311,9 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 	};
 
 	$scope.updateContacts = function(){
-		$.post(OC.generateUrl('/apps/chat/contacts')).done(function(response){
-			$scope.contacts = response.contacts;
-			$scope.contactsObj = response.contactsObj;
-//			$scope.$apply();
+		$http({method: 'get', url: OC.generateUrl('/apps/chat/contacts')}).success(function(data, status) {
+			$scope.contacts = data.contacts;
+			$scope.contactsObj = data.contactsObj;
 		});
 	};
 

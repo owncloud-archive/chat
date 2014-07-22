@@ -20,8 +20,7 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		'chatMsg' : '',
 	};
 	
-	$(function() {
-
+		Chat.scope = angular.element($("#app")).scope();
 		var initvar = JSON.parse($('#initvar').text());
 		$scope.contacts = initvar.contacts;
 		$scope.contactsList = initvar.contactsList;
@@ -40,7 +39,6 @@ Chat.angular.controller('ConvController', ['$scope', '$filter', function($scope,
 		});
 		$scope.initDone = true;
 		setInterval($scope.updateContacts, 20000);
-	});
 
 	$scope.quit = function(){
 		angular.forEach($scope.backends, function(backend, namespace){

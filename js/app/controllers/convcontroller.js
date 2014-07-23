@@ -285,12 +285,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	$scope.invite = function(userToInvite){
 		var backend = $scope.convs[$scope.active.conv].backend.name;
-		if(userToInvite === $scope.active.user){
-			Chat.app.view.alert('You can\'t invite yourself');
-		} else if(userToInvite === ''){
-			Chat.app.view.alert('Please provide a user name');
-		} else {
+		if(userToInvite !== $scope.active.user && userToInvite !== ''){
 			Chat[backend].on.invite($scope.active.conv, userToInvite);
+		} else {
+			console.log('Tried to invite the active user or an empty user');
 		}
 		$scope.view.hide('invite');
 		$scope.view.makeActive($scope.active.conv);

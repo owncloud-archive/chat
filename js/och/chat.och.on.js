@@ -11,17 +11,6 @@ Chat.och.on = {
 					Chat.app.view.makeActive(response.data.conv_id);
 				}
 			},
-			function(errorMsg){
-				if(errorMsg === 'USER-TO-INVITE-NOT-ONLINE'){
-					Chat.app.view.alert('The user you tried to invite isn\'t online, you already can send messages');// TODO
-				} else if(errorMsg === 'USER-TO-INVITE-NOT-OC-USER'){
-					Chat.app.view.alert('The user you tried to invite isn\'t a valid owncloud user');
-					// Leave the already joined conversation
-					Chat.och.api.command.leave(newConvId, function(){});
-				} else if (errorMsg === 'SESSION-ALREADY-JOINED') {
-					Chat.app.view.alert(errorMsg);
-				}
-			}
 		);
 	},
 	sendChatMsg : function(convId, msg){

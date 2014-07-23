@@ -29,7 +29,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	$scope.active.user = $scope.contactsObj[OC.currentUser];
 	$scope.initConvs = initvar.initConvs;
 	$scope.initvar = initvar;
-//		$scope.$apply();
 	for (var active in $scope.backends) break;
 	$scope.active.backend =  $scope.backends[active];
 	angular.forEach($scope.backends, function(backend, namespace){
@@ -134,7 +133,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
 					});
 				}
-//				$scope.$apply();
 			}
 		},
 		addChatMsg : function(convId, user, msg, timestamp, backend, noNotify){
@@ -320,17 +318,14 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	};
 
 	$interval(updateContacts, 10000);
-
-	setInterval(function(){
-//		$scope.$apply();
+	$interval(function(){
 		if($scope.title.title === ''){
 			$('title').text($scope.title.default);
 		} else {
 			$('title').text($scope.title.title);
 		}
 	}, 1000);
-	
-	setInterval(function(){
+	$interval(function(){
 		$('title').text($scope.title.default);
 	}, 2000);
 
@@ -348,21 +343,18 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		} else {
 			$scope.title.tile = '';
 		}
-//		$scope.$apply();
 	});
 
 	$scope.notify = function(user){
 		if($scope.title.new_msgs.indexOf(user) == -1){
 			$scope.title.new_msgs.push(user);
 		}
-//		$scope.$apply();
 	};
 
 	window.onfocus = function () {
 		$scope.title.title = '';
 		$scope.title.new_msgs = [];
 		$scope.active.window = true;
-//		$scope.$apply();
 	};
 
 	window.onblur = function () {

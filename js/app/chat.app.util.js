@@ -6,13 +6,6 @@ Chat.app.util = {
 		var seconds = date.getSeconds();
 		return	{hours : date.getHours(), minutes : date.getMinutes(), seconds : date.getSeconds()};
 	},
-	updateContacts : function(){
-		$.post(OC.generateUrl('/apps/chat/contacts')).done(function(contacts){
-			Chat.scope.$apply(function(){
-				Chat.scope.contacts = contacts;
-			});
-		});
-	},
 	isYoutubeUrl : function(url) {
 		if(url.indexOf('https://youtube.com') > -1
 			|| url.indexOf('https://youtube.com') > -1
@@ -24,16 +17,6 @@ Chat.app.util = {
 		} else {
 			return false;
 		}
-	},
-	countObjects : function(objects){
-		var count = 0;
-
-		for (var k in object) {
-			if (object.hasOwnProperty(k)) {
-				++count;
-			}
-		}
-		return count;
 	},
 	isImageUrl : function(url){
 		var imgRegex = /((?:https?):\/\/\S*\.(?:gif|jpg|jpeg|tiff|png|svg|webp))/gi;
@@ -124,5 +107,4 @@ Chat.app.util = {
 		{ "name" : ':worried:' , "url" : OC.imagePath('chat', 'emoji/worried.png') },
 		{ "name" : ':yum:' , "url" : OC.imagePath('chat', 'emoji/yum.png') },
 	]
-
 };

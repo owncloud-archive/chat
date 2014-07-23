@@ -19,7 +19,6 @@
 
 // Fourth load all Chat sub objects
 \OCP\Util::addScript('chat', 'app/chat.app');
-\OCP\Util::addScript('chat', 'app/chat.app.ui');
 \OCP\Util::addScript('chat', 'app/chat.app.view');
 \OCP\Util::addScript('chat', 'app/chat.app.util');
 

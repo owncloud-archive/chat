@@ -24,7 +24,10 @@ Chat.app.view = {
 		return returnBackend;
 	},
 	alert : function(text){
-		Chat.app.ui.alert(text);
+		OC.Notification.showHtml(text);
+		setTimeout(function(){
+			OC.Notification.hide();
+		}, 2000);
 	},
 	replaceUsers : function(convId, users){
 		Chat.scope.$apply(function(){

@@ -209,7 +209,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 
 			setTimeout(function(){
-				Chat.app.ui.scrollDown();
+				$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 			},1); // Give angular some time to apply the msg to scope
 			// Edit tab title when the tab isn't active
 			if(user !== $scope.active.user) {
@@ -225,7 +225,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 		},
 		focusMsgInput : function(){
-			Chat.app.ui.focusMsgInput();
+			$('#chat-msg-input-field').focus()
 		},
 		replaceUsers : function(convId, users){
 			$scope.convs[convId].users = users;
@@ -286,9 +286,9 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	$scope.invite = function(userToInvite){
 		var backend = $scope.convs[$scope.active.conv].backend.name;
 		if(userToInvite === $scope.active.user){
-			Chat.app.ui.alert('You can\'t invite yourself');
+			Chat.app.view.alert('You can\'t invite yourself');
 		} else if(userToInvite === ''){
-			Chat.app.ui.alert('Please provide a user name');
+			Chat.app.view.alert('Please provide a user name');
 		} else {
 			Chat[backend].on.invite($scope.active.conv, userToInvite);
 		}

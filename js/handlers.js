@@ -13,7 +13,7 @@ $(function() {
 			height = height + 36;
 			$('#chat-window-footer').height(height);
 			$('#chat-window-body').css('bottom', height);
-			Chat.app.ui.scrollDown();
+			$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 		}
 	});
 });

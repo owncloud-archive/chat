@@ -20,24 +20,24 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		'chatMsg' : '',
 	};
 	
-		Chat.scope = angular.element($("#app")).scope();
-		var initvar = JSON.parse($('#initvar').text());
-		$scope.contacts = initvar.contacts;
-		$scope.contactsList = initvar.contactsList;
-		$scope.contactsObj = initvar.contactsObj;
-		$scope.backends = initvar.backends;
-		$scope.active.user = $scope.contactsObj[OC.currentUser];
-		$scope.initConvs = initvar.initConvs;
-		$scope.initvar = initvar;
+	Chat.scope = angular.element($("#app")).scope();
+	var initvar = JSON.parse($('#initvar').text());
+	$scope.contacts = initvar.contacts;
+	$scope.contactsList = initvar.contactsList;
+	$scope.contactsObj = initvar.contactsObj;
+	$scope.backends = initvar.backends;
+	$scope.active.user = $scope.contactsObj[OC.currentUser];
+	$scope.initConvs = initvar.initConvs;
+	$scope.initvar = initvar;
 //		$scope.$apply();
-		for (var active in $scope.backends) break;
-		$scope.active.backend =  $scope.backends[active];
-		angular.forEach($scope.backends, function(backend, namespace){
-			if(namespace === 'och'){
-				Chat[namespace].util.init();
-			}
-		});
-		$scope.initDone = true;
+	for (var active in $scope.backends) break;
+	$scope.active.backend =  $scope.backends[active];
+	angular.forEach($scope.backends, function(backend, namespace){
+		if(namespace === 'och'){
+			Chat[namespace].util.init();
+		}
+	});
+	$scope.initDone = true;
 
 
 	$scope.quit = function(){

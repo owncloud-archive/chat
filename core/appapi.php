@@ -193,8 +193,13 @@ class AppApi {
 		$cm = \OC::$server->getContactsManager();
 		// The API is not active -> nothing to do
 
-		$result = $cm->search(\OCP\User::getUser(), array('FN'));
-		$r = $result[0];
+		$result = $cm->search(\OCP\User::getUser(), array('id'));
+		// Finding the correct result
+		foreach($result as $contact){
+			if($contact['id'] ===  \OCP\User::getUser()){
+				$r = $contact;
+			}
+		}
 		$data = array();
 		$data['id'] = $r['id'];
 		$data['displayname'] = $r['FN'];

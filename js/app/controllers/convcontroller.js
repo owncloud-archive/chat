@@ -1,4 +1,4 @@
-Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$interval', function($scope, $http, $filter, $interval) {
 	$scope.convs = {};
 	$scope.contacts = [];
 	$scope.contactsList = [];
@@ -38,7 +38,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', functio
 			}
 		});
 		$scope.initDone = true;
-		setInterval($scope.updateContacts, 20000);
+
 
 	$scope.quit = function(){
 		angular.forEach($scope.backends, function(backend, namespace){
@@ -310,14 +310,17 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', functio
 		return result;
 	};
 
-	$scope.updateContacts = function(){
-		$http({method: 'get', url: OC.generateUrl('/apps/chat/contacts')}).success(function(data, status) {
-			$scope.contacts = data.contacts;
-			$scope.contactsObj = data.contactsObj;
-		});
+	function updateContacts(){
+		var url = OC.generateUrl('/apps/chat/contacts')
+		$http.get('/index.php/apps/chat/contacts?requesttoken=' + oc_requesttoken)
+			.success(function(data, status) {
+				$scope.contacts = data.contacts;
+				$scope.contactsObj = data.contactsObj;
+			});
 	};
 
-	
+	$interval(updateContacts, 10000);
+
 	setInterval(function(){
 //		$scope.$apply();
 		if($scope.title.title === ''){

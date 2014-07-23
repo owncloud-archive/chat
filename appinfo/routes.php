@@ -42,7 +42,7 @@ $application->registerRoutes($this, array(
 		),
 		array(  'name' => 'app#contacts',
 			'url' => '/contacts',
-			'verb' => 'get' // TODO GET
+			'verb' => 'get'
 		)
 	)
 ));

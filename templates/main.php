@@ -22,7 +22,6 @@
 \OCP\Util::addScript('chat', 'app/chat.app.ui');
 \OCP\Util::addScript('chat', 'app/chat.app.view');
 \OCP\Util::addScript('chat', 'app/chat.app.util');
-\OCP\Util::addScript('chat', 'app/chat.app.cache');
 
 
 /***************************/

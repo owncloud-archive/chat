@@ -211,10 +211,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			setTimeout(function(){
 				$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 			},1); // Give angular some time to apply the msg to scope
-			// Edit tab title when the tab isn't active
-			if(user !== $scope.active.user) {
-				Chat.tabTitle = 'New msg from ' + user;
-			}
 
 			// Add raw msgs to raw_msgs
 			$scope.convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});

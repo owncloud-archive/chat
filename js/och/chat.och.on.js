@@ -10,7 +10,7 @@ Chat.och.on = {
 					// we are already in the conv -> make it active
 					Chat.app.view.makeActive(response.data.conv_id);
 				}
-			},
+			}
 		);
 	},
 	sendChatMsg : function(convId, msg){

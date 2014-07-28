@@ -32,15 +32,11 @@ Have chats in your ownCloud!
  - Notification in left-bar when another conversation is active
 
 ## Installation
-The Chat app depends on ownCloud 7.0 which needs to be downloaded via git. Temporary it's needed to checkout the `localuser-addressbook` branch in the core repo.
-After enabling the Chat app you can immediately start with chatting!
-
- - `git clone https://github.com/owncloud/core`
- - `git checkout localuser-addressbook`
- - `cd apps`
- - `git clone https://github.com/owncloud/chat`
- - Follow the installation wizard of ownCloud
- - Enable the Chat app in the apps settings
+The Chat app depends on => ownCloud 7.0.1. This means master (https://github.com/owncloud/core) can be used too.
+Installation is as simple as cloning this repo into your `/apps` directory and enabling it.
+````
+git clone https://github.com/owncloud/chat
+````
 
 ## Contribute
 Contriubtions are very welcome! You can contribute on many ways:

@@ -106,7 +106,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			if($scope.convs[convId].archived && $scope.view.elements.archived === false ){
 				$scope.view.show('archived');
 			}
-
 		},
 		unActive : function(){
 			$scope.active.conv = null;
@@ -207,10 +206,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					time : Chat.app.util.timeStampToDate(timestamp),
 				});
 			}
-
-			setTimeout(function(){
-				$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-			},1); // Give angular some time to apply the msg to scope
 
 			// Add raw msgs to raw_msgs
 			$scope.convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
@@ -384,6 +379,14 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	}, true);
 
 	$scope.emojis = Chat.app.util.emojis;
+
+	$scope.$watch('convs[active.conv].msgs', function(){
+		if($scope.active.conv !== null){
+			setTimeout(function(){
+				$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
+			},250);
+		}
+	}, true);
 
 }]).directive('avatar', function() {
 	return {

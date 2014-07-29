@@ -256,8 +256,13 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			Chat[backend].on.unArchive(convId);
 		}
 
-		firstConv = Chat.scope.getFristConv();
+		$scope.makeFirstConvActive();
+
+	};
+	$scope.makeFirstConvActive = function(){
+		firstConv = $scope.getFristConv();
 		if(firstConv === undefined){
+			$scope.active.conv = null;
 			$scope.view.hide('chat');
 			$scope.view.show('newConv');
 		} else {

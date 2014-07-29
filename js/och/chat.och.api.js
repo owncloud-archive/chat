@@ -123,9 +123,6 @@ Chat.och.api = {
 					var msgs = dataJoin.data.messages;
 					Chat.app.view.addConv(convId, users, backend, msgs);
 				});
-				// TODO move this to the concontroller
-				Chat.app.ui.view('You auto started a new conversation with '
-						+ data.user);
 			}
 		},
 		chatMessage : function(data) {

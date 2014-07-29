@@ -16,6 +16,7 @@ Chat.angular.config(['enhanceTextFilterProvider', function (enhanceTextFilterPro
 			':confounded:' : OC.imagePath('chat', '/emoji/confounded.png'),
 			':confused:' : OC.imagePath('chat', '/emoji/confused.png'),
 			':cry:' : OC.imagePath('chat', '/emoji/cry.png'),
+
 			':disappointed:' : OC.imagePath('chat', '/emoji/disappointed.png'),
 			':disappointed_relieved:' : OC.imagePath('chat', '/emoji/disappointed_relieved.png'),
 			':dizzy_face:' : OC.imagePath('chat', '/emoji/dizzy_face.png'),

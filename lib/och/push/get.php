@@ -21,7 +21,7 @@ class Get extends ChatAPI{
 	public function execute(){
 		session_write_close();
 		try {
-			if($this->cycles > 5){
+			if($this->cycles > (ini_get('max_execution_time') - 5)){
 				$this->state = 'TIME-EXCEEDED';
 			} else {
 				$mapper = $this->app['PushMessageMapper']; // inject API class for db access
@@ -35,9 +35,6 @@ class Get extends ChatAPI{
 			$this->execute();
 		}
 
-//		return new JSONResponse(array('push_msgs' => $commands));
-//		return $this->response;
-//		var_dump($this->response);
 		if($this->state === 'TIME-EXCEEDED'){
 			// out of time
 			return new Error('push', 'get', 'TIME_EXCEEDED');

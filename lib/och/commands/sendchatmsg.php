@@ -2,6 +2,7 @@
 
 namespace OCA\Chat\OCH\Commands;
 
+use OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\UserMapper;
@@ -15,13 +16,13 @@ class SendChatMsg extends ChatAPI {
 
 	public function setRequestData(array $requestData){
 		if(empty($requestData['conv_id'])){
-			throw new RequestDataInvalid("CONV-ID-MUST-BE-PROVIDED");
+			throw new RequestDataInvalid(ApiController::NO_CONV_ID);
 		}
 		if(empty($requestData['chat_msg']) || !array_key_exists('chat_msg', $requestData)){
-			throw new RequestDataInvalid("CHAT-MSG-MUST-BE-PROVIDED");
+			throw new RequestDataInvalid(ApiController::NO_CHAT_MSG);
 		}
 		if(empty($requestData['timestamp'])){
-			throw new RequestDataInvalid("TIMESTAMP-MUST-BE-PROVIDED");
+			throw new RequestDataInvalid(ApiController::NO_TIMESTAMP);
 		}
 		$this->requestData = $requestData;
 	}

@@ -2,6 +2,7 @@
 
 namespace OCA\Chat\OCH\Commands;
 
+use OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\User;
@@ -18,7 +19,7 @@ class Join extends ChatAPI {
 
 	public function setRequestData(array $requestData){
 		if(empty($requestData['conv_id'])){
-			throw new RequestDataInvalid("CONV-ID-MUST-BE-PROVIDED");
+			throw new RequestDataInvalid(ApiController::NO_CONV_ID);
 		}
 		$this->requestData = $requestData;
 	}

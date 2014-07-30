@@ -13,6 +13,19 @@ use OCA\Chat\Db\DBException;
 
 class ApiController extends Controller {
 
+	const INVALID_HTTP_TYPE = 0;
+	const COMMAND_NOT_FOUND = 1;
+	const PUSH_ACTION_NOT_FOUND = 2;
+	const DATA_ACTION_NOT_FOUND = 3;
+	const NO_SESSION_ID = 6;
+	const USER_NOT_EQUAL_TO_OC_USER = 7;
+	const NO_TIMESTAMP = 8;
+	const NO_CONV_ID = 9;
+	const NO_USER_TO_INVITE = 10;
+	const USER_EQUAL_TO_USER_TO_INVITE = 11;
+	const USER_TO_INVITE_NOT_OC_USER = 12;
+	const NO_CHAT_MSG = 13;
+
 	public function __construct(API $api, IRequest $request, IAppContainer $app){
 		parent::__construct($api->getAppName(), $request);
 		$this->app = $app;
@@ -55,13 +68,13 @@ class ApiController extends Controller {
 									return new Error("command", $action, $e->getMessage());
 								}
 							} else {
-								return new Error("command", $action, "USER-NOT-EQUAL-TO-OC-USER");
+								return new Error("command", $action, self::USER_NOT_EQUAL_TO_OC_USER);
 							}
 						} else {
-							return new Error("command", $action, "SESSION-ID-NOT-PROVIDED");
+							return new Error("command", $action,  self::NO_SESSION_ID);
 						}
 					} else {
-						return new Error("command", $action, "COMMAND-NOT-FOUND");
+						return new Error("command", $action, self::COMMAND_NOT_FOUND);
 					}
 
 					break;
@@ -74,13 +87,13 @@ class ApiController extends Controller {
 								$pushClass->setRequestData($data);
 								return $pushClass->execute();
 							} else{
-								return new Error('push', $action, 'SESSION-ID-NOT-PROVIDED');
+								return new Error('push', $action, self::NO_SESSION_ID);
 							}
 						} else {
-							return new Error('push', $action, 'USER-NOT-EQUAL-TO-OC-USER');
+							return new Error('push', $action, self::USER_NOT_EQUAL_TO_OC_USER);
 						}
 					} else {
-						return new Error("command", $action, "PUSH-ACTION-NOT-FOUND");
+						return new Error("command", $action, self::PUSH_ACTION_NOT_FOUND);
 					}
 					break;
 				case "data":
@@ -97,13 +110,13 @@ class ApiController extends Controller {
 									return new Success("command", $action);
 								}
 							} else{
-								return new Error('data', $action, 'SESSION-ID-NOT-PROVIDED');
+								return new Error('data', $action, self::NO_SESSION_ID);
 							}
 						} else {
-							return new Error('data', $action, 'USER-NOT-EQUAL-TO-OC-USER');
+							return new Error('data', $action, self::USER_NOT_EQUAL_TO_OC_USER);
 						}
 					} else {
-						return new Error("command", $action, "DATA-ACTION-NOT-FOUND");
+						return new Error("command", $action, self::DATA_ACTION_NOT_FOUND);
 					}
 					break;
 				}

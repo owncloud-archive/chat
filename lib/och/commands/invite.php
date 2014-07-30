@@ -2,6 +2,7 @@
 
 namespace OCA\Chat\OCH\Commands;
 
+use OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
@@ -22,19 +23,19 @@ class Invite extends ChatAPI {
 	public function setRequestData(array $requestData){
 
 		if(empty($requestData['conv_id'])){
-			throw new RequestDataInvalid("CONV-ID-MUST-BE-PROVIDED");
+			throw new RequestDataInvalid(ApiController::NO_SESSION_ID);
 		}
 
 		if(empty($requestData['user_to_invite'])){
-			throw new RequestDataInvalid("USER-TO-INVITE-MUST-BE-PROVIDED");
+			throw new RequestDataInvalid(ApiController::NO_USER_TO_INVITE);
 		}
 
 		if($requestData['user']['backends']['och']['value'] === $requestData['user_to_invite']['backends']['och']['value']){
-			throw new RequestDataInvalid("USER-EQAUL-TO-USER-TO-INVITE");
+			throw new RequestDataInvalid(ApiController::USER_EQUAL_TO_USER_TO_INVITE);
 		}
 
 		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $this->app['API']->getUsers())){
-			throw new RequestDataInvalid("USER-TO-INVITE-NOT-OC-USER");
+			throw new RequestDataInvalid(ApiController::USER_TO_INVITE_NOT_OC_USER);
 		}
 
 		$this->requestData = $requestData;

@@ -43,6 +43,16 @@ sub readIgnorelist{
 	return %ignore;
 }
 
+sub getPluralInfo {
+	my( $info ) = @_;
+
+	# get string
+	$info =~ s/.*Plural-Forms: (.+)\\n.*/$1/;
+	$info =~ s/^(.*)\\n.*/$1/g;
+
+	return $info;
+}
+
 my $app = shift( @ARGV );
 my $task = shift( @ARGV );
 
@@ -82,12 +92,17 @@ if( $task eq 'read' ){
 
 		foreach my $file ( @totranslate ){
 			next if $ignore{$file};
-			# TODO: add support for twig templates
-			my $keyword = ( $file =~ /\.js$/ ? 't:2' : 't');
+			my $keywords = '';
+			if( $file =~ /\.js$/ ){
+				$keywords = '--keyword=t:2 --keyword=n:2,3';
+			}
+			else{
+				$keywords = '--keyword=t --keyword=n:1,2';
+			}
 			my $language = ( $file =~ /\.js$/ ? 'Python' : 'PHP');
 			my $joinexisting = ( -e $output ? '--join-existing' : '');
 			print "    Reading $file\n";
-			`xgettext --output="$output" $joinexisting --keyword=$keyword --language=$language "$file" --from-code=UTF-8 --package-version="5.0.0" --package-name="$packageName" --msgid-bugs-address="translations\@owncloud.org"`;
+			`xgettext --output="$output" $joinexisting $keywords --language=$language "$file" --add-comments=TRANSLATORS --from-code=UTF-8 --package-version="7.0.0" --package-name="$packageName" --msgid-bugs-address="translations\@owncloud.org"`;
 		}
 		chdir( $whereami );
 	}
@@ -108,18 +123,42 @@ elsif( $task eq 'write' ){
 			my $array = Locale::PO->load_file_asarray( $input );
 			# Create array
 			my @strings = ();
+			my $plurals;
+
 			foreach my $string ( @{$array} ){
-				next if $string->msgid() eq '""';
-				next if $string->msgstr() eq '""';
-				push( @strings, $string->msgid()." => ".$string->msgstr());
+				if( $string->msgid() eq '""' ){
+					# Translator information
+					$plurals = getPluralInfo( $string->msgstr());
+				}
+				elsif( defined( $string->msgstr_n() )){
+					# plural translations
+					my @variants = ();
+					my $identifier = $string->msgid()."::".$string->msgid_plural();
+					$identifier =~ s/"/_/g;
+
+					foreach my $variant ( sort { $a <=> $b} keys( %{$string->msgstr_n()} )){
+						push( @variants, $string->msgstr_n()->{$variant} );
+					}
+
+					push( @strings, "\"$identifier\" => array(".join(",", @variants).")");
+				}
+				else{
+					# singular translations
+					next if $string->msgstr() eq '""';
+					push( @strings, $string->msgid()." => ".$string->msgstr());
+				}
 			}
 			next if $#strings == -1; # Skip empty files
 
+			for (@strings) {
+				s/\$/\\\$/g;
+			}
+
 			# Write PHP file
 			open( OUT, ">$language.php" );
-			print OUT "<?php \$TRANSLATIONS = array(\n";
+			print OUT "<?php\n\$TRANSLATIONS = array(\n";
 			print OUT join( ",\n", @strings );
-			print OUT "\n);\n";
+			print OUT "\n);\n\$PLURAL_FORMS = \"$plurals\";\n";
 			close( OUT );
 		}
 		chdir( $whereami );

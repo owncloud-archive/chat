@@ -131,6 +131,9 @@ Chat.och.api = {
 		},
 		joined : function(data){
 			Chat.app.view.replaceUsers(data.conv_id, data.users);
+		},
+		online : function(data){
+			Chat.app.view.makeUserOnline(data.user.id);
 		}
 	},
 	util : {
@@ -172,13 +175,9 @@ Chat.och.api = {
 				Chat.och.api.on.chatMessage(push_msg.data);
 			} else if (push_msg.type === "joined") {
 				Chat.och.api.on.joined(push_msg.data);
-			} /*
-				 * else if (msg.data.type === "left"){ var conversationID =
-				 * msg.data.param.conversationID; getUsers(server,
-				 * conversationID, function(msg){ if
-				 * (msg.data.param.users.length <= 1){
-				 * deleteConversation(conversationID); } }); }
-				 */
+			} else if (push_msg.type === "online") {
+				Chat.och.api.on.online(push_msg.data);
+			}
 		},
 		getPushMessages : function(success) {
 			Chat.och.api.util.doRequest({

@@ -1,4 +1,4 @@
-Chat.och  : {
+Chat.och  = {
 	INVALID_HTTP_TYPE : 0,
 	COMMAND_NOT_FOUND : 1,
  	PUSH_ACTION_NOT_FOUND : 2,

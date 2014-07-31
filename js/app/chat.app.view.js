@@ -32,5 +32,10 @@ Chat.app.view = {
 		Chat.scope.$apply(function(){
 			Chat.scope.view.makeActive(convId, $event, exception);
 		});
+	},
+	makeUserOnline : function(userId){
+		Chat.scope.$apply(function(){
+			Chat.scope.view.makeUserOnline(userId);
+		});
 	}
 };

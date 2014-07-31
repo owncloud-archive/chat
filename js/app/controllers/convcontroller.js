@@ -223,6 +223,9 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		},
 		notifyMsgInConv : function(convId){
 			$scope.convs[convId].new_msg = true;
+		},
+		makeUserOnline : function(userId){
+			$scope.contactsObj[userId].online = true;
 		}
 	};
 
@@ -311,7 +314,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			});
 	};
 
-	$interval(updateContacts, 10000);
+//	$interval(updateContacts, 10000);
 	$interval(function(){
 		if($scope.title.title === ''){
 			$('title').text($scope.title.default);
@@ -400,7 +403,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				element.online(attrs.isonline, attrs.onlinesize);
 				$scope.$watch('contactsObj', function(){
 					element.online(Chat.scope.contactsObj[attrs.id].online, attrs.onlinesize);
-				});
+				}, true);
 			}
 		}
 	};

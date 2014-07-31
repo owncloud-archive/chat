@@ -31,7 +31,6 @@ class Greet extends ChatAPI {
 
 
 		// The user is now online
-		// check if it was online before -> if so do noting -> if not send a push msg
 		// send a push message to every user to inform this
 		$command = json_encode(array(
 			'type' => 'online',

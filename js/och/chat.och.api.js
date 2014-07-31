@@ -134,6 +134,9 @@ Chat.och.api = {
 		},
 		online : function(data){
 			Chat.app.view.makeUserOnline(data.user.id);
+		},
+		offline : function(data){
+			Chat.app.view.makeUserOffline(data.user.id);
 		}
 	},
 	util : {
@@ -177,6 +180,8 @@ Chat.och.api = {
 				Chat.och.api.on.joined(push_msg.data);
 			} else if (push_msg.type === "online") {
 				Chat.och.api.on.online(push_msg.data);
+			} else if (push_msg.type === "offline") {
+				Chat.och.api.on.offline(push_msg.data);
 			}
 		},
 		getPushMessages : function(success) {

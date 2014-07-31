@@ -37,5 +37,10 @@ Chat.app.view = {
 		Chat.scope.$apply(function(){
 			Chat.scope.view.makeUserOnline(userId);
 		});
+	},
+	makeUserOffline : function(userId){
+		Chat.scope.$apply(function(){
+			Chat.scope.view.makeUserOffline(userId);
+		});
 	}
 };

@@ -226,6 +226,9 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		},
 		makeUserOnline : function(userId){
 			$scope.contactsObj[userId].online = true;
+		},
+		makeUserOffline : function(userId){
+			$scope.contactsObj[userId].online = false;
 		}
 	};
 

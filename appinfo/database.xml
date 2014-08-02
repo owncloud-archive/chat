@@ -84,6 +84,13 @@
 		<name>*dbprefix*chat_och_conversations</name>
 		<declaration>
 			<field>
+				<name>id</name>
+				<type>integer</type>
+				<notnull>true</notnull>
+				<autoincrement>1</autoincrement>
+				<length>4</length>
+			</field>
+			<field>
 				<name>conversation_id</name>
 				<type>text</type>
 				<notnull>true</notnull>
@@ -94,6 +101,13 @@
 	<table>
 		<name>*dbprefix*chat_och_users_in_conversation</name>
 		<declaration>
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<notnull>true</notnull>
+				<autoincrement>1</autoincrement>
+				<length>4</length>
+			</field>
 			<field>
 				<name>conversation_id</name>
 				<type>text</type>
@@ -106,23 +120,30 @@
 				<notnull>true</notnull>
 				<length>64</length>
 			</field>
-            <field>
-                <name>joined</name>
-                <type>bigint</type>
-                <notnull>true</notnull>
-                <length>64</length>
-             </field>
-            <field>
-                <name>archived</name>
-                <type>boolean</type>
-                <notnull>false</notnull>
-                <default>false</default>
-            </field>
-            </declaration>
+			<field>
+				<name>joined</name>
+				<type>bigint</type>
+				<notnull>true</notnull>
+				<length>64</length>
+			 </field>
+			<field>
+				<name>archived</name>
+				<type>boolean</type>
+				<notnull>false</notnull>
+				<default>false</default>
+			</field>
+			</declaration>
 	</table>
 	<table>
 		<name>*dbprefix*chat_och_users_online</name>
 		<declaration>
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<notnull>true</notnull>
+				<autoincrement>1</autoincrement>
+				<length>4</length>
+			</field>
 			<field>
 				<name>user</name>
 				<type>text</type>

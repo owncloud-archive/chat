@@ -41,7 +41,7 @@ SQL;
 			FROM
 				$this->table
 			WHERE
-				user = ?
+				`user` = ?
 SQL;
 		$result = $this->findEntities($sql, array($user));
 		return $result;
@@ -121,11 +121,11 @@ SQL;
 			UPDATE
 				`*PREFIX*chat_och_users_in_conversation`
 			SET
-				archived = ?
+				`archived` = ?
 			WHERE
-				conversation_id = ?
+				`conversation_id` = ?
 			AND
-				user = ?
+				`user` = ?
 SQL;
 		$result = $this->execute($sql, array($archived, $convid, $user));
 	}

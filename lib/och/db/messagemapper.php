@@ -22,7 +22,7 @@ class MessageMapper extends Mapper{
 			AND
 				`timestamp` > (
 					SELECT
-						joined
+						`joined`
 					FROM
 						*PREFIX*chat_och_users_in_conversation
 					WHERE

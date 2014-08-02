@@ -22,7 +22,7 @@ class ConversationMapper extends Mapper {
 	}
 
 	public function existsByConvId($id){
-		$sql = 'SELECT conversation_id FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
+		$sql = 'SELECT `conversation_id` FROM `' . $this->getTableName() . '` ' . 'WHERE `conversation_id` = ?';
 		$result = $this->execute($sql, array($id));
 		if(count($result->fetchAll()) === 1){
 			return true;

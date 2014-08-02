@@ -232,6 +232,7 @@ class AppApi {
 			// Find the correct contact for the correct user
 			$r['och'][$conv->getConversationId()] = array("id" => $conv->getConversationId(), "users"=> $users, "backend" => "och", "archived" => (bool)$conv->getArchived());
 		}
+
 		return $r;
 	}
 

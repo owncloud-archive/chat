@@ -64,7 +64,7 @@ SQL;
 		
 
 	public function findUsersInConv($id){
-		$sql = 'SELECT user FROM `' . $this->getTableName() . '` ' .
+		$sql = 'SELECT `user` FROM `' . $this->getTableName() . '` ' .
 				'WHERE `conversation_id` = ? ';
 
 		$result = $this->execute($sql, array($id));

@@ -1,6 +1,6 @@
 <div ng-if="view.elements.invite" id="controls">
 	<div class="center">
-		Chose some contacts and start conversation
+		<?php p($l->t('Click on a contact to sart a conversation')); ?>
 	</div>
 </div>
 <div

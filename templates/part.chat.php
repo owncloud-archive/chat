@@ -26,7 +26,7 @@
 				<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 			</div>
 			<div id="chat-msg-input">
-				<textarea  id="chat-msg-input-field" autocomplete="off" ng-model="fields.chatMsg"  ng-enter="sendChatMsg()" placeholder="Chat message"></textarea>
+				<textarea  id="chat-msg-input-field" autocomplete="off" ng-model="fields.chatMsg"  ng-enter="sendChatMsg()" placeholder="<?php p($l->t('Chat Message')); ?>"></textarea>
 			</div>
 		</form>
 	</footer>

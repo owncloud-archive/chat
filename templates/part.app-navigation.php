@@ -1,7 +1,7 @@
 <ul>
 	<li ng-class="{ 'conv-list-active' : view.elements.newConv }" ng-click="view.unActive();view.show('newConv');view.hide('chat');" id="conv-list-new-conv">
 		<div class="icon-add icon-32 left">&nbsp;</div>
-		<div class="left">New Conversation</div>
+		<div class="left"><?php p($l->t('New Conversation')); ?></div>
 	</li>
 	<li
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"
@@ -55,7 +55,7 @@
 		id="archived-button"
 		ng-class="{bold : view.elements.showArchived.bold === true}"
 		>
-		Hide Archived Conversations
+		<?php p($l->t('Hide Archived Conversations')); ?>
 	</li>
 	<li
 		ng-if="view.elements.archived === false"
@@ -63,6 +63,6 @@
 		id="archived-button"
 		ng-class="{bold : view.elements.showArchived.bold === true}"
 		>
-		Show Archived Conversations
+		<?php p($l->t('Show Archived Conversations')); ?>
 	</li>
 </ul>

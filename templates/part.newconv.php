@@ -1,6 +1,6 @@
 <div ng-if="view.elements.newConv" id="controls">
 	<p>
-		Chose a contact and start a conversation
+		<?php p($l->t('Click on a contact to sart a conversation')); ?>
 	</p>
 </div>
 <div

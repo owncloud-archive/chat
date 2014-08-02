@@ -65,7 +65,7 @@
 				class="icon-add icon-20 avatar-list-avatar">
 				&nbsp;
 			</div>
-			Add Person
+			<?php p($l->t('Add Person')); ?>
 		</li>
 	</ul>
 </div>

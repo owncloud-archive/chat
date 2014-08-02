@@ -1,12 +1,14 @@
+/**
+ * Copyright (c) 2014, Tobia De Koninck hey--at--ledfan.be
+ * This file is licensed under the AGPL version 3 or later.
+ * See the COPYING file.
+ */
 $(function() {
     $(window).unload(function(){
         Chat.scope.$apply(function(){
             Chat.scope.quit();            
         });
     });
-//    Chat.scope.$apply(function(){
-//        Chat.scope.init();
-//    });
 	$("#chat-msg-input-field").autosize({
 		callback : function(){
 			var height = $("#chat-msg-input-field").height();

@@ -19,7 +19,7 @@ Have chats in your ownCloud!
 **Online and offline state of contacts are updated every 10 seconds**
 [![Offline and Online state of contacts are updated every 10 seconds](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/65ad49ac360606ab3abc5136a3122d7f4fef13ad/ofline-online.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/65ad49ac360606ab3abc5136a3122d7f4fef13ad/ofline-online.png)
 **Inline video and image support**
-[![Inline video and image support(]https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)
+[![Inline video and image support](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)](https://gist.github.com/LEDfan/346d401f75fee2f02dff/raw/0ae5488e28d4eed29190eab16cb8dade50870226/video-image.png)
 
 
 ## Features

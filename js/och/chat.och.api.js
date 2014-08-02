@@ -5,7 +5,7 @@ Chat.och.api = {
 				"type" : "command::join::request",
 				"data" : {
 					"conv_id" : convId,
-					"timestamp" : (new Date()).getTime() / 1000,
+					"timestamp" : Time.now(),
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId
 				}
@@ -16,7 +16,7 @@ Chat.och.api = {
 				"type" : "command::invite::request",
 				"data" : {
 					"conv_id" : convId,
-					"timestamp" : (new Date()).getTime() / 1000,
+					"timestamp" : Time.now(),
 					"user_to_invite" : userToInvite,
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId
@@ -31,7 +31,7 @@ Chat.och.api = {
 					"chat_msg" : msg,
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId,
-					"timestamp" : (new Date()).getTime() / 1000
+					"timestamp" : Time.now()
 				}
 			}, success);
 		},
@@ -41,7 +41,7 @@ Chat.och.api = {
 				"data" : {
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId,
-					"timestamp" : (new Date()).getTime() / 1000
+					"timestamp" : Time.now()
 				}
 			}, function() {
 			});
@@ -52,7 +52,7 @@ Chat.och.api = {
 				"data" : {
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId,
-					"timestamp" : (new Date()).getTime() / 1000
+					"timestamp" : Time.now()
 				}
 			}, function() {
 			});
@@ -63,7 +63,7 @@ Chat.och.api = {
 				"data" : {
 					"user" : Chat.scope.active.user,
 					"session_id" : Chat.och.sessionId,
-					"timestamp" : (new Date()).getTime() / 1000,
+					"timestamp" : Time.now(),
 					"user_to_invite" : userToInvite
 				}
 			}, success);

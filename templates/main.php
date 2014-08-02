@@ -11,7 +11,7 @@
 \OCP\Util::addScript('chat', 'vendor/rangyinputs');
 \OCP\Util::addScript('chat', 'vendor/jquery.autosize.min');
 \OCP\Util::addScript('chat', 'vendor/cache');
-
+\OCP\Util::addScript('chat', 'vendor/time');
 
 
 // Third load the Chat object definition

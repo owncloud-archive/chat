@@ -236,7 +236,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	$scope.sendChatMsg = function(){
 		if ($scope.fields.chatMsg !== ''){
 			var backend = $scope.convs[$scope.active.conv].backend.name;
-			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, new Date().getTime() / 1000, backend);
+			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, Time.now(), backend);
 			Chat[backend].on.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 			$scope.debug.push($scope.fields.chatMsg);
 			$scope.fields.chatMsg = '';
@@ -396,6 +396,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 		},250);
 	}, true);
+
 
 }]).directive('avatar', function() {
 	return {

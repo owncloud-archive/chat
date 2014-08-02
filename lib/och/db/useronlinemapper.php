@@ -9,7 +9,7 @@ class UserOnlineMapper extends Mapper {
 	public function __construct(IDb $api) {
 		parent::__construct($api, 'chat_och_users_online'); // tablename is news_feeds
 	}
-	
+
 	public function getOnlineUsers(){
 		$sql = <<<SQL
 			SELECT

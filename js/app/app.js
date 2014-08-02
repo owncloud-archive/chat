@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2014, Tobia De Koninck hey--at--ledfan.be
+ * This file is licensed under the AGPL version 3 or later.
+ * See the COPYING file.
+ */
 Chat.angular = angular.module('chat', ['ngSanitize', 'bernhardposselt.enhancetext']);
 Chat.angular.config(['enhanceTextFilterProvider', function (enhanceTextFilterProvider) {
 	enhanceTextFilterProvider.setOptions({

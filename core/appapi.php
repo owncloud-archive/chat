@@ -1,6 +1,11 @@
 <?php
-namespace OCA\Chat\Core;
+/**
+ * Copyright (c) 2014, Tobia De Koninck hey--at--ledfan.be
+ * This file is licensed under the AGPL version 3 or later.
+ * See the COPYING file.
+ */
 
+namespace OCA\Chat\Core;
 use \OCA\Chat\Db\Backend;
 use \OCP\AppFramework\IAppContainer;
 use \OCA\Chat\OCH\Commands\SyncOnline;

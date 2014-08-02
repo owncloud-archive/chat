@@ -22,4 +22,3 @@ $app = new Chat();
 $container = $app->getContainer();
 $appApi = $container['AppApi'];
 $appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
-$appApi->registerBackend('Email', 'email','email' , 'true');

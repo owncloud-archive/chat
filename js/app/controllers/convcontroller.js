@@ -382,6 +382,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		var textBefore = $scope.fields.chatMsg.substr(0, selection.start);
 		var textAfter = $scope.fields.chatMsg.substr(selection.end);
 		$scope.fields.chatMsg = textBefore + ' ' + name + ' ' + textAfter + ' ';
+		$scope.view.hide('emojiContaineradd');
 	};
 
 	$scope.$watch('convs', function(){

@@ -540,5 +540,35 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			});
 		}
 	};
+}).directive('showArchived', function () {
+	return {
+		restrict: 'A',
+		link: function ($scope, element, attrs) {
+			var archivedCount = 0;
+			angular.forEach($scope.convs, function(conv, key){
+				if(conv.archived === true){
+					archivedCount++;
+				}
+			});
+			if(archivedCount > 0){
+				element.show();
+			} else {
+				element.hide();
+			}
+			$scope.$watch('convs', function(){
+				var archivedCount = 0;
+				angular.forEach($scope.convs, function(conv, key){
+					if(conv.archived === true){
+						archivedCount++;
+					}
+				});
+				if(archivedCount > 0){
+					element.show();
+				} else {
+					element.hide();
+				}
+			}, true);
+		}
+	};
 });
 

@@ -54,6 +54,7 @@
 		ng-click="view.toggle('archived');"
 		id="archived-button"
 		ng-class="{bold : view.elements.showArchived.bold === true}"
+		show-archived
 		>
 		<?php p($l->t('Hide Archived Conversations')); ?>
 	</li>
@@ -62,6 +63,7 @@
 		ng-click="view.toggle('archived');"
 		id="archived-button"
 		ng-class="{bold : view.elements.showArchived.bold === true}"
+		show-archived
 		>
 		<?php p($l->t('Show Archived Conversations')); ?>
 	</li>

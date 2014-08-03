@@ -6,7 +6,7 @@
 	<li
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"
-		ng-repeat="conv in convs"
+		ng-repeat="conv in convs | orderObjectBy:'order':true""
 		class="conv-list-item"
 		id="conv-list-{{ conv.id }}"
 		ng-if="conv.archived === false"

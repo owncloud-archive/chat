@@ -129,6 +129,16 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				archived = false;
 			}
 			if($scope.convs[convId] === undefined) {
+				// get highest order
+				var sortedConvs = $filter('orderObjectBy')($scope.convs, 'order');
+				if(sortedConvs[sortedConvs.length - 1] !== undefined){
+					var order = sortedConvs[sortedConvs.length - 1].order + 1;
+				} else {
+					var order = 1;
+				}
+
+				console.log(order);
+
 				$scope.convs[convId] = {
 					id : convId,
 					users : users,
@@ -136,7 +146,8 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					backend : backend,
 					archived : archived,
 					new_msg : false,
-					raw_msgs : []
+					raw_msgs : [],
+					order : order
 				};
 				if(!archived){
 					$scope.view.makeActive(convId);
@@ -280,7 +291,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	};
 	$scope.makeFirstConvActive = function(){
-		firstConv = $scope.getFristConv();
+		firstConv = $scope.getFirstConv();
 		if(firstConv === undefined){
 			$scope.active.conv = null;
 			$scope.view.hide('chat');
@@ -290,12 +301,16 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 	};
 
-	$scope.getFristConv = function(){
+	$scope.getFirstConv = function(){
 		for (firstConv in $scope.convs) break;
-		if($scope.convs[firstConv].archived === true){
-			return undefined;
+		if (typeof firstConv !== 'undefined') {
+			if($scope.convs[firstConv].archived === true){
+				return undefined;
+			} else {
+				return firstConv;
+			}
 		} else {
-			return firstConv;
+			return undefined;
 		}
 	}
 
@@ -570,6 +585,18 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				}
 			}, true);
 		}
+	};
+}).filter('orderObjectBy', function() {
+	return function(items, field, reverse) {
+		var filtered = [];
+		angular.forEach(items, function(item) {
+			filtered.push(item);
+		});
+		filtered.sort(function (a, b) {
+			return (a[field] > b[field] ? 1 : -1);
+		});
+		if(reverse) filtered.reverse();
+		return filtered;
 	};
 });
 

@@ -67,6 +67,15 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			'archived' : false,
 			'showArchived' : {'bold' : false}
 		},
+		inviteClick : function(){
+			if($scope.view.elements.chat === true){
+				$scope.view.hide('chat');
+				$scope.view.show('invite');
+			} else {
+				$scope.view.show('chat');
+				$scope.view.hide('invite');
+			}
+		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
 				var classList = $event.target.classList;

@@ -59,7 +59,7 @@
 		</li>
 		<li
 			class="avatar-list-expanded-item invite-button"
-			ng-click="$parent.view.toggle('invite');$parent.view.toggle('chat');"
+			ng-click="$parent.view.inviteClick();"
 			>
 			<div
 				class="icon-add icon-20 avatar-list-avatar">

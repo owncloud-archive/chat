@@ -1,5 +1,5 @@
 <ul>
-	<li ng-class="{ 'conv-list-active' : view.elements.newConv }" ng-click="view.unActive();view.show('newConv');view.hide('chat');" id="conv-list-new-conv">
+	<li ng-class="{ 'conv-list-active' : view.elements.newConv }" ng-click="view.unActive();view.show('newConv');view.hide('chat');view.hide('invite');" id="conv-list-new-conv">
 		<div class="icon-add icon-32 left">&nbsp;</div>
 		<div class="left"><?php p($l->t('New Conversation')); ?></div>
 	</li>
@@ -18,7 +18,7 @@
 	>
 		<?php print_unescaped($this->inc('part.avatar')) ?>
 		<div class="conv-list-item-buttons">
-			<div ng-click="view.toggle('invite');view.toggle('chat');" ng-if="conv.id == active.conv && conv.users.length === 2" class="icon-add right icon-20 invite-button">
+			<div ng-click="view.inviteClick();" ng-if="conv.id == active.conv && conv.users.length === 2" class="icon-add right icon-20 invite-button">
 				&nbsp;
 			</div>
 			<div ng-if="conv.id == active.conv" ng-click="toggleArchive(conv.id)" class="icon-close right icon-20" >

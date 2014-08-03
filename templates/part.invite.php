@@ -1,7 +1,7 @@
 <div ng-if="view.elements.invite" id="controls">
-	<div class="center">
-		<?php p($l->t('Click on a contact to start a conversation')); ?>
-	</div>
+	<p>
+		<?php p($l->t('Click on a contact to add them to the conversation')); ?>
+	</p>
 </div>
 <div
 	ng-class="{'loading icon-loading': contacts.length == 0}"

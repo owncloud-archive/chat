@@ -130,14 +130,8 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 			if($scope.convs[convId] === undefined) {
 				// get highest order
-				var sortedConvs = $filter('orderObjectBy')($scope.convs, 'order');
-				if(sortedConvs[sortedConvs.length - 1] !== undefined){
-					var order = sortedConvs[sortedConvs.length - 1].order + 1;
-				} else {
-					var order = 1;
-				}
 
-				console.log(order);
+				var order = $scope.getHighestOrder();
 
 				$scope.convs[convId] = {
 					id : convId,
@@ -234,6 +228,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 			// Add raw msgs to raw_msgs
 			$scope.convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
+			$scope.convs[convId].order = $scope.getHighestOrder() +1;
 		},
 		addUserToConv : function(convId, user){
 			if($scope.convs[convId].users.indexOf(user) === -1){
@@ -426,6 +421,15 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 		},250);
 	}, true);
+
+	$scope.getHighestOrder = function(){
+		var sortedConvs = $filter('orderObjectBy')($scope.convs, 'order');
+		if(sortedConvs[sortedConvs.length - 1] !== undefined){
+			return sortedConvs[sortedConvs.length - 1].order + 1;
+		} else {
+			return 1;
+		}
+	};
 
 
 }]).directive('avatar', function() {

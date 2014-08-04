@@ -75,7 +75,7 @@ class AppApi {
 		if(count(self::$contacts) == 0){
 			$cm = \OC::$server->getContactsManager();
 
-			$result = $cm->search('',array('FN'));
+			$result = $cm->search('',array('id'));
 			$receivers = array();
 			$contactList = array();
 			$contactsObj = array();

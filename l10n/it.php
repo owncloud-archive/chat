@@ -6,6 +6,7 @@ $TRANSLATIONS = array(
 "Show Archived Conversations" => "Mostra conversazioni archiviate",
 "Add Person" => "Aggiungi persona",
 "Chat Message" => "Messaggio di chat",
+"Click on a contact to add them to the conversation" => "Fai clic su un contatto per aggiungerlo alla conversazione",
 "Click on a contact to start a conversation" => "Fai clic su un contatto per iniziare una conversazione"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

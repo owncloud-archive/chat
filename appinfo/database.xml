@@ -25,14 +25,12 @@
 				<type>text</type>
 				<notnull>true</notnull>
 				<length>64</length>
-				/length>
 			</field>
 			<field>
 				<name>protocol</name>
 				<type>text</type>
 				<notnull>true</notnull>
 				<length>64</length>
-				/length>
 			</field>
 			<field>
 				<name>enabled</name>
@@ -63,7 +61,6 @@
 				<type>text</type>
 				<notnull>true</notnull>
 				<length>64</length>
-				/length>
 			</field>
 			<field>
 				<name>receiver_session_id</name>

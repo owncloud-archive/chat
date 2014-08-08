@@ -21,4 +21,4 @@ use \OCA\Chat\OCH\Db\User;
 $app = new Chat();
 $container = $app->getContainer();
 $appApi = $container['AppApi'];
-$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 'true');
+$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 1);

@@ -1,8 +1,4 @@
 <ul>
-	<li ng-class="{ 'conv-list-active' : view.elements.newConv }" ng-click="view.unActive();view.show('newConv');view.hide('chat');view.hide('invite');" id="conv-list-new-conv">
-		<div class="icon-add icon-32 left">&nbsp;</div>
-		<div class="left"><?php p($l->t('New Conversation')); ?></div>
-	</li>
 	<li
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"

@@ -47,7 +47,6 @@
 		<?php print_unescaped($this->inc('part.app-navigation')) ?>
 	</div>
 	<div id="app-content">
-		<?php print_unescaped($this->inc('part.newconv')) ?>
 		<?php print_unescaped($this->inc('part.invite')) ?>
 		<?php print_unescaped($this->inc('part.chat')) ?>
 	</div>

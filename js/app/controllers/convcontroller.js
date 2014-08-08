@@ -58,7 +58,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	$scope.view = {
 		elements : {
-			"newConv" : true,
+			"emptyMsg" : true,
 			"chat" : false,
 			"initDone" : false,
 			"settings" : false,
@@ -112,7 +112,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$scope.title = newTitle;
 		},
 		makeActive : function(convId, $event, exception){
-			$scope.view.hide('newConv');
+			$scope.view.hide('emptyMsg');
 			$scope.view.show('chat', $event, exception);
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
@@ -266,7 +266,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 	};
 
-	$scope.startNewConv = function(userToInvite){
+	$scope.startemptyMsg = function(userToInvite){
 		var backend = $scope.active.backend;
 		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs){
 			$scope.view.addConv(convId, users, backend, msgs);
@@ -290,7 +290,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		if(firstConv === undefined){
 			$scope.active.conv = null;
 			$scope.view.hide('chat');
-			$scope.view.show('newConv');
+			$scope.view.show('emptyMsg');
 		} else {
 			$scope.view.makeActive(firstConv);
 		}

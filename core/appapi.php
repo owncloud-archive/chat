@@ -240,7 +240,20 @@ class AppApi {
 		foreach($convs as $conv){
 			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$r['och'][$conv->getConversationId()] = array("id" => $conv->getConversationId(), "users"=> $users, "backend" => "och", "archived" => (bool)$conv->getArchived());
+			$getMessages = $this->app['MessagesData'];
+			$getMessages->setRequestData(array(
+				"conv_id" => $conv->getConversationId(),
+				'user' => $this->getCurrentUser()
+			));
+			$messages = $getMessages->execute();
+			$messages = $messages['messages'];
+			$r['och'][$conv->getConversationId()] = array(
+				"id" => $conv->getConversationId(),
+				"users"=> $users,
+				"backend" => "och",
+				"archived" => (bool)$conv->getArchived(),
+				"messages" => $messages
+			);
 			if(count($users) === 2){
 				foreach($users as $user){
 					if($user !== \OCP\User::getUser()){
@@ -264,7 +277,16 @@ class AppApi {
 					)
 				));
 				$info =  $startConv->execute();
-				$r['och'][$info['conv_id']] = array("id" => $info['conv_id'], "users"=> array(\OCP\User::getUser(), $user), "backend" => "och", "archived" => (bool)false);
+				$r['och'][$info['conv_id']] = array(
+					"id" => $info['conv_id'],
+					"users"=> array(
+						\OCP\User::getUser(),
+						$user
+					),
+					"backend" => "och",
+					"archived" => (bool)false,
+					"messages" => array()
+				);
 
 			}
 		}

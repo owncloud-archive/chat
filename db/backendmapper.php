@@ -18,11 +18,19 @@ class BackendMapper extends Mapper {
 	}
 	
 	public function getAll(){
-		return $this->findEntities("SELECT * FROM " . $this->getTableName());
+		try {
+			return  $this->findEntities("SELECT * FROM " . $this->getTableName());
+		} catch (DoesNotExistException $e){
+
+		}
 	}
 
 	public function getAllEnabled(){
-		return $this->findEntities("SELECT * FROM " . $this->getTableName() . " WHERE enabled=1");
+		try {
+			return $this->findEntities("SELECT * FROM " . $this->getTableName() . " WHERE enabled=1");
+		} catch (DoesNotExistException $e){
+
+		}
 	}
 
 	public function exists($name){

@@ -1,3 +1,7 @@
+<div id="filter-container">
+	<input class="filter-field" type="text" placeholder="<?php p($l->t('User or conversation'));?>" ng-model="convFilter">
+	<button class="primary filter-button">Search</button>
+</div>
 <ul>
 	<li
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"

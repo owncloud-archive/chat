@@ -96,9 +96,14 @@ class AppApi {
 					$r['IMPP'] = array();
 				}
 				$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
-				list($addressBookBackend, $addressBookId) = explode(':', $r['addressbook-key']);
-				$data['address_book_id'] = $addressBookId;
-				$data['address_book_backend'] = $addressBookBackend;
+				$addressbookKey = explode(':', $r['addressbook-key']);
+				if(count($addressbookKey) === 2){
+					$data['address_book_id'] = $addressbookKey[0];
+					$data['address_book_backend'] = $addressbookKey[1];
+				} else {
+					$data['address_book_id'] = $addressbookKey[0];
+					$data['address_book_backend'] = '';
+				}
 				$receivers[] = $data;
 				$contactsObj[$r['id']] = $data;
 			}
@@ -216,9 +221,14 @@ class AppApi {
 			$r['IMPP'] = array();
 		}
 		$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
-		list($addressBookBackend, $addressBookId) = explode(':', $r['addressbook-key']);
-		$data['address_book_id'] = $addressBookId;
-		$data['address_book_backend'] = $addressBookBackend;
+		$addressbookKey = explode(':', $r['addressbook-key']);
+		if(count($addressbookKey) === 2){
+			$data['address_book_id'] = $addressbookKey[0];
+			$data['address_book_backend'] = $addressbookKey[1];
+		} else {
+			$data['address_book_id'] = $addressbookKey[0];
+			$data['address_book_backend'] = '';
+		}
 		return $data;
 	}
 

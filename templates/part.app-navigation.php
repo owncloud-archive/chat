@@ -1,12 +1,11 @@
 <div id="filter-container">
-	<input class="filter-field" type="text" placeholder="<?php p($l->t('User or conversation'));?>" ng-model="convFilter">
-	<button class="primary filter-button">Search</button>
+	<input class="filter-field" type="text" placeholder="<?php p($l->t('Search in conversations'));?>" ng-model="search.name">
 </div>
 <ul>
 	<li
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"
-		ng-repeat="conv in convs | orderObjectBy:'order':true""
+		ng-repeat="conv in convs | orderObjectBy:'order':true | filter:search "
 		class="conv-list-item"
 		id="conv-list-{{ conv.id }}"
 		ng-if="conv.archived === false"
@@ -30,7 +29,7 @@
 		ng-if="(view.elements.archived === true) && (conv.archived === true)"
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"
-		ng-repeat="conv in convs"
+		ng-repeat="conv in convs  | filter:search"
 		class="conv-list-item archived"
 		id="conv-list-{{ conv.id }}"
 		auto-height

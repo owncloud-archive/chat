@@ -128,6 +128,16 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			if(archived === undefined){
 				archived = false;
 			}
+
+			// generate conv name
+			var name  = '';
+			angular.forEach(users, function(user, key){
+				if(user.id !== Chat.scope.active.user.id){
+					name += user.displayname + ' ';
+				}
+			});
+			// end generate conv name
+
 			if($scope.convs[convId] === undefined) {
 				// get highest order
 
@@ -141,7 +151,8 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					archived : archived,
 					new_msg : false,
 					raw_msgs : [],
-					order : order
+					order : order,
+					name : name
 				};
 				if(!archived){
 					$scope.view.makeActive(convId);
@@ -266,12 +277,12 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 	};
 
-	$scope.startemptyMsg = function(userToInvite){
-		var backend = $scope.active.backend;
-		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs){
-			$scope.view.addConv(convId, users, backend, msgs);
-		});
-	};
+//	$scope.startemptyMsg = function(userToInvite){
+//		var backend = $scope.active.backend;
+//		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs, name){
+//			$scope.view.addConv(convId, users, backend, msgs, undefined, name);
+//		});
+//	};
 
 	$scope.toggleArchive = function(convId){
 		var backend = $scope.convs[convId].backend.name;
@@ -395,7 +406,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		$scope.view.hide('emojiContaineradd');
 	};
 
-	$scope.$watch('convs', function(){
+	$scope.$watch('convs', function(){name
 		var bold  = false;
 		var forLoop = true;
 		for(index in $scope.convs){

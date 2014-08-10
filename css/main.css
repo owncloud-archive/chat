@@ -421,17 +421,15 @@
 	top:0;
 	left:0;
 	right:0;
-	margin-top:20px;
-	margin-bottom:20px;
-	margin-right:80px;
-	margin-left:80px;
+	margin:30px;
 	border:1px solid #1D2D44;
+	border-radius: 3px;
 }
 
 #invite-container ul {
 	overflow:auto;
 	position: absolute;
-	top: 50px;
+	top: 60px;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -443,7 +441,7 @@
 }
 
 .invite-contact-search input {
-	width: 220px;
+	width: 230px;
 	position:fixed;
 }
 
@@ -451,8 +449,8 @@
 	padding:10px;
 	position:fixed;
 	background-color:#304D76;
-	width:230px;
-	height:50px;
+	width:250px;
+	height:60px;
 
 }
 

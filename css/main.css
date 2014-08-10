@@ -3,21 +3,6 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-.contact-container {
-	margin: 20px;
-	margin-left: 20px;
-	position: relative;
-	float: left;
-	position: relative;
-	width: 220px;
-	height: 200px;
-	border-radius: 5px;
-}
-
-.contact-container:hover {
-
-}
-
 .contact {
 	position: absolute;
 	top: 0px;
@@ -26,24 +11,6 @@
 	height: 200px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-}
-
-.contact img {
-	width: 200px;
-	height: 200px;
-	border-radius-right: 5px;
-}
-
-.contact-label {
-	text-shadow: 0px 0px 10px #000;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	color: #ffffff;
-	width: 100%;
-	text-align: center;
-	font-size: 18px;
-	padding-bottom: 5px;
 }
 
 #main-panel {
@@ -210,10 +177,6 @@
 
 .heightInvite {
 	height: 100px;
-}
-
-#invite-container {
-	margin-top: 10px;
 }
 
 .loading {
@@ -448,4 +411,53 @@
 #app-navigation {
 	float: left;
 	position:relative;
+}
+
+#invite-container {
+	width:250px;
+	height: 100%;
+	padding:30px;
+	position:relative;
+}
+
+#invite-container ul{
+	overflow:auto;
+	position: absolute;
+	left:30px;
+	top:30px;
+	bottom:30px;
+	border:1px solid #1D2D44;
+	width:250px;
+}
+
+#invite-container ul li:nth-child(2) {
+	margin-top:40px;
+}
+
+.invite-contact {
+	height:30px;
+	padding:10px;
+}
+
+.invite-contact-search input {
+	width: 220px;
+	position:fixed;
+}
+
+.invite-contact-search {
+	padding:10px;
+	position:fixed;
+	background-color:#304D76;
+	width:230px;
+	height:50px;
+
+}
+
+.invite-contact-avatar {
+	float:left;
+}
+
+.invite-contact-name {
+	float:left;
+	margin-left:10px;
 }

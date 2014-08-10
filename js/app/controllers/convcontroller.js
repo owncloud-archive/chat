@@ -274,6 +274,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			setTimeout(function(){
 				$('#chat-msg-input-field').trigger('autosize.resize');
 			},1);
+			$('#chat-msg-input-field').focus();
 		}
 	};
 

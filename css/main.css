@@ -162,13 +162,6 @@
 	position: absolute;
 }
 
-#conv-list-new-conv {
-	height: 44px !important;
-	color: #555;
-	font-weight: bold;
-	font-size: 1.1em;
-}
-
 #container {
 	position: absolute;
 	height: 100%;
@@ -402,4 +395,53 @@
 
 .avatar-list-expanded-item div {
 	margin-right:10px;
+}
+
+#no-users {
+	text-align:center;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #555;
+	height:100px;
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.filter-button {
+	margin: 1px 0px 5px;
+	display: inline-block;
+	float: left;
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px;
+	height: 30px !important;
+}
+
+.filter-field {
+	float:left;
+}
+
+#filter-container {
+	/*width:100%;*/
+	height:60px;
+	padding:10px;
+	margin: 0;
+	position: fixed;
+	z-index: 100;
+	background-color:#F5F5F5;
+}
+#filter-container input {
+	margin:0;
+	width:215px;
+}
+#app-navigation > ul {
+	float: left;
+	width: 100%;
+	position: absolute;
+	padding-top: 60px;
+}
+
+#app-navigation {
+	float: left;
+	position:relative;
 }

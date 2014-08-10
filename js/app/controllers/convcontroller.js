@@ -58,7 +58,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	$scope.view = {
 		elements : {
-			"newConv" : true,
+			"emptyMsg" : true,
 			"chat" : false,
 			"initDone" : false,
 			"settings" : false,
@@ -112,7 +112,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$scope.title = newTitle;
 		},
 		makeActive : function(convId, $event, exception){
-			$scope.view.hide('newConv');
+			$scope.view.hide('emptyMsg');
 			$scope.view.show('chat', $event, exception);
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
@@ -128,7 +128,21 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			if(archived === undefined){
 				archived = false;
 			}
+
+			// generate conv name
+			var name  = '';
+			angular.forEach(users, function(user, key){
+				if(user.id !== Chat.scope.active.user.id){
+					name += user.displayname + ' ';
+				}
+			});
+			// end generate conv name
+
 			if($scope.convs[convId] === undefined) {
+				// get highest order
+
+				var order = $scope.getHighestOrder();
+
 				$scope.convs[convId] = {
 					id : convId,
 					users : users,
@@ -136,7 +150,9 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					backend : backend,
 					archived : archived,
 					new_msg : false,
-					raw_msgs : []
+					raw_msgs : [],
+					order : order,
+					name : name
 				};
 				if(!archived){
 					$scope.view.makeActive(convId);
@@ -223,6 +239,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 			// Add raw msgs to raw_msgs
 			$scope.convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
+			$scope.convs[convId].order = $scope.getHighestOrder() +1;
 		},
 		addUserToConv : function(convId, user){
 			if($scope.convs[convId].users.indexOf(user) === -1){
@@ -260,12 +277,12 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 	};
 
-	$scope.startNewConv = function(userToInvite){
-		var backend = $scope.active.backend;
-		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs){
-			$scope.view.addConv(convId, users, backend, msgs);
-		});
-	};
+//	$scope.startemptyMsg = function(userToInvite){
+//		var backend = $scope.active.backend;
+//		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs, name){
+//			$scope.view.addConv(convId, users, backend, msgs, undefined, name);
+//		});
+//	};
 
 	$scope.toggleArchive = function(convId){
 		var backend = $scope.convs[convId].backend.name;
@@ -280,22 +297,26 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	};
 	$scope.makeFirstConvActive = function(){
-		firstConv = $scope.getFristConv();
+		firstConv = $scope.getFirstConv();
 		if(firstConv === undefined){
 			$scope.active.conv = null;
 			$scope.view.hide('chat');
-			$scope.view.show('newConv');
+			$scope.view.show('emptyMsg');
 		} else {
 			$scope.view.makeActive(firstConv);
 		}
 	};
 
-	$scope.getFristConv = function(){
+	$scope.getFirstConv = function(){
 		for (firstConv in $scope.convs) break;
-		if($scope.convs[firstConv].archived === true){
-			return undefined;
+		if (typeof firstConv !== 'undefined') {
+			if($scope.convs[firstConv].archived === true){
+				return undefined;
+			} else {
+				return firstConv;
+			}
 		} else {
-			return firstConv;
+			return undefined;
 		}
 	}
 
@@ -385,7 +406,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		$scope.view.hide('emojiContaineradd');
 	};
 
-	$scope.$watch('convs', function(){
+	$scope.$watch('convs', function(){name
 		var bold  = false;
 		var forLoop = true;
 		for(index in $scope.convs){
@@ -411,6 +432,15 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 		},250);
 	}, true);
+
+	$scope.getHighestOrder = function(){
+		var sortedConvs = $filter('orderObjectBy')($scope.convs, 'order');
+		if(sortedConvs[sortedConvs.length - 1] !== undefined){
+			return sortedConvs[sortedConvs.length - 1].order + 1;
+		} else {
+			return 1;
+		}
+	};
 
 
 }]).directive('avatar', function() {
@@ -570,6 +600,18 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				}
 			}, true);
 		}
+	};
+}).filter('orderObjectBy', function() {
+	return function(items, field, reverse) {
+		var filtered = [];
+		angular.forEach(items, function(item) {
+			filtered.push(item);
+		});
+		filtered.sort(function (a, b) {
+			return (a[field] > b[field] ? 1 : -1);
+		});
+		if(reverse) filtered.reverse();
+		return filtered;
 	};
 });
 

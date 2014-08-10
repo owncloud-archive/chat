@@ -200,13 +200,17 @@ class AppApi {
 	 * @return array
 	 */
 	public function getCurrentUser(){
+		return $this->getUserasContact(\OCP\User::getUser());
+	}
+
+	public function getUserasContact($id){
 		$cm = \OC::$server->getContactsManager();
 		// The API is not active -> nothing to do
 
-		$result = $cm->search(\OCP\User::getUser(), array('id'));
+		$result = $cm->search($id, array('id'));
 		// Finding the correct result
 		foreach($result as $contact){
-			if($contact['id'] ===  \OCP\User::getUser()){
+			if($contact['id'] ===  $id){
 				$r = $contact;
 			}
 		}
@@ -231,7 +235,6 @@ class AppApi {
 		}
 		return $data;
 	}
-
 	/**
 	 * @return array
 	 * @todo porting
@@ -241,11 +244,61 @@ class AppApi {
 
 		$userMapper = $this->app['UserMapper'];
 		$convs = $userMapper->findByUser(\OCP\User::getUser());
-		
+
+
+		$usersAllreadyInConv = array();
 		foreach($convs as $conv){
 			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$r['och'][$conv->getConversationId()] = array("id" => $conv->getConversationId(), "users"=> $users, "backend" => "och", "archived" => (bool)$conv->getArchived());
+			$getMessages = $this->app['MessagesData'];
+			$getMessages->setRequestData(array(
+				"conv_id" => $conv->getConversationId(),
+				'user' => $this->getCurrentUser()
+			));
+			$messages = $getMessages->execute();
+			$messages = $messages['messages'];
+			$r['och'][$conv->getConversationId()] = array(
+				"id" => $conv->getConversationId(),
+				"users"=> $users,
+				"backend" => "och",
+				"archived" => (bool)$conv->getArchived(),
+				"messages" => $messages
+			);
+			if(count($users) === 2){
+				foreach($users as $user){
+					if($user !== \OCP\User::getUser()){
+						$usersAllreadyInConv[] = $user;
+					}
+				}
+			}
+		}
+
+		$allUsers = \OCP\User::getUsers();
+		$users = array_diff($allUsers, $usersAllreadyInConv);
+		// $users hold the users whe doens't have a conv with
+
+		$startConv = $this->app['StartConvCommand'];
+		foreach($users as $user){
+			if($user !== \OCP\User::getUser()){
+				$startConv->setRequestData(array(
+					"user" => $this->getCurrentUser(),
+					"user_to_invite" => array(
+						$this->getUserasContact($user),
+					)
+				));
+				$info =  $startConv->execute();
+				$r['och'][$info['conv_id']] = array(
+					"id" => $info['conv_id'],
+					"users"=> array(
+						\OCP\User::getUser(),
+						$user
+					),
+					"backend" => "och",
+					"archived" => (bool)false,
+					"messages" => array()
+				);
+
+			}
 		}
 
 		return $r;

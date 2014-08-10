@@ -152,6 +152,8 @@
 	margin-left: 10px;
 	word-wrap: break-word;
 	white-space: pre-line;
+	font-size: 14px;
+	line-height: 1.6;
 }
 
 #chat-window-msgs {
@@ -329,7 +331,9 @@
 	width:265px;
 }
 .chat-msg-msg video, .chat-msg-msg img, .chat-msg-msg iframe, .chat-msg-msg a img {
-	display:block;
+	height:20px;
+	width:20px;
+	vertical-align: middle;
 }
 
 #controls {

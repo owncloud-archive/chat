@@ -330,7 +330,12 @@
 #emoji-search {
 	width:265px;
 }
-.chat-msg-msg video, .chat-msg-msg img, .chat-msg-msg iframe, .chat-msg-msg a img {
+
+.chat-msg-msg video, .chat-msg-msg iframe, .chat-msg-msg > a > img {
+	display:block;
+}
+
+.chat-msg-msg > img {
 	height:20px;
 	width:20px;
 	vertical-align: middle;

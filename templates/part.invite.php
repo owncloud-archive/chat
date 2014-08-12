@@ -1,4 +1,4 @@
-<div  ng-if="view.elements.invite" class="invite-no-hide" id="invite-container">
+<div invite-mobile ng-if="view.elements.invite" class="invite-no-hide" id="invite-container">
 <!--	<div id="invite-container-inner">-->
 		<div class="invite-contact-search invite-no-hide">
 			<input class="filter-field invite-no-hide" type="text" placeholder="<?php p($l->t('Search in users'));?>" ng-model="inviteSearch.displayname">

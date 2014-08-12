@@ -70,13 +70,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		inviteClick : function(){
 			$scope.view.toggle('invite');
 			// Check if we are on a small screen
-			if($(window).width() < 768){
-				// we are
-				// this means the navigation is hidden
-				// we have to position the invite popover below the "add person" button
-				alert('jepz');
-
-			}
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -624,5 +617,26 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		if(reverse) filtered.reverse();
 		return filtered;
 	};
-});
+}).directive('inviteMobile', function () {
+	return {
+		restrict: 'A',
+		link: function ($scope, element, attrs) {
+			if($(window).width() < 768){
+				// we are
+				// this means the navigation is hidden
+				// we have to position the invite popover below the "add person" button
+				element.addClass('invite-container-mobile');
+				var height = $('.conv-list-active').height();
+				if(height <= 60){
+					height = height + 70;
+				} else {
+					height = height + 60;
+				}
+				element.attr('style', 'margin-top: ' + height + 'px !important');
+
+
+			}
+		}
+	};
+})
 

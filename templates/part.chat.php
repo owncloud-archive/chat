@@ -31,7 +31,11 @@
 		</form>
 	</footer>
 	<div ng-if="view.elements.emojiContainer" id="emoji-container">
-		<input placeholder="Search" id="emoji-search" type="text" ng-model="emojiSearch">
+		<div
+			id="emoji-container-search"
+		>
+			<input placeholder="Search" id="emoji-search" type="text" ng-model="emojiSearch">
+		</div>
 		<ul id="emoji-list">
 			<li ng-click="addEmoji(emoji.name)" ng-repeat="emoji in emojis | filter:emojiSearch">
 				<img title="{{ emoji.name }}" src="{{ emoji.url }}" class="ec-emoji">

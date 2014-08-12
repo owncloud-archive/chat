@@ -270,22 +270,35 @@
 .avatar-list-container div,.avatar-list-container img {
 	right: 0;
 }
+
 #emoji-container {
 	position: absolute;
-	height: 190px;
+	height: 210px;
 	width: 300px;
 	right: 20px;
 	bottom: 90px;
 	background-color: #eeeeee;
-	border-radius: 5px;
-	border: 1px solid #D2D2D2;
+	border-radius: 3px;
+	border:1px solid #1D2D44;
+}
+
+#emoji-container-search {
+	padding:10px;
+	position:fixed;
+	background-color:#304D76;
+	height:60px;
+	width: 300px;
+}
+
+#emoji-list {
 	padding: 10px;
 	overflow:auto;
-}
-#emoji-list {
-   	-webkit-column-count: 3;
-   	-moz-column-count: 3;
-	column-count: 3;
+	position: absolute;
+	top: 60px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
 }
 #emoji-list li {
 	display: inline-block; 

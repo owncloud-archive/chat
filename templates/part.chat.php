@@ -18,11 +18,13 @@
 		</div>
 	</section>
 	<footer id="chat-window-footer">
-		<div class="chat-msg-button" >
-			<button ng-click="view.toggle('emojiContainer')" ><img src=" <?php echo \OCP\Util::imagePath('chat', 'emoji/smile.png'); ?>"></button>
-		</div>
 		<form id="chat-msg-form" ng-submit="sendChatMsg()">
-			<div class="chat-msg-button" >
+			<img
+				ng-click="view.toggle('emojiContainer')"
+				src=" <?php echo \OCP\Util::imagePath('chat', 'emoji/smile.png'); ?>"
+				class="chat-msg-emoji-button"
+				>
+			<div class="chat-msg-send-button" >
 				<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 			</div>
 			<div id="chat-msg-input">

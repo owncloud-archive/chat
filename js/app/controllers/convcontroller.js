@@ -133,14 +133,17 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				archived = false;
 			}
 
-			// generate conv name
+			// generate conv name + higher order of contacts
 			var name  = '';
 			angular.forEach(users, function(user, key){
 				if(user.id !== Chat.scope.active.user.id){
 					name += user.displayname + ' ';
+					var order = $scope.getHighestOrderContacts();
+					$scope.contactsObj[user.id].order = order;
 				}
 			});
 			// end generate conv name
+
 
 			if($scope.convs[convId] === undefined) {
 				// get highest order
@@ -275,10 +278,20 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			Chat[backend].on.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 			$scope.debug.push($scope.fields.chatMsg);
 			$scope.fields.chatMsg = '';
+			var order = $scope.getHighestOrderContacts();
 			setTimeout(function(){
 				$('#chat-msg-input-field').trigger('autosize.resize');
 			},1);
 			$('#chat-msg-input-field').focus();
+
+			angular.forEach($scope.convs[$scope.active.conv].users, function(user, key){
+				if(user.id !== Chat.scope.active.user.id){
+					var order = $scope.getHighestOrderContacts();
+					$scope.contactsObj[user.id].order = order;
+				}
+			});
+
+
 		}
 	};
 
@@ -334,6 +347,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 		$scope.view.hide('invite');
 		$scope.view.makeActive($scope.active.conv);
+
+		var order = $scope.getHighestOrderContacts();
+		$scope.contactsObj[userToInvite.id].order = order;
+
 	};
 
 	$scope.findContactByUser = function(user, namespace){
@@ -447,6 +464,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 	};
 
+	$scope.getHighestOrderContacts = function(){
+		var sortedContacts = $filter('orderObjectBy')($scope.contactsObj, 'order');
+		return sortedContacts[sortedContacts.length - 1].order + 1;
+	};
 
 }]).directive('avatar', function() {
 	return {
@@ -481,7 +502,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 }).filter('userFilter', function() {
 	return function(users) {
 		var output = [];
-		users.forEach(function(user, index){
+		angular.forEach(users, function(user, index){
 			if(user.id !== Chat.scope.active.user.id){
 				output.push(user);
 			}

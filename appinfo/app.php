@@ -17,7 +17,6 @@ use \OCA\Chat\OCH\Db\User;
 	'name' => \OCP\Util::getL10n('chat')->t('Chat')
 ));
 
-\OCP\App::registerAdmin('chat', 'admin');
 $app = new Chat();
 $container = $app->getContainer();
 $appApi = $container['AppApi'];

@@ -68,13 +68,13 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			'showArchived' : {'bold' : false}
 		},
 		inviteClick : function(){
-			if($scope.view.elements.chat === true){
-				$scope.view.hide('chat');
-				$scope.view.show('invite');
-			} else {
-				$scope.view.show('chat');
-				$scope.view.hide('invite');
-			}
+//			if($scope.view.elements.chat === true){
+//				$scope.view.hide('chat');
+				$scope.view.toggle('invite');
+//			} else {
+//				$scope.view.show('chat');
+//				$scope.view.hide('invite');
+//			}
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -88,14 +88,16 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 			$scope.view.elements[element] = true;
 		},
-		hide : function(element, $event, exception){
+		hide : function(element, $event, exceptions){
 			if($event !== undefined){
 				var classList = $event.target.classList;
-				if(classList.contains(exception)){
-					// the clicked item containted the exception class
-					// this mean probably that we clicked on the item in side the viewed div
-					// thus the div don't need to be hided;
-					return;
+				for(var i = 0; i < exceptions.length; i++){
+					if(classList.contains(exceptions[i])){
+						// the clicked item containted the exception class
+						// this mean probably that we clicked on the item in side the viewed div
+						// thus the div don't need to be hided;
+						return;
+					}
 				}
 			}
 			$scope.view.elements[element] = false;

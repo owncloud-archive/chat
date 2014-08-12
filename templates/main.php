@@ -39,7 +39,7 @@
 \OCP\Util::addScript('chat', 'handlers');
 
 ?>
-<div ng-click="view.hide('settings', $event, 'backend')" ng-controller="ConvController" ng-app="chat" id="app">
+<div ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button'])" ng-controller="ConvController" ng-app="chat" id="app">
 	<div style="display:none;" id="initvar">
 		<?php echo $_['initvar']?>
 	</div>

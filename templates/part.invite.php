@@ -1,11 +1,11 @@
-<div  ng-if="view.elements.invite" id="invite-container">
+<div  ng-if="view.elements.invite" class="invite-no-hide" id="invite-container">
 <!--	<div id="invite-container-inner">-->
-		<div class="invite-contact-search">
-			<input class="filter-field" type="text" placeholder="<?php p($l->t('Search in users'));?>" ng-model="inviteSearch.displayname">
+		<div class="invite-contact-search invite-no-hide">
+			<input class="filter-field invite-no-hide" type="text" placeholder="<?php p($l->t('Search in users'));?>" ng-model="inviteSearch.displayname">
 		</div>
 		<ul>
 			<li
-				class="invite-contact"
+				class="invite-contact invite-no-hide"
 				ng-repeat="contact in contacts | userFilter | filter:inviteSearch"
 				ng-click="invite(contact)"
 			>
@@ -17,10 +17,10 @@
 					data-addressbook-backend="{{ contact.address_book_backend }}"
 					data-addressbook-id="{{ contact.address_book_id  }}"
 					avatar
-					class="invite-contact-avatar"
+					class="invite-contact-avatar invite-no-hide"
 					>
 				</div>
-				<div class="invite-contact-name">
+				<div class="invite-contact-name invite-no-hide">
 					{{ contact.displayname }}
 				</div>
 			</li>

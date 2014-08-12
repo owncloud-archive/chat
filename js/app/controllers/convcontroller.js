@@ -68,13 +68,15 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			'showArchived' : {'bold' : false}
 		},
 		inviteClick : function(){
-//			if($scope.view.elements.chat === true){
-//				$scope.view.hide('chat');
-				$scope.view.toggle('invite');
-//			} else {
-//				$scope.view.show('chat');
-//				$scope.view.hide('invite');
-//			}
+			$scope.view.toggle('invite');
+			// Check if we are on a small screen
+			if($(window).width() < 768){
+				// we are
+				// this means the navigation is hidden
+				// we have to position the invite popover below the "add person" button
+				alert('jepz');
+
+			}
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -122,6 +124,13 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			if($scope.convs[convId].archived && $scope.view.elements.archived === false ){
 				$scope.view.show('archived');
 			}
+
+			var order = $scope.getHighestOrder();
+			order++;
+			$scope.convs[convId].order = order;
+
+
+
 		},
 		unActive : function(){
 			$scope.active.conv = null;

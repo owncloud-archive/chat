@@ -60,12 +60,14 @@
 
 #chat-window-footer {
 	position: absolute;
-	height: 80px;
+	height: 65px;
 	bottom: 0;
 	width: 100%;
 	background-color: #EEE;
 	border-top: #D2D2D2 solid 1px;
 	box-sizing: border-box;
+	margin:0;
+	padding:0;
 }
 
 #app-navigation ul li {
@@ -86,32 +88,34 @@
 }
 
 #chat-msg-input {
-	margin-right: 90px;
+	margin-right: 65px;
 }
 
 #chat-msg-input-field {
 	width: 100%;
+	margin:0;
 }
 
-.chat-msg-button {
-	width: 32px;
-	height: 32px;
-	float: right;
-	margin-right: 10px;
+.chat-msg-send-button {
+	float:right;
+}
+.chat-msg-send-button button {
+	height:63px;
+	width:64px;
+	margin:0;
 }
 
-.chat-msg-button button {
-	width: 32px;
-	height: 32px;
-}
-
-.chat-msg-button img{
-	 width: 16px;
-	 height: 16px;
+.chat-msg-emoji-button {
+	position:absolute;
+	width:32px;
+	height:32px;
+	right: 70px;
+	top: 5px;
 }
 
 #chat-msg-form {
 	width: 100%;
+	position: relative;
 }
 
 .conv-new-msg {

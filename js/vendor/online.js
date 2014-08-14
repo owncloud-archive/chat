@@ -7,9 +7,9 @@
 	$.fn.online = function(isonline) {
 		var $div = this;
 		if(isonline === 'true' || isonline === true){
-			$div.next().addClass('online-dot-container');
+			$div.next().addClass('online-dot');
 		} else {
-			$div.next().removeClass('online-dot-container');
+			$div.next().removeClass('online-dot');
 		}
 	};
 }(jQuery));

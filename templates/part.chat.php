@@ -18,8 +18,7 @@
 							online
 						>
 						</div>
-						<div
-						>
+						<div>
 							<!--
 							This is a place holder div for the green dot which is used to indicate the online status of the contact
 							-->

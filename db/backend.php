@@ -19,6 +19,6 @@ class Backend extends Entity {
 	public $protocol;
 
 	public function __construct(){
-
+		$this->addType('enabled', 'boolean');
 	}
 }

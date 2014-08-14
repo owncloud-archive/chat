@@ -4,12 +4,12 @@
  * See the COPYING file.
  */
 (function ($) {
-	$.fn.online = function(isonline, size) {
+	$.fn.online = function(isonline) {
 		var $div = this;
 		if(isonline === 'true' || isonline === true){
-			$div.parent().css('border-left', size + 'px solid #3CB371');
+			$div.next().addClass('online-dot');
 		} else {
-			$div.parent().css('border-left', size + 'px solid #B22222');
+			$div.next().removeClass('online-dot');
 		}
 	};
 }(jQuery));

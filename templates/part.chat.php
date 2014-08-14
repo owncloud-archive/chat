@@ -7,7 +7,22 @@
 				</div>
 				<div class="chat-msg">
 					<div class="msg-avatar-container" >
-						<div data-size="32" data-onlinesize="5" data-id="{{ msg.contact.id }}" isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}" data-displayname="{{ msg.contact.displayname }}" data-addressbook-backend="{{ msg.contact.address_book_backend }}" data-addressbook-id="{{ msg.contact.address_book_id  }}" avatar>
+						<div
+							data-size="40"
+							data-id="{{ msg.contact.id }}"
+							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
+							data-displayname="{{ msg.contact.displayname }}"
+							data-addressbook-backend="{{ msg.contact.address_book_backend }}"
+							data-addressbook-id="{{ msg.contact.address_book_id  }}"
+							avatar
+							online
+						>
+						</div>
+						<div>
+							<!--
+							This is a place holder div for the green dot which is used to indicate the online status of the contact
+							-->
+							&nbsp;
 						</div>
 					</div>
 					<p class="chat-msg-msg" ng-bind-html="msg.msg | enhanceText">

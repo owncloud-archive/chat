@@ -269,8 +269,8 @@
 }
 
 .msg-avatar-container {
-	width: 39px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	position: relative;
 }
 
@@ -285,9 +285,6 @@
 	float:left;
 }
 
-.avatar-list-expanded-item .avatar-list-avatar {
-	margin-right:22px;
-}
 .avatar-list-avatar {
 	width:20px;
 	height:20px;
@@ -417,6 +414,8 @@
 .avatar-list-expanded-item{
 	padding:0px !important;
 	margin:0px;
+	height:40px;
+	position:static !important;
 }
 
 .avatar-list-expanded-item div {
@@ -469,4 +468,24 @@
 #app-navigation {
 	float: left;
 	position:relative;
+}
+
+.online-dot {
+	position: absolute;
+	padding:0;
+	margin:0 !important;
+	right:3px !important;
+	bottom:3px;
+	border-radius: 50%;
+	width: 7px;
+	height: 7px;
+	background-color: #00dd00;
+	box-shadow: 0 0 1px #555;
+}
+
+.online-dot-container{
+	position:relative;
+	height: 40px;
+	width: 40px;
+	float:left;
 }

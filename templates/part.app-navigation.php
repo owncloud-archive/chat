@@ -11,7 +11,7 @@
 		ng-if="conv.archived === false"
 		auto-height
 		data-item-count="{{ conv.users.length -1 }}"
-		data-item-height="30"
+		data-item-height="50"
 		data-min-height="60"
 		data-conv-id="{{ conv.id }}"
 	>
@@ -34,7 +34,7 @@
 		id="conv-list-{{ conv.id }}"
 		auto-height
 		data-item-count="{{ conv.users.length -1 }}"
-		data-item-height="30"
+		data-item-height="50"
 		data-min-height="60"
 		data-conv-id="{{ conv.id }}""
 		>

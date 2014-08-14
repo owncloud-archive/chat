@@ -16,7 +16,6 @@
 		<div
 			class="contact"
 			data-size="200"
-			data-onlinesize="20"
 			data-parent="true"
 			data-id="{{ contact.id }}"
 			data-displayname="{{ contact.displayname }}"

@@ -48,7 +48,7 @@
 				title="{{ user.displayname }}"
 				class="avatar-list-avatar"
 				avatar
-				data-size="20"
+				data-size="40"
 				data-id="{{ user.id }}"
 				data-displayname="{{ user.displayname }}"
 				data-addressbook-backend="{{ user.address_book_backend }}"

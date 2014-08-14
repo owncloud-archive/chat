@@ -281,9 +281,6 @@
 	float:left;
 }
 
-.avatar-list-expanded-item .avatar-list-avatar {
-	margin-right:22px;
-}
 .avatar-list-avatar {
 	width:20px;
 	height:20px;
@@ -400,6 +397,7 @@
 .avatar-list-expanded-item{
 	padding:0px !important;
 	margin:0px;
+	height:40px;
 }
 
 .avatar-list-expanded-item div {

@@ -8,7 +8,6 @@
 namespace OCA\Chat\OCH\Data;
 
 use \OCA\Chat\OCH\ChatAPI;
-use \OCA\Chat\Core\API;
 
 class GetUsers extends ChatAPI {
 

@@ -7,7 +7,6 @@
 
 namespace OCA\Chat\OCH\Push;
 
-use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
 use \OCA\Chat\Db\DoesNotExistException;

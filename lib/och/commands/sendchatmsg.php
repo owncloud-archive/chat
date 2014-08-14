@@ -9,7 +9,6 @@ namespace OCA\Chat\OCH\Commands;
 
 use OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
-use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\UserMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;

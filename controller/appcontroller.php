@@ -13,15 +13,15 @@ use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCA\Chat\Db\Backend;
 use \OCA\Chat\Db\BackendMapper;
-use \OCA\Chat\OCH\Commands;
-use \OCA\Chat\Core\API;
 use \OCP\AppFramework\Http\TemplateResponse;
 
 
 class AppController extends Controller {
 
-	public function __construct(API $api, IRequest $request, IAppContainer $app){
-		parent::__construct($api->getAppName(), $request);
+	private $app;
+
+	public function __construct($appName, IRequest $request,  IAppContainer $app){
+		parent::__construct($appName, $request);
 		$this->app = $app;
 	}
 

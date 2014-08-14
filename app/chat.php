@@ -7,7 +7,6 @@
 
 namespace OCA\Chat\App;
 
-use OCA\Chat\Core\API;
 use OCA\Chat\Controller\AppController;
 use OCA\Chat\Controller\OCH\ApiController;
 use OCP\AppFramework\App;
@@ -44,11 +43,19 @@ class Chat extends App{
 		 * Controllers
 		 */
 		$container->registerService('AppController', function ($c) {
-			return new AppController($c->query('API'), $c->query('Request'), $c);
+			return new AppController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c
+			);
 		});
 
 		$container->registerService('ApiController', function ($c) {
-			return new ApiController($c->query('API'), $c->query('Request'), $c);
+			return new ApiController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c
+			);
 		});
 
 		/**
@@ -143,10 +150,6 @@ class Chat extends App{
 		/**
 		* Utility
 		*/
-		$container->registerService('API', function ($c) {
-			return new API($c->query('AppName'));
-		});
-
 		$container->registerService('AppApi', function ($c) {
 			return new AppApi($c);
 		});

@@ -14,7 +14,6 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\IAppContainer;
-use OCA\Chat\Core\API;
 use OCA\Chat\Db\DBException;
 
 class ApiController extends Controller {
@@ -35,8 +34,8 @@ class ApiController extends Controller {
 	const USER_TO_INVITE_NOT_OC_USER = 12;
 	const NO_CHAT_MSG = 13;
 
-	public function __construct(API $api, IRequest $request, IAppContainer $app){
-		parent::__construct($api->getAppName(), $request);
+	public function __construct($appName, IRequest $request,  IAppContainer $app){
+		parent::__construct($appName, $request);
 		$this->app = $app;
 	}
 
@@ -61,7 +60,7 @@ class ApiController extends Controller {
 					$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($data['session_id'])){
-							if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+							if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
 								try{
 									$commandClass = $this->app[$this->convertClassName($action) . 'Command'];
 									$commandClass->setRequestData($data);
@@ -91,7 +90,7 @@ class ApiController extends Controller {
 				case "push":
 					$possibleCommands = array('get', 'delete');
 					if(in_array($action, $possibleCommands)){
-						if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+						if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
 							if(!empty($data['session_id'])){
 								$pushClass = $this->app[$this->convertClassName($action) . 'Push'];
 								$pushClass->setRequestData($data);
@@ -109,7 +108,7 @@ class ApiController extends Controller {
 				case "data":
 					$possibleCommands = array('messages', 'get_users');
 					if(in_array($action, $possibleCommands)){
-						if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){
+						if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
 							if(!empty($data['session_id'])){
 								$dataClass = $this->app[$this->convertClassName($action) . 'Data'];
 								$dataClass->setRequestData($data);

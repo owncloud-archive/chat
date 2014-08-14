@@ -8,7 +8,6 @@
 namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
-use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\UserOnline;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
 use \OCA\Chat\OCH\Db\PushMessage;

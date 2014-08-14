@@ -74,6 +74,14 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				$scope.view.hide('invite');
 			}
 		},
+		showEmojiPopover : function(){
+			var height = $("#chat-window-footer").height();
+			$scope.view.toggle('emojiContainer');
+			setTimeout(function(){
+				$('#emoji-container').css('bottom', height + 20);
+			},1);
+			console.log(height);
+		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
 				var classList = $event.target.classList;
@@ -122,6 +130,8 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					$('#chat-window-footer').height(height);
 					$('#chat-window-body').css('bottom', height);
 					$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
+					var height = $("#chat-window-footer").height();
+					$('#emoji-container').css('bottom', height + 20);
 				}
 			});
 

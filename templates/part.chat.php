@@ -35,7 +35,7 @@
 	<footer id="chat-window-footer">
 		<form id="chat-msg-form" ng-submit="sendChatMsg()">
 			<img
-				ng-click="view.toggle('emojiContainer')"
+				ng-click="view.showEmojiPopover()"
 				src=" <?php echo \OCP\Util::imagePath('chat', 'emoji/smile.png'); ?>"
 				class="chat-msg-emoji-button"
 				>

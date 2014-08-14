@@ -314,7 +314,6 @@
 	height: 210px;
 	width: 300px;
 	right: 20px;
-	bottom: 90px;
 	background-color: #eeeeee;
 	border-radius: 3px;
 	border:1px solid #1D2D44;
@@ -322,7 +321,6 @@
 
 #emoji-container-search {
 	padding:10px;
-	position:fixed;
 	background-color:#304D76;
 	height:60px;
 	width: 300px;

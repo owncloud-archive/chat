@@ -452,7 +452,7 @@
 #invite-container ul {
 	overflow:auto;
 	position: absolute;
-	top: 60px;
+	top: 50px;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -471,7 +471,6 @@
 .invite-contact-search {
 	padding:10px;
 	position:fixed;
-	background-color:#304D76;
 	width:250px;
 	height:60px;
 

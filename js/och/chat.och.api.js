@@ -94,26 +94,6 @@ Chat.och.api = {
 				}
 			}, success);
 		},
-		archive : function(convId, success){
-			Chat.och.api.util.doRequest({
-				"type" : "command::archive::request",
-				"data" : {
-					"user" : Chat.scope.active.user,
-					"session_id" : Chat.och.sessionId,
-					"conv_id" : convId
-				}
-			}, success);
-		},
-		unArchive : function(convId, success){
-			Chat.och.api.util.doRequest({
-				"type" : "command::un_archive::request",
-				"data" : {
-					"user" : Chat.scope.active.user,
-					"session_id" : Chat.och.sessionId,
-					"conv_id" : convId
-				}
-			}, success);
-		}
 	},
 	on : {
 		invite : function(data) {

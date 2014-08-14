@@ -54,7 +54,7 @@ class ApiController extends Controller {
 				case "command":
 					// $action is the type of the command
 
-					$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv', 'archive', 'un_archive');
+					$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
 					if(in_array($action, $possibleCommands)){
 						if(!empty($data['session_id'])){
 							if($data['user']['backends']['och']['value'] === $this->app->getCoreApi()->getUserId()){

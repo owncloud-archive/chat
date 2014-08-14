@@ -262,7 +262,6 @@ class AppApi {
 				"id" => $conv->getConversationId(),
 				"users"=> $users,
 				"backend" => "och",
-				"archived" => (bool)$conv->getArchived(),
 				"messages" => $messages
 			);
 			if(count($users) === 2){
@@ -301,7 +300,6 @@ class AppApi {
 						$user
 					),
 					"backend" => "och",
-					"archived" => (bool)false,
 					"messages" => array()
 				);
 

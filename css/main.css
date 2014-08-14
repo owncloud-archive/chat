@@ -298,7 +298,7 @@
 }
 
 .avatar-list-displayname{
-	margin-left:2px;
+	margin-left:10px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

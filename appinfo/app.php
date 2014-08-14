@@ -8,9 +8,9 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
-use \OCA\Chat\OCH\Db\User;
 
-\OC::$server->getNavigationManager()->add(array(	'id' => 'chat',
+\OC::$server->getNavigationManager()->add(array(
+	'id' => 'chat',
 	'order' => 10,
 	'href' => \OCP\Util::linkToRoute('chat.app.index'),
 	'icon' => \OCP\Util::imagePath('chat', 'chat.png'),

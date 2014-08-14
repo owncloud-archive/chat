@@ -19,6 +19,9 @@ use OCA\Chat\Db\DBException;
 
 class ApiController extends Controller {
 
+	/**
+	 * Error codes used by the API
+	 */
 	const INVALID_HTTP_TYPE = 0;
 	const COMMAND_NOT_FOUND = 1;
 	const PUSH_ACTION_NOT_FOUND = 2;
@@ -38,7 +41,8 @@ class ApiController extends Controller {
 	}
 
 	/**
-	 * Routes the API Request
+	 * Routes the API Request to the correct Class
+	 * There are 3 types: command, data and push
 	 * @param string $type
 	 * @param array $data
 	 * @return JSONResponse
@@ -132,6 +136,11 @@ class ApiController extends Controller {
 		}
 	}
 
+	/**
+	 * Helper function to transform the $action to a correct classname
+	 * @param $class
+	 * @return string
+	 */
 	private function convertClassName($class){
 		$newClass = '';
 		$parts = explode("_", $class);

@@ -38,6 +38,12 @@
 // At last load the main handlers file, this will boot up the Chat app
 \OCP\Util::addScript('chat', 'handlers');
 
+
+$version = \OCP\Config::getAppValue('chat', 'installed_version');
+if (version_compare($version, '0.2.0.0', '<=')) {
+	\OCP\Util::addScript('chat', 'clear');
+}
+
 ?>
 <div ng-click="view.hide('settings', $event, 'backend')" ng-controller="ConvController" ng-app="chat" id="app">
 	<div style="display:none;" id="initvar">

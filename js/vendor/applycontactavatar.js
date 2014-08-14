@@ -18,8 +18,9 @@
             if (value.noAvatar == true) {
                 $div.imageplaceholder(displayname);
             } else {
+				var url = value.base64 + "?requesttoken=" + oc_requesttoken;
                 $div.show();
-				$div.html('<img width="' + size + '" height="' + size + '" src="'+ value.base64 +'">');
+				$div.html('<img width="' + size + '" height="' + size + '" src="'+ url +'">');
 			}
         } else {
 			var url = OC.generateUrl(
@@ -30,7 +31,8 @@
                     Cache.set(cacheId, {"noAvatar" : true}, cacheTime);
                     $div.imageplaceholder(displayname);
                 } else {
-					Cache.set(cacheId, {"noAvatar" : false, "base64" : url}, cacheTime);
+					var cacheUrl = OC.generateUrl('/avatar/{user}/{size}',{user: id, size: size * window.devicePixelRatio});
+					Cache.set(cacheId, {"noAvatar" : false, "base64" : cacheUrl}, cacheTime);
                     $div.show();
 					$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'">');
 				}

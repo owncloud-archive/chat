@@ -64,8 +64,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			"settings" : false,
 			"emojiContainer" : false,
 			"invite" : false,
-			'archived' : false,
-			'showArchived' : {'bold' : false}
 		},
 		inviteClick : function(){
 			if($scope.view.elements.chat === true){
@@ -117,18 +115,11 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
 			$scope.convs[convId].new_msg = false;
-			if($scope.convs[convId].archived && $scope.view.elements.archived === false ){
-				$scope.view.show('archived');
-			}
 		},
 		unActive : function(){
 			$scope.active.conv = null;
 		},
-		addConv : function(convId, users, backend, msgs, archived){
-			if(archived === undefined){
-				archived = false;
-			}
-
+		addConv : function(convId, users, backend, msgs){
 			// generate conv name
 			var name  = '';
 			angular.forEach(users, function(user, key){
@@ -148,15 +139,12 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					users : users,
 					msgs : [],
 					backend : backend,
-					archived : archived,
 					new_msg : false,
 					raw_msgs : [],
 					order : order,
 					name : name
 				};
-				if(!archived){
-					$scope.view.makeActive(convId);
-				}
+				$scope.view.makeActive(convId);
 				if(msgs !== undefined){
 					angular.forEach(msgs, function(msg){
 						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
@@ -278,25 +266,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		}
 	};
 
-//	$scope.startemptyMsg = function(userToInvite){
-//		var backend = $scope.active.backend;
-//		Chat[backend.name].on.newConv([userToInvite], function(convId, users, msgs, name){
-//			$scope.view.addConv(convId, users, backend, msgs, undefined, name);
-//		});
-//	};
-
-	$scope.toggleArchive = function(convId){
-		var backend = $scope.convs[convId].backend.name;
-		$scope.convs[convId].archived = !$scope.convs[convId].archived;
-		if($scope.convs[convId].archived === true){
-			Chat[backend].on.archive(convId);
-		} else if ($scope.convs[convId].archived === false){
-			Chat[backend].on.unArchive(convId);
-		}
-
-		$scope.makeFirstConvActive();
-
-	};
 	$scope.makeFirstConvActive = function(){
 		firstConv = $scope.getFirstConv();
 		if(firstConv === undefined){
@@ -311,11 +280,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	$scope.getFirstConv = function(){
 		for (firstConv in $scope.convs) break;
 		if (typeof firstConv !== 'undefined') {
-			if($scope.convs[firstConv].archived === true){
-				return undefined;
-			} else {
-				return firstConv;
-			}
+			return firstConv;
 		} else {
 			return undefined;
 		}
@@ -406,25 +371,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		$scope.fields.chatMsg = textBefore + ' ' + name + ' ' + textAfter + ' ';
 		$scope.view.hide('emojiContaineradd');
 	};
-
-	$scope.$watch('convs', function(){name
-		var bold  = false;
-		var forLoop = true;
-		for(index in $scope.convs){
-			conv = $scope.convs[index];
-			if(forLoop === true){
-				if(conv.archived === true && conv.new_msg === true) {
-					bold = true;
-					forLoop = false;
-				}
-			}
-		}
-		if(bold){
-			$scope.view.elements.showArchived.bold = true;
-		} else {
-			$scope.view.elements.showArchived.bold = false;
-		}
-	}, true);
 
 	$scope.emojis = Chat.app.util.emojis;
 
@@ -570,36 +516,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					element.css('height', attrs.minHeight + 'px');
 				}
 			});
-		}
-	};
-}).directive('showArchived', function () {
-	return {
-		restrict: 'A',
-		link: function ($scope, element, attrs) {
-			var archivedCount = 0;
-			angular.forEach($scope.convs, function(conv, key){
-				if(conv.archived === true){
-					archivedCount++;
-				}
-			});
-			if(archivedCount > 0){
-				element.show();
-			} else {
-				element.hide();
-			}
-			$scope.$watch('convs', function(){
-				var archivedCount = 0;
-				angular.forEach($scope.convs, function(conv, key){
-					if(conv.archived === true){
-						archivedCount++;
-					}
-				});
-				if(archivedCount > 0){
-					element.show();
-				} else {
-					element.hide();
-				}
-			}, true);
 		}
 	};
 }).filter('orderObjectBy', function() {

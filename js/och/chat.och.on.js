@@ -39,13 +39,4 @@ Chat.och.on = {
 			});
 		}
 	},
-	archive : function(convId){
-		Chat.och.api.command.archive(convId, function(){});
-	},
-	unArchive : function(convId){
-		Chat.och.api.command.unArchive(convId, function(){});
-	},
-	applyAvatar : function(element, user, size){
-		element.avatar(user, size);
-	}
 };

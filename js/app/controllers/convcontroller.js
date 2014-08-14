@@ -449,10 +449,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		restrict: 'A',
 		link: function ($scope, element, attrs) {
 			element.applyContactAvatar(attrs.addressbookBackend, attrs.addressbookId, attrs.id, attrs.displayname, attrs.size);
-			if(attrs.onlinesize !== undefined){
-				element.online(attrs.isonline, attrs.onlinesize);
+			if(attrs.online !== undefined){
+				element.online(attrs.isonline);
 				$scope.$watch('contactsObj', function(){
-					element.online(Chat.scope.contactsObj[attrs.id].online, attrs.onlinesize);
+					element.online(Chat.scope.contactsObj[attrs.id].online);
 				}, true);
 			}
 		}

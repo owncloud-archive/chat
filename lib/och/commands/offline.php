@@ -20,7 +20,7 @@ class Offline extends ChatAPI {
 	}
 
 	public function execute(){
-		$mapper = $this->app['UserOnlineMapper'];
+		$mapper = $this->c['UserOnlineMapper'];
 		$mapper->deleteBySessionId($this->requestData['session_id']);
 
 		$syncOnline = $this->c['SyncOnlineCommand'];
@@ -33,8 +33,6 @@ class Offline extends ChatAPI {
 		// first check if we're really offline
 		$mapper = $this->c['UserOnlineMapper'];
 		$sessions = $mapper->findByUser($this->requestData['user']['backends']['och']['value']);
-//		var_dump($sessions);
-//		die();
 		if(count($sessions) === 0){
 			$command = json_encode(array(
 				'type' => 'offline',

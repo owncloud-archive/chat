@@ -123,12 +123,6 @@
 				<notnull>true</notnull>
 				<length>64</length>
 			 </field>
-			<field>
-				<name>archived</name>
-				<type>boolean</type>
-				<notnull>false</notnull>
-				<default>false</default>
-			</field>
 			</declaration>
 	</table>
 	<table>

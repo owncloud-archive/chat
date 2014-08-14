@@ -122,18 +122,4 @@ SQL;
 		}
 	}
 
-	public function setArchived($convid, $archived, $user){
-		$sql = <<<SQL
-			UPDATE
-				`*PREFIX*chat_och_users_in_conversation`
-			SET
-				`archived` = ?
-			WHERE
-				`conversation_id` = ?
-			AND
-				`user` = ?
-SQL;
-		$result = $this->execute($sql, array($archived, $convid, $user));
-	}
-
 }

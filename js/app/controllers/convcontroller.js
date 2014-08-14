@@ -69,7 +69,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		},
 		inviteClick : function(){
 			$scope.view.toggle('invite');
-			// Check if we are on a small screen
+			// Focus search field
+			setTimeout(function(){
+				$('#invite-search-field').focus();
+			}, 1);
 		},
 		show : function(element, $event, exception){
 			if($event !== undefined){
@@ -254,7 +257,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 		},
 		focusMsgInput : function(){
-			$('#chat-msg-input-field').focus()
+			$('#chat-msg-input-field');
 		},
 		replaceUsers : function(convId, users){
 			$scope.convs[convId].users = users;

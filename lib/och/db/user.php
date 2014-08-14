@@ -18,6 +18,8 @@ use \OCP\AppFramework\Db\Entity;
  * @method string getSessionId()
  * @method null setJoined(int $timestamp)
  * @method int getJoined()
+ * @method null setArchived($archived)
+ * @method bool getARchived()
  */
 class User extends Entity {
 
@@ -25,6 +27,7 @@ class User extends Entity {
 	public $user;
 	public $sessionId;
 	public $joined;
+	public $archived;
 
 	public function __construct(){
 

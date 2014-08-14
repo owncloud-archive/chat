@@ -462,7 +462,8 @@
 	border-radius: 50%;
 	width: 7px;
 	height: 7px;
-	background:green;
+	background-color: #00dd00;
+	box-shadow: 0 0 1px #555;
 }
 
 .online-dot-container{

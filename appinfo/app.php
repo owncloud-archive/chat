@@ -17,7 +17,5 @@ use \OCA\Chat\App\Chat;
 	'name' => \OCP\Util::getL10n('chat')->t('Chat')
 ));
 
-$app = new Chat();
-$container = $app->getContainer();
-$appApi = $container['AppApi'];
-$appApi->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 1);
+$chat = new Chat();
+$chat->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 1);

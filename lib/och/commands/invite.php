@@ -38,7 +38,7 @@ class Invite extends ChatAPI {
 			throw new RequestDataInvalid(ApiController::USER_EQUAL_TO_USER_TO_INVITE);
 		}
 
-		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], $this->app['API']->getUsers())){
+		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], \OCP\User::getUser())){
 			throw new RequestDataInvalid(ApiController::USER_TO_INVITE_NOT_OC_USER);
 		}
 
@@ -49,7 +49,7 @@ class Invite extends ChatAPI {
 
 		// add the user to thx	e conv
 		// this is done by executing the join command
-		$join = $this->app['JoinCommand'];
+		$join = $this->c['JoinCommand'];
 		$requestData = array(
 			"user" => $this->requestData['user_to_invite'],
 			"conv_id" => $this->requestData['conv_id']
@@ -58,8 +58,8 @@ class Invite extends ChatAPI {
 		$join->execute();
 
 		// First fetch every sessionID of the user to invite
-		$userOnlineMapper = $this->app['UserOnlineMapper'];
-		$pushMessageMapper = $this->app['PushMessageMapper'];
+		$userOnlineMapper = $this->c['UserOnlineMapper'];
+		$pushMessageMapper = $this->c['PushMessageMapper'];
 
 		$command = json_encode(array(
 			"type" => "invite",
@@ -80,7 +80,7 @@ class Invite extends ChatAPI {
 			$pushMessageMapper->insert($pushMessage);
 		}
 
-		$getUsers = $this->app['GetUsersData'];
+		$getUsers = $this->c['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$users = $getUsers->execute();
 		$users = $users['users'];

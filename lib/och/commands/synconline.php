@@ -24,16 +24,11 @@ class SyncOnline extends ChatAPI {
 
 	public function execute(){
 
-		$mapper = $this->app['UserOnlineMapper'];
+		$mapper = $this->c['UserOnlineMapper'];
 		$users = $mapper->getAll();
 
 		foreach($users as $user){
 			if((time() - $user->getLastOnline()) > 70){
-				
-				$this->app['API']->log('chat', 'Deleting offline user in SyncOnline add ' . time() . ' with session_id '
-				. $user->getSessionId()
-				. ' and username ' . $user->getUser()
-				. ' which was last online at ' . $user->getLastOnline(), \OCP\Util::ERROR);
 				$mapper->deleteBySessionId($user->getSessionId());
 			}
 		}

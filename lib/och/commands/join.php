@@ -32,7 +32,7 @@ class Join extends ChatAPI {
 	public function execute(){
 
 		// Add the user to the conversation
-		$userMapper = $this->app['UserMapper'];
+		$userMapper = $this->c['UserMapper'];
 		$user = new User();
 		$user->setConversationId($this->requestData['conv_id']);
 		$user->setJoined(time());
@@ -40,21 +40,21 @@ class Join extends ChatAPI {
 		$userMapper->insertUnique($user);
 
 //		 Fetch users in conv
-		$getUsers = $this->app['GetUsersData'];
+		$getUsers = $this->c['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$users = $getUsers->execute();
 		$users = $users['users'];
 //
 //		 Fetch messages in conv
-//		$getMessages = $this->app['MessagesData'];
+//		$getMessages = $this->c['MessagesData'];
 //		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 //		$messages = $getMessages->execute();
 //		$messages = $messages['messages'];
 //
 		if(count($users) > 2){
 			// we are in a group conv this mean we have to let the other users now we joined it
-			$pushMessageMapper = $this->app['PushMessageMapper'];
-			$userMapper = $this->app['UserMapper'];
+			$pushMessageMapper = $this->c['PushMessageMapper'];
+			$userMapper = $this->c['UserMapper'];
 			$command = json_encode(array(
 				"type" => "joined",
 				"data" => array(

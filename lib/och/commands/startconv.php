@@ -34,11 +34,11 @@ class StartConv extends ChatAPI {
 		$ids[] = $this->requestData['user']['backends']['och']['value'];
 
 		// (2) check if conv id exists
-		$convMapper = $this->app['ConversationMapper'];
+		$convMapper = $this->c['ConversationMapper'];
 		if($id = $convMapper->existsByUsers($ids)){
 			$id = $id['conv_id'];
 			// (3) join the already existing conv
-			$join = $this->app['JoinCommand'];
+			$join = $this->c['JoinCommand'];
 			$this->requestData['conv_id'] = $id;
 			$join->setRequestData($this->requestData);
 			$join->execute();
@@ -49,11 +49,11 @@ class StartConv extends ChatAPI {
 			// (3) Create the conv
 			$conversation = new Conversation();
 			$conversation->setConversationId($id);
-			$mapper = $this->app['ConversationMapper'];
+			$mapper = $this->c['ConversationMapper'];
 			$mapper->insert($conversation);
 
 			// (4) join the just created conv
-			$join = $this->app['JoinCommand'];
+			$join = $this->c['JoinCommand'];
 			$this->requestData['conv_id'] = $id;
 			$join->setRequestData($this->requestData);
 			$join->execute();
@@ -62,7 +62,7 @@ class StartConv extends ChatAPI {
 
 		// (5) invite the user_to_invite since we just created the conv
 		// foreach user to invite
-		$invite = $this->app['InviteCommand'];
+		$invite = $this->c['InviteCommand'];
 		$requestData = array();
 		$requestData['conv_id'] = $id;
 		$requestData['user'] = $this->requestData['user'];
@@ -75,13 +75,13 @@ class StartConv extends ChatAPI {
 		}
 
 		// Fetch users in conv
-		$getUsers = $this->app['GetUsersData'];
+		$getUsers = $this->c['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$users = $getUsers->execute();
 		$users = $users['users'];
 
 		// Fetch messages in conv
-		$getMessages = $this->app['MessagesData'];
+		$getMessages = $this->c['MessagesData'];
 		$getMessages->setRequestData(array(
 			"conv_id" => $this->requestData['conv_id'],
 			'user' => $this->requestData['user']
@@ -97,7 +97,7 @@ class StartConv extends ChatAPI {
 	}
 
 	private function generateConvId(){
-		$convMapper = $this->app['ConversationMapper'];
+		$convMapper = $this->c['ConversationMapper'];
 		$id = 'CONV_ID_' . time() . '_' . rand(1, 99);
 		if($convMapper->existsByConvId($id)){
 			return $this->generateConvId();

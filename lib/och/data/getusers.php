@@ -20,9 +20,8 @@ class GetUsers extends ChatAPI {
 	}
 
 	public function execute(){
-		$userMapper = $this->app['UserMapper'];
-		$appApi = $this->app['AppApi'];
-		$contacts = $appApi->getContacts();
+		$userMapper = $this->c['UserMapper'];
+		$contacts = $this->app->getContacts();
 		$contacts = $contacts['contactsObj'];
 		
 		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);

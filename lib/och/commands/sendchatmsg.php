@@ -32,7 +32,7 @@ class SendChatMsg extends ChatAPI {
 	}
 
 	public function execute(){
-		$userMapper = $this->app['UserMapper'];
+		$userMapper = $this->c['UserMapper'];
 		$users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
 
 		$command = json_encode(array(
@@ -46,7 +46,7 @@ class SendChatMsg extends ChatAPI {
 		));
 
 		$sender = $this->requestData['user']['backends']['och']['value'];
-		$pushMessageMapper = $this->app['PushMessageMapper'];
+		$pushMessageMapper = $this->c['PushMessageMapper'];
 
 		foreach($users as $receiver){
 			if($receiver->getUser() !== $sender){
@@ -61,7 +61,7 @@ class SendChatMsg extends ChatAPI {
 
 		// All done
 		// insert this chatMsg into the messages table
-		$messageMapper = $this->app['MessageMapper'];
+		$messageMapper = $this->c['MessageMapper'];
 		$message = new Message();
 		$message->setConvid($this->requestData['conv_id']);
 		$message->setTimestamp($this->requestData['timestamp']);

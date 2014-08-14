@@ -6,7 +6,8 @@
  */
 
 namespace OCA\Chat\OCH;
-use \OCP\AppFramework\IAppContainer;
+
+use \OCA\Chat\App\Chat;
 
 /*
  * API Base Class
@@ -16,8 +17,9 @@ abstract class ChatAPI {
 	public $app;
 	protected $requestData;
 
-	public function __construct(IAppContainer $app){
+	public function __construct(Chat $app){
 		$this->app = $app;
+		$this->c = $app->getContainer();
 	}
 
 	abstract function setRequestData(array $requestData);

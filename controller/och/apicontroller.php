@@ -13,8 +13,8 @@ use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
-use \OCP\AppFramework\IAppContainer;
 use OCA\Chat\Db\DBException;
+use OCA\Chat\App\Chat;
 
 class ApiController extends Controller {
 
@@ -34,9 +34,10 @@ class ApiController extends Controller {
 	const USER_TO_INVITE_NOT_OC_USER = 12;
 	const NO_CHAT_MSG = 13;
 
-	public function __construct($appName, IRequest $request,  IAppContainer $app){
+	public function __construct($appName, IRequest $request,  Chat $app){
 		parent::__construct($appName, $request);
 		$this->app = $app;
+		$this->c = $app->getContainer();
 	}
 
 	/**
@@ -62,7 +63,7 @@ class ApiController extends Controller {
 						if(!empty($data['session_id'])){
 							if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
 								try{
-									$commandClass = $this->app[$this->convertClassName($action) . 'Command'];
+									$commandClass = $this->c[$this->convertClassName($action) . 'Command'];
 									$commandClass->setRequestData($data);
 									$data = $commandClass->execute();
 									if($data){
@@ -92,7 +93,7 @@ class ApiController extends Controller {
 					if(in_array($action, $possibleCommands)){
 						if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
 							if(!empty($data['session_id'])){
-								$pushClass = $this->app[$this->convertClassName($action) . 'Push'];
+								$pushClass = $this->c[$this->convertClassName($action) . 'Push'];
 								$pushClass->setRequestData($data);
 								return $pushClass->execute();
 							} else{
@@ -110,7 +111,7 @@ class ApiController extends Controller {
 					if(in_array($action, $possibleCommands)){
 						if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
 							if(!empty($data['session_id'])){
-								$dataClass = $this->app[$this->convertClassName($action) . 'Data'];
+								$dataClass = $this->c[$this->convertClassName($action) . 'Data'];
 								$dataClass->setRequestData($data);
 								$data = $dataClass->execute();
 								if($data){

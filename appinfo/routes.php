@@ -23,11 +23,6 @@ $application->registerRoutes($this, array(
 			'verb' => 'post'
 		),
 		array(
-			'name' => 'app#backend',
-			'url' => '/backend/{do}/{backend}/{id}',
-			'verb' => 'post'
-		),
-		array(
 			'name' => 'app#contacts',
 			'url' => '/contacts',
 			'verb' => 'get'

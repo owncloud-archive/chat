@@ -22,7 +22,7 @@ class Delete extends ChatAPI{
 		foreach($this->requestData['ids'] as $id){
 			$pushMessage = new PushMessage();
 			$pushMessage->setId($id);
-			$mapper = $this->app['PushMessageMapper'];
+			$mapper = $this->c['PushMessageMapper'];
 			$mapper->delete($pushMessage);
 		}
 		return new JSONResponse(array('status' => 'success'));

@@ -23,7 +23,7 @@ class Offline extends ChatAPI {
 		$mapper = $this->app['UserOnlineMapper'];
 		$mapper->deleteBySessionId($this->requestData['session_id']);
 
-		$syncOnline = $this->app['SyncOnlineCommand'];
+		$syncOnline = $this->c['SyncOnlineCommand'];
 		$syncOnline->execute();
 
 		$this->sendOfflineMsg();
@@ -31,7 +31,7 @@ class Offline extends ChatAPI {
 
 	private function sendOfflineMsg(){
 		// first check if we're really offline
-		$mapper = $this->app['UserOnlineMapper'];
+		$mapper = $this->c['UserOnlineMapper'];
 		$sessions = $mapper->findByUser($this->requestData['user']['backends']['och']['value']);
 //		var_dump($sessions);
 //		die();
@@ -44,11 +44,11 @@ class Offline extends ChatAPI {
 				)
 			));
 
-			$userOnlineMapper = $this->app['UserOnlineMapper'];
+			$userOnlineMapper = $this->c['UserOnlineMapper'];
 			$users = $userOnlineMapper->getAll();
 
 			$sender = $this->requestData['user']['backends']['och']['value'];
-			$pushMessageMapper = $this->app['PushMessageMapper'];
+			$pushMessageMapper = $this->c['PushMessageMapper'];
 
 			foreach($users as $user){
 				if($user->getUser() !== $sender){

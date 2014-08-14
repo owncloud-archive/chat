@@ -115,6 +115,16 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
 			$scope.convs[convId].new_msg = false;
+			$("#chat-msg-input-field").autosize({
+				callback : function(){
+					var height = $("#chat-msg-input-field").height();
+					height = height + 15;
+					$('#chat-window-footer').height(height);
+					$('#chat-window-body').css('bottom', height);
+					$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
+				}
+			});
+
 		},
 		unActive : function(){
 			$scope.active.conv = null;

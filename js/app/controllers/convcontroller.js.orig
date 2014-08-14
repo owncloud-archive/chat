@@ -123,6 +123,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			$scope.active.conv = convId;
 			$scope.view.focusMsgInput();
 			$scope.convs[convId].new_msg = false;
+<<<<<<< HEAD
 			$("#chat-msg-input-field").autosize({
 				callback : function(){
 					var height = $("#chat-msg-input-field").height();
@@ -134,20 +135,33 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					$('#emoji-container').css('bottom', height + 20);
 				}
 			});
-
+=======
+			if($scope.convs[convId].archived && $scope.view.elements.archived === false ){
+				$scope.view.show('archived');
+			}
 
 			var order = $scope.getHighestOrder();
 			order++;
 			$scope.convs[convId].order = order;
 
 
+>>>>>>> invite
 
 		},
 		unActive : function(){
 			$scope.active.conv = null;
 		},
+<<<<<<< HEAD
 		addConv : function(convId, users, backend, msgs){
+			// generate conv name
+=======
+		addConv : function(convId, users, backend, msgs, archived){
+			if(archived === undefined){
+				archived = false;
+			}
+
 			// generate conv name + higher order of contacts
+>>>>>>> invite
 			var name  = '';
 			angular.forEach(users, function(user, key){
 				if(user.id !== Chat.scope.active.user.id){
@@ -294,6 +308,8 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				$('#chat-msg-input-field').trigger('autosize.resize');
 			},1);
 			$('#chat-msg-input-field').focus();
+<<<<<<< HEAD
+=======
 
 			angular.forEach($scope.convs[$scope.active.conv].users, function(user, key){
 				if(user.id !== Chat.scope.active.user.id){
@@ -303,6 +319,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			});
 
 
+>>>>>>> invite
 		}
 	};
 

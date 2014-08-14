@@ -61,7 +61,10 @@
 #chat-msg-input-field {
 	width: 100%;
 	margin:0;
+<<<<<<< HEAD
 	resize: none;
+=======
+>>>>>>> invite
 }
 
 .chat-msg-send-button {
@@ -281,6 +284,7 @@
 	background-color: #eeeeee;
 	border-radius: 3px;
 	border:1px solid #1D2D44;
+<<<<<<< HEAD
 }
 
 #emoji-container-search {
@@ -288,9 +292,20 @@
 	background-color:#304D76;
 	height:60px;
 	width: 300px;
+}
+
+=======
+}
+
+#emoji-container-search {
+	padding:10px;
+	position:fixed;
+	background-color:#304D76;
+	height:60px;
 	width: 300px;
 }
 
+>>>>>>> invite
 #emoji-list {
 	padding: 10px;
 	overflow:auto;
@@ -419,6 +434,27 @@
 	position:relative;
 }
 
+<<<<<<< HEAD
+.online-dot {
+	position: absolute;
+	padding:0;
+	margin:0 !important;
+	right:3px !important;
+	bottom:3px;
+	border-radius: 50%;
+	width: 7px;
+	height: 7px;
+	background-color: #00dd00;
+	box-shadow: 0 0 1px #555;
+}
+
+.online-dot-container{
+	position:relative;
+	height: 40px;
+	width: 40px;
+	float:left;
+}
+=======
 #invite-container {
 	width:250px;
 	position:absolute;
@@ -483,23 +519,4 @@
 .invite-container-mobile .invite-contact-search input {
 	width:200px !important;
 }
-
-.online-dot {
-	position: absolute;
-	padding:0;
-	margin:0 !important;
-	right:3px !important;
-	bottom:3px;
-	border-radius: 50%;
-	width: 7px;
-	height: 7px;
-	background-color: #00dd00;
-	box-shadow: 0 0 1px #555;
-}
-
-.online-dot-container{
-	position:relative;
-	height: 40px;
-	width: 40px;
-	float:left;
-}
+>>>>>>> invite

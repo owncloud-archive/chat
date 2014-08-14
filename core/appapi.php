@@ -79,7 +79,10 @@ class AppApi {
 			$receivers = array();
 			$contactList = array();
 			$contactsObj = array();
+			$order = 0;
 			foreach ($result as $r) {
+				$order++;
+
 				$data = array();
 
 				$contactList[] = $r['id'];
@@ -87,6 +90,7 @@ class AppApi {
 				$data['id'] = $r['id'];
 				$data['online'] = in_array($r['id'], $usersOnline);
 				$data['displayname'] = $r['FN'];
+				$data['order'] = $order;
 
 				if(!isset($r['EMAIL'])){
 					$r['EMAIL'] = array();

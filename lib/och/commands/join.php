@@ -39,18 +39,18 @@ class Join extends ChatAPI {
 		$user->setUser($this->requestData['user']['backends']['och']['value']);
 		$userMapper->insertUnique($user);
 
-		// Fetch users in conv
+//		 Fetch users in conv
 		$getUsers = $this->app['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$users = $getUsers->execute();
 		$users = $users['users'];
-		
-		// Fetch messages in conv
-		$getMessages = $this->app['MessagesData'];
-		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-		$messages = $getMessages->execute();
-		$messages = $messages['messages'];
-
+//
+//		 Fetch messages in conv
+//		$getMessages = $this->app['MessagesData'];
+//		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+//		$messages = $getMessages->execute();
+//		$messages = $messages['messages'];
+//
 		if(count($users) > 2){
 			// we are in a group conv this mean we have to let the other users now we joined it
 			$pushMessageMapper = $this->app['PushMessageMapper'];
@@ -59,7 +59,7 @@ class Join extends ChatAPI {
 				"type" => "joined",
 				"data" => array(
 					"conv_id" => $this->requestData['conv_id'],
-					"messages" => $messages,
+//					"messages" => $messages,
 					"users" => $users
 				)
 			));
@@ -77,8 +77,8 @@ class Join extends ChatAPI {
 		}
 		
 		return array(
-			"messages" => $messages,
-			"users" => $users
+//			"messages" => $messages,
+//			"users" => $users
 		);
 	}
 }

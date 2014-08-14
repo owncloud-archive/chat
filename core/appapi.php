@@ -251,6 +251,7 @@ class AppApi {
 
 
 		$usersAllreadyInConv = array();
+		$join = $this->app['JoinCommand'];
 		foreach($convs as $conv){
 			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
@@ -275,6 +276,12 @@ class AppApi {
 					}
 				}
 			}
+
+			$join->setRequestData(array(
+				"conv_id" => $conv->getConversationId(),
+				"user" => $this->getCurrentUser(),
+			));
+			$join->execute();
 		}
 
 		$allUsers = \OCP\User::getUsers();

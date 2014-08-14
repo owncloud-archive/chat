@@ -27,7 +27,7 @@ class BackendMapper extends Mapper {
 
 	public function getAllEnabled(){
 		try {
-			return $this->findEntities("SELECT * FROM " . $this->getTableName() . " WHERE enabled=1");
+			return $this->findEntities("SELECT * FROM " . $this->getTableName() . " WHERE enabled=true");
 		} catch (DoesNotExistException $e){
 
 		}

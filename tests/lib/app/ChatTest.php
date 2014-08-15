@@ -14,8 +14,6 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 
 	private $c;
 
-	private $app;
-
 	private static $returnValues;
 
 	public function setUp(){
@@ -339,6 +337,35 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 		$result = $chat->getContacts();
 		$this->assertEquals($expectedResult, $result);
 
+		return $expectedResult;
+	}
+
+
+	/**
+	 * This test will run after the testGetContacts method
+	 * This test will test if the cache is used instead of re-fetching the contacts information
+	 * @depends testGetContacts
+	 */
+	public function testGetContactsCache($expectedResult){
+		$chat = new Chat();
+		$chat->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Return dummy contacts
+		$chat->c['ContactsManager']->expects($this->any())
+			->method('search')
+			->will($this->returnCallback(function(){
+				ChatTest::$returnValues['testGetContactsCache']['search_executed'] = true;
+			}));
+
+		// this will become true when the search function on the contactsmanager is executed
+		self::$returnValues['testGetContactsCache']['search_executed'] = false;
+
+		$result = $chat->getContacts();
+
+		$this->assertEquals(false, self::$returnValues['testGetContactsCache']['search_executed']);
+		$this->assertEquals($expectedResult, $result);
 	}
 
 }

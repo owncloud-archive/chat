@@ -332,9 +332,7 @@ class Chat extends App{
 	}
 
 	public function getUserasContact($id){
-		$cm = \OC::$server->getContactsManager();
-		// The API is not active -> nothing to do
-
+		$cm = $this->c['ContactsManager'];
 		$result = $cm->search($id, array('id'));
 		// Finding the correct result
 		foreach($result as $contact){

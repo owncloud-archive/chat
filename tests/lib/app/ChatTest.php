@@ -403,4 +403,102 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 
 	}
 
+
+	public function testGetUserasContact(){
+		$chat = new Chat();
+
+		// Needed to fetch the backend information
+		$chat->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		$chat->c['BackendMapper']->expects($this->any())
+			->method('findByProtocol')
+			->will($this->returnCallback(function(){
+				$backend = new Backend();
+				$backend->setId(32);
+				$backend->setDisplayname('ownCloud Handle');
+				$backend->setName('och');
+				$backend->setProtocol('x-owncloud-handle');
+				$backend->setEnabled(true);
+				return $backend;
+			}));
+
+		$chat->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Return dummy contacts
+		$chat->c['ContactsManager']->expects($this->any())
+			->method('search')
+			->will($this->returnValue(array (
+				0 => array (
+					'id' => 'foo',
+					'FN' => 'foo',
+					'EMAIL' => array (
+					),
+					'IMPP' => array (
+						0 => 'x-owncloud-handle:foo',
+					),
+					'addressbook-key' => 'local',
+				),
+				1 => array (
+					'id' => 'bar',
+					'FN' => 'bar',
+					'EMAIL' => array (
+
+					),
+					'IMPP' => array (
+						0 => 'x-owncloud-handle:bar',
+					),
+					'addressbook-key' => 'local',
+				),
+				2 => array (
+					'id' => '1',
+					'N' => array (
+						0 => '',
+						1 => 'TestContact',
+						2 => '',
+						3 => '',
+						4 => '',
+					),
+					'UID' => '1a2a30d7-4907-4d5c-8e4a-3e51cf89e55a@localhost',
+					'FN' => 'TestContact',
+					'addressbook-key' => 'local:1',
+				)
+			)));
+
+		// This will be the result of the getContacts method
+		// this data is used by the client
+		$expectedResult = array(
+			'id' => 'foo',
+			'displayname' => 'foo',
+			'backends' => array (
+				'email' => array (
+					'id' => NULL,
+					'displayname' => 'E-mail',
+					'protocol' => 'email',
+					'namespace' => ' email',
+					'value' => array (
+						0 => array (
+						),
+					),
+				),
+				'och' => array (
+					'id' => NULL,
+					'displayname' => 'ownCloud Handle',
+					'protocol' => 'x-owncloud-handle',
+					'namespace' => 'och',
+					'value' => 'foo',
+				),
+			),
+			'address_book_id' => 'local',
+			'address_book_backend' => '',
+		);
+
+		$result = $chat->getUserasContact('foo');
+		$this->assertEquals($expectedResult, $result);
+
+		return $expectedResult;
+	}
+
 }

@@ -53,16 +53,13 @@ class ApiController extends Controller {
 		list($requestType, $action, $httpType) = explode("::", $type);
 
 		if($httpType === "request"){
-			// Check request type
-			switch($requestType){
-				case "command":
-					// $action is the type of the command
-
-					$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
-					if(in_array($action, $possibleCommands)){
-						if(!empty($data['session_id'])){
-							if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
-								try{
+			if(!empty($data['session_id'])){
+				if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
+					try{
+						switch($requestType){
+							case "command":
+								$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
+								if(in_array($action, $possibleCommands)){
 									$commandClass = $this->c[$this->convertClassName($action) . 'Command'];
 									$commandClass->setRequestData($data);
 									$data = $commandClass->execute();
@@ -71,66 +68,48 @@ class ApiController extends Controller {
 									} else {
 										return new Success("command", $action);
 									}
-								}catch(DBException $e){
-									return new Error("command", $action, "ERROR::DB::" . $e->getMessage());
-								}
-								catch(RequestDataInvalid $e){
-									return new Error("command", $action, $e->getMessage());
-								}
-							} else {
-								return new Error("command", $action, self::USER_NOT_EQUAL_TO_OC_USER);
-							}
-						} else {
-							return new Error("command", $action,  self::NO_SESSION_ID);
-						}
-					} else {
-						return new Error("command", $action, self::COMMAND_NOT_FOUND);
-					}
-
-					break;
-				case "push":
-					$possibleCommands = array('get', 'delete');
-					if(in_array($action, $possibleCommands)){
-						if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
-							if(!empty($data['session_id'])){
-								$pushClass = $this->c[$this->convertClassName($action) . 'Push'];
-								$pushClass->setRequestData($data);
-								return $pushClass->execute();
-							} else{
-								return new Error('push', $action, self::NO_SESSION_ID);
-							}
-						} else {
-							return new Error('push', $action, self::USER_NOT_EQUAL_TO_OC_USER);
-						}
-					} else {
-						return new Error("command", $action, self::PUSH_ACTION_NOT_FOUND);
-					}
-					break;
-				case "data":
-					$possibleCommands = array('messages', 'get_users');
-					if(in_array($action, $possibleCommands)){
-						if($data['user']['backends']['och']['value'] === \OCP\User::getUser()){
-							if(!empty($data['session_id'])){
-								$dataClass = $this->c[$this->convertClassName($action) . 'Data'];
-								$dataClass->setRequestData($data);
-								$data = $dataClass->execute();
-								if($data){
-									return new Success("command", $action, $data);
 								} else {
-									return new Success("command", $action);
+									return new Error("command", $action, self::COMMAND_NOT_FOUND);
 								}
-							} else{
-								return new Error('data', $action, self::NO_SESSION_ID);
-							}
-						} else {
-							return new Error('data', $action, self::USER_NOT_EQUAL_TO_OC_USER);
+								break;
+							case "push":
+								$possibleCommands = array('get', 'delete');
+								if(in_array($action, $possibleCommands)){
+									$pushClass = $this->c[$this->convertClassName($action) . 'Push'];
+									$pushClass->setRequestData($data);
+									return $pushClass->execute();
+								} else {
+									return new Error("command", $action, self::PUSH_ACTION_NOT_FOUND);
+								}
+								break;
+							case "data":
+								$possibleCommands = array('messages', 'get_users');
+								if(in_array($action, $possibleCommands)){
+									$dataClass = $this->c[$this->convertClassName($action) . 'Data'];
+									$dataClass->setRequestData($data);
+									$data = $dataClass->execute();
+									if($data){
+										return new Success("command", $action, $data);
+									} else {
+										return new Success("command", $action);
+									}
+								} else {
+									return new Error("command", $action, self::DATA_ACTION_NOT_FOUND);
+								}
+								break;
 						}
-					} else {
-						return new Error("command", $action, self::DATA_ACTION_NOT_FOUND);
+					}catch(DBException $e){
+						return new Error("command", $action, "ERROR::DB::" . $e->getMessage());
 					}
-					break;
+					catch(RequestDataInvalid $e){
+						return new Error("command", $action, $e->getMessage());
+					}
+				} else {
+					return new Error("command", $action, self::USER_NOT_EQUAL_TO_OC_USER);
 				}
-
+			} else {
+				return new Error("command", $action,  self::NO_SESSION_ID);
+			}
 		} else {
 			return new Error($requestType, $action, "HTTP-TYPE-INVALID");
 		}

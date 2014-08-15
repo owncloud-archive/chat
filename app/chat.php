@@ -163,7 +163,7 @@ class Chat extends App{
 	public function registerBackend($displayName, $name, $protocol, $enabled){
 		$container = $this->getContainer();
 		$backendMapper = $container->query('BackendMapper');
-		if($backendMapper->exists($name)){
+		if(!$backendMapper->exists($name)){
 			// Only execute when there are no backends registered i.e. on first run
 			$backend = new Backend();
 			$backend->setDisplayname($displayName);

@@ -38,7 +38,7 @@ class Invite extends ChatAPI {
 			throw new RequestDataInvalid(ApiController::USER_EQUAL_TO_USER_TO_INVITE);
 		}
 
-		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], \OCP\User::getUser())){
+		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], \OCP\User::getUsers())){
 			throw new RequestDataInvalid(ApiController::USER_TO_INVITE_NOT_OC_USER);
 		}
 

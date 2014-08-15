@@ -9,7 +9,7 @@ class OC {
 	public static $server;
 }
 
-set_include_path(__DIR__ . "/vendor");
+require_once("vendor/Pimple/Pimple.php");
 // to execute without owncloud, we need to create our own classloader
 spl_autoload_register(function ($className){
 	if (strpos($className, 'OCA\\') === 0) {
@@ -36,8 +36,6 @@ spl_autoload_register(function ($className){
 		if(file_exists($relPath)){
 			require_once $relPath;
 		}
-	} elseif (strpos($className, 'Pimple\Pimple' === 0)){
-		require_once("../vendor/Pimple/Pimple.php");
 	}
 
 });

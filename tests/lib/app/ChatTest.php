@@ -98,21 +98,20 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	public function testGetContacts(){
 		$chat = new Chat();
 
+		// Needed for the online//ofline state of the contacts
 		$chat->c['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
 			->disableOriginalConstructor()
 			->getMock();
-
 		$chat->c['UserOnlineMapper']->expects($this->any())
 			->method('getOnlineUsers')
 			->will($this->returnValue(array(
 				'foo'
 			)));
 
+		// Needed to fetch the backend information
 		$chat->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
 			->disableOriginalConstructor()
 			->getMock();
-
-		// Mock the exist method so, that it returns true
 		$chat->c['BackendMapper']->expects($this->any())
 			->method('findByProtocol')
 			->will($this->returnCallback(function(){
@@ -130,10 +129,12 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		// Contactsmanager is used to fetch the contacts
 		$chat->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
 			->disableOriginalConstructor()
 			->getMock();
 
+		// Return dummy contacts
 		$chat->c['ContactsManager']->expects($this->any())
 			->method('search')
 			->will($this->returnValue(array (
@@ -173,9 +174,9 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 				)
 			)));
 
-
-
-			$expectedResult = array(
+		// This will be the reseult of the getContacts method
+		// this data is used by the client
+		$expectedResult = array(
 				'contacts' => array (
 					0 => array (
 						'id' => 'foo',
@@ -336,7 +337,6 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 			);
 
 		$result = $chat->getContacts();
-
 		$this->assertEquals($expectedResult, $result);
 
 	}

@@ -1,2 +1,13 @@
 <phpunit bootstrap="lib/autoloader.php">
+    <testsuites>
+        <testsuite name="app">
+            <directory>lib/app/</directory>
+        </testsuite>
+        <testsuite name="controller">
+            <directory>lib/controller/</directory>
+        </testsuite>
+        <testsuite name="och">
+            <directory>lib/lib/och/commands/</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

@@ -30,3 +30,5 @@ tools:
                 generic:
                     white_space:
                         disallow_space_indent_sniff: true
+    tools:
+        external_code_coverage: true

@@ -368,4 +368,39 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($expectedResult, $result);
 	}
 
+
+	public function testGetBackends(){
+		$chat = new Chat();
+
+		$backend1 = new Backend();
+		$backend1->setDisplayname('Foobar');
+		$backend1->setName('foo');
+		$backend1->setProtocol('x-foo');
+		$backend1->setEnabled(true);
+
+		$backend2 = new Backend();
+		$backend2->setDisplayname('bar');
+		$backend2->setName('barfoo');
+		$backend2->setProtocol('x-bar');
+		$backend2->setEnabled(true);
+
+		$chat->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Mock the exist method so, that it returns true
+		$chat->c['BackendMapper']->expects($this->any())
+			->method('getAllEnabled')
+			->will($this->returnValue(array($backend1, $backend2)));
+
+		$expectedResult = array();
+		$expectedResult['foo'] = $backend1;
+		$expectedResult['barfoo'] = $backend2;
+
+		$result = $chat->getBackends();
+
+		$this->assertEquals($expectedResult, $result);
+
+	}
+
 }

@@ -187,16 +187,16 @@ class Chat extends App{
 	 * @return array Returns array with contacts, contacts as a list and contacts as an associative array
 	 */
 	public function getContacts(){
-		// ***
-		// the following code should be ported
-		// so multiple backends are allowed
-		$userOnlineMapper = $this->c['UserOnlineMapper'];
-		$usersOnline = $userOnlineMapper->getOnlineUsers();
-		$syncOnline = $this->c['SyncOnlineCommand'];
-		$syncOnline->execute();
-		// ***
-
 		if(count(self::$contacts) == 0){
+			// ***
+			// the following code should be ported
+			// so multiple backends are allowed
+			$userOnlineMapper = $this->c['UserOnlineMapper'];
+			$usersOnline = $userOnlineMapper->getOnlineUsers();
+			$syncOnline = $this->c['SyncOnlineCommand'];
+			$syncOnline->execute();
+			// ***
+
 			$cm = $this->c['ContactsManager'];
 			$result = $cm->search('',array('FN'));
 			$receivers = array();

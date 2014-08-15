@@ -38,6 +38,8 @@ class Chat extends App{
 
 	public $c;
 
+	private $contactsMngr;
+
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 
@@ -153,6 +155,10 @@ class Chat extends App{
 			return new Messages($app);
 		});
 
+		$container->registerService('ContactsManager', function($c){
+			return $c->getServer()->getContactsManager();
+		});
+
 	}
 
 	/**
@@ -191,9 +197,8 @@ class Chat extends App{
 		// ***
 
 		if(count(self::$contacts) == 0){
-			$cm = \OC::$server->getContactsManager();
-
-			$result = $cm->search('',array('id'));
+			$cm = $this->c['ContactsManager'];
+			$result = $cm->search('',array('FN'));
 			$receivers = array();
 			$contactList = array();
 			$contactsObj = array();
@@ -238,7 +243,7 @@ class Chat extends App{
 	 * @todo
 	 */
 	public function getBackends(){
-		$backendMapper = $container['BackendMapper'];
+		$backendMapper = $this->c['BackendMapper'];
 		$backends = $backendMapper->getAllEnabled();
 
 		$result = array();

@@ -36,10 +36,13 @@ class Chat extends App{
 
 	private static $contacts;
 
+	public $c;
+
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 
 		$container = $this->getContainer();
+		$this->c = $container;
 		$app = $this;
 
 		/**
@@ -161,8 +164,7 @@ class Chat extends App{
 	 * @param string $enabled
 	 */
 	public function registerBackend($displayName, $name, $protocol, $enabled){
-		$container = $this->getContainer();
-		$backendMapper = $container->query('BackendMapper');
+		$backendMapper = $this->c['BackendMapper'];
 		if(!$backendMapper->exists($name)){
 			// Only execute when there are no backends registered i.e. on first run
 			$backend = new Backend();
@@ -179,13 +181,12 @@ class Chat extends App{
 	 * @return array Returns array with contacts, contacts as a list and contacts as an associative array
 	 */
 	public function getContacts(){
-		$container = $this->getContainer();
 		// ***
 		// the following code should be ported
 		// so multiple backends are allowed
-		$userOnlineMapper = $container['UserOnlineMapper'];
+		$userOnlineMapper = $this->c['UserOnlineMapper'];
 		$usersOnline = $userOnlineMapper->getOnlineUsers();
-		$syncOnline = $container['SyncOnlineCommand'];
+		$syncOnline = $this->c['SyncOnlineCommand'];
 		$syncOnline->execute();
 		// ***
 
@@ -237,7 +238,6 @@ class Chat extends App{
 	 * @todo
 	 */
 	public function getBackends(){
-		$container = $this->getContainer();
 		$backendMapper = $container['BackendMapper'];
 		$backends = $backendMapper->getAllEnabled();
 
@@ -309,8 +309,8 @@ class Chat extends App{
 	 * @return array
 	 */
 	private function getBackendInfo($protocol){
-		$container = $this->getContainer();
-		$backendMapper = $container['BackendMapper'];
+		$this->c = $this->getContainer();
+		$backendMapper = $this->c['BackendMapper'];
 		$backend = $backendMapper->findByProtocol($protocol);
 		$info = array();
 		$info['displayname'] = $backend->getDisplayname();
@@ -363,19 +363,18 @@ class Chat extends App{
 	 * @todo porting
 	 */
 	public function getInitConvs(){
-		$container = $this->getContainer();
 		$r = array();
 
-		$userMapper = $container['UserMapper'];
+		$userMapper = $this->c['UserMapper'];
 		$convs = $userMapper->findByUser(\OCP\User::getUser());
 
 
 		$usersAllreadyInConv = array();
-		$join = $container['JoinCommand'];
+		$join = $this->c['JoinCommand'];
 		foreach($convs as $conv){
 			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$getMessages = $container['MessagesData'];
+			$getMessages = $this->c['MessagesData'];
 			$getMessages->setRequestData(array(
 				"conv_id" => $conv->getConversationId(),
 				'user' => $this->getCurrentUser()
@@ -407,7 +406,7 @@ class Chat extends App{
 		$users = array_diff($allUsers, $usersAllreadyInConv);
 		// $users hold the users whe doens't have a conv with
 
-		$startConv = $container['StartConvCommand'];
+		$startConv = $this->c['StartConvCommand'];
 		foreach($users as $user){
 			if($user !== \OCP\User::getUser()){
 				$startConv->setRequestData(array(

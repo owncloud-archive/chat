@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Search in conversations" => "Busque en las conversaciones",
 "Add Person" => "Agregar persona",
 "Chat Message" => "Mensaje",
+"Search in users" => "Buscar en usuarios",
 "There are no other users on this ownCloud." => "No hay otros usuarios en esta ownCloud",
 "\tIn order to chat please create at least one user, it will appear on the left." => "Para poder participar en un chat,por favor crea por lo menos un usario,este aparecerá a la izquierda."
 );

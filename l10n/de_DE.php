@@ -1,12 +1,11 @@
 <?php
 $TRANSLATIONS = array(
 "Chat" => "Chat",
-"New Conversation" => "Neue Unterhaltung",
-"Hide Archived Conversations" => "Archivierte Unterhaltungen ausblenden",
-"Show Archived Conversations" => "Archivierte Unterhaltungen anzeigen",
+"Search in conversations" => "In Unterhaltungen suchen",
 "Add Person" => "Person hinzufügen",
 "Chat Message" => "Chat-Nachricht",
-"Click on a contact to add them to the conversation" => "Auf einen Kontakt klicken um Ihn zu einer Unterhaltung hinzu zufügen",
-"Click on a contact to start a conversation" => "Zum Starten einer Unterhaltung auf einen Kontakt klicken"
+"Search in users" => "In den Nutzern suchen",
+"There are no other users on this ownCloud." => "Es befinden sich keine anderen Nutzer in dieser ownCloud.",
+"\tIn order to chat please create at least one user, it will appear on the left." => "Um zu chatten erstellen Sie bitte mindestens einen Benutzer, dieser wird auf der linken Seite angezeigt."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

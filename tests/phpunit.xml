@@ -2,8 +2,6 @@
     <testsuites>
         <testsuite name="app">
             <directory>lib/app/</directory>
-        </testsuite>
-        <testsuite name="controller">
             <directory>lib/controller/</directory>
         </testsuite>
         <testsuite name="och">

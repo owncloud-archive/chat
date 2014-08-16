@@ -155,8 +155,19 @@ class Chat extends App{
 			return new Messages($app);
 		});
 
+		/**
+		 * Manager
+		 */
 		$container->registerService('ContactsManager', function($c){
 			return $c->getServer()->getContactsManager();
+		});
+
+		$container->registerService('UserManager', function($c){
+			return $c->getServer()->getUserManager();
+		});
+
+		$container->registerService('UserSession', function($c){
+			return $c->getServer()->getUserSession();
 		});
 
 	}
@@ -172,7 +183,7 @@ class Chat extends App{
 	public function registerBackend($displayName, $name, $protocol, $enabled){
 		$backendMapper = $this->c['BackendMapper'];
 		if(!$backendMapper->exists($name)){
-			// Only execute when there are no backends registered i.e. on first run
+//			 Only execute when there are no backends registered i.e. on first run
 			$backend = new Backend();
 			$backend->setDisplayname($displayName);
 			$backend->setName($name);
@@ -328,12 +339,11 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getCurrentUser(){
-		return $this->getUserasContact(\OCP\User::getUser());
+		return $this->getUserasContact($this->c['UserSession']->getUser()->getUID());
 	}
 
 	public function getUserasContact($id){
-		$cm = $this->c['ContactsManager'];
-		$result = $cm->search($id, array('id'));
+		$result = $this->c['ContactsManager']->search($id, array('id'));
 		// Finding the correct result
 		foreach($result as $contact){
 			if($contact['id'] ===  $id){
@@ -369,7 +379,7 @@ class Chat extends App{
 		$r = array();
 
 		$userMapper = $this->c['UserMapper'];
-		$convs = $userMapper->findByUser(\OCP\User::getUser());
+		$convs = $userMapper->findByUser($this->c['UserSession']->getUser()->getUID());
 
 
 		$usersAllreadyInConv = array();

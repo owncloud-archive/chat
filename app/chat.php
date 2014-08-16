@@ -325,7 +325,6 @@ class Chat extends App{
 	 * @return array
 	 */
 	private function getBackendInfo($protocol){
-		$this->c = $this->getContainer();
 		$backendMapper = $this->c['BackendMapper'];
 		$backend = $backendMapper->findByProtocol($protocol);
 		$info = array();

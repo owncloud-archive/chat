@@ -343,169 +343,150 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
-//	/**
-//	 * This test will run after the testGetContacts method
-//	 * This test will test if the cache is used instead of re-fetching the contacts information
-//	 * @depends testGetContacts
-//	 */
-//	public function testGetContactsCache($expectedResult){
-//		$chat = new Chat();
-//		$chat->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
-//			->disableOriginalConstructor()
-//			->getMock();
-//
-//		 Return dummy contacts
-//		$chat->c['ContactsManager']->expects($this->any())
-//			->method('search')
-//			->will($this->returnCallback(function(){
-//				ChatTest::$returnValues['testGetContactsCache']['search_executed'] = true;
-//			}));
-//
-//		// this will become true when the search function on the contactsmanager is executed
-//		self::$returnValues['testGetContactsCache']['search_executed'] = false;
-//
-//		$result = $chat->getContacts();
-//
-//		$this->assertEquals(false, self::$returnValues['testGetContactsCache']['search_executed']);
-//		$this->assertEquals($expectedResult, $result);
-//	}
-//
-//
-//	public function testGetBackends(){
-//		$chat = new Chat();
-//
-//		$backend1 = new Backend();
-//		$backend1->setDisplayname('Foobar');
-//		$backend1->setName('foo');
-//		$backend1->setProtocol('x-foo');
-//		$backend1->setEnabled(true);
-//
-//		$backend2 = new Backend();
-//		$backend2->setDisplayname('bar');
-//		$backend2->setName('barfoo');
-//		$backend2->setProtocol('x-bar');
-//		$backend2->setEnabled(true);
-//
-//		$chat->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
-//			->disableOriginalConstructor()
-//			->getMock();
-//
-//		// Mock the exist method so, that it returns true
-//		$chat->c['BackendMapper']->expects($this->any())
-//			->method('getAllEnabled')
-//			->will($this->returnValue(array($backend1, $backend2)));
-//
-//		$expectedResult = array();
-//		$expectedResult['foo'] = $backend1;
-//		$expectedResult['barfoo'] = $backend2;
-//
-//		$result = $chat->getBackends();
-//
-//		$this->assertEquals($expectedResult, $result);
-//
-//	}
-//
-//
-//	public function testGetUserasContact(){
-//		$chat = new Chat();
-//
-//		// Needed to fetch the backend information
-//		$chat->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
-//			->disableOriginalConstructor()
-//			->getMock();
-//		$chat->c['BackendMapper']->expects($this->any())
-//			->method('findByProtocol')
-//			->will($this->returnCallback(function(){
-//				$backend = new Backend();
-//				$backend->setId(32);
-//				$backend->setDisplayname('ownCloud Handle');
-//				$backend->setName('och');
-//				$backend->setProtocol('x-owncloud-handle');
-//				$backend->setEnabled(true);
-//				return $backend;
-//			}));
-//
-//		$chat->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
-//			->disableOriginalConstructor()
-//			->getMock();
-//
-//		// Return dummy contacts
-//		$chat->c['ContactsManager']->expects($this->any())
-//			->method('search')
-//			->will($this->returnValue(array (
-//				0 => array (
-//					'id' => 'foo',
-//					'FN' => 'foo',
-//					'EMAIL' => array (
-//					),
-//					'IMPP' => array (
-//						0 => 'x-owncloud-handle:foo',
-//					),
-//					'addressbook-key' => 'local',
-//				),
-//				1 => array (
-//					'id' => 'bar',
-//					'FN' => 'bar',
-//					'EMAIL' => array (
-//
-//					),
-//					'IMPP' => array (
-//						0 => 'x-owncloud-handle:bar',
-//					),
-//					'addressbook-key' => 'local',
-//				),
-//				2 => array (
-//					'id' => '1',
-//					'N' => array (
-//						0 => '',
-//						1 => 'TestContact',
-//						2 => '',
-//						3 => '',
-//						4 => '',
-//					),
-//					'UID' => '1a2a30d7-4907-4d5c-8e4a-3e51cf89e55a@localhost',
-//					'FN' => 'TestContact',
-//					'addressbook-key' => 'local:1',
-//				)
-//			)));
-//
-//		// This will be the result of the getContacts method
-//		// this data is used by the client
-//		$expectedResult = array(
-//			'id' => 'foo',
-//			'displayname' => 'foo',
-//			'backends' => array (
-//				'email' => array (
-//					'id' => NULL,
-//					'displayname' => 'E-mail',
-//					'protocol' => 'email',
-//					'namespace' => ' email',
-//					'value' => array (
-//						0 => array (
-//						),
-//					),
-//				),
-//				'och' => array (
-//					'id' => NULL,
-//					'displayname' => 'ownCloud Handle',
-//					'protocol' => 'x-owncloud-handle',
-//					'namespace' => 'och',
-//					'value' => 'foo',
-//				),
-//			),
-//			'address_book_id' => 'local',
-//			'address_book_backend' => '',
-//		);
-//
-//		$result = $chat->getUserasContact('foo');
-//		$this->assertEquals($expectedResult, $result);
-//
-//		return $expectedResult;
-//	}
-//
-//	public function	testGetInitConvs(){
-//
-//	}
+	/**
+	 * This test will run after the testGetContacts method
+	 * This test will test if the cache is used instead of re-fetching the contacts information
+	 * @depends testGetContacts
+	 * @dataProvider contactsProvider
+	 */
+	public function testGetContactsCache($onlineUsers, $OCHBackend, $rawContacts, $parsedContacts){
+		$this->app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->app->c['ContactsManager']->expects($this->never())
+			->method('search');
+
+		$result = $this->app->getContacts();
+		$this->assertEquals($parsedContacts, $result);
+	}
+
+	/**
+	 * @dataProvider backendProvider
+	 */
+
+	public function testGetBackends($backend){
+		$this->app->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Mock the exist method so, that it returns true
+		$this->app->c['BackendMapper']->expects($this->once())
+			->method('getAllEnabled')
+			->will($this->returnValue(array($backend)));
+
+		$expectedResult = array();
+		$expectedResult[$backend->getName()] = $backend;
+
+		$result = $this->app->getBackends();
+
+		$this->assertEquals($expectedResult, $result);
+
+	}
+
+
+	public function userContactProvider(){
+		$OCHBackend = new Backend();
+		$OCHBackend->setId(32);
+		$OCHBackend->setDisplayname('ownCloud Handle');
+		$OCHBackend->setName('och');
+		$OCHBackend->setProtocol('x-owncloud-handle');
+		$OCHBackend->setEnabled(true);
+		return array(
+			array(
+				$OCHBackend,
+				array (
+			0 => array (
+				'id' => 'foo',
+				'FN' => 'foo',
+				'EMAIL' => array (
+				),
+				'IMPP' => array (
+					0 => 'x-owncloud-handle:foo',
+				),
+				'addressbook-key' => 'local',
+			),
+			1 => array (
+				'id' => 'bar',
+				'FN' => 'bar',
+				'EMAIL' => array (
+
+				),
+				'IMPP' => array (
+					0 => 'x-owncloud-handle:bar',
+				),
+				'addressbook-key' => 'local',
+			),
+			2 => array (
+				'id' => '1',
+				'N' => array (
+					0 => '',
+					1 => 'TestContact',
+					2 => '',
+					3 => '',
+					4 => '',
+				),
+				'UID' => '1a2a30d7-4907-4d5c-8e4a-3e51cf89e55a@localhost',
+				'FN' => 'TestContact',
+				'addressbook-key' => 'local:1',
+			)
+		),
+				array(
+					'id' => 'foo',
+					'displayname' => 'foo',
+					'backends' => array (
+						'email' => array (
+							'id' => NULL,
+							'displayname' => 'E-mail',
+							'protocol' => 'email',
+							'namespace' => ' email',
+							'value' => array (
+								0 => array (
+								),
+							),
+						),
+						'och' => array (
+							'id' => NULL,
+							'displayname' => 'ownCloud Handle',
+							'protocol' => 'x-owncloud-handle',
+							'namespace' => 'och',
+							'value' => 'foo',
+						),
+					),
+					'address_book_id' => 'local',
+					'address_book_backend' => '',
+				),
+				'foo'
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider userContactProvider
+	 */
+	public function testGetUserasContact($OCHBackend, $rawContacts, $expectedResult, $UID){
+		$this->app->c['BackendMapper'] = $this->getMockBuilder('\OCA\Chat\Db\BackendMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->app->c['BackendMapper']->expects($this->any())
+			->method('findByProtocol')
+			->will($this->returnValue($OCHBackend));
+
+		$this->app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->app->c['ContactsManager']->expects($this->any())
+			->method('search')
+			->will($this->returnValue($rawContacts));
+
+		$result = $this->app->getUserasContact($UID);
+		$this->assertEquals($expectedResult, $result);
+	}
+
+	public function	testGetInitConvs(){
+
+	}
 
 
 }

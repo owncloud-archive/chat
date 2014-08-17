@@ -15,6 +15,6 @@ before_install:
   - cd apps/chat
 
 script:
-  - phpunit -c tests/phpunit.xml --testsuite app --testsuite controller
+  - phpunit -c tests/phpunit.xml --testsuite app
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

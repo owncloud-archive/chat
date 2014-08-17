@@ -475,4 +475,70 @@ class ApiControllerTest extends ControllerTestUtility {
 		$this->assertEquals($expectedData, $response->getData());
 
 	}
+
+	public function pushExecutionProvider(){
+		return array(
+			array(
+				"push::get::request",
+				array(
+					"conv_id" => md5(time() + 2343),
+					"timestamp" => time(),
+					"user" => array(
+						'id' => 'foo',
+						'displayname' => 'foo',
+						'backends' => array (
+							'email' => array (
+								'id' => NULL,
+								'displayname' => 'E-mail',
+								'protocol' => 'email',
+								'namespace' => ' email',
+								'value' => array (
+									0 => array (
+									),
+								),
+							),
+							'och' => array (
+								'id' => NULL,
+								'displayname' => 'ownCloud Handle',
+								'protocol' => 'x-owncloud-handle',
+								'namespace' => 'och',
+								'value' => 'foo',
+							),
+						),
+						'address_book_id' => 'local',
+						'address_book_backend' => '',
+					),
+					"session_id" => md5(time() -324234)
+				),
+				'get',
+				'push',
+				array('dummy' => 'dummydata'),
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider pushExecutionProvider
+	 */
+	public function testPushExecution($type, $data, $className, $requestType, $dummyData){
+		$this->app->c[ucfirst($className) . ucfirst($requestType)] = $this->getMockBuilder('\OCA\Chat\OCH\Push\\' . $className)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+			->method('setRequestData')
+			->with($this->equalTo($data))
+			->will($this->returnValue(true));
+
+		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+			->method('execute')
+			->will($this->returnValue($dummyData));
+
+		$response = $this->controller->route($type, $data);
+		$expectedData = array(
+			'dummy' => 'dummydata'
+		);
+		$this->assertEquals($expectedData, $response);
+	}
+
 }

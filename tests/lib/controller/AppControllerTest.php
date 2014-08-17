@@ -174,4 +174,35 @@ class AppControllerTest extends ControllerTestUtility {
 	}
 
 
+	public function contactsProvider(){
+		return array(
+			array(
+				array(
+					"contacts" => "contacts", // dummy data
+					"contactsList" => array("contact1", "contact2"),
+					"contactsObj" => array("contacts"),
+				),
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider contactsProvider
+	 */
+	public function testContacts($contacts){
+		$this->app->expects($this->once())
+			->method('getContacts')
+			->will($this->returnValue($contacts));
+
+		$expectedData = array(
+			"contacts" => $contacts['contacts'],
+			"contactsList" => $contacts['contactsList'],
+			"contactsObj" => $contacts['contactsObj']
+		);
+
+		$response = $this->controller->contacts();
+		$this->assertEquals('OCP\AppFramework\Http\JSONResponse', get_class($response)); // make sure a JSON response is sent
+ 		$this->assertEquals($expectedData, $response->getData());
+	}
+
 }

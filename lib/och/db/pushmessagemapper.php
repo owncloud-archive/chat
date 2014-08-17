@@ -10,11 +10,18 @@ namespace OCA\Chat\OCH\Db;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 use \OCA\Chat\Db\DoesNotExistException;
+use \OCA\Chat\OCH\Db\UserOnlineMapper;
 
 class PushMessageMapper extends Mapper {
 
-	public function __construct(IDb $api) {
+	private $USER_ONLINE = '*PREFIX*chat_och_users_online';
+	private $USERS_IN_CONV = '*PREFIX*chat_och_users_in_conversation';
+
+	private $userOnlineMapper;
+
+	public function __construct(IDb $api, UserOnlineMapper $userOnlineMapper) {
 		parent::__construct($api, 'chat_och_push_messages'); // tablename is news_feeds
+		$this->userOnlineMapper = $userOnlineMapper;
 	}
 
 	public function findBysSessionId($sessionId){
@@ -24,6 +31,18 @@ class PushMessageMapper extends Mapper {
 			throw new DoesNotExistException('');
 		} else {
 			return $feeds;
+		}
+	}
+
+	public function createForAllSessionsInConv($sender, $convId, $command){
+		$receivers = $this->userOnlineMapper->findByUser($sender);
+		$pushMessage = new PushMessage();
+		$pushMessage->setSender($sender);
+		$pushMessage->setCommand($command);
+		foreach($receivers as $receiver){
+			$pushMessage->setReceiver($receiver->getUser());
+			$pushMessage->setReceiverSessionId($receiver->getSessionId());
+			$this->insert($pushMessage);
 		}
 	}
 }

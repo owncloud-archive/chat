@@ -64,15 +64,7 @@ class Join extends ChatAPI {
 				)
 			));
 
-			$sessions = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
-			foreach($sessions as $session){
-				$pushMessage = new PushMessage();
-				$pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
-				$pushMessage->setReceiver($session->getUser());
-				$pushMessage->setReceiverSessionId($session->getSessionId());
-				$pushMessage->setCommand($command);
-				$pushMessageMapper->insert($pushMessage);
-			}
+
 
 		}
 		

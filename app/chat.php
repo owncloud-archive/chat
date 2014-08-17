@@ -83,7 +83,7 @@ class Chat extends App{
 		});
 
 		$container->registerService('PushMessageMapper', function ($c) {
-			return new PushMessageMapper($c->query('ServerContainer')->getDb());
+			return new PushMessageMapper($c->query('ServerContainer')->getDb(), $c['UserOnlineMapper']);
 		});
 
 		$container->registerService('UserMapper', function ($c) {

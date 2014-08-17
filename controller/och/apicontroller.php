@@ -91,9 +91,9 @@ class ApiController extends Controller {
 										$dataClass->setRequestData($data);
 										$data = $dataClass->execute();
 										if($data){
-											return new Success("command", $action, $data);
+											return new Success("data", $action, $data);
 										} else {
-											return new Success("command", $action);
+											return new Success("data", $action);
 										}
 									} else {
 										return new Error("data", $action, self::DATA_ACTION_NOT_FOUND);

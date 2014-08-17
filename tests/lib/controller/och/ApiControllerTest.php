@@ -340,7 +340,139 @@ class ApiControllerTest extends ControllerTestUtility {
 	public function	testError($type, $data, $expectedData){
 		$response = $this->controller->route($type, $data);
 		$this->assertEquals($expectedData, $response->getData());
+	}
+
+	public function commandExecutionProivder(){
+		return array(
+			array(
+				"command::join::request",
+				array(
+					"conv_id" => md5(time() + 2343),
+					"timestamp" => time(),
+					"user" => array(
+						'id' => 'foo',
+						'displayname' => 'foo',
+						'backends' => array (
+							'email' => array (
+								'id' => NULL,
+								'displayname' => 'E-mail',
+								'protocol' => 'email',
+								'namespace' => ' email',
+								'value' => array (
+									0 => array (
+									),
+								),
+							),
+							'och' => array (
+								'id' => NULL,
+								'displayname' => 'ownCloud Handle',
+								'protocol' => 'x-owncloud-handle',
+								'namespace' => 'och',
+								'value' => 'foo',
+							),
+						),
+						'address_book_id' => 'local',
+						'address_book_backend' => '',
+					),
+					"session_id" => md5(time() -324234)
+				),
+				'join',
+				'command'
+			),
+		);
+	}
+
+	/**
+	 * Test if the correct class is executed when asked
+	 * @dataProvider commandExecutionProivder
+	 */
+	public function testCommandExecution($type, $data, $className, $requestType){
+		$this->app->c[ucfirst($className) . ucfirst($requestType)] = $this->getMockBuilder('\OCA\Chat\OCH\Commands\\' . $className)
+				->disableOriginalConstructor()
+				->getMock();
+
+		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+			->method('setRequestData')
+			->with($this->equalTo($data))
+			->will($this->returnValue(true));
+
+		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+			->method('execute')
+			->will($this->returnValue(null));
+
+		$response = $this->controller->route($type, $data);
+		$this->assertEquals('OCA\Chat\OCH\Responses\Success', get_class($response));
+		$this->assertEquals(array("type" =>  $requestType . '::' . $className . '::response', "data" => array("status" => "success")), $response->getData());
 
 	}
 
+	public function dataExecutionProvider(){
+		return array(
+			array(
+				"data::get_users::request",
+				array(
+					"conv_id" => md5(time() + 2343),
+					"timestamp" => time(),
+					"user" => array(
+						'id' => 'foo',
+						'displayname' => 'foo',
+						'backends' => array (
+							'email' => array (
+								'id' => NULL,
+								'displayname' => 'E-mail',
+								'protocol' => 'email',
+								'namespace' => ' email',
+								'value' => array (
+									0 => array (
+									),
+								),
+							),
+							'och' => array (
+								'id' => NULL,
+								'displayname' => 'ownCloud Handle',
+								'protocol' => 'x-owncloud-handle',
+								'namespace' => 'och',
+								'value' => 'foo',
+							),
+						),
+						'address_book_id' => 'local',
+						'address_book_backend' => '',
+					),
+					"session_id" => md5(time() -324234)
+				),
+				'GetUsers',
+				'data',
+				array('dummy' => 'dummydata'),
+				'get_users'
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider dataExecutionProvider
+	 */
+	public function testDataExecution($type, $data, $className, $requestType, $dummyData, $commandName){
+		$this->app->c[ucfirst($className) . ucfirst($requestType)] = $this->getMockBuilder('\OCA\Chat\OCH\Data\\' . $className)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+			->method('setRequestData')
+			->with($this->equalTo($data))
+			->will($this->returnValue(true));
+
+		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+			->method('execute')
+			->will($this->returnValue($dummyData));
+
+		$response = $this->controller->route($type, $data);
+		$expectedData = array(
+			"type" =>  $requestType . '::' . $commandName . '::response',
+			"data" => $dummyData
+		);
+		$expectedData['data']["status"] = "successq";
+		$this->assertEquals('OCA\Chat\OCH\Responses\Success', get_class($response));
+		$this->assertEquals($expectedData, $response->getData());
+
+	}
 }

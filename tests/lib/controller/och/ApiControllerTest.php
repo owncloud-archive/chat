@@ -470,7 +470,7 @@ class ApiControllerTest extends ControllerTestUtility {
 			"type" =>  $requestType . '::' . $commandName . '::response',
 			"data" => $dummyData
 		);
-		$expectedData['data']["status"] = "successq";
+		$expectedData['data']["status"] = "success";
 		$this->assertEquals('OCA\Chat\OCH\Responses\Success', get_class($response));
 		$this->assertEquals($expectedData, $response->getData());
 

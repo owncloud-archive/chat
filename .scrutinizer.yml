@@ -11,8 +11,9 @@ imports:
     - php
 
 tools:
+    external_code_coverage: true
     js_hint:
-        use_native_config: true
+    use_native_config: true
 
     php_mess_detector:
         config:
@@ -30,4 +31,3 @@ tools:
                 generic:
                     white_space:
                         disallow_space_indent_sniff: true
-	external_code_coverage: true

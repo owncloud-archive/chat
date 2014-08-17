@@ -39,3 +39,17 @@ spl_autoload_register(function ($className){
 	}
 
 });
+
+class TestUser {
+
+	public $UID;
+
+	public function __constrcut($UID){
+		$this->UID =  $UID;
+	}
+
+	public function getUID(){
+		return $this->UID;
+	}
+
+}

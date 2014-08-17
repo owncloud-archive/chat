@@ -10,21 +10,6 @@ namespace OCA\Chat\App;
 use \OCA\Chat\Db\Backend;
 use OCA\Chat\OCH\Db\User;
 
-
-class TestUser {
-
-	public $UID;
-
-	public function __constrcut($UID){
-		$this->UID =  $UID;
-	}
-
-	public function getUID(){
-		return $this->UID;
-	}
-
-}
-
 class ChatTest extends \PHPUnit_Framework_TestCase {
 
 	public $app;

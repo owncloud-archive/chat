@@ -26,10 +26,11 @@ class AppControllerTest extends ControllerTestUtility {
 		$app = new \OCP\AppFramework\App($this->appName, array());
 		$this->app->container = $app->getContainer();
 		$this->app->c = $this->app->container;
+		$c = $this->app->container;
 		$this->app->expects($this->any())
 			->method('getContainer')
-			->will($this->returnCallback(function(){
-				return $this->app->container;
+			->will($this->returnCallback(function() use($c){
+				return $c;
 			}));
 		$this->controller = new AppController($this->appName, $this->request, $this->app);
 	}

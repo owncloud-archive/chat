@@ -8,6 +8,22 @@
 namespace OCA\Chat\App;
 
 use \OCA\Chat\Db\Backend;
+use OCA\Chat\OCH\Db\User;
+
+
+class TestUser {
+
+	public $UID;
+
+	public function __constrcut($UID){
+		$this->UID =  $UID;
+	}
+
+	public function getUID(){
+		return $this->UID;
+	}
+
+}
 
 class ChatTest extends \PHPUnit_Framework_TestCase {
 
@@ -484,9 +500,83 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($expectedResult, $result);
 	}
 
-	public function	testGetInitConvs(){
-
-	}
+//	public function initConvsProvider(){
+//		$conv1 = new User();
+//		$conv1->setConversationId('CONV_ID_1408002874_42');
+//		$conv1->setUser('admin');
+//		$conv1->setJoined(329499626);
+//		$conv1->setId(1);
+//
+//		$conv2 = new User();
+//		$conv2->setConversationId('CONV_ID_1408002874_31');
+//		$conv2->setUser('admin');
+//		$conv2->setJoined(329443626);
+//		$conv2->setId(2);
+//
+//		$conv3 = new User();
+//		$conv3->setConversationId('CONV_ID_1408002874_26');
+//		$conv3->setUser('admin');
+//		$conv3->setJoined(324529443626);
+//		$conv3->setId(3);
+//
+//		$currentUser = array(
+//			'id' => 'admin',
+//			'displayname' => 'admin',
+//			'backends' => array (
+//				'email' => array (
+//					'id' => NULL,
+//					'displayname' => 'E-mail',
+//					'protocol' => 'email',
+//					'namespace' => ' email',
+//					'value' => array (
+//						0 => array (
+//						),
+//					),
+//				),
+//				'och' => array (
+//					'id' => NULL,
+//					'displayname' => 'ownCloud Handle',
+//					'protocol' => 'x-owncloud-handle',
+//					'namespace' => 'och',
+//					'value' => 'admin',
+//				),
+//			),
+//			'address_book_id' => 'local',
+//			'address_book_backend' => '',
+//		);
+//
+//		$joinRequestData1 = array(
+//			"conv_id" => "CONV_ID_1408002874_42",
+//			"user" => $currentUser
+//		);
+//
+//		$joinRequestData2 = array(
+//			"conv_id" => "CONV_ID_1408002874_31",
+//			"user" => $currentUser
+//		);
+//
+//		$joinRequestData3 = array(
+//			"conv_id" => "CONV_ID_1408002874_26",
+//			"user" => $currentUser
+//		);
+//
+//
+//		return array(
+//			array(
+//				array(
+//					$conv1,
+//					$conv2,
+//					$conv3
+//				),
+//				array(
+//					$joinRequestData1,
+//					$joinRequestData2,
+//					$joinRequestData3,
+//				),
+//				'admin'
+//			)
+//		);
+//	}
 
 
 }

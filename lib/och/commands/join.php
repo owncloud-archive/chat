@@ -39,38 +39,31 @@ class Join extends ChatAPI {
 		$user->setUser($this->requestData['user']['backends']['och']['value']);
 		$userMapper->insertUnique($user);
 
-//		 Fetch users in conv
-		$getUsers = $this->c['GetUsersData'];
-		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-		$users = $getUsers->execute();
-		$users = $users['users'];
-//
-//		 Fetch messages in conv
-//		$getMessages = $this->c['MessagesData'];
-//		$getMessages->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-//		$messages = $getMessages->execute();
-//		$messages = $messages['messages'];
-//
+		$userMapper->findUsersInConv($this->requestData['conv_id']);
+
 		if(count($users) > 2){
 			// we are in a group conv this mean we have to let the other users now we joined it
 			$pushMessageMapper = $this->c['PushMessageMapper'];
-			$userMapper = $this->c['UserMapper'];
 			$command = json_encode(array(
 				"type" => "joined",
 				"data" => array(
 					"conv_id" => $this->requestData['conv_id'],
-//					"messages" => $messages,
 					"users" => $users
 				)
 			));
-
-
-
+			$pushMessageMapper->createForAllUsersInConv(
+				$this->requestData['user']['backends']['och']['value'],
+				$this->requestData['conv_id'],
+				$command
+			);
 		}
-		
-		return array(
-//			"messages" => $messages,
-//			"users" => $users
-		);
+
+		$getUsers = $this->c['GetUsersData'];
+		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $getUsers->execute();
+
+		return $users;
+		// Return users as contacts because this is needed for the client
+
 	}
 }

@@ -66,9 +66,8 @@ class Invite extends ChatAPI {
 			)
 		));
 		$pushMessageMapper = $this->c['PushMessageMapper'];
-		$pushMessageMapper->createForAllSessionsInConv(
+		$pushMessageMapper->createForAllSessions(
 			$this->requestData['user_to_invite']['backends']['och']['value'],
-			$this->requestData['conv_id'],
 			$command
 		);
 

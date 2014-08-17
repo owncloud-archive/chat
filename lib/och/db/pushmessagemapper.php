@@ -18,10 +18,12 @@ class PushMessageMapper extends Mapper {
 	private $USERS_IN_CONV = '*PREFIX*chat_och_users_in_conversation';
 
 	private $userOnlineMapper;
+	private $userMapper;
 
-	public function __construct(IDb $api, UserOnlineMapper $userOnlineMapper) {
+	public function __construct(IDb $api, UserOnlineMapper $userOnlineMapper, UserMapper $userMapper) {
 		parent::__construct($api, 'chat_och_push_messages'); // tablename is news_feeds
 		$this->userOnlineMapper = $userOnlineMapper;
+		$this->userMapper = $userMapper;
 	}
 
 	public function findBysSessionId($sessionId){
@@ -34,7 +36,7 @@ class PushMessageMapper extends Mapper {
 		}
 	}
 
-	public function createForAllSessionsInConv($sender, $convId, $command){
+	public function createForAllSessions($sender, $command){
 		$receivers = $this->userOnlineMapper->findByUser($sender);
 		$pushMessage = new PushMessage();
 		$pushMessage->setSender($sender);
@@ -45,4 +47,17 @@ class PushMessageMapper extends Mapper {
 			$this->insert($pushMessage);
 		}
 	}
+
+	public function createForAllUsersInConv($sender, $convId, $command){
+		$sessions = $this->userMapper->findSessionsByConversation($convId);
+		$pushMessage = new PushMessage();
+		$pushMessage->setSender($sender);
+		$pushMessage->setCommand($command);
+		foreach($sessions as $session){
+			$pushMessage->setReceiver($session->getUser());
+			$pushMessage->setReceiverSessionId($session->getSessionId());
+			$this->insert($pushMessage);
+		}
+	}
+
 }

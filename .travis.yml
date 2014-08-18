@@ -6,13 +6,12 @@ php:
   - 5.6
 
 env:
-- DB=sqlite
+  - DB=mysql
 
 before_install:
-  - sh tests/install_dependencies.sh
-  - sh tests/setup_owncloud.sh
+  - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
+  - bash ./before_install.sh chat master $DB
 
 script:
-  - phpunit -c tests/phpunit.xml --testsuite app --coverage-clover=coverage.clover
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - cd ../core/apps/chat
+  - phpunit -c tests/phpunit.xml --testsuite database

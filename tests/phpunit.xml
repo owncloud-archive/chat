@@ -8,9 +8,7 @@
             <directory>lib/lib/och/commands/</directory>
         </testsuite>
         <testsuite name="database">
-            <directory>
-                lib/db
-            </directory>
+            <directory>lib/db</directory>
         </testsuite>
     </testsuites>
 </phpunit>

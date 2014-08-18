@@ -2,7 +2,7 @@
 
 namespace OCA\Chat\Db;
 
-class DummyTest extends ControllerTestUtility {
+class DummyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAppConfig(){
 

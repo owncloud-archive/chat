@@ -44,23 +44,11 @@ class Greet extends ChatAPI {
 			)
 		));
 
-		$userOnlineMapper = $this->c['UserOnlineMapper'];
-		$users = $userOnlineMapper->getAll();
-
-		$sender = $this->requestData['user']['backends']['och']['value'];
 		$pushMessageMapper = $this->c['PushMessageMapper'];
-
-		foreach($users as $user){
-			if($user->getUser() !== $sender){
-				$pushMessage = new PushMessage();
-				$pushMessage->setSender($sender);
-				$pushMessage->setReceiver($user->getUser());
-				$pushMessage->setReceiverSessionId($user->getSessionId());
-				$pushMessage->setCommand($command);
-				$pushMessageMapper->insert($pushMessage);
-			}
-		}
-
+		$pushMessageMapper->createForAllSessions(
+			$this->requestData['user']['backends']['och']['value'],
+			$command
+		);
 
 		return array("session_id" => $sessionId);
 	}

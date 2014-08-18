@@ -6,8 +6,8 @@ php:
   - 5.6
 
 before_install:
-  - ./tests/install_dependencies.sh
-  - tests/setup_owncloud.sh
+  - sh tests/install_dependencies.sh
+  - sh tests/setup_owncloud.sh
 
 script:
   - phpunit -c tests/phpunit.xml --testsuite app --coverage-clover=coverage.clover

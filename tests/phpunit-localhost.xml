@@ -1,0 +1,15 @@
+<!--
+    This is the configuration file used for unit test on a local machine
+    It isn't needed to install ownCloud or a database
+    This will NOT run the database tests
+    This uses a custom autoloader, not the one of ownCloud
+-->
+<phpunit bootstrap="lib/bootstrap-localhost.php">
+    <testsuites>
+        <testsuite name="app">
+            <directory>lib/app/</directory>
+            <directory>lib/controller/</directory>
+            <!--<directory>lib/lib/och/commands/</directory>-->
+        </testsuite>
+    </testsuites>
+</phpunit>

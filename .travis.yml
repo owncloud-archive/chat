@@ -29,15 +29,10 @@ matrix:
     - php: 5.5
       env: DB=sqlite
 
-
-
-
-
-
 before_install:
   - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
   - bash ./before_install.sh chat master $DB
 
 script:
   - cd ../core/apps/chat
-  - phpunit -c tests/phpunit.xml --testsuite database
+  - phpunit -c tests/phpunit-travis.xml --testsuite app

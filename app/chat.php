@@ -30,7 +30,7 @@ use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\Db\Backend;
 /*
- * // to prevent clashes with installed app framework versions if(!class_exists('\SimplePie')) { require_once __DIR__ . '/../3rdparty/simplepie/autoloader.php'; }
+ * // to prevent clashes with installed app framework versions if(!class_exists('\SimplePie')) { require_once __DIR__ . '/../3rdparty/simplepie/bootstrap-travis.php'; }
  */
 class Chat extends App{
 

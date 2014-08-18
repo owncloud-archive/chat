@@ -7,5 +7,10 @@
         <testsuite name="och">
             <directory>lib/lib/och/commands/</directory>
         </testsuite>
+        <testsuite name="database">
+            <directory>
+                lib/db
+            </directory>
+        </testsuite>
     </testsuites>
 </phpunit>

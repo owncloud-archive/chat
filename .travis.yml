@@ -6,13 +6,8 @@ php:
   - 5.6
 
 before_install:
-  - cd ..
-  - git clone https://github.com/owncloud/core.git
-  - mv chat core/apps/
-  - cd core
-  - git submodule init
-  - git submodule update
-  - cd apps/chat
+  - ./tests/install_dependencies.sh
+  - tests/setup_owncloud.sh
 
 script:
   - phpunit -c tests/phpunit.xml --testsuite app --coverage-clover=coverage.clover

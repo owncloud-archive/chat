@@ -14,3 +14,8 @@ if(!class_exists('PHPUnit_Framework_TestCase')) {
 
 OC_Hook::clear();
 OC_Log::$enabled = false;
+try {
+	OC_App::enable('chat');
+} catch (Exception $e) {
+	echo $e;
+}

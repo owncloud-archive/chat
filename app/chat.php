@@ -87,7 +87,7 @@ class Chat extends App{
 			return new ConversationMapper($c->query('ServerContainer')->getDb());
 		});
 
-		$container->registerService('MessageMapper', function ($c) {
+		$container->registerService('messageMapper', function ($c) {
 			return new MessageMapper($c->query('ServerContainer')->getDb());
 		});
 

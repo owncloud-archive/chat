@@ -25,16 +25,22 @@ class BackendMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function backendsProvider(){
-		$backends = array();
-		$backend = new Backend();
-		$backend->setName('foo');
-		$backend->setDisplayname('foo backend');
-		$backend->setProtocol('x-foo');
-		$backend->setEnabled(true);
-		$backends[] = $backend;
+		$backend1 = new Backend();
+		$backend1->setName('foo');
+		$backend1->setDisplayname('foo backend');
+		$backend1->setProtocol('x-foo');
+		$backend1->setEnabled(true);
+		$backend2 = new Backend();
+		$backend2->setName('bar');
+		$backend2->setDisplayname('bar backend');
+		$backend2->setProtocol('x-bar');
+		$backend2->setEnabled(false);
 		return array(
 			array(
-				$backends
+				array(
+					1 => $backend1, // use the same id as in the DB
+					2 => $backend2
+				)
 			)
 		);
 	}
@@ -42,17 +48,88 @@ class BackendMapperTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider backendsProvider
 	 */
-	public function testGetAll($backends){
+	public function testGetAll(array $backends){
 		// Insert dummy data
 		foreach ($backends as $backend){
 			$this->backendMapper->insert($backend);
 		}
 
 		$results = $this->backendMapper->getAll();
+		foreach($results as $result){
+			$this->assertEquals($backends[$result->getId()]->getName(), $result->getName());
+			$this->assertEquals($backends[$result->getId()]->getDisplayname(), $result->getDisplayname());
+			$this->assertEquals($backends[$result->getId()]->getProtocol(), $result->getProtocol());
+			$this->assertEquals($backends[$result->getId()]->getId(), $result->getId());
+			$this->assertEquals($backends[$result->getId()]->getEnabled(), $result->getEnabled());
+		}
+	}
+
+	/**
+ 	 * @dataProvider backendsProvider
+	 */
+	public function testGetAllEnabled( array $backends){
+		// Insert dummy data
+		foreach ($backends as $backend){
+			$this->backendMapper->insert($backend);
+		}
+		$results = $this->backendMapper->getAllEnabled();
 		foreach($results as $key=>$result){
-			$this->assertEquals($backends[$key]->getName(), $result->getName());
+			$this->assertEquals(true, $result->getEnabled());
+		}
+	}
+
+	public function existsProvider(){
+		$backend1 = new Backend();
+		$backend1->setName('foo');
+		$backend1->setDisplayname('foo backend');
+		$backend1->setProtocol('x-foo');
+		$backend1->setEnabled(true);
+		$backend2 = new Backend();
+		$backend2->setName('bar');
+		$backend2->setDisplayname('bar backend');
+		$backend2->setProtocol('x-bar');
+		$backend2->setEnabled(false);
+		return array(
+			array(
+				$backend1,
+				$backend2
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider existsProvider
+	 * @param $backend1 \OCA\Chat\Db\Backend this backend must be inserted and will exist
+	 * @param $backend2 \OCA\Chat\Db\Backend this backend must NOT be inserted and will NOT exist
+	 */
+	public function testExists(Backend $backend1, Backend $backend2){
+		$this->backendMapper->insert($backend1);
+
+		$exists = $this->backendMapper->exists($backend1->getName());
+		$this->assertEquals(true, $exists);
+
+		$exists = $this->backendMapper->exists($backend2->getName());
+		$this->assertEquals(false, $exists);
+	}
+
+	/**
+	 * @dataProvider backendsProvider
+	 */
+	public function testFindByProtocol(array $backends){
+		foreach ($backends as $backend){
+			$this->backendMapper->insert($backend);
+		}
+
+		foreach($backends as $backend){
+			$result = $this->backendMapper->findByProtocol($backend->getProtocol());
+			$this->assertEquals($backends[$result->getId()]->getName(), $result->getName());
+			$this->assertEquals($backends[$result->getId()]->getDisplayname(), $result->getDisplayname());
+			$this->assertEquals($backends[$result->getId()]->getProtocol(), $result->getProtocol());
+			$this->assertEquals($backends[$result->getId()]->getId(), $result->getId());
+			$this->assertEquals($backends[$result->getId()]->getEnabled(), $result->getEnabled());
 
 		}
+
 	}
 
 

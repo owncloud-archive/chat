@@ -10,6 +10,10 @@ function time(){
 	return '2324';
 }
 
+/**
+ * Class UserMock
+ * This class mocks \OC\User\User
+ */
 class UserMock {
 
 	public function getUID(){
@@ -20,9 +24,24 @@ class UserMock {
 
 class ApiControllerTest extends ControllerTestUtility {
 
+	/**
+	 * @var string
+	 */
 	private $appName;
+
+	/**
+	 * @var \OCP\Irequest
+	 */
 	private $request;
+
+	/**
+	 * @var \OCA\Chat\Controller\OCH\ApiController
+	 */
 	private $controller;
+
+	/**
+	 * @var \OCA\Chat\App\Chat
+	 */
 	private $app;
 
 	public function setUp(){

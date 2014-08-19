@@ -29,17 +29,26 @@ use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\Db\Backend;
-/*
- * // to prevent clashes with installed app framework versions if(!class_exists('\SimplePie')) { require_once __DIR__ . '/../3rdparty/simplepie/bootstrap-travis.php'; }
+
+/**
+ * Class Chat
+ * @package OCA\Chat\App
  */
 class Chat extends App{
 
+	/**
+	 * @var array used to cache the parsed contacts for every request
+	 */
 	private static $contacts;
 
+	/**
+	 * @var \OCP\AppFramework\IAppContainer
+	 */
 	public $c;
 
-	private $contactsMngr;
-
+	/**
+	 * @param array $urlParams
+	 */
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 
@@ -83,7 +92,11 @@ class Chat extends App{
 		});
 
 		$container->registerService('PushMessageMapper', function ($c) {
-			return new PushMessageMapper($c->query('ServerContainer')->getDb(), $c['UserOnlineMapper'], $c['UserMapper']);
+			return new PushMessageMapper(
+				$c->query('ServerContainer')->getDb(),
+				$c['UserOnlineMapper'],
+				$c['UserMapper']
+			);
 		});
 
 		$container->registerService('UserMapper', function ($c) {
@@ -178,7 +191,7 @@ class Chat extends App{
 	 * @param string $displayName
 	 * @param string $name
 	 * @param string $protocol
-	 * @param string $enabled
+	 * @param bool $enabled
 	 */
 	public function registerBackend($displayName, $name, $protocol, $enabled){
 		$backendMapper = $this->c['BackendMapper'];
@@ -194,8 +207,10 @@ class Chat extends App{
 	}
 
 	/**
-	 * Retrieves all contacts from the ContactsManager and parse them to a usable format.
-	 * @return array Returns array with contacts, contacts as a list and contacts as an associative array
+	 * Retrieves all contacts from the ContactsManager and parse them to a
+	 * usable format.
+	 * @return array Returns array with contacts, contacts as a list and
+	 * contacts as an associative array
 	 */
 	public function getContacts(){
 		if(count(self::$contacts) == 0){
@@ -245,13 +260,18 @@ class Chat extends App{
 				$receivers[] = $data;
 				$contactsObj[$r['id']] = $data;
 			}
-			self::$contacts = array('contacts' => $receivers, 'contactsList' => $contactList, 'contactsObj' => $contactsObj);
+			self::$contacts = array(
+				'contacts' => $receivers,
+				'contactsList' => $contactList,
+				'contactsObj' => $contactsObj
+			);
 		}
 		return self::$contacts;
 	}
 
+
 	/**
-	 * @todo
+	 * @return array backend name as key and \OCA\Chat\Db\Backend as value
 	 */
 	public function getBackends(){
 		$backendMapper = $this->c['BackendMapper'];
@@ -341,6 +361,10 @@ class Chat extends App{
 		return $this->getUserasContact($this->c['UserSession']->getUser()->getUID());
 	}
 
+	/**
+	 * @param $id
+	 * @return array
+	 */
 	public function getUserasContact($id){
 		$result = $this->c['ContactsManager']->search($id, array('id'));
 		// Finding the correct result

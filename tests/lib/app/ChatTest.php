@@ -12,6 +12,9 @@ use OCA\Chat\OCH\Db\User;
 
 class ChatTest extends \PHPUnit_Framework_TestCase {
 
+	/**
+	 * @var \OCA\Chat\App\Chat
+	 */
 	public $app;
 
 	public function setUp(){

@@ -12,9 +12,24 @@ function time(){
 
 class AppControllerTest extends ControllerTestUtility {
 
+	/**
+	 * @var string
+	 */
 	private $appName;
+
+	/**
+	 * @var \OCP\Irequest
+	 */
 	private $request;
+
+	/**
+	 * @var \OCA\Chat\Controller\AppController
+	 */
 	private $controller;
+
+	/**
+	 * @var \OCA\Chat\App\Chat
+	 */
 	private $app;
 
 	public function setUp(){

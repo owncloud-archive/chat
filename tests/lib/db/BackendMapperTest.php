@@ -49,18 +49,20 @@ class BackendMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider backendsProvider
 	 */
 	public function testGetAll(array $backends){
+		$expectedBackends = array();
 		// Insert dummy data
 		foreach ($backends as $backend){
 			$this->backendMapper->insert($backend);
+			$expectedBackends[$backend->getId()] = $backend;
 		}
 
 		$results = $this->backendMapper->getAll();
 		foreach($results as $result){
-			$this->assertEquals($backends[$result->getId()]->getName(), $result->getName());
-			$this->assertEquals($backends[$result->getId()]->getDisplayname(), $result->getDisplayname());
-			$this->assertEquals($backends[$result->getId()]->getProtocol(), $result->getProtocol());
-			$this->assertEquals($backends[$result->getId()]->getId(), $result->getId());
-			$this->assertEquals($backends[$result->getId()]->getEnabled(), $result->getEnabled());
+			$this->assertEquals($expectedBackends[$result->getId()]->getName(), $result->getName());
+			$this->assertEquals($expectedBackends[$result->getId()]->getDisplayname(), $result->getDisplayname());
+			$this->assertEquals($expectedBackends[$result->getId()]->getProtocol(), $result->getProtocol());
+			$this->assertEquals($expectedBackends[$result->getId()]->getId(), $result->getId());
+			$this->assertEquals($expectedBackends[$result->getId()]->getEnabled(), $result->getEnabled());
 		}
 	}
 
@@ -116,17 +118,19 @@ class BackendMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider backendsProvider
 	 */
 	public function testFindByProtocol(array $backends){
+		$expectedBackends = array();
 		foreach ($backends as $backend){
 			$this->backendMapper->insert($backend);
+			$expectedBackends[$backend->getId()] = $backend;
 		}
 
 		foreach($backends as $backend){
 			$result = $this->backendMapper->findByProtocol($backend->getProtocol());
-			$this->assertEquals($backends[$result->getId()]->getName(), $result->getName());
-			$this->assertEquals($backends[$result->getId()]->getDisplayname(), $result->getDisplayname());
-			$this->assertEquals($backends[$result->getId()]->getProtocol(), $result->getProtocol());
-			$this->assertEquals($backends[$result->getId()]->getId(), $result->getId());
-			$this->assertEquals($backends[$result->getId()]->getEnabled(), $result->getEnabled());
+			$this->assertEquals($expectedBackends[$result->getId()]->getName(), $result->getName());
+			$this->assertEquals($expectedBackends[$result->getId()]->getDisplayname(), $result->getDisplayname());
+			$this->assertEquals($expectedBackends[$result->getId()]->getProtocol(), $result->getProtocol());
+			$this->assertEquals($expectedBackends[$result->getId()]->getId(), $result->getId());
+			$this->assertEquals($expectedBackends[$result->getId()]->getEnabled(), $result->getEnabled());
 
 		}
 

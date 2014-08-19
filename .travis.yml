@@ -1,12 +1,4 @@
 language: php
-#php:
-#  - 5.3
-#  - 5.4
-#  - 5.5
-#  - 5.6
-#
-#env:
-#  - DB=mysql
 
 matrix:
   include:
@@ -27,4 +19,6 @@ before_install:
 
 script:
   - cd ../core/apps/chat
-  - phpunit -c tests/phpunit-travis.xml --testsuite app
+  - phpunit -c tests/phpunit-travis.xml --testsuite app --coverage-clover=coverage.clover
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

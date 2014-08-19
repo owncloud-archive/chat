@@ -1,12 +1,11 @@
 <?php
 $TRANSLATIONS = array(
 "Chat" => "συνομιλία",
-"New Conversation" => "Νέα Συνομιλία",
-"Hide Archived Conversations" => "Απόκρυψη Αρχείου Συζητήσεων",
-"Show Archived Conversations" => "Εμφάνιση Αρχείου Συζητήσεων",
+"Search in conversations" => "Αναζήτηση στις συζητήσεις",
 "Add Person" => "Προσθήκη Ατόμου",
 "Chat Message" => "Μύνημα Συνομιλίας",
-"Click on a contact to add them to the conversation" => "Κάντε Κλίκ  σε μια επαφή για να την προσθέσετε στην συνομιλία.",
-"Click on a contact to start a conversation" => "Κάντε Κλίκ σε μια επαφή για να ξεκινήσετε μια συνομιλία."
+"Search in users" => "Αναζήτηση χρηστών",
+"There are no other users on this ownCloud." => "Δεν υπάρχουν άλλοι χρήστες σε αυτό το ownCloud.",
+"\tIn order to chat please create at least one user, it will appear on the left." => "\tΓια να συζητήσετε, παρακαλώ δημιουργήστε τουλάχιστον ένα χρήστη, θα εμφανιστεί στα αριστερά."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

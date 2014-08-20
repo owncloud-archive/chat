@@ -4,6 +4,7 @@ $TRANSLATIONS = array(
 "Search in conversations" => "Poišči v pogovorih",
 "Add Person" => "Dodaj osebo",
 "Chat Message" => "Sporočilo klepetanja",
+"Search in users" => "Poišči med uporabniki",
 "There are no other users on this ownCloud." => "Ni drugih uporabnikov oblaka ownCloud.",
 "\tIn order to chat please create at least one user, it will appear on the left." => "\tZa klepet je treba ustvariti vsaj enega uporabnika. Njegovo ime bo prikazano na levi."
 );

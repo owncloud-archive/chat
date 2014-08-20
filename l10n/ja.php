@@ -4,7 +4,8 @@ $TRANSLATIONS = array(
 "Search in conversations" => "会話を検索",
 "Add Person" => "人を追加",
 "Chat Message" => "チャットメッセージ",
-"There are no other users on this ownCloud." => "この ownCloud には他にユーザは誰も居ません。",
-"\tIn order to chat please create at least one user, it will appear on the left." => "\tチャットするために、左側に現れる所から少なくとも１ユーザ作成してください。"
+"Search in users" => "ユーザーを検索",
+"There are no other users on this ownCloud." => "このownCloudには他のユーザーはいません。",
+"\tIn order to chat please create at least one user, it will appear on the left." => "\tチャットするには少なくとも１ユーザーは作成してください。左側に現れます。"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -124,6 +124,67 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function createForAllUsersInConvProvider(){
+		$convId = md5(time() - 354235);
+		$sessionId1 = md5(time() + rand(0, 1000));
+		$sessionId2 = md5(time() + rand(0, 1000));
+		$user1 = new User();
+		$user1->setUser('foo');
+		$user1->setConversationId($convId);
+		$user1->setJoined(time() -3434);
+
+		$user2 = new User();
+		$user2->setUser('bar');
+		$user2->setConversationId($convId);
+		$user2->setJoined(time() -4345675);
+
+		$session1 = new UserOnline();
+		$session1->setSessionId($sessionId1);
+		$session1->setUser('foo');
+		$session1->setLastOnline(time() -400);
+
+		$session2 = new UserOnline();
+		$session2->setSessionId($sessionId2);
+		$session2->setUser('bar');
+		$session2->setLastOnline(time() -3435);
+
+
+		return array(
+			array(
+				array($user1, $user2),
+				array($session1, $session2),
+				$convId
+			)
+		);
+	}
+
+
+	/**
+	 * @dataProvider createForAllUsersInConvProvider
+	 * @param $users
+	 */
+	public function testCreateForAllUsersInConv($usersInConv, $sessions, $convId){
+		foreach($usersInConv as $user){
+			$this->userMapper->insert($user);
+		}
+
+		foreach($sessions as $session){
+			$this->userOnlineMapper->insert($session);
+		}
+
+
+
+		$this->pushMessageMapper->createForAllUsersInConv('bar', $convId, 'testCommand');
+		$result = $this->pushMessageMapper->findAll();
+		$this->assertEquals('bar', $result[0]->getSender());
+		$this->assertEquals('foo', $result[0]->getReceiver());
+		$this->assertEquals('testCommand', $result[0]->getCommand());
+		$this->assertEquals('bar', $result[1]->getSender());
+		$this->assertEquals('bar', $result[1]->getReceiver());
+		$this->assertEquals('testCommand', $result[1]->getCommand());
+	}
+
+
 	/**
 	 * Remove all records from the table so future test can run without problems
 	 */

@@ -14,7 +14,6 @@ use \OCP\AppFramework\Db\Entity;
  * @method string getConversationId()
  * @method null setUser( string $user)
  * @method string getUser()
- * @method null setSessionId(string $sessionId)
  * @method string getSessionId()
  * @method null setJoined(int $timestamp)
  * @method int getJoined()

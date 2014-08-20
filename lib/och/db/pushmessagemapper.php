@@ -72,4 +72,9 @@ class PushMessageMapper extends Mapper {
 		}
 	}
 
+	public function findAll(){
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '`';
+		return $this->findEntities($sql, array());
+	}
+
 }

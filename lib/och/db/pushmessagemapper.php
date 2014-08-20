@@ -36,14 +36,15 @@ class PushMessageMapper extends Mapper {
 		}
 	}
 
-	public function createForAllSessionsOfAUser($sender, $command){
-		$receivers = $this->userOnlineMapper->findByUser($sender);
+	public function createForAllSessionsOfAUser($receiverId, $sender, $command){
+		$receivers = $this->userOnlineMapper->findByUser($receiverId);
 		$pushMessage = new PushMessage();
 		$pushMessage->setSender($sender);
 		$pushMessage->setCommand($command);
 		foreach($receivers as $receiver){
 			$pushMessage->setReceiver($receiver->getUser());
 			$pushMessage->setReceiverSessionId($receiver->getSessionId());
+			$pushMessage->setId(null);
 			$this->insert($pushMessage);
 		}
 	}

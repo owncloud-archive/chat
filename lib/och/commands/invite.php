@@ -65,9 +65,11 @@ class Invite extends ChatAPI {
 				"user_to_invite" => $this->requestData['user_to_invite']
 			)
 		));
+
 		$pushMessageMapper = $this->c['PushMessageMapper'];
 		$pushMessageMapper->createForAllSessionsOfAUser(
 			$this->requestData['user_to_invite']['backends']['och']['value'],
+			$this->requestData['user']['backends']['och']['value'],
 			$command
 		);
 

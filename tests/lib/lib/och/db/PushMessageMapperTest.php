@@ -27,12 +27,16 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public $userOnlineMapper;
 
-
+	/**
+	 * @var \OCA\Chat\OCH\Db\UserMapper
+	 */
+	public $userMapper;
 
 	public function setUp(){
 		$this->app = new Chat();
 		$this->pushMessageMapper = $this->app->c['PushMessageMapper'];
 		$this->userOnlineMapper = $this->app->c['UserOnlineMapper'];
+		$this->userMapper = $this->app->c['UserMapper'];
 	}
 
 	public function pushMessageProvider(){
@@ -87,12 +91,17 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$session2 = new UserOnline();
 		$session2->setSessionId(md5(time() + rand(0, 1000)));
-		$session2->setUser('foo');
+		$session2->setUser('bar');
 		$session2->setLastOnline(time() + rand(0, 100));
+
+		$session3 = new UserOnline();
+		$session3->setSessionId(md5(time() + rand(0, 1000)));
+		$session3->setUser('bar');
+		$session3->setLastOnline(time() + rand(0, 100));
 
 		return array(
 			array(
-				array( $session1, $session2)
+				array( $session1, $session2, $session3)
 			)
 		);
 	}
@@ -101,21 +110,31 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sessionsOfAUserProvider
 	 * @param $users
 	 */
-//	public function testCreateForAllSessionsOfAUser($users){
-//		foreach($users as $user){
-//			$this->userOnlineMapper->insert($user);
-//		}
-//
-//		$this->pushMessageMapper->createForAllSessionsOfAUser('foo', 'testMessage');
-//		$result = $this->pushMessageMapper->findAll();
-//
-//	}
+	public function testCreateForAllSessionsOfAUser($users){
+		foreach($users as $user){
+			$this->userOnlineMapper->insert($user);
+		}
+
+		$this->pushMessageMapper->createForAllSessionsOfAUser('bar', 'foo', 'testMessage');
+		$result = $this->pushMessageMapper->findAll();
+		foreach($result as $r){
+			$this->assertEquals('foo', $r->getSender());
+			$this->assertEquals('bar', $r->getReceiver());
+			$this->assertEquals('testMessage', $r->getCommand());
+		}
+	}
 
 	/**
 	 * Remove all records from the table so future test can run without problems
 	 */
 	public function tearDown(){
 		$query = \OCP\DB::prepare('DELETE FROM `' . $this->pushMessageMapper->getTableName() . '`');
+		$query->execute(array());
+
+		$query = \OCP\DB::prepare('DELETE FROM `' . $this->userOnlineMapper->getTableName() . '`');
+		$query->execute(array());
+
+		$query = \OCP\DB::prepare('DELETE FROM `' . $this->userMapper->getTableName() . '`');
 		$query->execute(array());
 	}
 	

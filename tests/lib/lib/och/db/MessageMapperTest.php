@@ -116,6 +116,9 @@ class MessageMapperTest extends \PHPUnit_Framework_TestCase {
 	public function tearDown(){
 		$query = \OCP\DB::prepare('DELETE FROM `' . $this->messageMapper->getTableName() . '`');
 		$query->execute(array());
+
+		$query = \OCP\DB::prepare('DELETE FROM `' . $this->userMapper->getTableName() . '`');
+		$query->execute(array());
 	}
 	
 

@@ -31,7 +31,7 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp(){
 		$this->app = new Chat();
-		$this->pushMessageMapper = $this->app->c['pushMessageMapper'];
+		$this->pushMessageMapper = $this->app->c['PushMessageMapper'];
 		$this->userOnlineMapper = $this->app->c['UserOnlineMapper'];
 	}
 
@@ -101,15 +101,15 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider sessionsOfAUserProvider
 	 * @param $users
 	 */
-	public function testCreateForAllSessionsOfAUser($users){
-		foreach($users as $user){
-			$this->userOnlineMapper->insert($user);
-		}
-
-		$this->pushMessageMapper->createForAllSessionsOfAUser('foo', 'testMessage');
-		$result = $this->pushMessageMapper->findAll();
-
-	}
+//	public function testCreateForAllSessionsOfAUser($users){
+//		foreach($users as $user){
+//			$this->userOnlineMapper->insert($user);
+//		}
+//
+//		$this->pushMessageMapper->createForAllSessionsOfAUser('foo', 'testMessage');
+//		$result = $this->pushMessageMapper->findAll();
+//
+//	}
 
 	/**
 	 * Remove all records from the table so future test can run without problems

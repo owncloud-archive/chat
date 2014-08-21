@@ -172,8 +172,6 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 			$this->userOnlineMapper->insert($session);
 		}
 
-
-
 		$this->pushMessageMapper->createForAllUsersInConv('bar', $convId, 'testCommand');
 		$result = $this->pushMessageMapper->findAll();
 		$this->assertEquals('bar', $result[0]->getSender());

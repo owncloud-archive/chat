@@ -44,7 +44,7 @@ class PushMessageMapper extends Mapper {
 		foreach($receivers as $receiver){
 			$pushMessage->setReceiver($receiver->getUser());
 			$pushMessage->setReceiverSessionId($receiver->getSessionId());
-			$pushMessage->setId(null);
+			unset $pushMessage->id;
 			$this->insert($pushMessage);
 		}
 	}
@@ -57,7 +57,7 @@ class PushMessageMapper extends Mapper {
 		foreach($sessions as $session){
 			$pushMessage->setReceiver($session->getUser());
 			$pushMessage->setReceiverSessionId($session->getSessionId());
-			$pushMessage->setId(null);
+			unset $pushMessage->id;
 			$this->insert($pushMessage);
 		}
 	}
@@ -70,7 +70,7 @@ class PushMessageMapper extends Mapper {
 		foreach($sessions as $session){
 			$pushMessage->setReceiver($session->getUser());
 			$pushMessage->setReceiverSessionId($session->getSessionId());
-			$pushMessage->setId(null);
+			unset $pushMessage->id;
 			$this->insert($pushMessage);
 		}
 	}

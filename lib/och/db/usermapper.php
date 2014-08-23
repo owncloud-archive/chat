@@ -26,7 +26,10 @@ class UserMapper extends Mapper {
 		$sql = <<<SQL
 			SELECT
 				$this->table.user,
-				$this->userOnlineTable.session_id
+				$this->userOnlineTable.session_id,
+				$this->table.conversation_id,
+				$this->table.joined,
+				$this->userOnlineTable.id
 			FROM
 				$this->table
 			INNER JOIN
@@ -120,6 +123,11 @@ SQL;
 				$entity->getJoined()
 			));
 		}
+	}
+
+	public function findAll(){
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '`';
+		return $this->findEntities($sql, array());
 	}
 
 }

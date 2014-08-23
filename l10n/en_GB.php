@@ -5,7 +5,6 @@ $TRANSLATIONS = array(
 "Add Person" => "Add Person",
 "Chat Message" => "Chat Message",
 "Search in users" => "Search in users",
-"There are no other users on this ownCloud." => "There are no other users on this ownCloud.",
-"\tIn order to chat please create at least one user, it will appear on the left." => "\tIn order to chat please create at least one user, it will appear on the left."
+"There are no other users on this ownCloud." => "There are no other users on this ownCloud."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

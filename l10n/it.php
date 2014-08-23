@@ -6,6 +6,6 @@ $TRANSLATIONS = array(
 "Chat Message" => "Messaggio di chat",
 "Search in users" => "Cerca tra gli utenti",
 "There are no other users on this ownCloud." => "Non ci sono altri utenti in questo ownCloud.",
-"\tIn order to chat please create at least one user, it will appear on the left." => "\tPer iniziare una chat, crea almeno un utente, apparirà a sinistra."
+"In order to chat please create at least one user, it will appear on the left." => "Per iniziare una chat, crea almeno un utente, apparirà a sinistra."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

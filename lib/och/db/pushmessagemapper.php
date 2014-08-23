@@ -38,39 +38,36 @@ class PushMessageMapper extends Mapper {
 
 	public function createForAllSessionsOfAUser($receiverId, $sender, $command){
 		$receivers = $this->userOnlineMapper->findByUser($receiverId);
-		$pushMessage = new PushMessage();
-		$pushMessage->setSender($sender);
-		$pushMessage->setCommand($command);
 		foreach($receivers as $receiver){
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setCommand($command);
 			$pushMessage->setReceiver($receiver->getUser());
 			$pushMessage->setReceiverSessionId($receiver->getSessionId());
-			unset $pushMessage->id;
 			$this->insert($pushMessage);
 		}
 	}
 
 	public function createForAllUsersInConv($sender, $convId, $command){
 		$sessions = $this->userMapper->findSessionsByConversation($convId);
-		$pushMessage = new PushMessage();
-		$pushMessage->setSender($sender);
-		$pushMessage->setCommand($command);
 		foreach($sessions as $session){
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setCommand($command);
 			$pushMessage->setReceiver($session->getUser());
 			$pushMessage->setReceiverSessionId($session->getSessionId());
-			unset $pushMessage->id;
 			$this->insert($pushMessage);
 		}
 	}
 
 	public function createForAllSessions($sender, $command){
 		$sessions = $this->userOnlineMapper->getAll();
-		$pushMessage = new PushMessage();
-		$pushMessage->setSender($sender);
-		$pushMessage->setCommand($command);
 		foreach($sessions as $session){
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setCommand($command);
 			$pushMessage->setReceiver($session->getUser());
 			$pushMessage->setReceiverSessionId($session->getSessionId());
-			unset $pushMessage->id;
 			$this->insert($pushMessage);
 		}
 	}

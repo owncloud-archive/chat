@@ -25,11 +25,6 @@ class UserMapperTest extends \PHPUnit_Framework_TestCase {
 	public $userMapper;
 
 	/**
-	 * @var \OCA\Chat\OCH\Db\ConversationMapper
-	 */
-	public $conversationMapper;
-
-	/**
 	 * @var \OCA\Chat\OCH\Db\UserOnlineMapper
 	 */
 	public $userOnlineMapper;
@@ -39,7 +34,6 @@ class UserMapperTest extends \PHPUnit_Framework_TestCase {
 	public function setUp(){
 		$this->app = new Chat();
 		$this->userMapper = $this->app->c['UserMapper'];
-		$this->conversationMapper  = $this->app->c['ConversationMapper'];
 		$this->userOnlineMapper  = $this->app->c['UserOnlineMapper'];
 	}
 
@@ -253,6 +247,9 @@ class UserMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function tearDown(){
 		$query = \OCP\DB::prepare('DELETE FROM `' . $this->userMapper->getTableName() . '`');
+		$query->execute(array());
+
+		$query = \OCP\DB::prepare('DELETE FROM `' . $this->userOnlineMapper->getTableName() . '`');
 		$query->execute(array());
 	}
 

@@ -336,18 +336,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	};
 
-	$scope.findContactByUser = function(user, namespace){
-		var backend = $scope.backends[namespace];
-		var result;
-		var contacts = $filter('backendFilter')($scope.contacts, backend);
-		contacts.forEach(function(contact, index){
-			if(contact.backends[namespace].value === user){
-				result = contact;
-			}
-		});
-		return result;
-	};
-
 	function updateContacts(){
 		var url = OC.generateUrl('/apps/chat/contacts')
 		$http.get('/index.php/apps/chat/contacts?requesttoken=' + oc_requesttoken)

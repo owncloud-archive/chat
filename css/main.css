@@ -471,17 +471,17 @@
 }
 
 .invite-container-mobile {
-	width:220px !important;
+	width:210px !important;
 	margin:10px !important;
 	left:0 !important;
 }
 
 .invite-container-mobile .invite-contact-search {
-	width:220px !important;
+	width:210px !important;
 }
 
 .invite-container-mobile .invite-contact-search input {
-	width:200px !important;
+	width:190px !important;
 }
 
 .online-dot {

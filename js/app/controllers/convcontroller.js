@@ -134,14 +134,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 					$('#emoji-container').css('bottom', height + 20);
 				}
 			});
-
-
-			var order = $scope.getHighestOrder();
-			order++;
-			$scope.convs[convId].order = order;
-
-
-
 		},
 		unActive : function(){
 			$scope.active.conv = null;
@@ -587,15 +579,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				// this means the navigation is hidden
 				// we have to position the invite popover below the "add person" button
 				element.addClass('invite-container-mobile');
-				var height = $('.conv-list-active').height();
-				if(height <= 60){
-					height = height + 70;
-				} else {
-					height = height + 60;
-				}
-				element.attr('style', 'margin-top: ' + height + 'px !important');
-
-
 			}
 		}
 	};

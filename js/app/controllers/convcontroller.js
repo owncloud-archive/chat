@@ -371,9 +371,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			if($scope.title.new_msgs.length === 0 ){
 				title = '';
 			} else {
-				angular.forEach($scope.title.new_msgs, function(user){
+				for (var key in $scope.title.new_msgs){
+					var user = $scope.title.new_msgs[key];
 					title = title + user + " ";
-				});
+				}
 			}
 			$scope.title.title = title;
 		} else {

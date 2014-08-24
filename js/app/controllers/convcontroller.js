@@ -287,14 +287,13 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			},1);
 			$('#chat-msg-input-field').focus();
 
-			angular.forEach($scope.convs[$scope.active.conv].users, function(user, key){
+			for (var key in $scope.convs[$scope.active.conv].users) {
+				var user =  $scope.convs[$scope.active.conv].users[key];
 				if(user.id !== Chat.scope.active.user.id){
 					var order = $scope.getHighestOrderContacts();
 					$scope.contactsObj[user.id].order = order;
 				}
-			});
-
-
+			}
 		}
 	};
 

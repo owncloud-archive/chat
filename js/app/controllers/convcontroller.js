@@ -36,20 +36,22 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	$scope.initvar = initvar;
 	for (var active in $scope.backends) break;
 	$scope.active.backend =  $scope.backends[active];
-	angular.forEach($scope.backends, function(backend, namespace){
+	for(var namespace in $scope.backends){
+		var backend = $scope.backends[namespace];
 		if(namespace === 'och'){
 			Chat[namespace].util.init();
 		}
-	});
+	}
 	$scope.initDone = true;
 
 
 	$scope.quit = function(){
-		angular.forEach($scope.backends, function(backend, namespace){
+		for(var namespace in $scope.backends){
+			var backend = $scope.backends[namespace];
 			if(namespace === 'och'){
 				Chat[namespace].util.quit();
 			}
-		});
+		}
 	};
 
 	$scope.selectBackend = function(backend){
@@ -141,13 +143,14 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		addConv : function(convId, users, backend, msgs){
 			// generate conv name + higher order of contacts
 			var name  = '';
-			angular.forEach(users, function(user, key){
+			for(var key in users){
+				var user = users[key];
 				if(user.id !== Chat.scope.active.user.id){
 					name += user.displayname + ' ';
 					var order = $scope.getHighestOrderContacts();
 					$scope.contactsObj[user.id].order = order;
 				}
-			});
+			}
 			// end generate conv name
 
 
@@ -168,9 +171,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				};
 				$scope.view.makeActive(convId);
 				if(msgs !== undefined){
-					angular.forEach(msgs, function(msg){
+					for (var key in msgs){
+						var msg = msgs[key];
 						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
-					});
+					}
 				}
 			}
 		},
@@ -287,14 +291,13 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			},1);
 			$('#chat-msg-input-field').focus();
 
-			angular.forEach($scope.convs[$scope.active.conv].users, function(user, key){
+			for (var key in $scope.convs[$scope.active.conv].users) {
+				var user =  $scope.convs[$scope.active.conv].users[key];
 				if(user.id !== Chat.scope.active.user.id){
 					var order = $scope.getHighestOrderContacts();
 					$scope.contactsObj[user.id].order = order;
 				}
-			});
-
-
+			}
 		}
 	};
 
@@ -333,18 +336,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 
 	};
 
-	$scope.findContactByUser = function(user, namespace){
-		var backend = $scope.backends[namespace];
-		var result;
-		var contacts = $filter('backendFilter')($scope.contacts, backend);
-		contacts.forEach(function(contact, index){
-			if(contact.backends[namespace].value === user){
-				result = contact;
-			}
-		});
-		return result;
-	};
-
 	function updateContacts(){
 		var url = OC.generateUrl('/apps/chat/contacts')
 		$http.get('/index.php/apps/chat/contacts?requesttoken=' + oc_requesttoken)
@@ -372,9 +363,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			if($scope.title.new_msgs.length === 0 ){
 				title = '';
 			} else {
-				angular.forEach($scope.title.new_msgs, function(user){
+				for (var key in $scope.title.new_msgs){
+					var user = $scope.title.new_msgs[key];
 					title = title + user + " ";
-				});
+				}
 			}
 			$scope.title.title = title;
 		} else {
@@ -443,31 +435,15 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 		}
 	};
-}).filter('backendFilter', function() {
-	return function(contacts, backend) {
-		if(contacts === null || backend === null){
-			// Not inited yet
-			return;
-		}
-		// backend = the active backend
-		var output = [];
-		contacts.forEach(function(contact, index){
-			angular.forEach(contact.backends, function(contactBackend, index){
-				if(contactBackend.protocol === backend.protocol){
-					output.push(contact);
-				}
-			});
-		});
-		return output;
-	};
 }).filter('userFilter', function() {
 	return function(users) {
 		var output = [];
-		angular.forEach(users, function(user, index){
+		for (var key in users){
+			var user = users[key];
 			if(user.id !== Chat.scope.active.user.id){
 				output.push(user);
 			}
-		});
+		}
 		return output;
 	};
 }).directive('ngEnter', function () {
@@ -490,24 +466,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			element.tipsy();
 		}
 	};
-}).directive('moreUsers', function () {
-	return {
-		restrict: 'A',
-		link: function ($scope, element, attrs) {
-			var msg = '';
-			users = JSON.parse(attrs.users);
-			angular.forEach(users, function(user, key){
-				if(key > 3){
-					if(key === users.length-1){
-						msg += user.displayname;
-					} else {
-						msg += user.displayname + ', ';
-					}
-				}
-			});
-			element.attr('title', msg);
-		}
-	};
 }).directive('displayname', function () {
 	return {
 		restrict: 'A',
@@ -518,11 +476,12 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			} else {
 				users = attrs.users;
 			}
-			angular.forEach(users, function(user, key){
+			for (var key in users){
+				var user = users[key];
 				if(user.id !== Chat.scope.active.user.id){
 					text += user.displayname + ' ';
 				}
-			});
+			}
 			element.text(text);
 		}
 	};
@@ -561,9 +520,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 }).filter('orderObjectBy', function() {
 	return function(items, field, reverse) {
 		var filtered = [];
-		angular.forEach(items, function(item) {
+		for (var key in items){
+			var item = items[key];
 			filtered.push(item);
-		});
+		}
 		filtered.sort(function (a, b) {
 			return (a[field] > b[field] ? 1 : -1);
 		});

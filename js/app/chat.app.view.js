@@ -21,11 +21,12 @@ Chat.app.view = {
 	},
 	getBackends : function(key){
 		var returnBackend;
-		angular.forEach(Chat.scope.backends, function(backend, index){
+		for(var index in Chat.scope.backends){
+			var backend = Chat.scope.backends[index];
 			if(key === backend.name){
 				returnBackend = backend;
 			}
-		});
+		}
 		return returnBackend;
 	},
 	replaceUsers : function(convId, users){

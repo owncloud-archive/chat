@@ -30,9 +30,9 @@ Chat.och.on = {
 			});
 		} else {
 			var users = [];
-			angular.forEach(Chat.scope.convs[convId].users, function(user){
-				users.push(user);
-			});
+			for (var key in Chat.scope.convs[convId].users) {
+				users.push(Chat.scope.convs[convId].users[key]);
+			}
 			users.push(userToInvite);
 			Chat.och.on.newConv(users, function(convId, users, msgs){
 				Chat.app.view.addConv(convId, users, Chat.scope.backends.och, msgs);

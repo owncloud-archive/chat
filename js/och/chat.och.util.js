@@ -9,27 +9,30 @@ Chat.och.util = {
 			Chat.och.sessionId = Chat.scope.initvar.sessionId;
 			Chat.och.api.util.longPoll();
 			// Now join and add all the existing convs
-			angular.forEach(Chat.scope.initConvs.och, function(conv){
+			for ( var key in Chat.scope.initConvs.och) {
+				var conv = Chat.scope.initConvs.och[key];
 				var contacts = [];
-				angular.forEach(conv.users, function(user){
+				for (var key in conv.users ){
+					var user = conv.users[key];
 					contacts.push(Chat.scope.contactsObj[user]);
-				});
+				}
 				Chat.app.view.addConv(conv.id, contacts, Chat.scope.backends.och, []);
-				conv.messages.forEach(function(msg){
+				for (var key in conv.messages){
+					var msg = conv.messages[key];
 					Chat.app.view.addChatMsg(conv.id, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, Chat.scope.backends.och, true);
-				});
-			});
+				}
+			}
 			setInterval(Chat.och.util.updateOnlineStatus, 60000);
 		});
 	},
 	quit : function(){
 		Chat.och.api.command.offline();
-		angular.forEach(Chat.scope.convs, function(conv){
-			if(conv.backend.name === 'och'){
-				Cache.set(conv.id, {msgs: conv.raw_msgs});
-			}
-		});
-
+//		for(var key in Chat.scope.convs) {
+//			var conv = Chat.scope.convs[key];
+//			if(conv.backend.name === 'och'){
+//				Cache.set(conv.id, {msgs: conv.raw_msgs});
+//			}
+//		}/*/
 	},
 	updateOnlineStatus : function(){
 		Chat.och.api.command.online();

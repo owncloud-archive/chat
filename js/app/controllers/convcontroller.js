@@ -443,23 +443,6 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			}
 		}
 	};
-}).filter('backendFilter', function() {
-	return function(contacts, backend) {
-		if(contacts === null || backend === null){
-			// Not inited yet
-			return;
-		}
-		// backend = the active backend
-		var output = [];
-		contacts.forEach(function(contact, index){
-			angular.forEach(contact.backends, function(contactBackend, index){
-				if(contactBackend.protocol === backend.protocol){
-					output.push(contact);
-				}
-			});
-		});
-		return output;
-	};
 }).filter('userFilter', function() {
 	return function(users) {
 		var output = [];

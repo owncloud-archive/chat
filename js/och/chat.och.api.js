@@ -147,10 +147,11 @@ Chat.och.api = {
 		longPoll : function() {
 			this.getPushMessages(function(data) {
 				var ids_del = [];
-				angular.forEach(data.push_msgs, function(push_msg, push_id) {
+				for (var push_id in data.push_msgs){
+					var push_msg = data.push_msgs[push_id];
 					ids_del.push(push_id);
 					Chat.och.api.util.handlePushMessage(push_msg);
-				});
+				}
 				Chat.och.api.util.deletePushMessages(ids_del, function() {
 					Chat.och.api.util.longPoll();
 				});

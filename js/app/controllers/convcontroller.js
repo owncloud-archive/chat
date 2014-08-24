@@ -36,20 +36,22 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 	$scope.initvar = initvar;
 	for (var active in $scope.backends) break;
 	$scope.active.backend =  $scope.backends[active];
-	angular.forEach($scope.backends, function(backend, namespace){
+	for(var namespace in $scope.backends){
+		var backend = $scope.backends[namespace];
 		if(namespace === 'och'){
 			Chat[namespace].util.init();
 		}
-	});
+	}
 	$scope.initDone = true;
 
 
 	$scope.quit = function(){
-		angular.forEach($scope.backends, function(backend, namespace){
+		for(var namespace in $scope.backends){
+			var backend = $scope.backends[namespace];
 			if(namespace === 'och'){
 				Chat[namespace].util.quit();
 			}
-		});
+		}
 	};
 
 	$scope.selectBackend = function(backend){
@@ -141,13 +143,14 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		addConv : function(convId, users, backend, msgs){
 			// generate conv name + higher order of contacts
 			var name  = '';
-			angular.forEach(users, function(user, key){
+			for(var key in users){
+				var user = users[key];
 				if(user.id !== Chat.scope.active.user.id){
 					name += user.displayname + ' ';
 					var order = $scope.getHighestOrderContacts();
 					$scope.contactsObj[user.id].order = order;
 				}
-			});
+			}
 			// end generate conv name
 
 
@@ -168,9 +171,10 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 				};
 				$scope.view.makeActive(convId);
 				if(msgs !== undefined){
-					angular.forEach(msgs, function(msg){
+					for (var key in msgs){
+						var msg = msgs[key];
 						$scope.view.addChatMsg(convId, Chat.scope.contactsObj[msg.user], msg.msg, msg.timestamp, backend);
-					});
+					}
 				}
 			}
 		},
@@ -484,11 +488,12 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 			} else {
 				users = attrs.users;
 			}
-			angular.forEach(users, function(user, key){
+			for (var key in users){
+				var user = users[key];
 				if(user.id !== Chat.scope.active.user.id){
 					text += user.displayname + ' ';
 				}
-			});
+			}
 			element.text(text);
 		}
 	};

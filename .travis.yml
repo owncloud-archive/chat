@@ -1,19 +1,24 @@
 language: php
-php:
-  - 5.3
-  - 5.4
-  - 5.5
+
+matrix:
+  include:
+    - php: 5.3
+      env: DB=sqlite
+    - php: 5.4
+      env: DB=sqlite
+    - php: 5.5
+      env: DB=sqlite
+    - php: 5.4
+      env: DB=pgsql
+    - php: 5.4
+      env: DB=mysql
 
 before_install:
-  - cd ..
-  - git clone https://github.com/owncloud/core.git
-  - mv chat core/apps/
-  - cd core
-  - git submodule init
-  - git submodule update
-  - cd apps/chat
+  - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
+  - bash ./before_install.sh chat master $DB
 
 script:
-  - phpunit --coverage-clover=coverage.clover tests/
+  - cd ../core/apps/chat
+  - make test
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -171,7 +171,7 @@ class SendChatMsgTest extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(array($user1, $user2)));
 
 	
-		$this->container['MessageMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\MessageMapper')
+		$this->container['messageMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\MessageMapper')
 			->disableOriginalConstructor()
 			->getMock();
 		

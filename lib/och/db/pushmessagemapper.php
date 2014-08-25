@@ -10,11 +10,20 @@ namespace OCA\Chat\OCH\Db;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 use \OCA\Chat\Db\DoesNotExistException;
+use \OCA\Chat\OCH\Db\UserOnlineMapper;
 
 class PushMessageMapper extends Mapper {
 
-	public function __construct(IDb $api) {
+	private $USER_ONLINE = '*PREFIX*chat_och_users_online';
+	private $USERS_IN_CONV = '*PREFIX*chat_och_users_in_conversation';
+
+	private $userOnlineMapper;
+	private $userMapper;
+
+	public function __construct(IDb $api, UserOnlineMapper $userOnlineMapper, UserMapper $userMapper) {
 		parent::__construct($api, 'chat_och_push_messages'); // tablename is news_feeds
+		$this->userOnlineMapper = $userOnlineMapper;
+		$this->userMapper = $userMapper;
 	}
 
 	public function findBysSessionId($sessionId){
@@ -26,4 +35,46 @@ class PushMessageMapper extends Mapper {
 			return $feeds;
 		}
 	}
+
+	public function createForAllSessionsOfAUser($receiverId, $sender, $command){
+		$receivers = $this->userOnlineMapper->findByUser($receiverId);
+		foreach($receivers as $receiver){
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setCommand($command);
+			$pushMessage->setReceiver($receiver->getUser());
+			$pushMessage->setReceiverSessionId($receiver->getSessionId());
+			$this->insert($pushMessage);
+		}
+	}
+
+	public function createForAllUsersInConv($sender, $convId, $command){
+		$sessions = $this->userMapper->findSessionsByConversation($convId);
+		foreach($sessions as $session){
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setCommand($command);
+			$pushMessage->setReceiver($session->getUser());
+			$pushMessage->setReceiverSessionId($session->getSessionId());
+			$this->insert($pushMessage);
+		}
+	}
+
+	public function createForAllSessions($sender, $command){
+		$sessions = $this->userOnlineMapper->getAll();
+		foreach($sessions as $session){
+			$pushMessage = new PushMessage();
+			$pushMessage->setSender($sender);
+			$pushMessage->setCommand($command);
+			$pushMessage->setReceiver($session->getUser());
+			$pushMessage->setReceiverSessionId($session->getSessionId());
+			$this->insert($pushMessage);
+		}
+	}
+
+	public function findAll(){
+		$sql = 'SELECT * FROM `' . $this->getTableName() . '`';
+		return $this->findEntities($sql, array());
+	}
+
 }

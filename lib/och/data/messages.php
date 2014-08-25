@@ -23,7 +23,7 @@ class Messages extends ChatAPI {
 
 	public function execute(){
 		$return = array();
-		$messageMapper = $this->c['MessageMapper'];
+		$messageMapper = $this->c['messageMapper'];
 		if(isset($this->requestData['startpoint']) && trim($this->requestData['startpoint']) !== ''){
 			$startpoint = $this->requestData['startpoint'];
 		} else {

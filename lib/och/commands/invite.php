@@ -57,10 +57,6 @@ class Invite extends ChatAPI {
 		$join->setRequestData($requestData);
 		$join->execute();
 
-		// First fetch every sessionID of the user to invite
-		$userOnlineMapper = $this->c['UserOnlineMapper'];
-		$pushMessageMapper = $this->c['PushMessageMapper'];
-
 		$command = json_encode(array(
 			"type" => "invite",
 			"data" => array(
@@ -70,15 +66,12 @@ class Invite extends ChatAPI {
 			)
 		));
 
-		$UserToInviteSessionId = $userOnlineMapper->findByUser($this->requestData['user_to_invite']['backends']['och']['value']);
-		foreach($UserToInviteSessionId as $userToInvite){
-			$pushMessage = new PushMessage();
-			$pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
-			$pushMessage->setReceiver($userToInvite->getUser());
-			$pushMessage->setReceiverSessionId($userToInvite->getSessionId());
-			$pushMessage->setCommand($command);
-			$pushMessageMapper->insert($pushMessage);
-		}
+		$pushMessageMapper = $this->c['PushMessageMapper'];
+		$pushMessageMapper->createForAllSessionsOfAUser(
+			$this->requestData['user_to_invite']['backends']['och']['value'],
+			$this->requestData['user']['backends']['och']['value'],
+			$command
+		);
 
 		$getUsers = $this->c['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));

@@ -61,7 +61,7 @@ class SendChatMsg extends ChatAPI {
 
 		// All done
 		// insert this chatMsg into the messages table
-		$messageMapper = $this->c['MessageMapper'];
+		$messageMapper = $this->c['messageMapper'];
 		$message = new Message();
 		$message->setConvid($this->requestData['conv_id']);
 		$message->setTimestamp($this->requestData['timestamp']);

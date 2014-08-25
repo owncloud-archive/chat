@@ -29,17 +29,31 @@ use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\Db\Backend;
-/*
- * // to prevent clashes with installed app framework versions if(!class_exists('\SimplePie')) { require_once __DIR__ . '/../3rdparty/simplepie/autoloader.php'; }
+
+/**
+ * Class Chat
+ * @package OCA\Chat\App
  */
 class Chat extends App{
 
+	/**
+	 * @var array used to cache the parsed contacts for every request
+	 */
 	private static $contacts;
 
+	/**
+	 * @var \OCP\AppFramework\IAppContainer
+	 */
+	public $c;
+
+	/**
+	 * @param array $urlParams
+	 */
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 
 		$container = $this->getContainer();
+		$this->c = $container;
 		$app = $this;
 
 		/**
@@ -73,12 +87,16 @@ class Chat extends App{
 			return new ConversationMapper($c->query('ServerContainer')->getDb());
 		});
 
-		$container->registerService('MessageMapper', function ($c) {
+		$container->registerService('messageMapper', function ($c) {
 			return new MessageMapper($c->query('ServerContainer')->getDb());
 		});
 
 		$container->registerService('PushMessageMapper', function ($c) {
-			return new PushMessageMapper($c->query('ServerContainer')->getDb());
+			return new PushMessageMapper(
+				$c->query('ServerContainer')->getDb(),
+				$c['UserOnlineMapper'],
+				$c['UserMapper']
+			);
 		});
 
 		$container->registerService('UserMapper', function ($c) {
@@ -150,6 +168,21 @@ class Chat extends App{
 			return new Messages($app);
 		});
 
+		/**
+		 * Manager
+		 */
+		$container->registerService('ContactsManager', function($c){
+			return $c->getServer()->getContactsManager();
+		});
+
+		$container->registerService('UserManager', function($c){
+			return $c->getServer()->getUserManager();
+		});
+
+		$container->registerService('UserSession', function($c){
+			return $c->getServer()->getUserSession();
+		});
+
 	}
 
 	/**
@@ -158,13 +191,12 @@ class Chat extends App{
 	 * @param string $displayName
 	 * @param string $name
 	 * @param string $protocol
-	 * @param string $enabled
+	 * @param bool $enabled
 	 */
 	public function registerBackend($displayName, $name, $protocol, $enabled){
-		$container = $this->getContainer();
-		$backendMapper = $container->query('BackendMapper');
-		if($backendMapper->exists($name)){
-			// Only execute when there are no backends registered i.e. on first run
+		$backendMapper = $this->c['BackendMapper'];
+		if(!$backendMapper->exists($name)){
+//			 Only execute when there are no backends registered i.e. on first run
 			$backend = new Backend();
 			$backend->setDisplayname($displayName);
 			$backend->setName($name);
@@ -175,24 +207,24 @@ class Chat extends App{
 	}
 
 	/**
-	 * Retrieves all contacts from the ContactsManager and parse them to a usable format.
-	 * @return array Returns array with contacts, contacts as a list and contacts as an associative array
+	 * Retrieves all contacts from the ContactsManager and parse them to a
+	 * usable format.
+	 * @return array Returns array with contacts, contacts as a list and
+	 * contacts as an associative array
 	 */
 	public function getContacts(){
-		$container = $this->getContainer();
-		// ***
-		// the following code should be ported
-		// so multiple backends are allowed
-		$userOnlineMapper = $container['UserOnlineMapper'];
-		$usersOnline = $userOnlineMapper->getOnlineUsers();
-		$syncOnline = $container['SyncOnlineCommand'];
-		$syncOnline->execute();
-		// ***
-
 		if(count(self::$contacts) == 0){
-			$cm = \OC::$server->getContactsManager();
+			// ***
+			// the following code should be ported
+			// so multiple backends are allowed
+			$userOnlineMapper = $this->c['UserOnlineMapper'];
+			$usersOnline = $userOnlineMapper->getOnlineUsers();
+			$syncOnline = $this->c['SyncOnlineCommand'];
+			$syncOnline->execute();
+			// ***
 
-			$result = $cm->search('',array('id'));
+			$cm = $this->c['ContactsManager'];
+			$result = $cm->search('',array('FN'));
 			$receivers = array();
 			$contactList = array();
 			$contactsObj = array();
@@ -228,17 +260,21 @@ class Chat extends App{
 				$receivers[] = $data;
 				$contactsObj[$r['id']] = $data;
 			}
-			self::$contacts = array('contacts' => $receivers, 'contactsList' => $contactList, 'contactsObj' => $contactsObj);
+			self::$contacts = array(
+				'contacts' => $receivers,
+				'contactsList' => $contactList,
+				'contactsObj' => $contactsObj
+			);
 		}
 		return self::$contacts;
 	}
 
+
 	/**
-	 * @todo
+	 * @return array backend name as key and \OCA\Chat\Db\Backend as value
 	 */
 	public function getBackends(){
-		$container = $this->getContainer();
-		$backendMapper = $container['BackendMapper'];
+		$backendMapper = $this->c['BackendMapper'];
 		$backends = $backendMapper->getAllEnabled();
 
 		$result = array();
@@ -309,8 +345,7 @@ class Chat extends App{
 	 * @return array
 	 */
 	private function getBackendInfo($protocol){
-		$container = $this->getContainer();
-		$backendMapper = $container['BackendMapper'];
+		$backendMapper = $this->c['BackendMapper'];
 		$backend = $backendMapper->findByProtocol($protocol);
 		$info = array();
 		$info['displayname'] = $backend->getDisplayname();
@@ -323,14 +358,15 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getCurrentUser(){
-		return $this->getUserasContact(\OCP\User::getUser());
+		return $this->getUserasContact($this->c['UserSession']->getUser()->getUID());
 	}
 
+	/**
+	 * @param $id
+	 * @return array
+	 */
 	public function getUserasContact($id){
-		$cm = \OC::$server->getContactsManager();
-		// The API is not active -> nothing to do
-
-		$result = $cm->search($id, array('id'));
+		$result = $this->c['ContactsManager']->search($id, array('id'));
 		// Finding the correct result
 		foreach($result as $contact){
 			if($contact['id'] ===  $id){
@@ -363,19 +399,18 @@ class Chat extends App{
 	 * @todo porting
 	 */
 	public function getInitConvs(){
-		$container = $this->getContainer();
 		$r = array();
 
-		$userMapper = $container['UserMapper'];
-		$convs = $userMapper->findByUser(\OCP\User::getUser());
+		$userMapper = $this->c['UserMapper'];
+		$convs = $userMapper->findByUser($this->c['UserSession']->getUser()->getUID());
 
 
 		$usersAllreadyInConv = array();
-		$join = $container['JoinCommand'];
+		$join = $this->c['JoinCommand'];
 		foreach($convs as $conv){
 			$users = $userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$getMessages = $container['MessagesData'];
+			$getMessages = $this->c['MessagesData'];
 			$getMessages->setRequestData(array(
 				"conv_id" => $conv->getConversationId(),
 				'user' => $this->getCurrentUser()
@@ -407,7 +442,7 @@ class Chat extends App{
 		$users = array_diff($allUsers, $usersAllreadyInConv);
 		// $users hold the users whe doens't have a conv with
 
-		$startConv = $container['StartConvCommand'];
+		$startConv = $this->c['StartConvCommand'];
 		foreach($users as $user){
 			if($user !== \OCP\User::getUser()){
 				$startConv->setRequestData(array(

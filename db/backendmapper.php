@@ -21,7 +21,7 @@ class BackendMapper extends Mapper {
 		try {
 			return  $this->findEntities("SELECT * FROM " . $this->getTableName());
 		} catch (DoesNotExistException $e){
-
+			return array();
 		}
 	}
 
@@ -29,16 +29,16 @@ class BackendMapper extends Mapper {
 		try {
 			return $this->findEntities("SELECT * FROM " . $this->getTableName() . " WHERE enabled=?", array(true));
 		} catch (DoesNotExistException $e){
-
+			return array();
 		}
 	}
 
 	public function exists($name){
 		$entities =  $this->findEntities("SELECT * FROM " . $this->getTableName() . " WHERE name=?", array($name));
 		if (count($entities) === 0){
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
 	}
 

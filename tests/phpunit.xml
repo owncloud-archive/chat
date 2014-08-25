@@ -1,2 +1,16 @@
-<phpunit bootstrap="lib/autoloader.php">
+<!--
+    This is the configuration file used for unit test on travis
+    This will also run database tests
+    This uses the autoloader of ownCloud
+-->
+<phpunit bootstrap="bootstrap.php">
+    <testsuites>
+        <testsuite name="app">
+            <directory>lib/app/</directory>
+            <directory>lib/controller/</directory>
+            <directory>lib/db</directory>
+            <directory>lib/lib/och/db/</directory>
+            <!--<directory>lib/lib/och/commands/</directory>-->
+        </testsuite>
+    </testsuites>
 </phpunit>

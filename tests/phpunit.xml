@@ -3,7 +3,7 @@
     This will also run database tests
     This uses the autoloader of ownCloud
 -->
-<phpunit bootstrap="lib/bootstrap-travis.php">
+<phpunit bootstrap="bootstrap.php">
     <testsuites>
         <testsuite name="app">
             <directory>lib/app/</directory>

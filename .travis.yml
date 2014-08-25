@@ -19,6 +19,6 @@ before_install:
 
 script:
   - cd ../core/apps/chat
-  - phpunit -c tests/phpunit-travis.xml --testsuite app --coverage-clover=coverage.clover
+  - make test
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

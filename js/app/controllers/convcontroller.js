@@ -1,4 +1,5 @@
 /**
+add/**
  * Copyright (c) 2014, Tobia De Koninck hey--at--ledfan.be
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
@@ -397,7 +398,7 @@ Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$inter
 		var textBefore = $scope.fields.chatMsg.substr(0, selection.start);
 		var textAfter = $scope.fields.chatMsg.substr(selection.end);
 		$scope.fields.chatMsg = textBefore + ' ' + name + ' ' + textAfter + ' ';
-		$scope.view.hide('emojiContaineradd');
+		$scope.view.hide('emojiContainer');
 	};
 
 	$scope.emojis = Chat.app.util.emojis;

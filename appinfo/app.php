@@ -18,4 +18,4 @@ use \OCA\Chat\App\Chat;
 ));
 
 $chat = new Chat();
-$chat->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 1);
+$chat->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , true);

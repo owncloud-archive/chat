@@ -8,4 +8,4 @@ $query = \OCP\DB::prepare('DELETE FROM `*PREFIX*chat_backends`');
 $query->execute(array());
 
 $chat = new Chat();
-$chat->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , 1);
+$chat->registerBackend('ownCloud Handle', 'och', 'x-owncloud-handle' , true);

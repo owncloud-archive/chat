@@ -12,3 +12,4 @@ imports:
 
 tools:
   external_code_coverage: true
+    timeout: 600

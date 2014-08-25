@@ -15,5 +15,6 @@ test: php-unit js-unit
 php-unit:
 	phpunit -c tests/phpunit.xml --testsuite app --coverage-clover=coverage.clover
 
-js-unit
+js-unit:
+
 

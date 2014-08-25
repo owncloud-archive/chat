@@ -39,8 +39,10 @@ class Join extends ChatAPI {
 		$user->setUser($this->requestData['user']['backends']['och']['value']);
 		$userMapper->insertUnique($user);
 
-		$userMapper->findUsersInConv($this->requestData['conv_id']);
-
+		$getUsers = $this->app['GetUsersData'];
+		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $getUsers->execute();
+		$users = $users['users'];
 		if(count($users) > 2){
 			// we are in a group conv this mean we have to let the other users now we joined it
 			$pushMessageMapper = $this->c['PushMessageMapper'];

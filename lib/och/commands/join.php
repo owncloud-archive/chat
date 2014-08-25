@@ -39,7 +39,7 @@ class Join extends ChatAPI {
 		$user->setUser($this->requestData['user']['backends']['och']['value']);
 		$userMapper->insertUnique($user);
 
-		$getUsers = $this->app['GetUsersData'];
+		$getUsers = $this->c['GetUsersData'];
 		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
 		$users = $getUsers->execute();
 		$users = $users['users'];

@@ -34,6 +34,15 @@
 // Fifth load all angular files
 \OCP\Util::addScript('chat', 'app/app');
 \OCP\Util::addScript('chat', 'app/controllers/convcontroller');
+\OCP\Util::addScript('chat', 'app/directives/avatar');
+\OCP\Util::addScript('chat', 'app/directives/ngenter');
+\OCP\Util::addScript('chat', 'app/directives/tipsy');
+\OCP\Util::addScript('chat', 'app/directives/displayname');
+\OCP\Util::addScript('chat', 'app/directives/autoheight');
+\OCP\Util::addScript('chat', 'app/directives/invitemobile');
+\OCP\Util::addScript('chat', 'app/filters/orderobjectby');
+\OCP\Util::addScript('chat', 'app/filters/user');
+\OCP\Util::addScript('chat', 'app/filters/filterusersinconv');
 
 // At last load the main handlers file, this will boot up the Chat app
 \OCP\Util::addScript('chat', 'handlers');

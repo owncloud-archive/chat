@@ -1,4 +1,0 @@
-<?php
-// Fist load all style sheets
-\OCP\Util::addStyle('chat', 'main');
-\OCP\Util::addScript('chat', 'chat.min');

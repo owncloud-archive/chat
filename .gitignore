@@ -2,3 +2,4 @@ coverage.clover
 phpunit
 phpunit.phar
 build
+node_modules

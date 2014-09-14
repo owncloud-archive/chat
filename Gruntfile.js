@@ -8,30 +8,43 @@ module.exports = function(grunt) {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
 			build: {
+				options: {
+					mangle: false,
+				},
 				files: {
-					'build/chat/js/chat.min.js': [
-						'js/**/*js',
-						'!js/vendor/**/*.js'
+					'js/main.min.js': [
+						'js/src/chat.js',
+						'js/src/och/chat.och.js',
+						'js/src/och/chat.och.api.js',
+						'js/src/och/chat.och.on.js',
+						'js/src/och/chat.och.utiljs',
+						'js/src/**/*.js',
+						'!js/src/vendor/**/*.js'
 					],
-					'build/chat/js/vendor/angular.js' : [
-						'js/vendor/anguler.js'
+					'js/vendor/angular.js' : [
+						'js/src/vendor/angular.js'
 					],
-					'build/chat/js/vendor/angular-santitize.js' : [
-						'js/vendor/angular-santitize.js'
+					'js/vendor/angular-santitize.js' : [
+						'js/src/vendor/angular-sanitize.js'
 					],
-					'build/chat/js/vendor/jquery.autosize.js' : [
-						'js/vendor/jquery.autosize.js'
+					'js/vendor/angular-enhance-text.js' : [
+						'js/src/vendor/angular-enhance-text.js'
 					],
-					'build/chat/js/vendor/cache.js' : [
-						'js/vendor/cache.js'
+					'js/vendor/applycontactavatar.js' : [
+						'js/src/vendor/applycontactavatar.js'
 					],
-					'build/chat/js/vendor/time.js' : [
-						'js/vendor/time.js'
+					'js/vendor/jquery.autosize.js' : [
+						'js/src/vendor/jquery.autosize.js'
 					],
-
-					'build/chat/js/vendor/rangyinputs.js' : [
-						'js/vendor/anguler.js'
+					'js/vendor/cache.js' : [
+						'js/src/vendor/cache.js'
 					],
+					'js/vendor/time.js' : [
+						'js/src/vendor/time.js'
+					],
+					'js/vendor/rangyinputs.js' : [
+						'js/src/vendor/rangyinputs.js'
+					]
 				}
 			}
 		}

@@ -3,5 +3,5 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-var Chat = {
+Chat = {
 };

@@ -1,19 +1,22 @@
 describe('Unit: ConvController', function(){
-	beforeEach(module('chat'));
-
-	var ConvController;
+	var $rootScope;
 	var $scope;
+	var controller;
 
-	beforeEach(inject(function($controller, $rootscope){
-		$scope = $rootscope.new();
+	beforeEach(function(){
+		module('chat');
 
-		ConvController = $controller('ConvController', {
-			$scope: $scope
-		})
-	}));
+		inject(function($injector){
+			$rootScope = $injector.get('$rootScope');
+			$scope = $rootScope.$new();
+			controller = $injector.get('$controller')('ConvController', {$scope: $scope});
+		});
+	});
 
-	it('should create a $scope.convs object', function(){
-		expect($scope.convs).toEqual({});
+	describe('Initialization', function(){
+		it("Should instantiate convs to an object", function(){
+			expect($scope.convs).toEqual({});
+		});
 	});
 
 });

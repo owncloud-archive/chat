@@ -3,6 +3,8 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
+window.Chat =  window.Chat || {};
+Chat.app = Chat.app || {};
 Chat.app.util = {
 	timeStampToDate : function(timestamp){
 		var date = new Date(timestamp * 1000);

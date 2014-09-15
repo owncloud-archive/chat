@@ -3,6 +3,8 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
+window.Chat =  window.Chat || {};
+Chat.och = Chat.och || {}
 Chat.och.util = {
 	init : function(){
 		$(function(){

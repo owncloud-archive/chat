@@ -3,7 +3,7 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', function($scope, $http, $filter, $interval) {
+angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', 'initvar', function($scope, $http, $filter, $interval, initvar) {
 	/**
 	 * @var {object} convs
 	 */
@@ -74,7 +74,6 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 	};
 	
 	Chat.scope = angular.element($("#app")).scope();
-	var initvar = JSON.parse($('#initvar').text());
 	$scope.contacts = initvar.contacts;
 	$scope.contactsList = initvar.contactsList;
 	$scope.contactsObj = initvar.contactsObj;

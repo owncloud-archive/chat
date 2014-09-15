@@ -4,11 +4,11 @@
 
 // Second load all dependencies
 \OCP\Util::addScript('chat', 'vendor/angular');
-\OCP\Util::addScript('chat', 'vendor/angular-santitize');
+\OCP\Util::addScript('chat', 'vendor/angular-sanitize');
 \OCP\Util::addScript('chat', 'vendor/applycontactavatar');
 \OCP\Util::addScript('chat', 'vendor/angular-enhance-text');
 \OCP\Util::addScript('chat', 'vendor/rangyinputs');
-\OCP\Util::addScript('chat', 'vendor/jquery.autosize');
+\OCP\Util::addScript('chat', 'vendor/jquery-autosize');
 \OCP\Util::addScript('chat', 'vendor/cache');
 \OCP\Util::addScript('chat', 'vendor/time');
 

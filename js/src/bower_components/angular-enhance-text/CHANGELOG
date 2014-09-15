@@ -1,0 +1,19 @@
+angular-enhance-text (0.0.12)
+* Further enhancements for smiley replacer
+
+angular-enhance-text (0.0.10)
+* Match more YouTube video links
+* Fix bug that breaks smilies when seperated with newlines at the beginning, middle and end
+
+angular-enhance-text (0.0.9)
+* Also replace smilies that appear on the start of a newline
+* Add github page
+
+angular-enhance-text (0.0.8)
+* Add grunt bump for creating new versions
+
+angular-enhance-text (0.0.7)
+* Allow similar inputs in the example file
+* Shift + Enter does not trigger a submit in the example file
+* Bugfix: More than one new line is replaced
+* Bugfix: YouTube links now also work if the id contains a - or _

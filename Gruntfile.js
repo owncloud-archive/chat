@@ -19,32 +19,17 @@ module.exports = function(grunt) {
 						'js/src/och/chat.och.on.js',
 						'js/src/och/chat.och.utiljs',
 						'js/src/**/*.js',
+						'!js/src/bower_components/**/*.js',
 						'!js/src/vendor/**/*.js'
 					],
-					'js/vendor/angular.js' : [
-						'js/src/vendor/angular.js'
-					],
-					'js/vendor/angular-santitize.js' : [
-						'js/src/vendor/angular-sanitize.js'
-					],
-					'js/vendor/angular-enhance-text.js' : [
-						'js/src/vendor/angular-enhance-text.js'
-					],
-					'js/vendor/applycontactavatar.js' : [
-						'js/src/vendor/applycontactavatar.js'
-					],
-					'js/vendor/jquery.autosize.js' : [
-						'js/src/vendor/jquery.autosize.js'
-					],
-					'js/vendor/cache.js' : [
-						'js/src/vendor/cache.js'
-					],
-					'js/vendor/time.js' : [
-						'js/src/vendor/time.js'
-					],
-					'js/vendor/rangyinputs.js' : [
-						'js/src/vendor/rangyinputs.js'
-					]
+					'js/vendor/angular.js' : [ 'js/src/bower_components/angular/angular.js'	],
+					'js/vendor/angular-enhance-text.js': [ 'js/src/bower_components/angular-enhance-text/build/angular-enhance-text.js'	],
+					'js/vendor/angular-sanitize.js' : ['js/src/bower_components/angular-sanitize/angular-sanitize.js' ],
+					'js/vendor/jquery-autosize.js' : [ 'js/src/bower_components/jquery-autosize/jquery.autosize.js'	],
+					'js/vendor/applycontactavatar.js' : ['js/src/vendor/applycontactavatar.js'],
+					'js/vendor/cache.js'  : [ 'js/src/vendor/cache.js' ],
+					'js/vendor/time.js' : [ 'js/src/vendor/time.js'	],
+					'js/vendor/rangyinputs.js' : [ 'js/src/bower_components/rangyinputs-jquery-src/index.js']
 				}
 			}
 		}

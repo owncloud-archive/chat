@@ -1,4 +1,4 @@
-Chat.angular.filter('filterUsersInConv', function() {
+angular.module('chat').filter('filterUsersInConv', function() {
 	return function(contacts) {
 		var result = [];
 		var users = Chat.scope.convs[Chat.scope.active.conv].users;

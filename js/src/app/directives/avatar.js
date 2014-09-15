@@ -1,4 +1,4 @@
-Chat.angular.directive('avatar', function() {
+angular.module('chat').directive('avatar', function() {
 	return {
 		restrict: 'A',
 		link: function ($scope, element, attrs) {

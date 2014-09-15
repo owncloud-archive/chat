@@ -1,4 +1,4 @@
-Chat.angular.filter('userFilter', function() {
+angular.module('chat').filter('userFilter', function() {
 	return function(users) {
 		var output = [];
 		for (var key in users){

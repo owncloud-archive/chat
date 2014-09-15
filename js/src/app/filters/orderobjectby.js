@@ -1,4 +1,4 @@
-Chat.angular.filter('orderObjectBy', function() {
+angular.module('chat').filter('orderObjectBy', function() {
 	return function(items, field, reverse) {
 		var filtered = [];
 		for (var key in items){

@@ -1,4 +1,4 @@
-Chat.angular.directive('inviteMobile', function () {
+angular.module('chat').directive('inviteMobile', function () {
 	return {
 		restrict: 'A',
 		link: function ($scope, element, attrs) {

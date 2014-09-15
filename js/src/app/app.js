@@ -3,8 +3,8 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-Chat.angular = angular.module('chat', ['ngSanitize', 'bernhardposselt.enhancetext']);
-Chat.angular.config(['enhanceTextFilterProvider', function (enhanceTextFilterProvider) {
+angular.module('chat', ['ngSanitize', 'bernhardposselt.enhancetext']);
+angular.module('chat').config(['enhanceTextFilterProvider', function (enhanceTextFilterProvider) {
 	enhanceTextFilterProvider.setOptions({
 		embeddedImagesHeight: '150px',
 		smilies: {

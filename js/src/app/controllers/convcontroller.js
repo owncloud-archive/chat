@@ -4,7 +4,7 @@ add/**
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-Chat.angular.controller('ConvController', ['$scope', '$http', '$filter', '$interval', function($scope, $http, $filter, $interval) {
+angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', function($scope, $http, $filter, $interval) {
 	/**
 	 * @var {object} convs
 	 */

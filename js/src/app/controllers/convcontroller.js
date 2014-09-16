@@ -3,105 +3,7 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', 'initvar', function($scope, $http, $filter, $interval, initvar) {
-	/**
-	 * @var {object} convs
-	 */
-	$scope.convs = {};
-
-	/**
-	 * Contacts stored as an array with contact objects
-	 * @var {array} contacts
-	 */
-	$scope.contacts = [];
-
-	/**
-	 * Contacts storead as an array with id's
-	 * @var {array} convs
-	 */
-	$scope.contactsList = [];
-
-	/**
-	 * @var {object} backends
-	 */
-	$scope.backends = [];
-
-	/**
-	 * @var {object} initConvs
-	 */
-	$scope.initConvs = {};
-
-	/**
-	 * @var {object} active
-	 */
-	$scope.active = {
-		/**
-		 * Stores the active backend
-		 * @var {object} backend
-		 */
-		backend : {},
-		/**
-		 * Stores the active conv id
-		 * @var {string} conv
-		 */
-		conv : {},
-		/**
-		 * @var {bool} window
-		 */
-		window : true,
-	};
-	/**
-	 * @var {object} title
-	 */
-	$scope.title = {};
-	/**
-	 * @var {object} title
-	 */
-	$scope.title.title = "";
-	/**
-	 * @var {object} default
-	 */
-	$scope.title.default = "Chat - ownCloud";
-	/**
-	 * @var {array} new_msgs
-	 */
-	$scope.title.new_msgs = [];
-	/**
-	 * @var {object} fields
-	 */
-	$scope.fields = {
-		'chatMsg' : '',
-	};
-	
-	Chat.scope = angular.element($("#app")).scope();
-	$scope.contacts = initvar.contacts;
-	$scope.contactsList = initvar.contactsList;
-	$scope.contactsObj = initvar.contactsObj;
-	$scope.backends = initvar.backends;
-	$scope.active.user = $scope.contactsObj[OC.currentUser];
-	$scope.initConvs = initvar.initConvs;
-	$scope.initvar = initvar;
-	for (var active in $scope.backends) break;
-	$scope.active.backend =  $scope.backends[active];
-	for(var namespace in $scope.backends){
-		var backend = $scope.backends[namespace];
-		if(namespace === 'och'){
-			Chat[namespace].util.init();
-		}
-	}
-	$scope.initDone = true;
-
-	/**
-	 * Function called when the app is quit
-	 */
-	$scope.quit = function(){
-		for(var namespace in $scope.backends){
-			var backend = $scope.backends[namespace];
-			if(namespace === 'och'){
-				Chat[namespace].util.quit();
-			}
-		}
-	};
+angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', 'initvar',  function($scope, $http, $filter, $interval, initvar) {
 
 	/**
 	 * Object used to interact with the view
@@ -298,9 +200,9 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 			if($scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] !== undefined){
 				var lastMsg = $scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1];
 				if(lastMsg.contact.displayname === contact.displayname){
-					// The current user send the last message 
+					// The current user send the last message
 					// so don't readd the border etc
-					
+
 					if(Chat.app.util.isYoutubeUrl(lastMsg.msg) || Chat.app.util.isImageUrl(lastMsg.msg)){
 						if (Chat.app.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.app.util.timeStampToDate(timestamp).minutes
 							&& Chat.app.util.timeStampToDate(lastMsg.timestamp).hours === Chat.app.util.timeStampToDate(timestamp).hours
@@ -324,8 +226,8 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 						$scope.convs[convId].msgs[$scope.convs[convId].msgs.length -1] = lastMsg;
 					}
 				} else if (Chat.app.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.app.util.timeStampToDate(timestamp).minutes
-							&& Chat.app.util.timeStampToDate(lastMsg.timestamp).hours === Chat.app.util.timeStampToDate(timestamp).hours
-							) {
+					&& Chat.app.util.timeStampToDate(lastMsg.timestamp).hours === Chat.app.util.timeStampToDate(timestamp).hours
+					) {
 					$scope.convs[convId].msgs.push({
 						contact : contact,
 						msg : $.trim(msg),
@@ -428,6 +330,108 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 			}
 		}
 	};
+
+	/**
+	 * @var {object} convs
+	 */
+	$scope.convs = {};
+
+	/**
+	 * Contacts stored as an array with contact objects
+	 * @var {array} contacts
+	 */
+	$scope.contacts = [];
+
+	/**
+	 * Contacts storead as an array with id's
+	 * @var {array} convs
+	 */
+	$scope.contactsList = [];
+
+	/**
+	 * @var {object} backends
+	 */
+	$scope.backends = [];
+
+	/**
+	 * @var {object} initConvs
+	 */
+	$scope.initConvs = {};
+
+	/**
+	 * @var {object} active
+	 */
+	$scope.active = {
+		/**
+		 * Stores the active backend
+		 * @var {object} backend
+		 */
+		backend : {},
+		/**
+		 * Stores the active conv id
+		 * @var {string} conv
+		 */
+		conv : {},
+		/**
+		 * @var {bool} window
+		 */
+		window : true,
+	};
+	/**
+	 * @var {object} title
+	 */
+	$scope.title = {};
+	/**
+	 * @var {object} title
+	 */
+	$scope.title.title = "";
+	/**
+	 * @var {object} default
+	 */
+	$scope.title.default = "Chat - ownCloud";
+	/**
+	 * @var {array} new_msgs
+	 */
+	$scope.title.new_msgs = [];
+	/**
+	 * @var {object} fields
+	 */
+	$scope.fields = {
+		'chatMsg' : '',
+	};
+	
+//	window.Chat.scope = angular.element($("#app")).scope();
+	Chat.scope = $scope
+	$scope.contacts = initvar.contacts;
+	$scope.contactsList = initvar.contactsList;
+	$scope.contactsObj = initvar.contactsObj;
+	$scope.backends = initvar.backends;
+	$scope.active.user = $scope.contactsObj[OC.currentUser];
+	$scope.initConvs = initvar.initConvs;
+	$scope.initvar = initvar;
+	for (var active in $scope.backends) break;
+	$scope.active.backend =  $scope.backends[active];
+	for(var namespace in $scope.backends){
+		var backend = $scope.backends[namespace];
+		if(namespace === 'och'){
+			Chat[namespace].util.init();
+		}
+	}
+	$scope.initDone = true;
+
+	/**
+	 * Function called when the app is quit
+	 */
+	$scope.quit = function(){
+		for(var namespace in $scope.backends){
+			var backend = $scope.backends[namespace];
+			if(namespace === 'och'){
+				Chat[namespace].util.quit();
+			}
+		}
+	};
+
+
 
 	/**
 	 * This function will make the first conversation in the conversation list active

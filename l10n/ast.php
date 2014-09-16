@@ -1,12 +1,11 @@
 <?php
 $TRANSLATIONS = array(
 "Chat" => "Charra",
-"New Conversation" => "Conversación nueva",
-"Hide Archived Conversations" => "Tapecer conversaciones archivaes",
-"Show Archived Conversations" => "Amosar conversaciones archivaes",
+"Search in conversations" => "Guetar nes conversaciones",
 "Add Person" => "Amestar persona",
 "Chat Message" => "Mensaxe de charra",
-"Click on a contact to add them to the conversation" => "Toca nun contautu p'amestalu a la conversación",
-"Click on a contact to start a conversation" => "Calca nun contautu pa entamar una conversación"
+"Search in users" => "Guetar nos usuarios",
+"There are no other users on this ownCloud." => "Nun hai otros usuarios nesti ownCloud.",
+"In order to chat please create at least one user, it will appear on the left." => "Pa charrar escueyi polo menos un usuariu, por favor. Apaecerá na izquierda."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

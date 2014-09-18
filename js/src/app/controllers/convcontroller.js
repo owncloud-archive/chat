@@ -5,6 +5,9 @@
  */
 angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', 'initvar', 'och',  function($scope, $http, $filter, $interval, initvar, och) {
 
+
+	Chat.scope = $scope;
+
 	$scope.handles = {};
 	//$scope.handles.och = och;
 
@@ -143,12 +146,12 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 				if(user.id !== $scope.active.user.id){
 					name += user.displayname + ' ';
 					var order = $scope.getHighestOrderContacts();
-					$scope.contactsObj[user.id].order = order;
+					//$scope.contactsObj[user.id].order = order;
 				}
 			}
 			// end generate conv name
 			if($scope.convs[convId] === undefined) {
-				// get highest order
+				//get highest order
 				var order = $scope.getHighestOrder();
 				$scope.convs[convId] = {
 					id : convId,
@@ -414,23 +417,26 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 	$scope.initvar = initvar;
 	for (var active in $scope.backends) break;
 	$scope.active.backend =  $scope.backends[active];
-	$scope.handles.och = och;
-	$scope.handles.och.init($scope.initvar.sessionId, $scope.active.user, $scope.initConvs, $scope.contactsObj);
-	$scope.initDone = true;
 
-
-	//Now join and add all the existing convs
-	for ( var key in $scope.initConvs.och) {1
-		var conv = $scope.initConvs.och[key];
-		var contacts = [];
-		for (var key in conv.users ){
-			var user = conv.users[key];
-			contacts.push($scope.contactsObj[user]);
-		}
-		$scope.view.addConv(conv.id, contacts, $scope.backends.och, []);
-		for (var key in conv.messages){
-		    var msg = conv.messages[key];
-		    $scope.view.addChatMsg(conv.id, $scope.contactsObj[msg.user], msg.msg, msg.timestamp, $scope.backends.och, true);
+	function init() {
+		$scope.handles.och = och;
+		$scope.handles.och.init($scope.initvar.sessionId, $scope.active.user, $scope.initConvs, $scope.contactsObj);
+		$scope.initDone = true;
+		//
+		//
+		//Now join and add all the existing convs
+		for (var key in $scope.initConvs.och) {
+			var conv = $scope.initConvs.och[key];
+			var contacts = [];
+			for (var key in conv.users) {
+				var user = conv.users[key];
+				contacts.push($scope.contactsObj[user]);
+			}
+			$scope.view.addConv(conv.id, contacts, $scope.backends.och, []);
+			for (var key in conv.messages) {
+				var msg = conv.messages[key];
+				$scope.view.addChatMsg(conv.id, $scope.contactsObj[msg.user], msg.msg, msg.timestamp, $scope.backends.och, true);
+			}
 		}
 	}
 
@@ -596,14 +602,12 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 		}
 	};
 
-	/**
-	 * This function returns the order of an contact increased with 1
-	 * @returns {int}
-	 */
 	$scope.getHighestOrderContacts = function(){
 		var sortedContacts = $filter('orderObjectBy')($scope.contactsObj, 'order');
 		return sortedContacts[sortedContacts.length - 1].order + 1;
 	};
+
+	init();
 
 }]);
 

@@ -198,7 +198,6 @@ angular.module('chat').factory('och', [function() {
 
 	return {
 		init : function(s, u, i, cO, addConv){
-			//sessionId = sessionId;
 			sessionId = s;
 			user = u;
 			initConvs = i;

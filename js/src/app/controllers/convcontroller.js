@@ -3,9 +3,12 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', 'initvar',  function($scope, $http, $filter, $interval, initvar) {
+angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter', '$interval', 'initvar', 'och',  function($scope, $http, $filter, $interval, initvar, och) {
 
-	/**
+	$scope.handles = {};
+	//$scope.handles.och = och;
+
+    /**
 	 * Object used to interact with the view
 	 * @var {object} view
 	 */
@@ -137,7 +140,7 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 			var name  = '';
 			for(var key in users){
 				var user = users[key];
-				if(user.id !== Chat.scope.active.user.id){
+				if(user.id !== $scope.active.user.id){
 					name += user.displayname + ' ';
 					var order = $scope.getHighestOrderContacts();
 					$scope.contactsObj[user.id].order = order;
@@ -400,8 +403,8 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 		'chatMsg' : '',
 	};
 	
-//	window.Chat.scope = angular.element($("#app")).scope();
-	Chat.scope = $scope
+	//window.Chat.scope = angular.element($("#app")).scope();
+	//Chat.scope = $scope;
 	$scope.contacts = initvar.contacts;
 	$scope.contactsList = initvar.contactsList;
 	$scope.contactsObj = initvar.contactsObj;
@@ -411,13 +414,25 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 	$scope.initvar = initvar;
 	for (var active in $scope.backends) break;
 	$scope.active.backend =  $scope.backends[active];
-	for(var namespace in $scope.backends){
-		var backend = $scope.backends[namespace];
-		if(namespace === 'och'){
-			Chat[namespace].util.init();
+	$scope.handles.och = och;
+	$scope.handles.och.init($scope.initvar.sessionId, $scope.active.user, $scope.initConvs, $scope.contactsObj);
+	$scope.initDone = true;
+
+
+	//Now join and add all the existing convs
+	for ( var key in $scope.initConvs.och) {1
+		var conv = $scope.initConvs.och[key];
+		var contacts = [];
+		for (var key in conv.users ){
+			var user = conv.users[key];
+			contacts.push($scope.contactsObj[user]);
+		}
+		$scope.view.addConv(conv.id, contacts, $scope.backends.och, []);
+		for (var key in conv.messages){
+		    var msg = conv.messages[key];
+		    $scope.view.addChatMsg(conv.id, $scope.contactsObj[msg.user], msg.msg, msg.timestamp, $scope.backends.och, true);
 		}
 	}
-	$scope.initDone = true;
 
 	/**
 	 * Function called when the app is quit

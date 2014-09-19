@@ -35,14 +35,9 @@ class StartConv extends ChatAPI {
 
 		// (2) check if conv id exists
 		$convMapper = $this->c['ConversationMapper'];
+
 		if($id = $convMapper->existsByUsers($ids)){
 			$id = $id['conv_id'];
-			// (3) join the already existing conv
-			$join = $this->c['JoinCommand'];
-			$this->requestData['conv_id'] = $id;
-			$join->setRequestData($this->requestData);
-			$join->execute();
-
 		} else {
 			$id = $this->generateConvId();
 
@@ -51,13 +46,6 @@ class StartConv extends ChatAPI {
 			$conversation->setConversationId($id);
 			$mapper = $this->c['ConversationMapper'];
 			$mapper->insert($conversation);
-
-			// (4) join the just created conv
-			$join = $this->c['JoinCommand'];
-			$this->requestData['conv_id'] = $id;
-			$join->setRequestData($this->requestData);
-			$join->execute();
-
 		}
 
 		// (5) invite the user_to_invite since we just created the conv
@@ -73,6 +61,12 @@ class StartConv extends ChatAPI {
 				$invite->execute();
 			}
 		}
+
+		// (4) join the just created conv
+		$join = $this->c['JoinCommand'];
+		$this->requestData['conv_id'] = $id;
+		$join->setRequestData($this->requestData);
+		$join->execute();
 
 		// Fetch users in conv
 		$getUsers = $this->c['GetUsersData'];

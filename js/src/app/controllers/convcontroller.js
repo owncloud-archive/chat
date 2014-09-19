@@ -319,7 +319,7 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 		if ($scope.fields.chatMsg !== ''){
 			var backend = $scope.convs[$scope.active.conv].backend.name;
 			$scope.view.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, Time.now(), backend);
-			Chat[backend].on.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
+			$scope.handles[backend].sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 			$scope.fields.chatMsg = '';
 			var order = $scope.getHighestOrderContacts();
 			setTimeout(function(){
@@ -329,7 +329,7 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 
 			for (var key in $scope.convs[$scope.active.conv].users) {
 				var user =  $scope.convs[$scope.active.conv].users[key];
-				if(user.id !== Chat.scope.active.user.id){
+				if(user.id !== $scope.active.user.id){
 					var order = $scope.getHighestOrderContacts();
 					$scope.contactsObj[user.id].order = order;
 				}
@@ -420,7 +420,15 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 
 	function init() {
 		$scope.handles.och = och;
-		$scope.handles.och.init($scope.initvar.sessionId, $scope.active.user, $scope.initConvs, $scope.contactsObj);
+		$scope.handles.och.init(
+			$scope.initvar.sessionId,
+			$scope.active.user,
+			$scope.initConvs,
+			$scope.contactsObj,
+			$scope.view.addChatMsg,
+			$scope.view.addConv,
+			$scope.view.replaceUsers
+		);
 		$scope.initDone = true;
 		//
 		//
@@ -488,11 +496,14 @@ angular.module('chat').controller('ConvController', ['$scope', '$http', '$filter
 	 */
 	$scope.invite = function(userToInvite){
 		var backend = $scope.convs[$scope.active.conv].backend.name;
-		if(userToInvite !== $scope.active.user && userToInvite !== ''){
-			Chat[backend].on.invite($scope.active.conv, userToInvite);
-		} else {
-			console.log('Tried to invite the active user or an empty user');
-		}
+		var groupConv = $scope.convs[$scope.active.conv].users.length > 2;
+		$scope.handles[backend].invite($scope.active.conv, userToInvite, groupConv, function(response){
+			if(groupConv) {
+				$scope.view.replaceUsers(response.data.conv_id, response.data.users);
+			} else {
+				$scope.view.addConv(response.data.conv_id, response.data.users, $scope.convs[$scope.active.conv].backend, response.data.messages);
+			}
+		});
 		$scope.view.hide('invite');
 		$scope.view.makeActive($scope.active.conv);
 

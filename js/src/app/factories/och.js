@@ -2,90 +2,90 @@ angular.module('chat').factory('och', [function() {
 	var api = {
 		command: {
 			join: function (convId, success) {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "command::join::request",
 					"data": {
 						"conv_id": convId,
 						"timestamp": Time.now(),
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId
+						"user": user,
+						"session_id": sessionId
 					}
 				}, success);
 			},
 			invite: function (userToInvite, convId, success) {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "command::invite::request",
 					"data": {
 						"conv_id": convId,
 						"timestamp": Time.now(),
 						"user_to_invite": userToInvite,
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId
+						"user": user,
+						"session_id": sessionId
 					}
 				}, success);
 			},
 			sendChatMsg: function (msg, convId, success) {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "command::send_chat_msg::request",
 					"data": {
 						"conv_id": convId,
 						"chat_msg": msg,
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId,
+						"user": user,
+						"session_id": sessionId,
 						"timestamp": Time.now()
 					}
 				}, success);
 			},
 			online: function () {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "command::online::request",
 					"data": {
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId,
+						"user": user,
+						"session_id": sessionId,
 						"timestamp": Time.now()
 					}
 				}, function () {
 				});
 			},
 			offline: function () {
-				Chat.och.api.util.doSyncRequest({
+				api.util.doSyncRequest({
 					"type": "command::offline::request",
 					"data": {
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId,
+						"user": user,
+						"session_id": sessionId,
 						"timestamp": Time.now()
 					}
 				}, function () {
 				});
 			},
 			startConv: function (userToInvite, success) {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "command::start_conv::request",
 					"data": {
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId,
+						"user": user,
+						"session_id": sessionId,
 						"timestamp": Time.now(),
 						"user_to_invite": userToInvite
 					}
 				}, success);
 			},
 			getMessages: function (convId, startpoint, success) {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "data::messages::request",
 					"data": {
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId,
+						"user": user,
+						"session_id": sessionId,
 						"conv_id": convId,
 						"startpoint": startpoint
 					}
 				}, success);
 			},
 			getUsers: function (convId, success) {
-				Chat.och.api.util.doRequest({
+				api.util.doRequest({
 					"type": "data::get_users::request",
 					"data": {
-						"user": Chat.scope.active.user,
-						"session_id": Chat.och.sessionId,
+						"user": user,
+						"session_id": sessionId,
 						"conv_id": convId
 					}
 				}, success);
@@ -98,20 +98,20 @@ angular.module('chat').factory('och', [function() {
 				var convId = data.conv_id;
 				// TODO check if data.user is a user or a contact
 				if (Chat.scope.convs[convId] === undefined) {
-					Chat.och.api.command.join(data.conv_id, function (dataJoin) {
+					api.command.join(data.conv_id, function (dataJoin) {
 						// After we joined we should update the users array with all users in this conversation
 						var users = dataJoin.data.users;
 						var msgs = dataJoin.data.messages;
-						Chat.app.view.addConv(convId, users, backend, msgs);
+						addConv(convId, users, backend, msgs);
 					});
 				}
 			},
 			chatMessage: function (data) {
-				Chat.app.view.addChatMsg(data.conv_id, data.user, data.chat_msg,
+				addChatMsg(data.conv_id, data.user, data.chat_msg,
 					data.timestamp, 'och');
 			},
 			joined: function (data) {
-				Chat.app.view.replaceUsers(data.conv_id, data.users);
+					//replaceUsers(data.conv_id, data.users);
 			},
 			online: function (data) {
 				Chat.app.view.makeUserOnline(data.user.id);
@@ -195,18 +195,46 @@ angular.module('chat').factory('och', [function() {
 	var user;
 	var initConvs;
 	var contactsObj;
+	var addChatMsg;
+	var addConv;
+	var replaceUsers;
 
 	return {
-		init : function(s, u, i, cO, addConv){
+		init : function(s, u, i, cO, ocmc, conv, r){
 			sessionId = s;
 			user = u;
 			initConvs = i;
 			contactsObj = cO;
+			addChatMsg = ocmc;
+			addConv = conv;
+			replaceUsers = r;
 			api.util.longPoll();
 			setInterval(api.command.online, 60000);
 		},
 		quit : function(){
 
-		}
+		},
+		sendChatMsg : function(convId, msg){
+			api.command.sendChatMsg(msg, convId, function(){});
+		},
+		invite : function(convId, userToInvite, groupConv, callback){
+			if(groupConv){
+				// We are in a group conversation
+				api.command.invite(userToInvite, convId, callback);
+			} else {
+				var users = [];
+				for (var key in Chat.scope.convs[convId].users) {
+					users.push(Chat.scope.convs[convId].users[key]);
+				}
+				users.push(userToInvite);
+				this.newConv(users, callback);
+			}
+		},
+		newConv : function(userToInvite, success){
+			api.command.startConv(
+				userToInvite,
+				success
+			);
+		},
 	};
 }]);

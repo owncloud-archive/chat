@@ -164,5 +164,17 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', fu
 				convs[convId].users.push(user);
 			}
 		},
+		/**
+		 * This function will return the first conversation in the conversation list
+		 * @returns {object|undefined}
+		 */
+		getFirstConv : function(){
+			for (firstConv in convs) break;
+			if (typeof firstConv !== 'undefined') {
+				return firstConv;
+			} else {
+				return undefined;
+			}
+		}
 	};
 }]);

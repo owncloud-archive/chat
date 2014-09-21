@@ -1,4 +1,4 @@
-angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', function(activeUser, convs, contacts) {
+angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessionId', function(activeUser, convs, contacts, sessionId) {
 	var api = {
 		command: {
 			join: function (convId, success) {
@@ -204,12 +204,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', functi
 		USER_TO_INVITE_NOT_OC_USER : 12,
 		NO_CHAT_MSG : 13
 	};
-	var sessionId;
-	var initConvs;
 	return {
-		init : function(s, i){
-			sessionId = s;
-			initConvs = i;
+		init : function(){
 			api.util.longPoll();
 			setInterval(api.command.online, 6000);
 		},

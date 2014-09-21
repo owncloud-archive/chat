@@ -1,4 +1,4 @@
-angular.module('chat').directive('avatar', function() {
+angular.module('chat').directive('avatar', ['contacts', function(contacts) {
 	return {
 		restrict: 'A',
 		link: function ($scope, element, attrs) {
@@ -6,9 +6,9 @@ angular.module('chat').directive('avatar', function() {
 			if(attrs.online !== undefined){
 				element.online(attrs.isonline);
 				$scope.$watch('contactsObj', function(){
-					element.online(Chat.scope.contactsObj[attrs.id].online);
+					element.online(contacts.contacts[attrs.id].online);
 				}, true);
 			}
 		}
 	};
-})
+}]);

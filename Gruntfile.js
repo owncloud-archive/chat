@@ -14,7 +14,6 @@ module.exports = function(grunt) {
 				files: {
 					'js/main.min.js': [
 						'js/src/chat.js',
-						'!js/src/och/*.js',
 						'js/src/**/*.js',
 						'!js/src/bower_components/**/*.js',
 						'!js/src/vendor/**/*.js'

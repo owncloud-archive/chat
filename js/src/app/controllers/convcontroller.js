@@ -16,6 +16,7 @@ angular.module('chat').controller(
 		'activeUser',
 		'contacts',
 		'backends',
+		'title',
 		function(
 			$scope,
 			$http,
@@ -26,7 +27,8 @@ angular.module('chat').controller(
 			convs,
 			activeUser,
 			contacts,
-			backends
+			backends,
+			title
 		){
 
 
@@ -115,13 +117,7 @@ angular.module('chat').controller(
 				toggle : function(element){
 					$scope.view.elements[element] = !$scope.view.elements[element];
 				},
-				/**
-				 * This function will update the title of the page
-				 * @param {string} newTitle
-				 */
-				updateTitle : function(newTitle){
-					$scope.title = newTitle;
-				},
+
 				/**
 				 * This function will make an conv active
 				 * @param {string} convId
@@ -218,25 +214,6 @@ angular.module('chat').controller(
 				 */
 				window : true,
 			};
-			/**
-			 * @var {object} title
-			 */
-			$scope.title = {};
-			/**
-			 * @var {object} title
-			 */
-			$scope.title.title = "";
-			/**
-			 * @var {object} default
-			 */
-			$scope.title.default = "Chat - ownCloud";
-			/**
-			 * @var {array} new_msgs
-			 */
-			$scope.title.new_msgs = [];
-			/**
-			 * @var {object} fields
-			 */
 			$scope.fields = {
 				'chatMsg' : '',
 			};
@@ -323,57 +300,25 @@ angular.module('chat').controller(
 			 * This interval will make the title of the page $scope.title.title every second
 			 */
 			$interval(function(){
-				if($scope.title.title === ''){
-					$('title').text($scope.title.default);
+				if (title.getTitle() === '') {
+					$('title').text(title.getDefaultTitle());
 				} else {
-					$('title').text($scope.title.title);
+					if($scope.active.window === false) {
+						$('title').text(title.getTitle());
+					}
 				}
 			}, 1000);
 			/**
 			 * This interval will make the title of the page $scope.title.default every two second
 			 */
 			$interval(function(){
-				$('title').text($scope.title.default);
+				$('title').text(title.getDefaultTitle());
 			}, 2000);
 
-			/**
-			 * This will check if the window is active
-			 *  if so
-			 *   it will change the title of the page into 'New messages from {user}'
-			 *  otherwise
-			 *   it will empty the title
-			 */
-			$scope.$watchCollection('title.new_msgs', function(){
-				if($scope.active.window === false){
-					var title = 'New messages from ';
-					if($scope.title.new_msgs.length === 0 ){
-						title = '';
-					} else {
-						for (var key in $scope.title.new_msgs){
-							var user = $scope.title.new_msgs[key];
-							title = title + user + " ";
-						}
-					}
-					$scope.title.title = title;
-				} else {
-					$scope.title.tile = '';
-				}
-			});
-
-			/**
-			 * This function will add the user to the $scope.title.new_msgs array
-			 * This way the user can be notified about a new msgs
-			 * @param {string} user
-			 */
-			$scope.notify = function(user){
-				if($scope.title.new_msgs.indexOf(user) == -1){
-					$scope.title.new_msgs.push(user);
-				}
-			};
 
 			window.onfocus = function () {
-				$scope.title.title = '';
-				$scope.title.new_msgs = [];
+				title.updateTitle('');
+				title.emptyNewMsgs();
 				$scope.active.window = true;
 			};
 

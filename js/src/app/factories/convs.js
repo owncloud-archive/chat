@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 'title', function(activeUser, contacts, $filter, title) {
+angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 'title', 'activeConv', function(activeUser, contacts, $filter, title, activeConv) {
 	var convs = {};
 
 	return {
@@ -68,11 +68,11 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 				title.notify(user.displayname);
 			}
 
-			//if(convId !== $scope.active.conv && noNotify === false){
+			if(convId !== activeConv() && noNotify === false){
 			//	this ins't the active conv
 			//	we have to notify the user of new messages in this conv
-			//	$scope.view.notifyMsgInConv(convId);
-			//}
+				this.notifyMsgInConv(convId);
+			}
 
 			// Check if the user is equal to the user of the last msg
 			// First get the last msg

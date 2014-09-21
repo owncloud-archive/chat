@@ -31,9 +31,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 					order : order,
 					name : name
 				};
-				//Chat.scope.$apply(function(){
-				//	Chat.scope.view.makeActive(id);
-				//});
+				this.makeActive(id);
 				if(msgs !== undefined){
 					for (var key in msgs){
 						var msg = msgs[key];
@@ -173,6 +171,16 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 				return firstConv;
 			} else {
 				return undefined;
+			}
+		},
+		makeActive : function(convId, $event, exception) {
+			var scope = $('#app').scope();
+			if (!scope.$$phase) {
+				scope.$apply(function () {
+					scope.view.makeActive(convId, $event, exception);
+				});
+			} else {
+				scope.view.makeActive(convId, $event, exception);
 			}
 		}
 	};

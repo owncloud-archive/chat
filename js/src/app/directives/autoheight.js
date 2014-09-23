@@ -30,4 +30,4 @@ angular.module('chat').directive('autoHeight', function () {
 			});
 		}
 	};
-})
+});

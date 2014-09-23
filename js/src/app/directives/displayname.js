@@ -17,4 +17,4 @@ angular.module('chat').directive('displayname', function () {
 			element.text(text);
 		}
 	};
-})
+});

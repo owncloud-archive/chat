@@ -10,4 +10,4 @@ angular.module('chat').directive('inviteMobile', function () {
 			}
 		}
 	};
-})
+});

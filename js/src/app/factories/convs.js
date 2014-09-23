@@ -62,7 +62,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 		 */
 		addChatMsg : function(convId, user, msg, timestamp, backend, noNotify){
 			if(noNotify === undefined){
-				var noNotify = false;
+				noNotify = false;
 			}
 			if(user.id !== activeUser.id && noNotify === false){
 				title.notify(user.displayname);
@@ -166,7 +166,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 		 * @returns {object|undefined}
 		 */
 		getFirstConv : function(){
-			for (firstConv in convs) break;
+			for (var firstConv in convs) break;
 			if (typeof firstConv !== 'undefined') {
 				return firstConv;
 			} else {

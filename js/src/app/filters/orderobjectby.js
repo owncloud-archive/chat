@@ -11,4 +11,4 @@ angular.module('chat').filter('orderObjectBy', function() {
 		if(reverse) filtered.reverse();
 		return filtered;
 	};
-})
+});

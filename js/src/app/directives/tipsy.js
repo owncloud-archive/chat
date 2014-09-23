@@ -5,4 +5,4 @@ angular.module('chat').directive('tipsy', function () {
 			element.tipsy();
 		}
 	};
-})
+});

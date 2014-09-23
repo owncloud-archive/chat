@@ -3,7 +3,7 @@ filter:
     - 'l10n/*'
     - 'js/vendor/*' # Minified from /js/src/bower_components
     - 'js/main.min.js' # Minified from /js/src/*
-    - 'js/src/bower_components' # thirdparty
+    - 'js/src/bower_components/*' # thirdparty
 imports:
  - javascript
  - php

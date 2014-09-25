@@ -20,6 +20,5 @@ js-unit:
 
 travis-install-dep:
 	sudo apt-get -y install nodejs
-	npm install --deps # npm install needs to run before sudo npm install because otherwise it fails because a tmp file exists in the home dir
-	sudo npm install
+	npm install
 

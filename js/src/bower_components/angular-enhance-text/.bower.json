@@ -1,0 +1,41 @@
+{
+  "name": "angular-enhance-text",
+  "version": "0.0.12",
+  "main": "build/angular-enhance-text.js",
+  "authors": [
+    "Bernhard Posselt <dev@bernhard-posselt.com>"
+  ],
+  "description": "Enhances text by replacing commonly used links and characters, e.g. directly embedding youtube videos, replacing smilies etc. This is useful for creating a web chat application.",
+  "keywords": [
+    "chat",
+    "enhance",
+    "youtube",
+    "pictures"
+  ],
+  "license": "LGPLv3+",
+  "homepage": "https://github.com/Raydiation/angular-enhance-text",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "Gruntfile.js",
+    "karma.conf.js",
+    "test",
+    "tests",
+    "examples"
+  ],
+  "dependencies": {
+    "angular": "~1.2.12",
+    "angular-sanitize": "~1.2.12"
+  },
+  "_release": "0.0.12",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.12",
+    "commit": "f166b5be80a747eff87ff006756cb5902f7d5465"
+  },
+  "_source": "git://github.com/Raydiation/angular-enhance-text.git",
+  "_target": "~0.0.12",
+  "_originalSource": "angular-enhance-text",
+  "_direct": true
+}

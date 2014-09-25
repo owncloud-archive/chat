@@ -1,0 +1,51 @@
+{
+  "name": "angular-enhance-text",
+  "version": "0.0.12",
+  "description": "Enhances text by replacing commonly used links and characters, e.g. directly embedding youtube videos, replacing smilies etc. This is useful for creating a web chat application.",
+  "main": "build/angular-enhance-text.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-wrap": "~0.3.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-karma": "~0.6.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-jasmine": "~0.1.5",
+    "requirejs": "~2.1.10",
+    "karma-requirejs": "~0.2.1",
+    "karma-coffee-preprocessor": "~0.1.2",
+    "karma-phantomjs-launcher": "~0.1.2",
+    "karma": "~0.10.9",
+    "karma-coverage": "~0.1.5",
+    "coveralls": "~2.7.1",
+    "grunt-bump": "0.0.13"
+  },
+  "scripts": {
+    "test": "grunt ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Raydiation/angular-enhance-text"
+  },
+  "keywords": [
+    "chat",
+    "enhance",
+    "youtube",
+    "pictures"
+  ],
+  "author": "Bernhard Posselt",
+  "license": "LGPLv3+",
+  "bugs": {
+    "url": "https://github.com/Raydiation/angular-enhance-text/issues"
+  },
+  "homepage": "https://github.com/Raydiation/angular-enhance-text"
+}

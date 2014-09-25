@@ -1,11 +1,9 @@
 filter:
   excluded_paths:
     - 'l10n/*'
-    - 'js/vendor/angular/*'
-    - 'js/vendor/angular-enhance-text.min.js'
-    - 'js/vendor/jquery.autosize.min.js'
-    - 'js/vendor/rangyinputs.js.js'
-
+    - 'js/vendor/*' # Minified from /js/src/bower_components
+    - 'js/main.min.js' # Minified from /js/src/*
+    - 'js/src/bower_components/*' # thirdparty
 imports:
  - javascript
  - php

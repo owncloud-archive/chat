@@ -44,3 +44,25 @@ Contriubtions are very welcome! You can contribute on many ways:
  - Improve code or add new features
  - Help with design by commenting on issues
  - Solve bugs
+
+### Important: run grunt when you change JS files
+Because the  javascript source files are minified to one single file, grunt must be run after every change and before every commit. To simply test this repo grunt isn't necessary!
+To run grunt you'll need `NodeJS`. On Arch Linux this can be installed via:
+````
+sudo pacman -S nodejs
+````
+On Ubuntu this can be installed via:
+````
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+````
+Now you'll have to install grunt and other dependenices for this app. First cd into the Chat directory and then run the following command:
+````
+npm install
+```
+Now you can grunt via:
+````
+grunt
+````
+

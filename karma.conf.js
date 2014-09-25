@@ -46,8 +46,6 @@ module.exports = function(config) {
 			'../../3rdparty/md5/md5.min.js',
 			'js/src/app/*.js',
 			'js/src/app/**/*.js',
-			'js/src/och/*.js',
-			'js/src/och/**/*.js',
 			'js/src/vendor/*.js',
 			'js/src/vendor/**/*.js',
 			'js/src/*.js',
@@ -97,6 +95,6 @@ module.exports = function(config) {
 
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
-		singleRun: false
+		singleRun: true
   });
 };

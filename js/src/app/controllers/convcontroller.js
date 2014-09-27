@@ -7,32 +7,33 @@ angular.module('chat').controller(
 	'ConvController',
 	[
 		'$scope',
-		'$http',
-		'$filter',
-		'$interval',
-		'initvar',
-		'och',
-		'convs',
-		'activeUser',
-		'contacts',
-		'backends',
-		'title',
+		//'$http',
+		//'$filter',
+		//'$interval',
+		//'initvar',
+		//'och',
+		//'convs',
+		//'activeUser',
+		//'contacts',
+		//'backends',
+		//'title',
 		function(
-			$scope,
-			$http,
-			$filter,
-			$interval,
-			initvar,
-			och,
-			convs,
-			activeUser,
-			contacts,
-			backends,
-			title
+			$scope
+		//	$http,
+		//	$filter,
+		//	$interval,
+		//	initvar,
+		//	och,
+		//	convs,
+		//	activeUser,
+		//	contacts,
+		//	backends,
+		//	title
 		){
 
-
-			Chat.scope = $scope;
+			$(window).unload(function(){
+				$scope.quit();
+			});
 
 			/**
 			 * Object used to interact with the view

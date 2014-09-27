@@ -10,7 +10,7 @@ angular.module('chat').directive('displayname', function () {
 			}
 			for (var key in users){
 				var user = users[key];
-				if(user.id !== Chat.scope.active.user.id){
+				if(user.id !== OC.currentUser){
 					text += user.displayname + ' ';
 				}
 			}

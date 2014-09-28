@@ -243,7 +243,7 @@ angular.module('chat').controller(
 					convs.addConv(conv.id, contactsInConv, backends.och, []);
 					for (var key in conv.messages) {
 						var msg = conv.messages[key];
-						convs.addChatMsg(conv.id, contacts.contacts[msg.user], msg.msg, msg.timestamp, backends.och, true);
+						//convs.addChatMsg(conv.id, contacts.contacts[msg.user], msg.msg, msg.timestamp, backends.och, true);
 					}
 				}
 			}

@@ -1,8 +1,6 @@
 angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 'title', 'activeConv', 'scope', function(activeUser, contacts, $filter, title, activeConv, $scope) {
 	var convs = {};
 
-	alert(activeConv());
-
 	return {
 		convs: convs, // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
 		get : function(id) {
@@ -70,7 +68,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 				title.notify(user.displayname);
 			}
 
-			if(convId !== activeConv && noNotify === false){
+			if(convId !== activeConv() && noNotify === false){
 			//	this ins't the active conv
 			//	we have to notify the user of new messages in this conv
 				this.notifyMsgInConv(convId);

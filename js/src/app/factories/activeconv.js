@@ -1,3 +1,9 @@
 angular.module('chat').factory('activeConv', ['scope', function(scope){
-	return scope.active.conv;
+	return function() {
+		if (scope.active !== undefined) {
+			return scope.active.conv;
+		} else {
+			return null;
+		}
+	}
 }]);

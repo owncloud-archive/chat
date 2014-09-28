@@ -103,6 +103,12 @@ describe('ConvController', function(){
 			});
 
 			it('Should call convs.addChatmsg for every chat msg in every och initConv', function () {
+				for(var key in initvar.initConvs.och) {
+					var conv = initvar.initConvs.och[key];
+					for(var msgKey in conv.msgs ) {
+						expect(convs.addChatMsg).toHaveBeenCalled();
+					}
+				}
 
 			});
 

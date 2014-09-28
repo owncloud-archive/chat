@@ -63,7 +63,7 @@ describe('ConvController', function(){
 	}));
 
 	describe('Initialization', function () {
-		it('Should attach convs.covns to $scope.convs', function () {
+		it('Should attach convs.convs to $scope.convs', function () {
 			expect($scope.convs).toEqual(convs.convs);
 		});
 

@@ -115,4 +115,131 @@ describe('ConvController', function(){
 
 		});
 	});
+
+	describe('$scope.view', function () {
+		describe('inviteClick', function () {
+			it('Should set $scope.view.elements.invite to false when it was true ', function () {
+				$scope.view.elements.invite = false;
+				$scope.view.inviteClick();
+				expect($scope.view.elements.invite).toBeTruthy();
+			});
+			it('Should set $scope.view.elements.invite to true when it was false ', function () {
+				$scope.view.elements.invite = true;
+				$scope.view.inviteClick();
+				expect($scope.view.elements.invite).toBeFalsy();
+
+			});
+		});
+
+		describe('showEmojiPopover', function () {
+			it('Should set $scope.view.elements.emojiContainer to false when it was true ', function () {
+				$scope.view.elements.emojiContainer = false;
+				$scope.view.showEmojiPopover();
+				expect($scope.view.elements.emojiContainer).toBeTruthy();
+			});
+			it('Should set $scope.view.elements.emojiContainer to true when it was false ', function () {
+				$scope.view.elements.emojiContainer = true;
+				$scope.view.showEmojiPopover();
+				expect($scope.view.elements.emojiContainer).toBeFalsy();
+			});
+		});
+
+		describe('Show', function () {
+			it('Should set $scope.view.elements[element] to true', function () {
+				$scope.view.elements.dummy = false;
+				$scope.view.show('dummy');
+				expect($scope.view.elements.dummy).toBeTruthy();
+
+				$scope.view.elements.dummy = true;
+				$scope.view.show('dummy');
+				expect($scope.view.elements.dummy).toBeTruthy();
+
+				$scope.view.elements.dummy = null;
+				$scope.view.show('dummy');
+				expect($scope.view.elements.dummy).toBeTruthy();
+			});
+
+			it('Should NOT set $scope.view.elements[element] to true when $event.target.classList contains exception', function () {
+				$scope.view.elements.dummy = 'test';
+				var $event = {
+					target: {
+						classList: {
+							contains: function(property){
+								return true;
+							}
+						}
+					}
+				};
+				var exception = 'foo';
+				$scope.view.show('dummy', $event, exception);
+				expect($scope.view.elements.dummy).toEqual('test');
+			});
+
+			it('Should set $scope.view.elements[element] to true when $event.target.classList doesn\'t contains exception', function () {
+				$scope.view.elements.dummy = false;
+				var $event = {
+					target: {
+						classList: {
+							contains: function(property){
+								return false;
+							}
+						}
+					}
+				};
+				var exception = 'foo';
+				$scope.view.show('dummy', $event, exception);
+				expect($scope.view.elements.dummy).toBeTruthy();
+			});
+		});
+		describe('Hide', function () {
+			it('Should set $scope.view.elements[element] to false', function () {
+				$scope.view.elements.dummy = false;
+				$scope.view.hide('dummy');
+				expect($scope.view.elements.dummy).toBeFalsy();
+
+				$scope.view.elements.dummy = true;
+				$scope.view.hide('dummy');
+				expect($scope.view.elements.dummy).toBeFalsy();
+
+				$scope.view.elements.dummy = null;
+				$scope.view.hide('dummy');
+				expect($scope.view.elements.dummy).toBeFalsy();
+			});
+
+			it('Should NOT touch $scope.view.elements[element]  when $event.target.classList contains an element of exception', function () {
+				$scope.view.elements.dummy = 'test';
+				var $event = {
+					target: {
+						classList: {
+							contains: function(property){
+								if(property === 'foo') {
+									return true;
+								} else {
+									return false;
+								}
+							}
+						}
+					}
+				};
+				$scope.view.hide('dummy', $event, ['foo', 'bar']);
+				expect($scope.view.elements.dummy).toEqual('test');
+			});
+
+			it('Should set $scope.view.elements[element] to false when $event.target.classList doesn\'t contains an element of exception', function () {
+				$scope.view.elements.dummy = true;
+				var $event = {
+					target: {
+						classList: {
+							contains: function(property){
+								return false;
+							}
+						}
+					}
+				};
+				var exception = 'foo';
+				$scope.view.hide('dummy', $event, exception);
+				expect($scope.view.elements.dummy).toBeFalsy();
+			});
+		});
+	});
 });

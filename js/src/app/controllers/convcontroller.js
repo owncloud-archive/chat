@@ -45,7 +45,6 @@ angular.module('chat').controller(
 				 * @var {object} elements
 				 */
 				elements : {
-					"emptyMsg" : true,
 					"chat" : false,
 					"initDone" : false,
 					"settings" : false,
@@ -125,7 +124,6 @@ angular.module('chat').controller(
 				 * @param {string} exception - when this is provided the function call will be ignored when it was this param which was clicked
 				 */
 				makeActive : function(convId, $event, exception){
-					$scope.view.hide('emptyMsg');
 					$scope.view.show('chat', $event, exception);
 					$scope.active.conv = convId;
 					$scope.view.focusMsgInput();
@@ -152,8 +150,8 @@ angular.module('chat').controller(
 				 * This will focus the chat input field
 				 */
 				focusMsgInput : function(){
-					$('#chat-msg-input-field');
-				},
+					$('#chat-msg-input-field').focus();
+				}
 			};
 
 			/**
@@ -164,19 +162,18 @@ angular.module('chat').controller(
 			 * This will make the order of the contacts in the conv the highest
 			 */
 			$scope.sendChatMsg = function(){
-				if ($scope.fields.chatMsg !== ''){
-					var backend = $scope.convs[$scope.active.conv].backend.name;
+				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
+					var backend = convs.get($scope.active.conv).backend.name;
 					convs.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, Time.now(), backend);
 					backends[backend].handle.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 					$scope.fields.chatMsg = '';
-					var order = contacts.getHighestOrder();
 					setTimeout(function(){
 						$('#chat-msg-input-field').trigger('autosize.resize');
 					},1);
 					$('#chat-msg-input-field').focus();
 
-					for (var key in $scope.convs[$scope.active.conv].users) {
-						var user =  $scope.convs[$scope.active.conv].users[key];
+					for (var key in convs.get($scope.active.conv).users) {
+						var user =  convs.get($scope.active.conv).users[key];
 						if(user.id !== $scope.active.user.id){
 							var order = contacts.getHighestOrder();
 							contacts.contacts[user.id].order = order;

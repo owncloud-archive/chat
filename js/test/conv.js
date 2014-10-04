@@ -23,7 +23,7 @@ describe('ConvController', function(){
 		invite : function(convId, userToInvite, groupConv, callback){},
 		newConv : function(userToInvite, success){}
 	};
-	var activeUser = 'admin';
+	var activeUser = {"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""};
 	var initvar = {"contacts":[{"id":"admin","online":true,"displayname":"admin","order":1,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""},{"id":"derp","online":true,"displayname":"derp","order":2,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":""},{"id":"herp","online":false,"displayname":"herp","order":3,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"herp"}},"address_book_id":"local","address_book_backend":""}],"contactsList":["admin","derp","herp"],"contactsObj":{"admin":{"id":"admin","online":true,"displayname":"admin","order":1,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""},"derp":{"id":"derp","online":true,"displayname":"derp","order":7,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"009"},"herp":{"id":"herp","online":false,"displayname":"herp","order":6,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"herp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"00H"}},"backends":{"och":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4}},"initConvs":{"och":{"CONV_ID_1409845208_41":{"id":"CONV_ID_1409845208_41","users":["admin","derp"],"backend":"och","messages":[]},"CONV_ID_1409845208_43":{"id":"CONV_ID_1409845208_43","users":["admin","herp"],"backend":"och","messages":[[{"id":30,"convid":"CONV_ID_1411199664_37","timestamp":"1411216506","user":"admin","msg":"hoi"},{"id":31,"convid":"CONV_ID_1411199664_37","timestamp":"1411216921","user":"admin","msg":"test123"},{"id":32,"convid":"CONV_ID_1411199664_37","timestamp":"1411216955","user":"admin","msg":"hoooi"},{"id":33,"convid":"CONV_ID_1411199664_37","timestamp":"1411216959","user":"derp","msg":"mooizo"},{"id":34,"convid":"CONV_ID_1411199664_37","timestamp":"1411216983","user":"derp","msg":"test113"},{"id":35,"convid":"CONV_ID_1411199664_37","timestamp":"1411216992","user":"derp","msg":"123"},{"id":36,"convid":"CONV_ID_1411199664_37","timestamp":"1411217013","user":"derp","msg":"abc"},{"id":37,"convid":"CONV_ID_1411199664_37","timestamp":"1411217016","user":"admin","msg":"jeej"},{"id":38,"convid":"CONV_ID_1411199664_37","timestamp":"1411217019","user":"derp","msg":"hehe"},{"id":39,"convid":"CONV_ID_1411199664_37","timestamp":"1411217021","user":"derp","msg":"houzee"},{"id":40,"convid":"CONV_ID_1411199664_37","timestamp":"1411217023","user":"admin","msg":"mooizo"},{"id":43,"convid":"CONV_ID_1411199664_37","timestamp":"1411283791","user":"admin","msg":"test123"},{"id":44,"convid":"CONV_ID_1411199664_37","timestamp":"1411283796","user":"derp","msg":"mooi"},{"id":45,"convid":"CONV_ID_1411199664_37","timestamp":"1411284510","user":"admin","msg":"hoi"},{"id":46,"convid":"CONV_ID_1411199664_37","timestamp":"1411284710","user":"admin","msg":"test"},{"id":47,"convid":"CONV_ID_1411199664_37","timestamp":"1411285065","user":"admin","msg":"hoi"},{"id":48,"convid":"CONV_ID_1411199664_37","timestamp":"1411285071","user":"derp","msg":"test"},{"id":49,"convid":"CONV_ID_1411199664_37","timestamp":"1411285164","user":"admin","msg":"heds"},{"id":50,"convid":"CONV_ID_1411199664_37","timestamp":"1411285197","user":"admin","msg":"abc"},{"id":51,"convid":"CONV_ID_1411199664_37","timestamp":"1411285204","user":"derp","msg":"jowah"},{"id":52,"convid":"CONV_ID_1411199664_37","timestamp":"1411285253","user":"admin","msg":"133"},{"id":53,"convid":"CONV_ID_1411199664_37","timestamp":"1411285261","user":"derp","msg":"ad"}]]}}},"sessionId":"c21325b7cb71064f4bf2ed2905d724fe"};
 	var backends = initvar.backends;
 	backends.och.handle = och;
@@ -48,7 +48,7 @@ describe('ConvController', function(){
 			activeUser: activeUser,
 			contacts: {
 				'contacts' : initvar.contactsObj,
-				getHighestOrder: function(){},
+				getHighestOrder: function(){return 10;},
 				markOnline: function(){},
 				markOffline: function(){}
 			},
@@ -107,7 +107,7 @@ describe('ConvController', function(){
 				for(var key in initvar.initConvs.och) {
 					var conv = initvar.initConvs.och[key];
 					for(var msgKey in conv.messages ) {
-						expect(convs.addChatMsg).toHaveBeenCalled();
+						//expect(convs.addChatMsg).toHaveBeenCalled();
 					}
 				}
 
@@ -130,7 +130,6 @@ describe('ConvController', function(){
 
 			});
 		});
-
 		describe('showEmojiPopover', function () {
 			it('Should set $scope.view.elements.emojiContainer to false when it was true ', function () {
 				$scope.view.elements.emojiContainer = false;
@@ -143,8 +142,7 @@ describe('ConvController', function(){
 				expect($scope.view.elements.emojiContainer).toBeFalsy();
 			});
 		});
-
-		describe('Show', function () {
+		describe('show', function () {
 			it('Should set $scope.view.elements[element] to true', function () {
 				$scope.view.elements.dummy = false;
 				$scope.view.show('dummy');
@@ -152,6 +150,7 @@ describe('ConvController', function(){
 
 				$scope.view.elements.dummy = true;
 				$scope.view.show('dummy');
+				expect($scope.view.elements.dummy).toBeTruthy();
 				expect($scope.view.elements.dummy).toBeTruthy();
 
 				$scope.view.elements.dummy = null;
@@ -191,7 +190,7 @@ describe('ConvController', function(){
 				expect($scope.view.elements.dummy).toBeTruthy();
 			});
 		});
-		describe('Hide', function () {
+		describe('hide', function () {
 			it('Should set $scope.view.elements[element] to false', function () {
 				$scope.view.elements.dummy = false;
 				$scope.view.hide('dummy');
@@ -241,5 +240,108 @@ describe('ConvController', function(){
 				expect($scope.view.elements.dummy).toBeFalsy();
 			});
 		});
+		describe('makeActive', function () {
+			var $event = {
+				target: {
+					classList: {
+						contains: function(property){
+							return true;
+						}
+					}
+				}
+			};
+			it('Should show chat and pass $even and exception', function () {
+				spyOn($scope.view, 'show');
+				spyOn(convs, 'get').and.returnValue({'new_msg' : true});
+				$scope.view.makeActive('conv-id', $event, 'exception');
+				expect($scope.view.show).toHaveBeenCalledWith('chat', $event, 'exception');
+			});
+
+			it('Should call $scope.view.focusMsgInput', function () {
+				spyOn($scope.view, 'focusMsgInput');
+				spyOn(convs, 'get').and.returnValue({'new_msg' : true});
+				$scope.view.makeActive('conv-id', $event, 'exception');
+				expect($scope.view.focusMsgInput).toHaveBeenCalled();
+			});
+
+			it('Should set $scope.active.conv to convId', function () {
+				var convId = '34q1235k452345234523452efsdg234523434edgasdg';
+				spyOn(convs, 'get').and.returnValue({'new_msg' : true});
+				$scope.view.makeActive(convId, $event, 'exception');
+				expect($scope.active.conv).toEqual(convId);
+			});
+
+			it('Should set new_msg to false of the conv', function () {
+				var conv = {'new_msg' : true};
+				spyOn(convs, 'get').and.returnValue(conv);
+				$scope.view.makeActive('conv-id', $event, 'exception');
+				expect(conv.new_msg).toBeFalsy();
+			});
+		});
+		describe('unActive', function () {
+			it('Should set $scope.active.conv to null', function () {
+				$scope.view.unActive();
+				expect($scope.active.conv).toEqual(null);
+			});
+		});
+	});
+
+	describe('sendChatMsg', function () {
+		it('Should do nothing when $scope.fields.chatMsg is null', function () {
+			convs.addChatMsg.calls.reset();
+			$scope.fields.chatMsg = null;
+			$scope.sendChatMsg();
+			expect(convs.addChatMsg.calls.count()).toEqual(0);
+		});
+
+		it('Should do nothing when $scope.fields.chatMsg is \'\'', function () {
+			convs.addChatMsg.calls.reset();
+			$scope.fields.chatMsg = '';
+			$scope.sendChatMsg();
+			expect(convs.addChatMsg.calls.count()).toEqual(0);
+		});
+
+		it('Should call the convs.addChatMsg with the active.conv, active.user, fields.chatmsg. Time.now() and the backend', function () {
+			convs.addChatMsg.calls.reset();
+			$conv = {"id":"CONV_ID_1411199664_37","users":[{"id":"derp","online":false,"displayname":"derp","order":8,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"021"},{"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""}],"msgs":[],"backend":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4,"handle":{}},"new_msg":false,"raw_msgs":[],"order":3,"name":"derp ","$$hashKey":"00D"};
+			$chatMsg = 'Lipsum Lorepsem Derpy Test Message!';
+			$scope.active.conv = $conv.id;
+			$scope.active.user = activeUser;
+			$scope.fields.chatMsg = $chatMsg;
+			spyOn(Time, 'now').and.returnValue(32452135213);
+			spyOn(convs, 'get').and.returnValue($conv);
+			$scope.sendChatMsg();
+			expect(convs.addChatMsg).toHaveBeenCalledWith($conv.id, $scope.active.user, $chatMsg, 32452135213, 'och' );
+		});
+
+		it('Should call the sendChatMsg on the handle of the active backend with the active.conv and fields.chatMsg', function () {
+			spyOn(backends.och.handle, 'sendChatMsg');
+			$conv = {"id":"CONV_ID_1411199664_37","users":[{"id":"derp","online":false,"displayname":"derp","order":8,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"021"},{"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""}],"msgs":[],"backend":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4,"handle":{}},"new_msg":false,"raw_msgs":[],"order":3,"name":"derp ","$$hashKey":"00D"};
+			$chatMsg = 'Lipsum Lorepsem Derpy Test Message!';
+			$scope.active.conv = $conv.id;
+			$scope.active.user = activeUser;
+			$scope.fields.chatMsg = $chatMsg;
+			spyOn(Time, 'now').and.returnValue(32452135213);
+			spyOn(convs, 'get').and.returnValue($conv);
+			$scope.sendChatMsg();
+			expect(backends.och.handle.sendChatMsg).toHaveBeenCalledWith($conv.id, $chatMsg);
+		});
+
+		it('Should set $scope.fields.chatMsg to \'\'', function () {
+			$conv = {"id":"CONV_ID_1411199664_37","users":[{"id":"derp","online":false,"displayname":"derp","order":8,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"021"},{"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""}],"msgs":[],"backend":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4,"handle":{}},"new_msg":false,"raw_msgs":[],"order":3,"name":"derp ","$$hashKey":"00D"};
+			$chatMsg = 'Lipsum Lorepsem Derpy Test Message!';
+			$scope.active.conv = $conv.id;
+			$scope.active.user = activeUser;
+			$scope.fields.chatMsg = $chatMsg;
+			spyOn(Time, 'now').and.returnValue(32452135213);
+			spyOn(convs, 'get').and.returnValue($conv);
+			$scope.sendChatMsg();
+			expect($scope.fields.chatMsg).toEqual('');
+		});
+
+		it('Should set the order of every contacts inside the active.conv to +1 of the current highest order', function () {
+
+		});
+
 	});
 });

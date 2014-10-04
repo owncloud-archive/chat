@@ -29,7 +29,8 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 					new_msg : false,
 					raw_msgs : [],
 					order : order,
-					name : name
+					name : name,
+					files : {}
 				};
 				this.makeActive(id);
 				if(msgs !== undefined){
@@ -134,6 +135,12 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			} else {
 				scope.view.makeActive(convId, $event, exception);
 			}
+		},
+		attachFile : function(convId, path){
+			convs[convId].files[path] = {
+				"path": path,
+				"user": activeUser
+			};
 		}
 	};
 }]);

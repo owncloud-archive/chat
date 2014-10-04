@@ -73,6 +73,19 @@ angular.module('chat').controller(
 					console.log(height);
 				},
 				/**
+				 * TODO translations
+				 */
+				showFilePicker : function(){
+					OCdialogs.filepicker('Please choose a file to attach to the conversation', function(paths){
+						for(var key in paths){
+							var path = paths[key];
+							convs.attachFile($scope.active.conv, path);
+						}
+						var backend = $scope.convs[$scope.active.conv].backend.name;
+						backends[backend].handle.attachFile($scope.active.conv, paths, activeUser);
+					}, true);
+				},
+				/**
 				 * This will flag the element as visible in the view.elements array
 				 * @param {string} element the element which should be made visible (should be in the $scope.view.elements array )
 				 * @param {object} $event

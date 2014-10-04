@@ -81,6 +81,14 @@
 	top: 5px;
 }
 
+.chat-msg-file-button {
+	position:absolute;
+	width:32px;
+	height:32px;
+	right: 110px;
+	top: 5px;
+}
+
 #chat-msg-form {
 	width: 100%;
 	position: relative;

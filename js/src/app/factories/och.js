@@ -233,6 +233,11 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				userToInvite,
 				success
 			);
+		},
+		attachFile : function(convId, paths, user){
+			console.log(convId);
+			console.log(paths);
+			console.log(user);
 		}
 	};
 }]);

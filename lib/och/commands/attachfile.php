@@ -8,6 +8,7 @@
 namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
+use OCA\Chat\OCH\Db\Attachment;
 
 class AttachFile extends ChatAPI {
 
@@ -24,6 +25,16 @@ class AttachFile extends ChatAPI {
 		$paths = $this->requestData['paths'];
 		$userMapper = $this->c['UserMapper'];
 		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
+		foreach ($paths as $path) {
+			$fileId = $this->app->getFileId($path);
+			$this->insertInDatabase(
+				$this->app->getUserId(),
+				$path,
+				$fileId,
+				$this->requestData['timestamp'],
+				$this->requestData['conv_id']
+			);
+		}
 		foreach ($users as $user) {
 			if ($user !== $this->app->getUserId()) {
 				foreach ($paths as $path) {
@@ -34,15 +45,24 @@ class AttachFile extends ChatAPI {
 		}
 	}
 
+
 	/**
 	 * Inserts the attachment into the DB
 	 * @param $ownerId ownCloud user id
 	 * @param $path path of the file
+	 * @param $fileId
 	 * @param $timestamp
 	 * @param $convId
 	 */
-	private function insertInDatabase($ownerId, $path, $timestamp, $convId){
-
+	private function insertInDatabase($ownerId, $path, $fileId, $timestamp, $convId){
+		$attachment = new Attachment();
+		$attachment->setOwner($ownerId);
+		$attachment->setPath($path);
+		$attachment->setFileId($fileId);
+		$attachment->setTimestamp($timestamp);
+		$attachment->setConvId($convId);
+		$attachmentMapper = $this->c['AttachmentMapper'];
+		$attachmentMapper->insertUnique($attachment);
 	}
 
 	/**
@@ -56,6 +76,5 @@ class AttachFile extends ChatAPI {
 
 		}
 	}
-
 
 }

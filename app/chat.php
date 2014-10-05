@@ -15,6 +15,7 @@ use OCA\Chat\OCH\Db\MessageMapper;
 use OCA\Chat\OCH\Db\PushMessageMapper;
 use OCA\Chat\OCH\Db\UserMapper;
 use OCA\Chat\OCH\Db\UserOnlineMapper;
+use OCA\Chat\OCH\Db\AttachmentMapper;
 use OCA\Chat\Db\BackendMapper;
 use OCA\Chat\OCH\Commands\Greet;
 use OCA\Chat\OCH\Commands\Invite;
@@ -111,6 +112,11 @@ class Chat extends App{
 		$container->registerService('BackendMapper', function ($c) {
 			return new BackendMapper($c->query('ServerContainer')->getDb());
 		});
+
+		$container->registerService('AttachmentMapper', function ($c) {
+			return new AttachmentMapper($c->query('ServerContainer')->getDb());
+		});
+
 
 		/**
 		 * Command API Requests

@@ -24,6 +24,7 @@ use OCA\Chat\OCH\Commands\Online;
 use OCA\Chat\OCH\Commands\SendChatMsg;
 use OCA\Chat\OCH\Commands\StartConv;
 use OCA\Chat\OCH\Commands\SyncOnline;
+use OCA\Chat\OCH\Commands\AttachFile;
 use OCA\Chat\OCH\Data\GetUsers;
 use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
@@ -145,6 +146,11 @@ class Chat extends App{
 		$container->registerService('SyncOnlineCommand', function ($c) use($app) {
 			return new SyncOnline($app);
 		});
+
+		$container->registerService('AttachFileCommand', function ($c) use($app) {
+			return new AttachFile($app);
+		});
+
 
 		/**
 		 * Push API Requests
@@ -466,6 +472,23 @@ class Chat extends App{
 		}
 
 		return $r;
+	}
+
+	/**
+	 * @param $path path to file
+	 * @return int id of the file
+	 */
+	public function getFileId($path){
+		$userFolder = $this->c->getServer()->getUserFolder(\OCP\User::getUser());
+		$file = $userFolder->get($path);
+		return $file->getId();
+	}
+
+	/**
+	 * @return string current ownCloud user id
+	 */
+	public function getUserId(){
+		return $this->c['UserSession']->getUser()->getUID();
 	}
 
 }

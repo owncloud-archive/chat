@@ -1,6 +1,18 @@
 angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessionId', function(activeUser, convs, contacts, sessionId) {
 	var api = {
 		command: {
+			attachFile : function(convId, paths, user){
+				api.util.doRequest({
+					"type": "command::attach_file::request",
+					"data": {
+						"conv_id": convId,
+						"timestamp": Time.now(),
+						"user": user,
+						"session_id": sessionId,
+						"paths" : paths
+					}
+				}, function(){});
+			},
 			join: function (convId, success) {
 				api.util.doRequest({
 					"type": "command::join::request",
@@ -238,6 +250,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 			console.log(convId);
 			console.log(paths);
 			console.log(user);
+			api.command.attachFile(convId, paths, user);
+
 		}
 	};
 }]);

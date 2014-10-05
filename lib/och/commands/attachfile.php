@@ -21,7 +21,17 @@ class AttachFile extends ChatAPI {
 	}
 
 	public function execute(){
-
+		$paths = $this->requestData['paths'];
+		$userMapper = $this->c['UserMapper'];
+		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
+		foreach ($users as $user) {
+			if ($user !== $this->app->getUserId()) {
+				foreach ($paths as $path) {
+					$fileId = $this->app->getFileId($path);
+					$this->share($fileId, $user);
+				}
+			}
+		}
 	}
 
 	/**
@@ -35,8 +45,17 @@ class AttachFile extends ChatAPI {
 
 	}
 
-	private function share($path, $user){
-		\OCP\Share::shareItem('file', $path, \OCP\Share::SHARE_TYPE_USER, $user, \OCP\PERMISSION_ALL);
+	/**
+	 * @param $fileId the fileId of the file
+	 * @param $shareWIth the ownCloud user to share the file with
+	 */
+	private function share($fileId, $shareWIth){
+		try {
+			\OCP\Share::shareItem('file', $fileId, \OCP\Share::SHARE_TYPE_USER, $shareWIth, \OCP\PERMISSION_ALL);
+		} Catch (\Exception $e){
+
+		}
 	}
+
 
 }

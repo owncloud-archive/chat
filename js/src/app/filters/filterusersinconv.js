@@ -7,7 +7,6 @@ angular.module('chat').filter('filterUsersInConv', ['activeConv', 'convs', funct
 				result.push(contact);
 			}
 		});
-		console.log(result);
 		return result;
 	};
 }]);

@@ -6,7 +6,7 @@
 		<ul>
 			<li
 				class="invite-contact invite-no-hide"
-				ng-repeat="contact in contactsObj | userFilter | orderObjectBy:'order':true | filter:inviteSearch | filterUsersInConv"
+				ng-repeat="contact in contacts | userFilter | orderObjectBy:'order':true | filter:inviteSearch | filterUsersInConv"
 				ng-click="invite(contact)"
 			>
 				<div

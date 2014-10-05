@@ -24,7 +24,7 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 ?>
 <!--<div ng-app="chat" ng-controller="ConvController"  id="app">-->
 <!--</div>-->
-<div ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button'])" ng-controller="ConvController" ng-app="chat" id="app">
+<div ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button']);view.hide('files', $event, ['files-no-hide', 'files-button']);" ng-controller="ConvController" ng-app="chat" id="app">
 	<div style="display:none;" id="initvar">
 		<?php echo $_['initvar']?>
 	</div>
@@ -36,4 +36,5 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 		<?php print_unescaped($this->inc('part.no-users')) ?>
 	</div>
 	<?php print_unescaped($this->inc('part.invite')) ?>
+	<?php print_unescaped($this->inc('part.files')) ?>
 </div>

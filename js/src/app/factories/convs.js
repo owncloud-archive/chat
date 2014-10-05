@@ -6,7 +6,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 		get : function(id) {
 			return convs[id];
 		},
-		addConv : function(id, users, backend, msgs){
+		addConv : function(id, users, backend, msgs, files){
 			//generate conv name + higher order of contacts
 			var name  = '';
 			for(var key in users){
@@ -30,7 +30,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 					raw_msgs : [],
 					order : order,
 					name : name,
-					files : {}
+					files : files
 				};
 				this.makeActive(id);
 				if(msgs !== undefined){
@@ -137,10 +137,12 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			}
 		},
 		attachFile : function(convId, path){
-			convs[convId].files[path] = {
+			convs[convId].files.push({
 				"path": path,
-				"user": activeUser
-			};
+				"user": activeUser,
+				"timestamp" : Time.now()
+			});
+			console.log('etst');
 		}
 	};
 }]);

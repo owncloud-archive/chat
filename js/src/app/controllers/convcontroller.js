@@ -50,6 +50,7 @@ angular.module('chat').controller(
 					"settings" : false,
 					"emojiContainer" : false,
 					"invite" : false,
+					"files" : false
 				},
 				/**
 				 * Called when an invite button is clicked
@@ -70,7 +71,6 @@ angular.module('chat').controller(
 					setTimeout(function(){
 						$('#emoji-container').css('bottom', height + 20);
 					},1);
-					console.log(height);
 				},
 				/**
 				 * TODO translations
@@ -84,6 +84,10 @@ angular.module('chat').controller(
 						var backend = $scope.convs[$scope.active.conv].backend.name;
 						backends[backend].handle.attachFile($scope.active.conv, paths, activeUser);
 					}, true);
+				},
+				showFiles : function(){
+					$scope.view.toggle('files');
+
 				},
 				/**
 				 * This will flag the element as visible in the view.elements array
@@ -255,7 +259,7 @@ angular.module('chat').controller(
 						var user = conv.users[key];
 						contactsInConv.push(contacts.contacts[user]);
 					}
-					convs.addConv(conv.id, contactsInConv, backends.och, []);
+					convs.addConv(conv.id, contactsInConv, backends.och, [], conv.files);
 					for (var key in conv.messages) {
 						var msg = conv.messages[key];
 						convs.addChatMsg(conv.id, contacts.contacts[msg.user], msg.msg, msg.timestamp, backends.och, true);
@@ -301,7 +305,7 @@ angular.module('chat').controller(
 					if(groupConv) {
 						$scope.view.replaceUsers($scope.active.conv, response.data.users);
 					} else {
-						convs.addConv(response.data.conv_id, response.data.users, $scope.convs[$scope.active.conv].backend, response.data.messages);
+						convs.addConv(response.data.conv_id, response.data.users, $scope.convs[$scope.active.conv].backend, response.data.messages, []);
 					}
 				});
 				$scope.view.hide('invite');

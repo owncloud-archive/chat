@@ -14,8 +14,9 @@ use \OCP\IDb;
 
 class AttachmentMapper extends Mapper {
 
-	public function __construct(IDb $api) {
+	public function __construct(IDb $api, $app) {
 		parent::__construct($api, 'chat_attachments');
+		$this->app = $app;
 	}
 
 	public function insertUnique(Attachment $entity){
@@ -36,6 +37,28 @@ SQL;
 		} catch (DoesNotExistException $e){
 			$this->insert($entity);
 		}
+	}
+
+	public function findRawByConv($convId){
+		$sql = <<<SQL
+				SELECT
+					*
+				FROM
+					`*PREFIX*chat_attachments`
+				WHERE
+					`conv_id` = ?
+SQL;
+		$files = array();
+		$result = $this->findEntities($sql, array($convId));
+		foreach ($result as $r) {
+			$files[] = array(
+				"path" => $r->getPath(),
+				"user" => $this->app->getUserasContact($r->getOwner()),
+				"timestamp" => $r->getTimestamp(),
+			);
+		}
+
+		return $files;
 	}
 
 }

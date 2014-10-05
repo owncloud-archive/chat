@@ -113,8 +113,11 @@ class Chat extends App{
 			return new BackendMapper($c->query('ServerContainer')->getDb());
 		});
 
-		$container->registerService('AttachmentMapper', function ($c) {
-			return new AttachmentMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('AttachmentMapper', function ($c) use ($app) {
+			return new AttachmentMapper(
+				$c->query('ServerContainer')->getDb(),
+				$app
+			);
 		});
 
 
@@ -429,11 +432,15 @@ class Chat extends App{
 			));
 			$messages = $getMessages->execute();
 			$messages = $messages['messages'];
+
+			$attachmentMapper = $this->c['AttachmentMapper'];
+			$files = $attachmentMapper->findRawByConv($conv->getConversationId());
 			$r['och'][$conv->getConversationId()] = array(
 				"id" => $conv->getConversationId(),
 				"users"=> $users,
 				"backend" => "och",
-				"messages" => $messages
+				"messages" => $messages,
+				"files" => $files
 			);
 			if(count($users) === 2){
 				foreach($users as $user){

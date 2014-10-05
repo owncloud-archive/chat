@@ -378,6 +378,13 @@
 	position:static !important;
 }
 
+.avatar-list-expanded-button{
+	padding:0px !important;
+	margin:0px;
+	height:20px;
+	position:static !important;
+}
+
 .avatar-list-expanded-item div {
 	margin-right:10px;
 }
@@ -495,6 +502,22 @@
 	width:190px !important;
 }
 
+#files-container{
+	width:450px;
+	position:absolute;
+	height:auto;
+	bottom:0;
+	top:0;
+	left:250px;
+	right:0;
+	margin:30px;
+	border:1px solid #1D2D44;
+	border-radius: 3px;
+	z-index:100;
+	background-color:#EEEEEE;
+	padding:10px;
+}
+
 .online-dot {
 	position: absolute;
 	padding:0;
@@ -513,4 +536,24 @@
 	height: 40px;
 	width: 40px;
 	float:left;
+}
+
+.file-owner{
+	width:100px;
+}
+
+.file-time{
+	width:50px;
+}
+
+.file-path {
+	width:200px;
+}
+
+.file-row{
+	height:50px;
+}
+
+#files-container table {
+	vertical-align: middle;
 }

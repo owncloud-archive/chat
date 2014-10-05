@@ -48,8 +48,21 @@ class SendChatMsg extends ChatAPI {
 		$sender = $this->requestData['user']['backends']['och']['value'];
 		$pushMessageMapper = $this->c['PushMessageMapper'];
 
+		if(!isset($this->requestData['send_to_sender'])){
+			$sendToSender = false;
+		} else {
+			$sendToSender = $this->requestData['send_to_sender'];
+		}
+
 		foreach($users as $receiver){
-			if($receiver->getUser() !== $sender){
+			if($sendToSender === false && $receiver->getUser() !== $sender){
+				$pushMessage = new PushMessage();
+				$pushMessage->setSender($sender);
+				$pushMessage->setReceiver($receiver->getUser());
+				$pushMessage->setReceiverSessionId($receiver->getSessionId());
+				$pushMessage->setCommand($command);
+				$pushMessageMapper->insert($pushMessage);
+			} else if ($sendToSender === true){
 				$pushMessage = new PushMessage();
 				$pushMessage->setSender($sender);
 				$pushMessage->setReceiver($receiver->getUser());

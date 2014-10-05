@@ -24,6 +24,7 @@ class AttachFile extends ChatAPI {
 	public function execute(){
 		$paths = $this->requestData['paths'];
 		$userMapper = $this->c['UserMapper'];
+		$sendChatMsg = $this->c['SendChatMsgCommand'];
 		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
 		foreach ($paths as $path) {
 			$fileId = $this->app->getFileId($path);
@@ -34,6 +35,15 @@ class AttachFile extends ChatAPI {
 				$this->requestData['timestamp'],
 				$this->requestData['conv_id']
 			);
+			$msg = 'Attached '. $path . ' to this conversation';
+			$sendChatMsg->setRequestData(array(
+				"conv_id" => $this->requestData['conv_id'],
+				"chat_msg" => $msg,
+				"timestamp" => $this->requestData['timestamp'],
+				"user" => $this->requestData['user'],
+				"send_to_sender" => true
+			));
+			$sendChatMsg->execute();
 		}
 		foreach ($users as $user) {
 			if ($user !== $this->app->getUserId()) {

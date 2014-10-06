@@ -503,7 +503,7 @@
 }
 
 #files-container{
-	width:440px;
+	width:500px;
 	position:absolute;
 	height:auto;
 	bottom:0;
@@ -539,15 +539,22 @@
 }
 
 .file-owner{
-	width:100px;
+	width:50px;
 }
 
 .file-time{
 	width:50px;
+	text-align:center;
 }
 
 .file-path {
-	width:200px;
+	width:250px;
+}
+.file-path p {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width:250px;
 }
 
 .file-row{
@@ -556,6 +563,7 @@
 .file-preview {
 	padding-right:10px;
 	padding-left:10px;
+	padding-top:5px;
 }
 
 .file-unshare {

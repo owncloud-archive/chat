@@ -1,7 +1,7 @@
 <div ng-if="view.elements.files" class="files-no-hide" id="files-container">
-	<p class="files-title"><?php p($l->t('Files attached to this conversation')); ?></p>
+	<p class="files-title file-element"><?php p($l->t('Files attached to this conversation')); ?></p>
 	<table>
-		<tr>
+		<tr class="file-element">
 			<th class="file-preview">
 				&nbsp;
 			</th>
@@ -19,22 +19,37 @@
 			</th>
 		</tr>
 		<tr
-			class="file-row"
+			class="file-row file-element"
 			ng-repeat="(key,file) in convs[active.conv].files"
 		>
-			<td class="file-preview">
-				<img src='/index.php/core/preview.png?file={{ file.path }}&x=36&y=36&forceIcon=1' >
+			<td class="file-preview file-element">
+				<img class="file-element" src='/index.php/core/preview.png?file={{ file.path }}&x=40&y=40&forceIcon=1' >
 			</td>
 			<td class="file-owner file-element">
-				{{ file.user.displayname }}
+				<div
+					class="file-element"
+					tipsy
+					title="{{ file.user.displayname }}"
+					class="avatar-list-avatar"
+					avatar
+					data-size="40"
+					data-id="{{ file.user.id }}"
+					data-displayname="{{ file.user.displayname }}"
+					data-addressbook-backend="{{ file.user.address_book_backend }}"
+					data-addressbook-id="{{ file.user.address_book_id  }}"
+					online
+				>
+				</div>
 			</td>
-			<td lass="file-time file-element"
+			<td class="file-time file-element"
 				time
 				data-timestamp="{{ file.timestamp }}"
 			>
 			</td>
-			<td class="file-path file-element ">
-				{{ file.path }}
+			<td title="{{ file.path }}" tipsy class="file-path file-element ">
+				<p>
+					{{ file.path }}
+				</p>
 			</td>
 			<th class="file-unshare file-element">
 				<div

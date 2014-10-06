@@ -503,7 +503,7 @@
 }
 
 #files-container{
-	width:450px;
+	width:420px;
 	position:absolute;
 	height:auto;
 	bottom:0;
@@ -553,7 +553,22 @@
 .file-row{
 	height:50px;
 }
+.file-preview {
+	padding-right:10px;
+	padding-left:10px;
+}
 
 #files-container table {
 	vertical-align: middle;
+}
+
+#files-container table th {
+	font-weight: bold;
+}
+
+.files-title {
+	font-weight: bold;
+	text-align: center;
+	color: #1D2D44;
+	font-size: 18px;
 }

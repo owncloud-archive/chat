@@ -142,7 +142,9 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 				"user": activeUser,
 				"timestamp" : Time.now()
 			});
-			console.log('etst');
+		},
+		removeFile : function(convId, path, key){
+			convs[convId].files.splice(key, 1);
 		}
 	};
 }]);

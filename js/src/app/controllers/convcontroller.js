@@ -118,7 +118,7 @@ angular.module('chat').controller(
 						var classList = $event.target.classList;
 						for(var i = 0; i < exceptions.length; i++){
 							if(classList.contains(exceptions[i])){
-								// the clicked item containted the exception class
+								// the clicked item contains the exception class
 								// this mean probably that we clicked on the item in side the viewed div
 								// thus the div don't need to be hided;
 								return;
@@ -171,6 +171,14 @@ angular.module('chat').controller(
 				focusMsgInput : function(){
 					$('#chat-msg-input-field');
 				},
+				unShare : function(convId, path, key){
+					console.log(convId);
+					console.log(path);
+					console.log(key);
+					var backend = $scope.convs[convId].backend.name;
+					backends[backend].handle.removeFile(convId, path);
+					convs.removeFile(convId, path, key);
+				}
 			};
 
 			/**

@@ -503,7 +503,7 @@
 }
 
 #files-container{
-	width:420px;
+	width:440px;
 	position:absolute;
 	height:auto;
 	bottom:0;
@@ -556,6 +556,10 @@
 .file-preview {
 	padding-right:10px;
 	padding-left:10px;
+}
+
+.file-unshare {
+	width:20px;
 }
 
 #files-container table {

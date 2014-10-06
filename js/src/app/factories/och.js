@@ -13,6 +13,18 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 					}
 				}, function(){});
 			},
+			removeFile : function(convId, path){
+				api.util.doRequest({
+					"type": "command::remove_file::request",
+					"data": {
+						"conv_id": convId,
+						"timestamp": Time.now(),
+						"user": activeUser,
+						"session_id": sessionId,
+						"path" : path
+					}
+				}, function(){});
+			},
 			join: function (convId, success) {
 				api.util.doRequest({
 					"type": "command::join::request",
@@ -247,11 +259,10 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 			);
 		},
 		attachFile : function(convId, paths, user){
-			console.log(convId);
-			console.log(paths);
-			console.log(user);
 			api.command.attachFile(convId, paths, user);
-
+		},
+		removeFile : function(convId, path){
+			api.command.removeFile(convId, path);
 		}
 	};
 }]);

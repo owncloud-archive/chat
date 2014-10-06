@@ -26,6 +26,7 @@ use OCA\Chat\OCH\Commands\SendChatMsg;
 use OCA\Chat\OCH\Commands\StartConv;
 use OCA\Chat\OCH\Commands\SyncOnline;
 use OCA\Chat\OCH\Commands\AttachFile;
+use OCA\Chat\OCH\Commands\RemoveFile;
 use OCA\Chat\OCH\Data\GetUsers;
 use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
@@ -158,6 +159,10 @@ class Chat extends App{
 
 		$container->registerService('AttachFileCommand', function ($c) use($app) {
 			return new AttachFile($app);
+		});
+
+		$container->registerService('RemoveFileCommand', function ($c) use($app) {
+			return new RemoveFile($app);
 		});
 
 

@@ -61,4 +61,20 @@ SQL;
 		return $files;
 	}
 
+	public function deleteByConvAndFileID(Attachment $file){
+		$sql = <<<SQL
+				DELETE
+				FROM
+					`*PREFIX*chat_attachments`
+				WHERE
+					`conv_id` = ?
+				AND
+					`file_id`= ?
+SQL;
+
+//		var_export($file);
+//		die();
+		$this->execute($sql, array($file->getConvId(), $file->getFileId()));
+	}
+
 }

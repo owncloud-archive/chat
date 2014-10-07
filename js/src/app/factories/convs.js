@@ -77,60 +77,12 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			// Check if the user is equal to the user of the last msg
 			// First get the last msg
 			var contact = user;
-
-			if(convs[convId].msgs[convs[convId].msgs.length -1] !== undefined){
-				var lastMsg = convs[convId].msgs[convs[convId].msgs.length -1];
-				if(lastMsg.contact.displayname === contact.displayname){
-					// The current user send the last message
-					// so don't readd the border etc
-
-					if(Chat.app.util.isYoutubeUrl(lastMsg.msg) || Chat.app.util.isImageUrl(lastMsg.msg)){
-						if (Chat.app.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.app.util.timeStampToDate(timestamp).minutes
-							&& Chat.app.util.timeStampToDate(lastMsg.timestamp).hours === Chat.app.util.timeStampToDate(timestamp).hours
-							){
-							convs[convId].msgs.push({
-								contact : contact,
-								msg : $.trim(msg),
-								timestamp : timestamp,
-								time : null,
-							});
-						} else {
-							convs[convId].msgs.push({
-								contact : contact,
-								msg : $.trim(msg),
-								timestamp : timestamp,
-								time : Chat.app.util.timeStampToDate(timestamp),
-							});
-						}
-					} else {
-						lastMsg.msg = lastMsg.msg + "\n" + msg;
-						convs[convId].msgs[convs[convId].msgs.length -1] = lastMsg;
-					}
-				} else if (Chat.app.util.timeStampToDate(lastMsg.timestamp).minutes === Chat.app.util.timeStampToDate(timestamp).minutes
-					&& Chat.app.util.timeStampToDate(lastMsg.timestamp).hours === Chat.app.util.timeStampToDate(timestamp).hours
-					) {
-					convs[convId].msgs.push({
-						contact : contact,
-						msg : $.trim(msg),
-						timestamp : timestamp,
-						time : null,
-					});
-				} else {
-					convs[convId].msgs.push({
-						contact : contact,
-						msg : $.trim(msg),
-						timestamp : timestamp,
-						time : Chat.app.util.timeStampToDate(timestamp),
-					});
-				}
-			} else {
-				convs[convId].msgs.push({
-					contact : contact,
-					msg : $.trim(msg),
-					timestamp : timestamp,
-					time : Chat.app.util.timeStampToDate(timestamp),
-				});
-			}
+			convs[convId].msgs.push({
+				contact : contact,
+				msg : $.trim(msg),
+				timestamp : timestamp,
+				time : Chat.app.util.timeStampToDate(timestamp),
+			});
 
 			// Add raw msgs to raw_msgs
 			convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});

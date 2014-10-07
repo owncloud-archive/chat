@@ -101,8 +101,10 @@
 
 .chat-msg-container {
 	width: 100%;
-	border-top: 1px solid #EEEEEE;
 	float: left;
+}
+.chat-msg-container-border {
+	border-top: 1px solid #EEEEEE;
 }
 
 .chat-msg-time {
@@ -236,7 +238,6 @@
 
 .msg-avatar-container {
 	width: 40px;
-	height: 40px;
 	position: relative;
 }
 

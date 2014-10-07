@@ -3,7 +3,7 @@
 		<div id="chat-window-msgs">
 			<div
 				class="chat-msg-container"
-				ng-repeat="(key, msg) in convs[active.conv].msgs"
+				ng-repeat="(key, msg) in convs[active.conv].msgs | orderBy:'timestamp'"
 				ng-class="{'chat-msg-container-border': $parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id}"
 			>
 				<div

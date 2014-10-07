@@ -1,13 +1,23 @@
 <div ng-if="view.elements.chat" >
 	<section ng-click="focusMsgInput()" id="chat-window-body">
 		<div id="chat-window-msgs">
-			<div class="chat-msg-container" ng-repeat="msg in convs[active.conv].msgs">
-				<div ng-if="msg.time" class="chat-msg-time">
+			<div
+				class="chat-msg-container"
+				ng-repeat="(key, msg) in convs[active.conv].msgs"
+				ng-class="{'chat-msg-container-border': $parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id}"
+			>
+				<div
+					ng-if="$parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id"
+					class="chat-msg-time"
+				>
 					{{ msg.time.hours }} : {{ msg.time.minutes }}
 				</div>
 				<div class="chat-msg">
-					<div class="msg-avatar-container" >
+					<div
+						class="msg-avatar-container"
+					>
 						<div
+							ng-if="$parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id"
 							data-size="40"
 							data-id="{{ msg.contact.id }}"
 							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"

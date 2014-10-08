@@ -136,12 +136,17 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 				scope.view.makeActive(convId, $event, exception);
 			}
 		},
-		attachFile : function(convId, path){
+		attachFile : function(convId, path, timestamp, user){
+			if(timestamp === undefined){
+				timestamp = Time.now();
+			}
 			convs[convId].files.push({
 				"path": path,
-				"user": activeUser,
-				"timestamp" : Time.now()
+				"user": user,
+				"timestamp" : timestamp
 			});
+			this.addChatMsg(convId, user, t('chat', '{displayname} attached {path} to the conversation', {displayname: user.displayname, path: path}),
+				timestamp, 'och');
 		},
 		removeFile : function(convId, path, key){
 			convs[convId].files.splice(key, 1);

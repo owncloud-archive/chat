@@ -9,6 +9,7 @@ namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
 use OCA\Chat\OCH\Db\Attachment;
+use \OCA\Chat\OCH\Db\PushMessage;
 
 class AttachFile extends ChatAPI {
 
@@ -24,7 +25,6 @@ class AttachFile extends ChatAPI {
 	public function execute(){
 		$paths = $this->requestData['paths'];
 		$userMapper = $this->c['UserMapper'];
-		$sendChatMsg = $this->c['SendChatMsgCommand'];
 		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
 		foreach ($paths as $path) {
 			$fileId = $this->app->getFileId($path);
@@ -35,15 +35,7 @@ class AttachFile extends ChatAPI {
 				$this->requestData['timestamp'],
 				$this->requestData['conv_id']
 			);
-			$msg = 'Attached '. $path . ' to this conversation';
-			$sendChatMsg->setRequestData(array(
-				"conv_id" => $this->requestData['conv_id'],
-				"chat_msg" => $msg,
-				"timestamp" => $this->requestData['timestamp'],
-				"user" => $this->requestData['user'],
-				"send_to_sender" => true
-			));
-			$sendChatMsg->execute();
+			$this->sendPushMessage($path);
 		}
 		foreach ($users as $user) {
 			if ($user !== $this->app->getUserId()) {
@@ -55,7 +47,31 @@ class AttachFile extends ChatAPI {
 		}
 	}
 
-
+	private function sendPushMessage($path){
+		$userMapper = $this->c['UserMapper'];
+		$users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
+		$pushMessageMapper = $this->c['PushMessageMapper'];
+		$command = json_encode(array(
+			'type' => 'file_attached',
+			'data' => array(
+				'user' => $this->requestData['user'],
+				'conv_id' => $this->requestData['conv_id'],
+				'timestamp' => $this->requestData['timestamp'],
+				'path' => $path
+			)
+		));
+		foreach($users as $receiver) {
+			if($receiver->getUser() !== $this->requestData['user']['backends']['och']['value']) {
+				$pushMessage = new PushMessage();
+				$pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
+				$pushMessage->setReceiver($receiver->getUser());
+				$pushMessage->setReceiverSessionId($receiver->getSessionId());
+				$pushMessage->setCommand($command);
+				$pushMessageMapper->insert($pushMessage);
+			}
+		}
+	}
+	
 	/**
 	 * Inserts the attachment into the DB
 	 * @param $ownerId ownCloud user id

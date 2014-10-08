@@ -31,7 +31,8 @@ class Message extends Entity{
 
 
 	public function __construct(){
-	
+		$this->addType('timestamp', 'integer');
+
 	}
 
 }

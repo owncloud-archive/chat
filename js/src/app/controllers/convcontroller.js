@@ -79,7 +79,7 @@ angular.module('chat').controller(
 					OCdialogs.filepicker('Please choose a file to attach to the conversation', function(paths){
 						for(var key in paths){
 							var path = paths[key];
-							convs.attachFile($scope.active.conv, path);
+							convs.attachFile($scope.active.conv, path, Time.now(), activeUser);
 						}
 						var backend = $scope.convs[$scope.active.conv].backend.name;
 						backends[backend].handle.attachFile($scope.active.conv, paths, activeUser);

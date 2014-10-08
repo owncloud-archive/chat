@@ -145,6 +145,12 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 			},
 			offline: function (data) {
 				contacts.markOffline(data.user.id);
+			},
+			fileAttached : function(data){
+				convs.attachFile(data.conv_id, data.path, data.timestamp, data.user);
+			},
+			fileRemoved : function(data){
+
 			}
 		},
 		util: {
@@ -191,6 +197,10 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 					api.on.online(push_msg.data);
 				} else if (push_msg.type === "offline") {
 					api.on.offline(push_msg.data);
+				} else if (push_msg.type === 'file_attached'){
+					api.on.fileAttached(push_msg.data);
+				} else if (push_msg.type === 'file_removed'){
+					api.on.fileRemoved(push_msg.data);
 				}
 			},
 			getPushMessages: function (success) {

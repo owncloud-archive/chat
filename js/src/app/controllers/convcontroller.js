@@ -274,7 +274,7 @@ angular.module('chat').controller(
 					}
 					for (var key in conv.files){
 						var file = conv.files[key];
-						convs.addChatMsg(conv.id, file.user, t('chat', '{displayname} attached {path} to the conversation', {displayname: file.user.displayname, path: file.path}),
+						convs.addChatMsg(conv.id, file.user, tran('translations-attached', {displayname: file.user.displayname, path: file.path}),
 							file.timestamp, 'och');
 					}
 				}

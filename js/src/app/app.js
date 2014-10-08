@@ -95,3 +95,15 @@ angular.module('chat').config(['enhanceTextFilterProvider', function (enhanceTex
 		}
 	});
 }]);
+function tran(id, vars){
+	var text = 	$('#' + id).text();
+	var _build = function (text, vars) {
+		return text.replace(/{([^{}]*)}/g,
+			function (a, b) {
+				var r = vars[b];
+				return typeof r === 'string' || typeof r === 'number' ? r : a;
+			}
+		);
+	};
+	return _build(text, vars);
+}

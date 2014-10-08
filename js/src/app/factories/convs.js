@@ -145,7 +145,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 				"user": user,
 				"timestamp" : timestamp
 			});
-			this.addChatMsg(convId, user, t('chat', '{displayname} attached {path} to the conversation', {displayname: user.displayname, path: path}),
+			this.addChatMsg(convId, user,  tran('translations-attached', {displayname: user.displayname, path: path}),
 				timestamp, 'och');
 		},
 		removeFile : function(convId, path, key){

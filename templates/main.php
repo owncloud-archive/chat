@@ -37,4 +37,9 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 	</div>
 	<?php print_unescaped($this->inc('part.invite')) ?>
 	<?php print_unescaped($this->inc('part.files')) ?>
+	<div id="translations">
+		<span id="translations-attached">
+			<?php p($l->t('{displayname} attached {path} to this conversation')); ?>
+		</span>
+	</div>
 </div>

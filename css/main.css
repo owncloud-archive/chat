@@ -584,3 +584,7 @@
 	color: #1D2D44;
 	font-size: 18px;
 }
+
+#translations{
+	display:none;
+}

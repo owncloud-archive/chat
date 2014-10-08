@@ -272,6 +272,11 @@ angular.module('chat').controller(
 						var msg = conv.messages[key];
 						convs.addChatMsg(conv.id, contacts.contacts[msg.user], msg.msg, msg.timestamp, backends.och, true);
 					}
+					for (var key in conv.files){
+						var file = conv.files[key];
+						convs.addChatMsg(conv.id, file.user, t('chat', '{displayname} attached {path} to the conversation', {displayname: file.user.displayname, path: file.path}),
+							file.timestamp, 'och');
+					}
 				}
 			}
 

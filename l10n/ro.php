@@ -1,11 +1,11 @@
 <?php
 $TRANSLATIONS = array(
 "Chat" => "Chat",
-"New Conversation" => "Conversație noua",
-"Hide Archived Conversations" => "Ascunde conversațiile arhivate",
-"Show Archived Conversations" => "Arata conversațiile arhivate",
+"Search in conversations" => "Cautare in timpul convesatiei",
 "Add Person" => "Adauga persoana",
 "Chat Message" => "Transmite mesajul",
-"Click on a contact to start a conversation" => "Faceți clic pe un contact pentru a începe o conversație"
+"Search in users" => "Cautare utilizator",
+"There are no other users on this ownCloud." => "Nu exista alti utilizatori in acest ownCloud",
+"In order to chat please create at least one user, it will appear on the left." => "Pentru a comunica, va rugam creati cel putin un utilizator, acesta va fi afisat in stanga"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));";

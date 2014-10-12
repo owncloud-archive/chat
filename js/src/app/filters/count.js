@@ -6,4 +6,4 @@ angular.module('chat').filter('count', function() {
         }
         return count;
     };
-});S
+});

@@ -70,7 +70,6 @@ angular.module('chat').controller(
 					setTimeout(function(){
 						$('#emoji-container').css('bottom', height + 20);
 					},1);
-					console.log(height);
 				},
 				/**
 				 * This will flag the element as visible in the view.elements array

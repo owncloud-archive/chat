@@ -18,6 +18,8 @@
 					data-addressbook-id="{{ contact.address_book_id  }}"
 					avatar
 					class="invite-contact-avatar invite-no-hide"
+                    tipsy
+                    title="{{ contact.displayname }}"
 					>
 				</div>
 				<div class="invite-contact-name invite-no-hide">

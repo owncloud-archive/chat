@@ -26,6 +26,8 @@
 							data-addressbook-id="{{ msg.contact.address_book_id  }}"
 							avatar
 							online
+                            tipsy
+                            title="{{ msg.contact.displayname }}"
 						>
 						</div>
 						<div>

@@ -17,7 +17,7 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', function($filt
 		* This will flag a contact in the $scope.contactsObj as offline
 		* @param {string} userId
 		*/
-		markOffline : function(){
+		markOffline : function(id){
 			this.contacts[id].online = false;
 		}
 	};

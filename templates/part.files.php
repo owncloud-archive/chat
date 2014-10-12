@@ -53,7 +53,7 @@
 			</td>
 			<th class="file-unshare file-element">
 				<div
-					ng-click="view.unShare(active.conv, file.path, key)"
+					ng-click="view.unShare(active.conv, file.path, file.timestamp, file.user, key)"
 					class="files-no-hide icon-delete"
 				>
 					&nbsp;

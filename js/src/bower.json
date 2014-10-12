@@ -1,0 +1,24 @@
+{
+  "name": "ownCloud\\Chat",
+  "version": "0.2.1",
+  "homepage": "https://github.com/owncloud/chat",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-enhance-text": "~0.0.12",
+    "angular-mocks": "~1.2.24",
+    "angular-resource": "~1.2.24",
+    "angular-sanitize": "~1.2.24",
+    "angular": "~1.2.24",
+    "jquery-autosize": "~1.18.12",
+    "rangyinputs-jquery-src": "https://raw.githubusercontent.com/timdown/rangyinputs/master/rangyinputs-jquery-src.js",
+    "moment": "~2.8.3"
+  }
+}

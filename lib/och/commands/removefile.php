@@ -9,6 +9,8 @@ namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
 use OCA\Chat\OCH\Db\Attachment;
+use \OCA\Chat\OCH\Db\PushMessage;
+
 
 class RemoveFile extends ChatAPI {
 
@@ -29,18 +31,7 @@ class RemoveFile extends ChatAPI {
 		$file->setConvId($this->requestData['conv_id']);
 		$file->setFileId($fileId);
 		$attachmentMapper->deleteByConvAndFileID($file);
-
-		$msg = 'Removed '. $this->requestData['path'] . ' from this conversation';
-		$sendChatMsg = $this->c['SendChatMsgCommand'];
-		$sendChatMsg->setRequestData(array(
-			"conv_id" => $this->requestData['conv_id'],
-			"chat_msg" => $msg,
-			"timestamp" => $this->requestData['timestamp'],
-			"user" => $this->requestData['user'],
-			"send_to_sender" => true
-		));
-		$sendChatMsg->execute();
-
+        $this->sendPushMessage($this->requestData['path']);
 		$userMapper = $this->c['UserMapper'];
 		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
 		foreach ($users as $user) {
@@ -61,5 +52,31 @@ class RemoveFile extends ChatAPI {
 
 		}
 	}
+
+    private function sendPushMessage($path){
+        $userMapper = $this->c['UserMapper'];
+        $users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
+        $pushMessageMapper = $this->c['PushMessageMapper'];
+        $command = json_encode(array(
+            'type' => 'file_removed',
+            'data' => array(
+                'user' => $this->requestData['user'],
+                'conv_id' => $this->requestData['conv_id'],
+                'timestamp' => $this->requestData['timestamp'],
+                'path' => $path
+            )
+        ));
+        foreach($users as $receiver) {
+            if($receiver->getUser() !== $this->requestData['user']['backends']['och']['value']) {
+                $pushMessage = new PushMessage();
+                $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
+                $pushMessage->setReceiver($receiver->getUser());
+                $pushMessage->setReceiverSessionId($receiver->getSessionId());
+                $pushMessage->setCommand($command);
+                $pushMessageMapper->insert($pushMessage);
+            }
+        }
+    }
+
 
 }

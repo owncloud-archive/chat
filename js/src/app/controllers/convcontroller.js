@@ -171,13 +171,11 @@ angular.module('chat').controller(
 				focusMsgInput : function(){
 					$('#chat-msg-input-field');
 				},
-				unShare : function(convId, path, key){
-					console.log(convId);
-					console.log(path);
-					console.log(key);
+
+				unShare : function(convId, path, timestamp, user, key){
 					var backend = $scope.convs[convId].backend.name;
 					backends[backend].handle.removeFile(convId, path);
-					convs.removeFile(convId, path, key);
+					convs.removeFile(convId, path, timestamp, user, key);
 				}
 			};
 

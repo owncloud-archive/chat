@@ -150,7 +150,7 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				convs.attachFile(data.conv_id, data.path, data.timestamp, data.user);
 			},
 			fileRemoved : function(data){
-
+                convs.removeFile(data.conv_id, data.path, data.timestamp, data.user);
 			}
 		},
 		util: {

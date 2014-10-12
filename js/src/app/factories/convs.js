@@ -148,8 +148,10 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			this.addChatMsg(convId, user,  tran('translations-attached', {displayname: user.displayname, path: path}),
 				timestamp, 'och');
 		},
-		removeFile : function(convId, path, key){
+		removeFile : function(convId, path, timestamp, user, key){
 			convs[convId].files.splice(key, 1);
+            this.addChatMsg(convId, user,  tran('translations-removed', {displayname: user.displayname, path: path}),
+                timestamp, 'och');
 		}
 	};
 }]);

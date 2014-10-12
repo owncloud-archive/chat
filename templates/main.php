@@ -11,6 +11,7 @@
 \OCP\Util::addScript('chat', 'vendor/jquery-autosize');
 \OCP\Util::addScript('chat', 'vendor/cache');
 \OCP\Util::addScript('chat', 'vendor/time');
+\OCP\Util::addScript('chat', 'vendor/moment');
 
 \OCP\Util::addScript('chat', 'main.min');
 
@@ -40,6 +41,9 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 	<div id="translations">
 		<span id="translations-attached">
 			<?php p($l->t('{displayname} attached {path} to this conversation')); ?>
+		</span>
+        <span id="translations-removed">
+			<?php p($l->t('{displayname} removed {path} from this conversation')); ?>
 		</span>
 	</div>
 </div>

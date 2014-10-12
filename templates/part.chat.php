@@ -49,7 +49,7 @@
 			<img
 				ng-click="view.showEmojiPopover()"
 				src=" <?php echo \OCP\Util::imagePath('chat', 'emoji/smile.png'); ?>"
-				class="chat-msg-emoji-button"
+				class="chat-msg-emoji-button emoji-no-hide"
 				>
 			<div class="chat-msg-send-button" >
 				<button  type="submit"><div class="icon-play">&nbsp;</div></button>
@@ -59,15 +59,16 @@
 			</div>
 		</form>
 	</footer>
-	<div ng-if="view.elements.emojiContainer" id="emoji-container">
+	<div ng-if="view.elements.emojiContainer" id="emoji-container" class="emoji-no-hide">
 		<div
 			id="emoji-container-search"
+            class="emoji-no-hide"
 		>
-			<input placeholder="Search" id="emoji-search" type="text" ng-model="emojiSearch">
+			<input placeholder="Search" id="emoji-search" type="text" class="emoji-no-hide" ng-model="emojiSearch">
 		</div>
-		<ul id="emoji-list">
-			<li ng-click="addEmoji(emoji.name)" ng-repeat="emoji in emojis | filter:emojiSearch">
-				<img title="{{ emoji.name }}" src="{{ emoji.url }}" class="ec-emoji">
+		<ul id="emoji-list" class="emoji-no-hide">
+			<li ng-click="addEmoji(emoji.name)" ng-repeat="emoji in emojis | filter:emojiSearch" class="emoji-no-hide">
+				<img title="{{ emoji.name }}" src="{{ emoji.url }}" class="ec-emoji emoji-no-hide"">
 			</li>
 		</ul>
 	</div>

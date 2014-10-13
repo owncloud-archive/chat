@@ -53,6 +53,7 @@
 			</td>
 			<th class="file-unshare file-element">
 				<div
+                    ng-if="file.user.id === $parent.$parent.active.user.id"
 					ng-click="view.unShare(active.conv, file.path, file.timestamp, file.user, key)"
 					class="files-no-hide icon-delete"
 				>

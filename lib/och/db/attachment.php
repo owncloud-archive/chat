@@ -31,6 +31,6 @@ class Attachment extends Entity {
 	public $convId;
 
 	public function __construct(){
-
+        $this->addType('timestamp', 'integer');
 	}
 }

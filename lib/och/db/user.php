@@ -26,6 +26,7 @@ class User extends Entity {
 	public $joined;
 
 	public function __construct(){
+        $this->addType('joined', 'integer');
 
 	}
 }

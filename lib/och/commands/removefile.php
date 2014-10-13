@@ -8,9 +8,10 @@
 namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
-use OCA\Chat\OCH\Db\Attachment;
+use \OCA\Chat\OCH\Db\Attachment;
 use \OCA\Chat\OCH\Db\PushMessage;
-
+use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use \OCA\Chat\Controller\OCH\ApiController;
 
 class RemoveFile extends ChatAPI {
 
@@ -21,7 +22,12 @@ class RemoveFile extends ChatAPI {
 	*/
 	public function setRequestData(array $requestData){
 		$this->requestData = $requestData;
-	}
+        $attachmentMapper = $this->c['AttachmentMapper'];
+        $attachment = $attachmentMapper->findByPathAndConvId($this->requestData['path'], $this->requestData['conv_id']);
+        if ($attachment->getOwner() !== $this->app->getUserId()){
+            throw new RequestDataInvalid(ApiController::NOT_OWNER_OF_FILE);
+        }
+    }
 
 	public function execute(){
 

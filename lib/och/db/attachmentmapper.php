@@ -72,9 +72,22 @@ SQL;
 					`file_id`= ?
 SQL;
 
-//		var_export($file);
-//		die();
 		$this->execute($sql, array($file->getConvId(), $file->getFileId()));
 	}
+
+    public function findByPathAndConvId($path, $convId){
+        $sql = <<<SQL
+				SELECT
+                    *
+				FROM
+                    `*PREFIX*chat_attachments`
+				WHERE
+					`conv_id` = ?
+				AND
+					`path`= ?
+SQL;
+
+        return $this->findEntity($sql, array($convId, $path));
+    }
 
 }

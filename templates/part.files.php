@@ -46,8 +46,8 @@
 				data-timestamp="{{ file.timestamp }}"
 			>
 			</td>
-			<td title="{{ file.path }}" tipsy class="file-path file-element ">
-				<p ng-click="$parent.$parent.view.downloadFile(file.path)">
+			<td title="<?php p($l->t('Download ')); ?>{{ file.path }}" tipsy class="file-path file-element ">
+				<p class="file-element" ng-click="$parent.$parent.view.downloadFile(file.path)">
 					{{ file.path }}
 				</p>
 			</td>

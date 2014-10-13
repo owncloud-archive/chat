@@ -47,7 +47,7 @@
 			>
 			</td>
 			<td title="{{ file.path }}" tipsy class="file-path file-element ">
-				<p>
+				<p ng-click="$parent.$parent.view.downloadFile(file.path)">
 					{{ file.path }}
 				</p>
 			</td>

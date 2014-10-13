@@ -176,7 +176,12 @@ angular.module('chat').controller(
 					var backend = $scope.convs[convId].backend.name;
 					backends[backend].handle.removeFile(convId, path);
 					convs.removeFile(convId, path, timestamp, user, key);
-				}
+				},
+                downloadFile : function(path){
+                    var dir = '/';
+                    var files = path;
+                    OC.redirect(OC.generateUrl('/apps/files/ajax/download.php?dir={dir}&files={files}', {dir: dir, files:files}));
+                }
 			};
 
 			/**

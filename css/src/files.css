@@ -1,0 +1,62 @@
+#files-container{
+	width:500px;
+	position:absolute;
+	height:auto;
+	bottom:0;
+	top:0;
+	left:250px;
+	right:0;
+	margin:30px;
+	border:1px solid #1D2D44;
+	border-radius: 3px;
+	z-index:100;
+	background-color:#EEEEEE;
+	padding:10px;
+}
+
+.file-owner{
+	width:50px;
+}
+
+.file-time{
+	width:50px;
+	text-align:center;
+}
+
+.file-path {
+	width:250px;
+}
+.file-path p {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width:250px;
+}
+
+.file-row{
+	height:50px;
+}
+.file-preview {
+	padding-right:10px;
+	padding-left:10px;
+	padding-top:5px;
+}
+
+.file-unshare {
+	width:20px;
+}
+
+#files-container table {
+	vertical-align: middle;
+}
+
+#files-container table th {
+	font-weight: bold;
+}
+
+.files-title {
+	font-weight: bold;
+	text-align: center;
+	color: #1D2D44;
+	font-size: 18px;
+}

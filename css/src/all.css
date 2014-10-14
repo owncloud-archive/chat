@@ -1,0 +1,49 @@
+/*
+ * Copyright (c) 2014, Tobia De Koninck hey--at--ledfan.be
+ * This file is licensed under the AGPL version 3 or later.
+ * See the COPYING file.
+ */
+.contact {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 200px;
+	height: 200px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.right {
+	float: right;
+}
+
+.left {
+	float: left;
+}
+
+.icon-20 {
+	width: 20px;
+}
+
+.loading {
+	content: "" !important;
+	height: 100%;
+}
+
+#app-content {
+	position: relative;
+}
+
+#app-settings-content {
+	padding: 0px !important;
+}
+
+.icon-32 {
+	width: 32px
+}
+
+.bold {
+	font-weight: bold;
+}
+
+

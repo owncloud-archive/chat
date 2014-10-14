@@ -1,0 +1,169 @@
+#chat-window-body {
+	position: absolute;
+	top: 0;
+	bottom: 80px;
+	width: 100%;
+	background-color: white;
+}
+
+#chat-window-footer {
+	position: absolute;
+	height: 65px;
+	bottom: 0;
+	width: 100%;
+	background-color: #EEE;
+	border-top: #D2D2D2 solid 1px;
+	box-sizing: border-box;
+	margin:0;
+	padding:0;
+}
+
+#chat-window-msgs {
+	min-height: 55px;
+	overflow-y: auto;
+	max-height: 100%;
+	width: 100%;
+	bottom: 0;
+	position: absolute;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+.chat-msg-container {
+	width: 100%;
+	float: left;
+}
+.chat-msg-container-border {
+	border-top: 1px solid #EEEEEE;
+}
+
+.chat-msg-time {
+	color: #adadad;
+	float: right;
+	padding-right: 20px;
+}
+
+.chat-msg {
+	float: left;
+}
+
+.chat-msg div,.chat-msg p {
+	float: left;
+}
+
+.chat-msg p {
+	margin-left: 10px;
+	word-wrap: break-word;
+	white-space: pre-line;
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.chat-msg a {
+	border-bottom:1px dotted;
+	clear:left;
+}
+
+.msg-avatar-container img {
+	width: 40px;
+	height: 40px;
+}
+
+.chat-msg-msg video, .chat-msg-msg iframe, .chat-msg-msg > a > img {
+	display:block;
+}
+
+.chat-msg-msg > img {
+	height:20px;
+	width:20px;
+	vertical-align: middle;
+}
+
+#chat-msg-input {
+	margin-right: 65px;
+}
+
+#chat-msg-input-field {
+	width: 100%;
+	margin:0;
+	resize: none;
+}
+
+.chat-msg-send-button {
+	float:right;
+}
+.chat-msg-send-button button {
+	height:63px;
+	width:64px;
+	margin:0;
+}
+
+.chat-msg-emoji-button {
+	position:absolute;
+	width:32px;
+	height:32px;
+	right: 70px;
+	top: 5px;
+}
+
+.chat-msg-file-button {
+	position:absolute;
+	width:32px;
+	height:32px;
+	right: 110px;
+	top: 5px;
+}
+
+#chat-msg-form {
+	width: 100%;
+	position: relative;
+}
+
+.conv-new-msg {
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+	background-color: #008000;
+	display: block;
+	float: right;
+	margin: 0;
+	padding: 0;
+	margin-top: 4px;
+	display: none;
+}
+
+#emoji-container {
+	position: absolute;
+	height: 210px;
+	width: 300px;
+	right: 20px;
+	background-color: #eeeeee;
+	border-radius: 3px;
+	border:1px solid #1D2D44;
+}
+
+#emoji-container-search {
+	padding:10px;
+	background-color:#304D76;
+	height:60px;
+	width: 300px;
+	width: 300px;
+}
+
+#emoji-list {
+	padding: 10px;
+	overflow:auto;
+	position: absolute;
+	top: 60px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+}
+#emoji-list li {
+	display: inline-block;
+}
+#emoji-search {
+	width:265px;
+}

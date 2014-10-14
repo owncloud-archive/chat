@@ -1,0 +1,63 @@
+#app-navigation ul li {
+	padding:10px;
+}
+
+#app-navigation > ul ul {
+	display: block;
+}
+
+#app-navigation > ul {
+	float: left;
+	width: 100%;
+	position: absolute;
+	top: 60px;
+	bottom: 0;
+	height: auto !important;
+}
+
+#app-navigation {
+	float: left;
+	position:relative;
+}
+
+
+.filter-button {
+	margin: 1px 0px 5px;
+	display: inline-block;
+	float: left;
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px;
+	height: 30px !important;
+}
+
+.filter-field {
+	float:left;
+}
+
+#filter-container {
+	height:60px;
+	padding:10px;
+	margin: 0;
+	background-color:#F5F5F5;
+}
+#filter-container input {
+	margin:0;
+	width:215px;
+}
+
+.conv-list-active {
+	background-color: #dadada !important;
+}
+
+.conv-list-item {
+	height: 60px;
+}
+
+.conv-list-item-buttons{
+	float:right;
+	width:20px;
+}
+
+.heightInvite {
+	height: 100px;
+}

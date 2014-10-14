@@ -30,13 +30,20 @@ module.exports = function(grunt) {
 
 				}
 			}
+		},
+		cssmin: {
+			combine: {
+				files: {
+					'css/main.min.css': ['css/src/*.css']
+				}
+			}
 		}
 	});
 
 	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	// Default task(s).
-	grunt.registerTask('default', ['uglify']);
+	grunt.registerTask('default', ['uglify', 'cssmin']);
 
 };

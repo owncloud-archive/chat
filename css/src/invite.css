@@ -1,0 +1,65 @@
+
+#invite-container {
+	width:250px;
+	position:absolute;
+	height:auto;
+	bottom:0;
+	top:0;
+	left:250px;
+	right:0;
+	margin:30px;
+	border:1px solid #1D2D44;
+	border-radius: 3px;
+	z-index:100;
+	background-color:#EEEEEE;
+}
+
+#invite-container ul {
+	overflow:auto;
+	position: absolute;
+	top: 50px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.invite-contact {
+	height:30px;
+	padding:10px;
+}
+
+.invite-contact-search input {
+	width: 230px;
+	position:fixed;
+}
+
+.invite-contact-search {
+	padding:10px;
+	position:fixed;
+	width:250px;
+	height:60px;
+
+}
+
+.invite-contact-avatar {
+	float:left;
+}
+
+.invite-contact-name {
+	float:left;
+	margin-left:10px;
+}
+
+.invite-container-mobile {
+	width:210px !important;
+	margin:10px !important;
+	left:0 !important;
+}
+
+.invite-container-mobile .invite-contact-search {
+	width:210px !important;
+}
+
+.invite-container-mobile .invite-contact-search input {
+	width:190px !important;
+}

@@ -1,6 +1,30 @@
 angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessionId', function(activeUser, convs, contacts, sessionId) {
 	var api = {
 		command: {
+			attachFile : function(convId, paths, user){
+				api.util.doRequest({
+					"type": "command::attach_file::request",
+					"data": {
+						"conv_id": convId,
+						"timestamp": Time.now(),
+						"user": user,
+						"session_id": sessionId,
+						"paths" : paths
+					}
+				}, function(){});
+			},
+			removeFile : function(convId, path){
+				api.util.doRequest({
+					"type": "command::remove_file::request",
+					"data": {
+						"conv_id": convId,
+						"timestamp": Time.now(),
+						"user": activeUser,
+						"session_id": sessionId,
+						"path" : path
+					}
+				}, function(){});
+			},
 			join: function (convId, success) {
 				api.util.doRequest({
 					"type": "command::join::request",
@@ -121,6 +145,12 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 			},
 			offline: function (data) {
 				contacts.markOffline(data.user.id);
+			},
+			fileAttached : function(data){
+				convs.attachFile(data.conv_id, data.path, data.timestamp, data.user);
+			},
+			fileRemoved : function(data){
+                convs.removeFile(data.conv_id, data.path, data.timestamp, data.user);
 			}
 		},
 		util: {
@@ -167,6 +197,10 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 					api.on.online(push_msg.data);
 				} else if (push_msg.type === "offline") {
 					api.on.offline(push_msg.data);
+				} else if (push_msg.type === 'file_attached'){
+					api.on.fileAttached(push_msg.data);
+				} else if (push_msg.type === 'file_removed'){
+					api.on.fileRemoved(push_msg.data);
 				}
 			},
 			getPushMessages: function (success) {
@@ -233,6 +267,12 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				userToInvite,
 				success
 			);
+		},
+		attachFile : function(convId, paths, user){
+			api.command.attachFile(convId, paths, user);
+		},
+		removeFile : function(convId, path){
+			api.command.removeFile(convId, path);
 		}
 	};
 }]);

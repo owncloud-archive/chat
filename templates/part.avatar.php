@@ -76,7 +76,7 @@
 			{{ user.displayname }}
 		</li>
 		<li
-			class="avatar-list-expanded-item invite-button"
+			class="avatar-list-expanded-button invite-button"
 			ng-click="$parent.view.inviteClick();"
 			>
 			<div
@@ -84,6 +84,17 @@
 				&nbsp;
 			</div>
 			<?php p($l->t('Add Person')); ?>
+		</li>
+		<li
+			class="avatar-list-expanded-button  files-button"
+			ng-click="$parent.view.showFiles()"
+		>
+			<div
+				class="icon-file icon-20 avatar-list-avatar"
+			>
+				&nbsp;
+			</div>
+			<?php p($l->t('View Attached files')); ?>
 		</li>
 	</ul>
 </div>

@@ -24,6 +24,7 @@ class UserOnline extends Entity {
 	public $lastOnline;
 	
 	public function __construct(){
+        $this->addType('lastOnline', 'integer');
 
 	}
 }

@@ -34,6 +34,7 @@ class ApiController extends Controller {
 	const USER_TO_INVITE_NOT_OC_USER = 12;
 	const NO_CHAT_MSG = 13;
 	const NO_USER = 14;
+    const NOT_OWNER_OF_FILE =15;
 
 	public function __construct($appName, IRequest $request,  Chat $app){
 		parent::__construct($appName, $request);
@@ -60,7 +61,7 @@ class ApiController extends Controller {
 						try{
 							switch($requestType){
 								case "command":
-									$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv');
+									$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv', 'attach_file', 'remove_file');
 									if(in_array($action, $possibleCommands)){
 										$commandClass = $this->c[$this->convertClassName($action) . 'Command'];
 										$commandClass->setRequestData($data);

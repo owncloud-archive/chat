@@ -15,6 +15,7 @@ use OCA\Chat\OCH\Db\MessageMapper;
 use OCA\Chat\OCH\Db\PushMessageMapper;
 use OCA\Chat\OCH\Db\UserMapper;
 use OCA\Chat\OCH\Db\UserOnlineMapper;
+use OCA\Chat\OCH\Db\AttachmentMapper;
 use OCA\Chat\Db\BackendMapper;
 use OCA\Chat\OCH\Commands\Greet;
 use OCA\Chat\OCH\Commands\Invite;
@@ -24,6 +25,8 @@ use OCA\Chat\OCH\Commands\Online;
 use OCA\Chat\OCH\Commands\SendChatMsg;
 use OCA\Chat\OCH\Commands\StartConv;
 use OCA\Chat\OCH\Commands\SyncOnline;
+use OCA\Chat\OCH\Commands\AttachFile;
+use OCA\Chat\OCH\Commands\RemoveFile;
 use OCA\Chat\OCH\Data\GetUsers;
 use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
@@ -111,6 +114,14 @@ class Chat extends App{
 			return new BackendMapper($c->query('ServerContainer')->getDb());
 		});
 
+		$container->registerService('AttachmentMapper', function ($c) use ($app) {
+			return new AttachmentMapper(
+				$c->query('ServerContainer')->getDb(),
+				$app
+			);
+		});
+
+
 		/**
 		 * Command API Requests
 		 */
@@ -145,6 +156,15 @@ class Chat extends App{
 		$container->registerService('SyncOnlineCommand', function ($c) use($app) {
 			return new SyncOnline($app);
 		});
+
+		$container->registerService('AttachFileCommand', function ($c) use($app) {
+			return new AttachFile($app);
+		});
+
+		$container->registerService('RemoveFileCommand', function ($c) use($app) {
+			return new RemoveFile($app);
+		});
+
 
 		/**
 		 * Push API Requests
@@ -417,11 +437,15 @@ class Chat extends App{
 			));
 			$messages = $getMessages->execute();
 			$messages = $messages['messages'];
+
+			$attachmentMapper = $this->c['AttachmentMapper'];
+			$files = $attachmentMapper->findRawByConv($conv->getConversationId());
 			$r['och'][$conv->getConversationId()] = array(
 				"id" => $conv->getConversationId(),
 				"users"=> $users,
 				"backend" => "och",
-				"messages" => $messages
+				"messages" => $messages,
+				"files" => $files
 			);
 			if(count($users) === 2){
 				foreach($users as $user){
@@ -466,6 +490,23 @@ class Chat extends App{
 		}
 
 		return $r;
+	}
+
+	/**
+	 * @param $path path to file
+	 * @return int id of the file
+	 */
+	public function getFileId($path){
+		$userFolder = $this->c->getServer()->getUserFolder(\OCP\User::getUser());
+		$file = $userFolder->get($path);
+		return $file->getId();
+	}
+
+	/**
+	 * @return string current ownCloud user id
+	 */
+	public function getUserId(){
+		return $this->c['UserSession']->getUser()->getUID();
 	}
 
 }

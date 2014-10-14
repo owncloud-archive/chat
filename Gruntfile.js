@@ -25,7 +25,9 @@ module.exports = function(grunt) {
 					'js/vendor/applycontactavatar.js' : ['js/src/vendor/applycontactavatar.js'],
 					'js/vendor/cache.js'  : [ 'js/src/vendor/cache.js' ],
 					'js/vendor/time.js' : [ 'js/src/vendor/time.js'	],
-					'js/vendor/rangyinputs.js' : [ 'js/src/bower_components/rangyinputs-jquery-src/index.js']
+					'js/vendor/rangyinputs.js' : [ 'js/src/bower_components/rangyinputs-jquery-src/index.js'],
+					'js/vendor/moment.js' : [ 'js/src/bower_components/moment/moment.js'],
+
 				}
 			}
 		}

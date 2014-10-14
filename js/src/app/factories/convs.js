@@ -6,7 +6,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 		get : function(id) {
 			return convs[id];
 		},
-		addConv : function(id, users, backend, msgs){
+		addConv : function(id, users, backend, msgs, files){
 			//generate conv name + higher order of contacts
 			var name  = '';
 			for(var key in users){
@@ -29,7 +29,8 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 					new_msg : false,
 					raw_msgs : [],
 					order : order,
-					name : name
+					name : name,
+					files : files
 				};
 				this.makeActive(id);
 				if(msgs !== undefined){
@@ -134,6 +135,23 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			} else {
 				scope.view.makeActive(convId, $event, exception);
 			}
+		},
+		attachFile : function(convId, path, timestamp, user){
+			if(timestamp === undefined){
+				timestamp = Time.now();
+			}
+			convs[convId].files.push({
+				"path": path,
+				"user": user,
+				"timestamp" : timestamp
+			});
+			this.addChatMsg(convId, user,  tran('translations-attached', {displayname: user.displayname, path: path}),
+				timestamp, 'och');
+		},
+		removeFile : function(convId, path, timestamp, user, key){
+			convs[convId].files.splice(key, 1);
+            this.addChatMsg(convId, user,  tran('translations-removed', {displayname: user.displayname, path: path}),
+                timestamp, 'och');
 		}
 	};
 }]);

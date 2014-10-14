@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 'title', 'activeConv', function(activeUser, contacts, $filter, title, activeConv) {
+angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 'title', 'activeConv', 'scope', function(activeUser, contacts, $filter, title, activeConv, $scope) {
 	var convs = {};
 
 	return {
@@ -127,13 +127,12 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			}
 		},
 		makeActive : function(convId, $event, exception) {
-			var scope = $('#app').scope();
-			if (!scope.$$phase) {
-				scope.$apply(function () {
-					scope.view.makeActive(convId, $event, exception);
+			if (!$scope.$$phase) {
+				$scope.$apply(function () {
+					$scope.view.makeActive(convId, $event, exception);
 				});
 			} else {
-				scope.view.makeActive(convId, $event, exception);
+				$scope.view.makeActive(convId, $event, exception);
 			}
 		},
 		attachFile : function(convId, path, timestamp, user){

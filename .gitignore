@@ -1,5 +1,5 @@
 coverage.clover
 phpunit
 phpunit.phar
-build
+/build
 node_modules

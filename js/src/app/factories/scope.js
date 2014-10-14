@@ -3,9 +3,6 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-$(window).unload(function(){
-	Chat.scope.$apply(function(){
-		Chat.scope.quit();
-	});
-});
-
+angular.module('chat').factory('scope', [function(){
+	return $('#app').scope();
+}]);

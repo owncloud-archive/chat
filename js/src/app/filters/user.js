@@ -3,7 +3,7 @@ angular.module('chat').filter('userFilter', function() {
 		var output = [];
 		for (var key in users){
 			var user = users[key];
-			if(user.id !== Chat.scope.active.user.id){
+			if(user.id !== OC.currentUser){
 				output.push(user);
 			}
 		}

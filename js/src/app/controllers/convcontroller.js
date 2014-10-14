@@ -183,8 +183,6 @@ angular.module('chat').controller(
                     var files = path;
                     OC.redirect(OC.generateUrl('/apps/files/ajax/download.php?dir={dir}&files={files}', {dir: dir, files:files}));
                 }
-					$('#chat-msg-input-field').focus();
-				}
 			};
 
 			/**

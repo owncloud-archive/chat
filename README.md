@@ -4,6 +4,7 @@ Chat
 [![Build Status](https://travis-ci.org/owncloud/chat.svg?branch=master)](https://travis-ci.org/owncloud/chat)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/owncloud/chat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/owncloud/chat/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/owncloud/chat/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/owncloud/chat/?branch=master)
+[![devDependency Status](https://david-dm.org/owncloud/chat/dev-status.svg)](https://david-dm.org/owncloud/chat#info=devDependencies)
 
 Have chats in your ownCloud!
 

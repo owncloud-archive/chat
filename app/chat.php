@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2014, Tobia De Koninck hey--at--ledfan.be
+ * Copyright (c) 2014, Tobia De Ko1inck hey--at--ledfan.be
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
@@ -32,6 +32,7 @@ use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\Db\Backend;
+use OCA\Chat\OCH\OCH;
 
 /**
  * Class Chat
@@ -203,27 +204,19 @@ class Chat extends App{
 			return $c->getServer()->getUserSession();
 		});
 
+		$container->registerService('BackendManager', function($c){
+			return $c->getServer()->getChatBackendManager();
+		});
+
+		$container->registerService('OCH', function($c) use ($app){
+			return new OCH($app);
+		});
+
 	}
 
-	/**
-	 * Register a backend, so it's automatically added to the DB.
-	 * Registering must be placed in the appinfo/app.php file.
-	 * @param string $displayName
-	 * @param string $name
-	 * @param string $protocol
-	 * @param bool $enabled
-	 */
-	public function registerBackend($displayName, $name, $protocol, $enabled){
-		$backendMapper = $this->c['BackendMapper'];
-		if(!$backendMapper->exists($name)){
-//			 Only execute when there are no backends registered i.e. on first run
-			$backend = new Backend();
-			$backend->setDisplayname($displayName);
-			$backend->setName($name);
-			$backend->setProtocol($protocol);
-			$backend->setEnabled($enabled);
-			$backendMapper->insert($backend);
-		}
+	public function registerBackend(\OCP\Chat\IBackend $chat){
+		$backendManager =$this->c['BackendManager'];
+		$backendManager::registerBackend($chat);
 	}
 
 	/**
@@ -291,18 +284,11 @@ class Chat extends App{
 
 
 	/**
-	 * @return array backend name as key and \OCA\Chat\Db\Backend as value
+	 * @return array
 	 */
 	public function getBackends(){
-		$backendMapper = $this->c['BackendMapper'];
-		$backends = $backendMapper->getAllEnabled();
-
-		$result = array();
-		foreach($backends as $backend){
-			$result[$backend->getName()] = $backend;
-		}
-
-		return $result;
+		$backendManager = $this->c['BackendManager'];
+		return $backendManager->getEnabledBackends();
 	}
 
 	/**
@@ -331,6 +317,7 @@ class Chat extends App{
 	 */
 	private function contactBackendToBackend(array $emails=array(), array $impps=array()){
 		$backends = array();
+		$backendManager = $this->c['BackendManager'];
 
 		if(is_array($emails)){
 			$backend = array();
@@ -346,13 +333,13 @@ class Chat extends App{
 			foreach($impps as $impp){
 				$backend = array();
 				$exploded = explode(":", $impp);
-				$info = $this->getBackendInfo($exploded[0]);
+				$info = $backendManager->getBackendByProtocol($exploded[0]);
 				$backend['id'] = null;
-				$backend['displayname'] = $info['displayname'];
+				$backend['displayname'] = $info->getDisplayName();
 				$backend['protocol'] = $exploded[0];
-				$backend['namespace'] = $info['namespace'];
+				$backend['namespace'] = $info->getId();
 				$backend['value'] = $exploded[1];
-				$backends[$info['namespace']] = $backend;
+				$backends[$info->getId()] = $backend;
 			}
 		}
 
@@ -360,17 +347,13 @@ class Chat extends App{
 	}
 
 	/**
-	 * Get Metadata from a backend
 	 * @param string $protocol
-	 * @return array
+	 * @return \OCP\Chat\IBackend
 	 */
-	private function getBackendInfo($protocol){
-		$backendMapper = $this->c['BackendMapper'];
-		$backend = $backendMapper->findByProtocol($protocol);
-		$info = array();
-		$info['displayname'] = $backend->getDisplayname();
-		$info['namespace'] = $backend->getName(); // TODO change name to namespace
-		return $info;
+	private function getBackend($protocol){
+		$backendManager = $this->c['BackendManager'];
+		$backendManager->getBackendByProtocol($protocol);
+
 	}
 
 	/**
@@ -419,77 +402,12 @@ class Chat extends App{
 	 * @todo porting
 	 */
 	public function getInitConvs(){
-		$r = array();
-
-		$userMapper = $this->c['UserMapper'];
-		$convs = $userMapper->findByUser($this->c['UserSession']->getUser()->getUID());
-
-
-		$usersAllreadyInConv = array();
-		$join = $this->c['JoinCommand'];
-		foreach($convs as $conv){
-			$users = $userMapper->findUsersInConv($conv->getConversationId());
-			// Find the correct contact for the correct user
-			$getMessages = $this->c['MessagesData'];
-			$getMessages->setRequestData(array(
-				"conv_id" => $conv->getConversationId(),
-				'user' => $this->getCurrentUser()
-			));
-			$messages = $getMessages->execute();
-			$messages = $messages['messages'];
-
-			$attachmentMapper = $this->c['AttachmentMapper'];
-			$files = $attachmentMapper->findRawByConv($conv->getConversationId());
-			$r['och'][$conv->getConversationId()] = array(
-				"id" => $conv->getConversationId(),
-				"users"=> $users,
-				"backend" => "och",
-				"messages" => $messages,
-				"files" => $files
-			);
-			if(count($users) === 2){
-				foreach($users as $user){
-					if($user !== \OCP\User::getUser()){
-						$usersAllreadyInConv[] = $user;
-					}
-				}
-			}
-
-			$join->setRequestData(array(
-				"conv_id" => $conv->getConversationId(),
-				"user" => $this->getCurrentUser(),
-			));
-			$join->execute();
+		$backends = $this->getBackends();
+		$result = array();
+		foreach($backends as $backend){
+			$result[$backend->getId()] = $backend->getInitConvs();
 		}
-
-		$allUsers = \OCP\User::getUsers();
-		$users = array_diff($allUsers, $usersAllreadyInConv);
-		// $users hold the users whe doens't have a conv with
-
-		$startConv = $this->c['StartConvCommand'];
-		foreach($users as $user){
-			if($user !== \OCP\User::getUser()){
-				$startConv->setRequestData(array(
-					"user" => $this->getCurrentUser(),
-					"user_to_invite" => array(
-						$this->getUserasContact($user),
-					)
-				));
-				$info =  $startConv->execute();
-				$r['och'][$info['conv_id']] = array(
-					"id" => $info['conv_id'],
-					"users"=> array(
-						\OCP\User::getUser(),
-						$user
-					),
-					"backend" => "och",
-					"messages" => array()
-				);
-
-			}
-		}
-
-		return $r;
+		return $result;
 	}
 
 	/**

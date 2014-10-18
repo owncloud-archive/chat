@@ -126,7 +126,20 @@ class OCH implements IBackend {
 	}
 
 	public function getConfig(){
-		return array();
+		return array(
+			"file_attachments" => true,
+		);
 	}
 
+	public function toArray(){
+		$result = array();
+		$result['name'] = $this->getId();
+		$result['id'] = $this->getId();
+		$result['enabled'] = $this->isEnabled();
+		$result['displayname'] = $this->getDisplayName();
+		$result['protocols'] = $this->getProtocols();
+		$result['config'] = $this->getConfig();
+		return $result;
+	}
+	
 }

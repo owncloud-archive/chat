@@ -133,7 +133,6 @@ class OCH implements IBackend {
 
 	public function toArray(){
 		$result = array();
-		$result['name'] = $this->getId();
 		$result['id'] = $this->getId();
 		$result['enabled'] = $this->isEnabled();
 		$result['displayname'] = $this->getDisplayName();

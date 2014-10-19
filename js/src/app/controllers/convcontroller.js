@@ -81,7 +81,7 @@ angular.module('chat').controller(
 							var path = paths[key];
 							convs.attachFile($scope.active.conv, path, Time.now(), activeUser);
 						}
-						var backend = $scope.convs[$scope.active.conv].backend.name;
+						var backend = $scope.convs[$scope.active.conv].backend.id;
 						backends[backend].handle.attachFile($scope.active.conv, paths, activeUser);
 					}, true);
 				},
@@ -172,7 +172,7 @@ angular.module('chat').controller(
 					$('#chat-msg-input-field');
 				},
 				unShare : function(convId, path, timestamp, user, key){
-					var backend = $scope.convs[convId].backend.name;
+					var backend = $scope.convs[convId].backend.id;
 					backends[backend].handle.removeFile(convId, path);
 					convs.removeFile(convId, path, timestamp, user, key);
 				},
@@ -192,7 +192,7 @@ angular.module('chat').controller(
 			 */
 			$scope.sendChatMsg = function(){
 				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
-					var backend = convs.get($scope.active.conv).backend.name;
+					var backend = convs.get($scope.active.conv).backend.id;
 					convs.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, Time.now(), backend);
 					backends[backend].handle.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 					$scope.fields.chatMsg = '';
@@ -285,10 +285,10 @@ angular.module('chat').controller(
 			 * Function called when the app is quit
 			 */
 			$scope.quit = function(){
-				for(var namespace in backends){
-					var backend = backends[namespace];
-					if(namespace === 'och'){
-						backends[namespace].handle.quit();
+				for(var id in backends){
+					var backend = backends[id];
+					if(id === 'och'){
+						backends[id].handle.quit();
 					}
 				}
 			};
@@ -313,7 +313,7 @@ angular.module('chat').controller(
 			 * @param {object} userToInvite
 			 */
 			$scope.invite = function(userToInvite){
-				var backend = $scope.convs[$scope.active.conv].backend.name;
+				var backend = $scope.convs[$scope.active.conv].backend.id;
 				var groupConv = $scope.convs[$scope.active.conv].users.length > 2;
 				backends[backend].handle.invite($scope.active.conv, userToInvite, groupConv, function(response){
 					if(groupConv) {

@@ -1,5 +1,9 @@
-angular.module('chat').factory('backends', ['initvar', 'och', function(initvar, och) {
+angular.module('chat').factory('backends', ['initvar', '$injector', function(initvar, $injector) {
 	var backends = initvar.backends;
-	backends.och.handle = och;
-	return backends;
+	var result = {};
+	for (var id in backends){
+		result[id] = backends[id];
+		result[id].handle = $injector.get(id);
+	}
+	return result;
 }]);

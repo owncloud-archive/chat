@@ -11,7 +11,6 @@ angular.module('chat').controller(
 		'$filter',
 		'$interval',
 		'initvar',
-		'och',
 		'convs',
 		'activeUser',
 		'contacts',
@@ -23,7 +22,6 @@ angular.module('chat').controller(
 			$filter,
 			$interval,
 			initvar,
-			och,
 			convs,
 			activeUser,
 			contacts,
@@ -83,7 +81,7 @@ angular.module('chat').controller(
 							var path = paths[key];
 							convs.attachFile($scope.active.conv, path, Time.now(), activeUser);
 						}
-						var backend = $scope.convs[$scope.active.conv].backend.name;
+						var backend = $scope.convs[$scope.active.conv].backend.id;
 						backends[backend].handle.attachFile($scope.active.conv, paths, activeUser);
 					}, true);
 				},
@@ -174,7 +172,7 @@ angular.module('chat').controller(
 					$('#chat-msg-input-field');
 				},
 				unShare : function(convId, path, timestamp, user, key){
-					var backend = $scope.convs[convId].backend.name;
+					var backend = $scope.convs[convId].backend.id;
 					backends[backend].handle.removeFile(convId, path);
 					convs.removeFile(convId, path, timestamp, user, key);
 				},
@@ -194,7 +192,7 @@ angular.module('chat').controller(
 			 */
 			$scope.sendChatMsg = function(){
 				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
-					var backend = convs.get($scope.active.conv).backend.name;
+					var backend = convs.get($scope.active.conv).backend.id;
 					convs.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, Time.now(), backend);
 					backends[backend].handle.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
 					$scope.fields.chatMsg = '';
@@ -263,22 +261,24 @@ angular.module('chat').controller(
 
 				$scope.initDone = true;
 				//Now join and add all the existing convs
-				for (var key in $scope.initConvs.och) {
-					var conv = $scope.initConvs.och[key];
-					var contactsInConv = [];
-					for (var key in conv.users) {
-						var user = conv.users[key];
-						contactsInConv.push(contacts.contacts[user]);
-					}
-					convs.addConv(conv.id, contactsInConv, backends.och, [], conv.files);
-					for (var key in conv.messages) {
-						var msg = conv.messages[key];
-						convs.addChatMsg(conv.id, contacts.contacts[msg.user], msg.msg, msg.timestamp, backends.och, true);
-					}
-					for (var key in conv.files){
-						var file = conv.files[key];
-						convs.addChatMsg(conv.id, file.user, tran('translations-attached', {displayname: file.user.displayname, path: file.path}),
-							file.timestamp, 'och');
+				for (var backendId in $scope.initConvs) {
+					for (var key in $scope.initConvs[backendId]){
+						var conv = $scope.initConvs[backendId][key];
+						var contactsInConv = [];
+						for (var key in conv.users) {
+							var user = conv.users[key];
+							contactsInConv.push(contacts.contacts[user]);
+						}
+						convs.addConv(conv.id, contactsInConv, backends[backendId], [], conv.files);
+						for (var key in conv.messages) {
+							var msg = conv.messages[key];
+							convs.addChatMsg(conv.id, contacts.contacts[msg.user], msg.msg, msg.timestamp, backends[backendId], true);
+						}
+						for (var key in conv.files){
+							var file = conv.files[key];
+							convs.addChatMsg(conv.id, file.user, tran('translations-attached', {displayname: file.user.displayname, path: file.path}),
+								file.timestamp, backendId);
+						}
 					}
 				}
 			}
@@ -287,11 +287,8 @@ angular.module('chat').controller(
 			 * Function called when the app is quit
 			 */
 			$scope.quit = function(){
-				for(var namespace in backends){
-					var backend = backends[namespace];
-					if(namespace === 'och'){
-						backends[namespace].handle.quit();
-					}
+				for(var id in backends){
+					backends[id].handle.quit();
 				}
 			};
 
@@ -315,7 +312,7 @@ angular.module('chat').controller(
 			 * @param {object} userToInvite
 			 */
 			$scope.invite = function(userToInvite){
-				var backend = $scope.convs[$scope.active.conv].backend.name;
+				var backend = $scope.convs[$scope.active.conv].backend.id;
 				var groupConv = $scope.convs[$scope.active.conv].users.length > 2;
 				backends[backend].handle.invite($scope.active.conv, userToInvite, groupConv, function(response){
 					if(groupConv) {

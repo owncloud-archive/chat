@@ -42,15 +42,18 @@ class AppController extends Controller {
 
 		$contacts = $this->app->getContacts();
 		$backends = $this->app->getBackends();
+		$backendsToArray = array();
+		foreach($backends as $backend){
+			$backendsToArray[$backend->getId()] = $backend->toArray();
+		}
 		$initConvs = $this->app->getInitConvs();
-
 
 		$params = array(
 			"initvar" => json_encode(array(
 				"contacts" => $contacts['contacts'],
 				"contactsList" => $contacts['contactsList'],
 				"contactsObj" => $contacts['contactsObj'],
-				"backends" => $backends,
+				"backends" => $backendsToArray,
 				"initConvs" => $initConvs,
 				"sessionId" => $sessionId['session_id'], // needs porting!
 			))

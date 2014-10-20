@@ -27,7 +27,6 @@ module.exports = function(grunt) {
 					'js/vendor/time.js' : [ 'js/src/vendor/time.js'	],
 					'js/vendor/rangyinputs.js' : [ 'js/src/bower_components/rangyinputs-jquery-src/index.js'],
 					'js/vendor/moment.js' : [ 'js/src/bower_components/moment/moment.js'],
-					'js/vendor/strophe.js' : [ 'js/src/bower_components/strophejs/strophe.js']
 
 				}
 			}

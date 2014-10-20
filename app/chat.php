@@ -9,7 +9,6 @@ namespace OCA\Chat\App;
 
 use OCA\Chat\Controller\AppController;
 use OCA\Chat\Controller\OCH\ApiController;
-use OCA\Contacts\CardDAV\Backend;
 use OCP\AppFramework\App;
 use OCA\Chat\OCH\Db\ConversationMapper;
 use OCA\Chat\OCH\Db\MessageMapper;
@@ -32,7 +31,7 @@ use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\OCH\OCH;
-use OCA\Chat\BackendManager;
+use OCA\Chat\XMPP\XMPP;
 
 /**
  * Class Chat
@@ -206,6 +205,10 @@ class Chat extends App{
 
 		$container->registerService('OCH', function($c) use ($app){
 			return new OCH($app);
+		});
+
+		$container->registerService('XMPP', function($c) use ($app){
+			return new XMPP($app);
 		});
 
 	}

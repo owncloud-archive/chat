@@ -1,11 +1,11 @@
 <?php
 $TRANSLATIONS = array(
 "Chat" => "Discussion",
-"{displayname} attached {path} to this conversation" => "{displayname} a ajouté {path} à la conversation",
+"{displayname} attached {path} to this conversation" => "{displayname} a attaché {path} à la conversation",
 "{displayname} removed {path} from this conversation" => "{displayname} à supprimé {path} de la conversation",
 "Search in conversations" => "Rechercher dans les conversations",
 "Add Person" => "Ajouter une personne",
-"View Attached files" => "Voir les fichiers ajoutés",
+"View Attached files" => "Voir les fichiers attachés",
 "Chat Message" => "Message de discussion",
 "Files attached to this conversation" => "Fichiers ajoutés à la conversation",
 "Download " => "Télécharger",

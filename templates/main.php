@@ -56,3 +56,16 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 		</span>
 	</div>
 </div>
+
+
+<div id='login' style='text-align: center'>
+	<form name='cred'>
+		<label for='jid'>JID:</label>
+		<input type='text' id='jid' />
+		<label for='pass'>Password:</label>
+		<input type='password' id='pass' />
+		<input type='button' id='connect' value='connect' />
+	</form>
+</div>
+<hr />
+<div id='log'></div>

@@ -31,10 +31,10 @@ class XMPP implements IBackend {
 		return array(
 			"CONV_ID_1413235234356234645699887_56" => array(
 				"id" => "CONV_ID_1413235234356234645699887_56",
-				"users" => [
+				"users" => array(
 					"admin",
 					1
-				],
+				),
 				"backend" => "xmpp",
 				"messages" => array(
 				),

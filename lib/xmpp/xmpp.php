@@ -28,19 +28,29 @@ class XMPP implements IBackend {
 	}
 
 	public function getInitConvs(){
-		return array(
-			"CONV_ID_1413235234356234645699887_56" => array(
-				"id" => "CONV_ID_1413235234356234645699887_56",
-				"users" => array(
-					"admin",
-					1
-				),
-				"backend" => "xmpp",
-				"messages" => array(
-				),
-				"files" => array()
-			)
-		);
+		$contacts = $this->app->getContacts();
+		$contacts = $contacts['contacts'];
+		$currentUser = $this->app->getCurrentUser();
+		$currentUserId = $currentUser['id'];
+		$initConvs = array();
+		foreach($contacts as $contact) {
+			foreach ($contact['backends'] as $backend) {
+				if ($backend['id'] === 'xmpp') {
+					$jid = $backend['value'];
+					$initConvs[$jid] = array(
+						"id" => $jid,
+						"users" => array(
+							$contact['id'],
+							$currentUserId
+						),
+						"backend" => 'xmpp',
+						"messages" => array(),
+						"files" => array()
+					);
+				}
+			}
+		}
+		return $initConvs;
 	}
 
 	public function getDisplayName(){

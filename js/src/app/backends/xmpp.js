@@ -1,6 +1,25 @@
 angular.module('chat').factory('xmpp', ['activeUser', 'convs', 'contacts', 'sessionId', function(activeUser, convs, contacts, sessionId) {
+	$XMPP = {
+		on : {
+			chatMessage : function(msg, from){
+				var convId = from.substring(0, from.indexOf('/'));
+				convs.addChatMsg(
+					convId,
+					contacts.contacts[1],
+					msg,
+					Time.now(),
+					'och'
+				);
+			},
+			connected : function(){
+
+			},
+			disconnected : function(){
+
+			}
+		}
+	};
 	var onMessage = function(msg){
-		console.log('onMessage');
 		var to = msg.getAttribute('to');
 		var from = msg.getAttribute('from');
 		var type = msg.getAttribute('type');
@@ -8,28 +27,8 @@ angular.module('chat').factory('xmpp', ['activeUser', 'convs', 'contacts', 'sess
 
 		if (type == "chat" && elems.length > 0) {
 			var body = elems[0];
-
-			//log('ECHOBOT: I got a message from ' + from + ': ' +
-			//Strophe.getText(body));
-			//
-			//var reply = $msg({to: from, from: to, type: 'chat'})
-			//	.cnode(Strophe.copyElement(body));
-			//connection.send(reply.tree());
-			//
-			//log('ECHOBOT: I sent ' + from + ': ' + Strophe.getText(body));
-			convs.addChatMsg(
-				'CONV_ID_1413235234356234645699887_56',
-				contacts.contacts[1],
-				Strophe.getText(body),
-				Time.now(),
-				'och'
-			);
-
+			$XMPP.on.chatMessage(Strophe.getText(body), from);
 		}
-
-		// we must return true to keep the handler alive.
-		// returning false would remove it after it finishes.
-
 		return true;
 	};
 

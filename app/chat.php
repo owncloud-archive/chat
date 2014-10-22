@@ -320,7 +320,7 @@ class Chat extends App{
 
 		if(is_array($emails)){
 			$backend = array();
-			$backend['id'] = null;
+			$backend['id'] = 'email';
 			$backend['displayname'] = 'E-mail';
 			$backend['protocol'] = 'email';
 			$backend['namespace'] = ' email';
@@ -332,8 +332,13 @@ class Chat extends App{
 			foreach($impps as $impp){
 				$backend = array();
 				$exploded = explode(":", $impp);
-				$info = $backendManager->getBackendByProtocol($exploded[0]);
-				$backend['id'] = null;
+				if(!isset($exploded[1])){
+					// protocol not provided -> xmpp
+					$info = $backendManager->getBackendByProtocol('xmpp');
+				} else {
+					$info = $backendManager->getBackendByProtocol($exploded[0]);
+				}
+				$backend['id'] = $info->getId();
 				$backend['displayname'] = $info->getDisplayName();
 				$backend['protocol'] = $exploded[0];
 				$backend['namespace'] = $info->getId();

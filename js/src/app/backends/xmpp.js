@@ -71,7 +71,7 @@ angular.module('chat').factory('xmpp', ['activeUser', 'convs', 'contacts', 'sess
 		quit : function(){
 		},
 		sendChatMsg : function(convId, msg){
-			var reply = $msg({to: 'derp@33.33.33.66', from: 'admin@33.33.33.66/test' , type: 'chat'}).c('body', null,msg
+			var reply = $msg({to: convId, from: this.jid , type: 'chat'}).c('body', null,msg
 			);
 			console.log(reply.toString());
 			connection.send(reply.tree());

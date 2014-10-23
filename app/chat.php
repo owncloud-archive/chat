@@ -32,6 +32,7 @@ use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\OCH\OCH;
 use OCA\Chat\XMPP\XMPP;
+use OCA\Chat\BackendManager;
 
 /**
  * Class Chat

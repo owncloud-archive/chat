@@ -2,7 +2,7 @@
 
 namespace OCA\Chat\OCH;
 
-use \OCP\Chat\IBackend;
+use \OCA\Chat\IBackend;
 use \OCA\Chat\App\Chat;
 
 class OCH implements IBackend {

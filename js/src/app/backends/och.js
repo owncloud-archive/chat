@@ -1,4 +1,4 @@
-angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessionId', function(activeUser, convs, contacts, sessionId) {
+angular.module('chat').factory('och', ['convs', 'contacts', 'session', function(convs, contacts, $session) {
 	var api = {
 		command: {
 			attachFile : function(convId, paths, user){
@@ -8,7 +8,7 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 						"conv_id": convId,
 						"timestamp": Time.now(),
 						"user": user,
-						"session_id": sessionId,
+						"session_id": $session.id,
 						"paths" : paths
 					}
 				}, function(){});
@@ -19,8 +19,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 					"data": {
 						"conv_id": convId,
 						"timestamp": Time.now(),
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"path" : path
 					}
 				}, function(){});
@@ -31,8 +31,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 					"data": {
 						"conv_id": convId,
 						"timestamp": Time.now(),
-						"user": activeUser,
-						"session_id": sessionId
+						"user": $session.user,
+						"session_id": $session.id
 					}
 				}, success);
 			},
@@ -43,8 +43,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 						"conv_id": convId,
 						"timestamp": Time.now(),
 						"user_to_invite": userToInvite,
-						"user": activeUser,
-						"session_id": sessionId
+						"user": $session.user,
+						"session_id": $session.id
 					}
 				}, success);
 			},
@@ -54,8 +54,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 					"data": {
 						"conv_id": convId,
 						"chat_msg": msg,
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"timestamp": Time.now()
 					}
 				}, success);
@@ -64,8 +64,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doRequest({
 					"type": "command::online::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"timestamp": Time.now()
 					}
 				}, function () {
@@ -75,8 +75,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doSyncRequest({
 					"type": "command::offline::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"timestamp": Time.now()
 					}
 				}, function () {
@@ -86,8 +86,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doRequest({
 					"type": "command::start_conv::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"timestamp": Time.now(),
 						"user_to_invite": userToInvite
 					}
@@ -97,8 +97,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doRequest({
 					"type": "data::messages::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"conv_id": convId,
 						"startpoint": startpoint
 					}
@@ -108,8 +108,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doRequest({
 					"type": "data::get_users::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						"conv_id": convId
 					}
 				}, success);
@@ -207,8 +207,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doRequest({
 					"type": "push::get::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId
+						"user": $session.user,
+						"session_id": $session.id
 					}
 				}, success);
 			},
@@ -216,8 +216,8 @@ angular.module('chat').factory('och', ['activeUser', 'convs', 'contacts', 'sessi
 				api.util.doRequest({
 					"type": "push::delete::request",
 					"data": {
-						"user": activeUser,
-						"session_id": sessionId,
+						"user": $session.user,
+						"session_id": $session.id,
 						ids: ids
 					}
 				}, function (data) {

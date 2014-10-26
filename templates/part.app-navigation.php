@@ -3,7 +3,7 @@
 </div>
 <ul>
 	<li
-		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === active.conv}"
+		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === $session.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"
 		ng-repeat="conv in convs | orderObjectBy:'order':true | filter:search "
 		class="conv-list-item"
@@ -16,10 +16,10 @@
 	>
 		<?php print_unescaped($this->inc('part.avatar')) ?>
 		<div class="conv-list-item-buttons">
-			<div ng-click="view.inviteClick();" ng-if="conv.id == active.conv && conv.users.length === 2" class="icon-add right icon-20 invite-button">
+			<div ng-click="view.inviteClick();" ng-if="conv.id == $session.conv && conv.users.length === 2" class="icon-add right icon-20 invite-button">
 				&nbsp;
 			</div>
-			<div title="Show attached files" ng-click="view.showFiles();" ng-if="conv.id == active.conv && conv.users.length === 2" class="icon-file right icon-20 files-button">
+			<div title="Show attached files" ng-click="view.showFiles();" ng-if="conv.id == $session.conv && conv.users.length === 2" class="icon-file right icon-20 files-button">
 				&nbsp;
 			</div>
 	</li>

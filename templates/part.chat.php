@@ -3,11 +3,11 @@
 		<div id="chat-window-msgs">
 			<div
 				class="chat-msg-container"
-				ng-repeat="(key, msg) in convs[active.conv].msgs | orderBy:'timestamp'"
-				ng-class="{'chat-msg-container-border': $parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id}"
+				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
+				ng-class="{'chat-msg-container-border': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 			>
 				<div
-					ng-if="$parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id"
+					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
 					class="chat-msg-time"
 				>
 					{{ msg.time.hours }} : {{ msg.time.minutes }}
@@ -17,7 +17,7 @@
 						class="msg-avatar-container"
 					>
 						<div
-							ng-if="$parent.convs[active.conv].msgs[key-1].contact.id !== msg.contact.id"
+							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
 							data-size="40"
 							data-id="{{ msg.contact.id }}"
 							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"

@@ -1,3 +1,5 @@
-angular.module('chat').controller('EmojiController', ['$scope', function($scope) {
+angular.module('chat').controller('EmojiController', ['$scope', 'SessionId', function($scope, sessionId) {
+
+
 
 }]);

@@ -1,4 +1,4 @@
-<div ng-if="conv.id !== $parent.active.conv || ( conv.id === $parent.active.conv && conv.users.length === 2)" class="conv-list-item-avatar">
+<div ng-if="conv.id !== $parent.$session.conv || ( conv.id === $parent.$session.conv && conv.users.length === 2)" class="conv-list-item-avatar">
 	<div ng-if="conv.users.length === 2" class="avatar-list-container" >
 		<div class="online-dot-container">
 			<div
@@ -45,7 +45,7 @@
 </div>
 <div
 	class="conv-list-item-avatar"
-	ng-if="conv.id === $parent.active.conv && conv.users.length > 2"
+	ng-if="conv.id === $parent.$session.conv && conv.users.length > 2"
 	>
 	<ul>
 		<li

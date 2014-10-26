@@ -12,10 +12,10 @@ angular.module('chat').controller(
 		'$interval',
 		'initvar',
 		'convs',
-		'activeUser',
 		'contacts',
 		'backends',
 		'title',
+		'session',
 		function(
 			$scope,
 			$http,
@@ -23,10 +23,10 @@ angular.module('chat').controller(
 			$interval,
 			initvar,
 			convs,
-			activeUser,
 			contacts,
 			backends,
-			title
+			title,
+			$session
 		){
 
 			$(window).unload(function(){
@@ -79,10 +79,10 @@ angular.module('chat').controller(
 					OCdialogs.filepicker('Please choose a file to attach to the conversation', function(paths){
 						for(var key in paths){
 							var path = paths[key];
-							convs.attachFile($scope.active.conv, path, Time.now(), activeUser);
+							convs.attachFile($session.conv, path, Time.now(), $session.user);
 						}
-						var backend = $scope.convs[$scope.active.conv].backend.id;
-						backends[backend].handle.attachFile($scope.active.conv, paths, activeUser);
+						var backend = $scope.convs[$session.conv].backend.id;
+						backends[backend].handle.attachFile($session.conv, paths, $session.user);
 					}, true);
 				},
 				showFiles : function(){
@@ -144,7 +144,7 @@ angular.module('chat').controller(
 				makeActive : function(convId, $event, exception){
 					$scope.view.hide('emptyMsg');
 					$scope.view.show('chat', $event, exception);
-					$scope.active.conv = convId;
+					$session.conv = convId;
 					$scope.view.focusMsgInput();
 					convs.get(convId).new_msg = false;
 					$("#chat-msg-input-field").autosize({
@@ -163,7 +163,7 @@ angular.module('chat').controller(
 				 * This will unActive all conversations
 				 */
 				unActive : function(){
-					$scope.active.conv = null;
+					$session.conv = null;
 				},
 				/**
 				 * This will focus the chat input field
@@ -192,18 +192,18 @@ angular.module('chat').controller(
 			 */
 			$scope.sendChatMsg = function(){
 				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
-					var backend = convs.get($scope.active.conv).backend.id;
-					convs.addChatMsg($scope.active.conv, $scope.active.user, $scope.fields.chatMsg, Time.now(), backend);
-					backends[backend].handle.sendChatMsg($scope.active.conv, $scope.fields.chatMsg);
+					var backend = convs.get($session.conv).backend.id;
+					convs.addChatMsg($session.conv, $session.user, $scope.fields.chatMsg, Time.now(), backend);
+					backends[backend].handle.sendChatMsg($session.conv, $scope.fields.chatMsg);
 					$scope.fields.chatMsg = '';
 					setTimeout(function(){
 						$('#chat-msg-input-field').trigger('autosize.resize');
 					},1);
 					$('#chat-msg-input-field').focus();
 
-					for (var key in convs.get($scope.active.conv).users) {
-						var user =  convs.get($scope.active.conv).users[key];
-						if(user.id !== $scope.active.user.id){
+					for (var key in convs.get($session.conv).users) {
+						var user =  convs.get($session.conv).users[key];
+						if(user.id !== $session.user.id){
 							var order = contacts.getHighestOrder();
 							contacts.contacts[user.id].order = order;
 						}
@@ -234,11 +234,6 @@ angular.module('chat').controller(
 				 */
 				backend : {},
 				/**
-				 * Stores the active conv id
-				 * @var {string} conv
-				 */
-				conv : {},
-				/**
 				 * @var {bool} window
 				 */
 				window : true,
@@ -247,7 +242,8 @@ angular.module('chat').controller(
 				'chatMsg' : '',
 			};
 
-			$scope.active.user = activeUser;
+			$session.user = contacts.contacts[OC.currentUser]
+			$session.id = initvar.sessionId;
 			$scope.initConvs = initvar.initConvs;
 			$scope.initvar = initvar;
 			for (var active in backends) break;
@@ -281,6 +277,8 @@ angular.module('chat').controller(
 						}
 					}
 				}
+				$scope.makeFirstConvActive();
+				$scope.$session = $session;
 			}
 
 			/**
@@ -298,7 +296,7 @@ angular.module('chat').controller(
 			$scope.makeFirstConvActive = function(){
 				firstConv = convs.getFirstConv();
 				if(firstConv === undefined){
-					$scope.active.conv = null;
+					$session.conv = null;
 					$scope.view.hide('chat');
 					$scope.view.show('emptyMsg');
 				} else {
@@ -307,22 +305,22 @@ angular.module('chat').controller(
 			};
 
 			/**
-			 * This function will invite the userToInvite for the $scope.active.conv
+			 * This function will invite the userToInvite for the $scope.$session.conv
 			 * This will make the order of the conv the highest
 			 * @param {object} userToInvite
 			 */
 			$scope.invite = function(userToInvite){
-				var backend = $scope.convs[$scope.active.conv].backend.id;
-				var groupConv = $scope.convs[$scope.active.conv].users.length > 2;
-				backends[backend].handle.invite($scope.active.conv, userToInvite, groupConv, function(response){
+				var backend = $scope.convs[$session.conv].backend.id;
+				var groupConv = $scope.convs[$session.conv].users.length > 2;
+				backends[backend].handle.invite($session.conv, userToInvite, groupConv, function(response){
 					if(groupConv) {
-						$scope.view.replaceUsers($scope.active.conv, response.data.users);
+						$scope.view.replaceUsers($session.conv, response.data.users);
 					} else {
-						convs.addConv(response.data.conv_id, response.data.users, $scope.convs[$scope.active.conv].backend, response.data.messages, []);
+						convs.addConv(response.data.conv_id, response.data.users, $scope.convs[$session.conv].backend, response.data.messages, []);
 					}
 				});
 				$scope.view.hide('invite');
-				$scope.view.makeActive($scope.active.conv);
+				$scope.view.makeActive($session.conv);
 
 				var order = contacts.getHighestOrder();
 				contacts.contacts[userToInvite.id].order = order;

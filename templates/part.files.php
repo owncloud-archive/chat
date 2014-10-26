@@ -20,7 +20,7 @@
 		</tr>
 		<tr
 			class="file-row file-element"
-			ng-repeat="(key,file) in convs[active.conv].files"
+			ng-repeat="(key,file) in convs[$session.conv].files"
 		>
 			<td class="file-preview file-element">
 				<img class="file-element" src='/index.php/core/preview.png?file={{ file.path }}&x=40&y=40&forceIcon=1' >
@@ -53,8 +53,8 @@
 			</td>
 			<th class="file-unshare file-element">
 				<div
-                    ng-if="file.user.id === $parent.$parent.active.user.id"
-					ng-click="view.unShare(active.conv, file.path, file.timestamp, file.user, key)"
+                    ng-if="file.user.id === $parent.$parent.$ession.user.id"
+					ng-click="view.unShare($session.conv, file.path, file.timestamp, file.user, key)"
 					class="files-no-hide icon-delete"
 				>
 					&nbsp;

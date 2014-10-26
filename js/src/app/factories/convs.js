@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 'title', 'activeConv', 'scope', function(activeUser, contacts, $filter, title, activeConv, $scope) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'scope', 'session', function(contacts, $filter, title, $scope, $session) {
 	var convs = {};
 
 	return {
@@ -11,7 +11,7 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			var name  = '';
 			for(var key in users){
 				var user = users[key];
-				if(user.id !== activeUser.id){
+				if(user.id !== $session.user.id){
 					name += user.displayname + ' ';
 					var order = contacts.getHighestOrder();
 					//$scope.contactsObj[user.id].order = order;
@@ -65,11 +65,11 @@ angular.module('chat').factory('convs', ['activeUser', 'contacts', '$filter', 't
 			if(noNotify === undefined){
 				noNotify = false;
 			}
-			if(user.id !== activeUser.id && noNotify === false){
+			if(user.id !== $session.user.id && noNotify === false){
 				title.notify(user.displayname);
 			}
 
-			if(convId !== activeConv() && noNotify === false){
+			if(convId !== $session.conv && noNotify === false){
 			//	this ins't the active conv
 			//	we have to notify the user of new messages in this conv
 				this.notifyMsgInConv(convId);

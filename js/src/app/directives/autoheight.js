@@ -1,8 +1,8 @@
-angular.module('chat').directive('autoHeight', function () {
+angular.module('chat').directive('autoHeight', [function () {
 	return {
 		restrict: 'A',
 		link: function ($scope, element, attrs) {
-			if(attrs.convId === $scope.active.conv){
+			if(attrs.convId === $scope.$session.conv){
 				attrs.itemCount++;
 			} else {
 				element.css('height', attrs.minHeight + 'px');
@@ -13,8 +13,9 @@ angular.module('chat').directive('autoHeight', function () {
 			} else {
 				element.css('height', height + 'px');
 			}
-			$scope.$watch('active.conv', function(){
-				if(attrs.convId === $scope.active.conv){
+			//TODO
+			$scope.$watch('$session.conv', function(){
+				if(attrs.convId === $scope.$session.conv){
 					var height = attrs.itemCount * attrs.itemHeight;
 					if(attrs.itemCount > 1){
 						height = height + 30;
@@ -30,4 +31,4 @@ angular.module('chat').directive('autoHeight', function () {
 			});
 		}
 	};
-});
+}]);

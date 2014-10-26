@@ -1,7 +1,7 @@
-angular.module('chat').filter('filterUsersInConv', ['activeConv', 'convs', function(activeConv, convs) {
+angular.module('chat').filter('filterUsersInConv', ['convs', 'session',function(convs, $session) {
 	return function(contacts) {
 		var result = [];
-		var users = convs.get(activeConv()).users;
+		var users = convs.get($session.conv).users;
 		var usersId = [];
         for (var key in users){
             var user = users[key];

@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'scope', 'session', function(contacts, $filter, title, $scope, $session) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', function(contacts, $filter, title, $session) {
 	var convs = {};
 
 	return {
@@ -127,6 +127,7 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'scope'
 			}
 		},
 		makeActive : function(convId, $event, exception) {
+			$scope = $('#app').scope();
 			if (!$scope.$$phase) {
 				$scope.$apply(function () {
 					$scope.view.makeActive(convId, $event, exception);

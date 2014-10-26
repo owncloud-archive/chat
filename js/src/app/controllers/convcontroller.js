@@ -224,20 +224,8 @@ angular.module('chat').controller(
 			 */
 			$scope.initConvs = {};
 
-			/**
-			 * @var {object} active
-			 */
-			$scope.active = {
-				/**
-				 * Stores the active backend
-				 * @var {object} backend
-				 */
-				backend : {},
-				/**
-				 * @var {bool} window
-				 */
-				window : true,
-			};
+			$scope.isWindowActive = true;
+
 			$scope.fields = {
 				'chatMsg' : '',
 			};
@@ -246,8 +234,6 @@ angular.module('chat').controller(
 			$session.id = initvar.sessionId;
 			$scope.initConvs = initvar.initConvs;
 			$scope.initvar = initvar;
-			for (var active in backends) break;
-			$scope.active.backend =  backends[active];
 
 			function init() {
 				for (var key in backends){
@@ -334,7 +320,7 @@ angular.module('chat').controller(
 				if (title.getTitle() === '') {
 					$('title').text(title.getDefaultTitle());
 				} else {
-					if($scope.active.window === false) {
+					if($scope.isWindowActive === false) {
 						$('title').text(title.getTitle());
 					}
 				}
@@ -350,11 +336,11 @@ angular.module('chat').controller(
 			window.onfocus = function () {
 				title.updateTitle('');
 				title.emptyNewMsgs();
-				$scope.active.window = true;
+				$scope.isWindowActive= true;
 			};
 
 			window.onblur = function () {
-				$scope.active.window = false;
+				$scope.isWindowActive = false;
 			};
 
 			/**

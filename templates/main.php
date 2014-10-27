@@ -15,8 +15,9 @@
 
 \OCP\Util::addScript('chat', 'main.min');
 
-\OCP\Util::addScript('chat', 'src/bower_components/angular-mocks/angular-mocks');
-
+if (defined('DEBUG') && DEBUG) {
+	\OCP\Util::addScript('chat', 'src/bower_components/angular-mocks/angular-mocks');
+}
 
 $version = \OCP\Config::getAppValue('chat', 'installed_version');
 if (version_compare($version, '0.2.0.0', '<=')) {

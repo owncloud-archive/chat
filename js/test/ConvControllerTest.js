@@ -285,6 +285,14 @@ describe('ConvController', function(){
 				expect($scope.$session.conv).toEqual(null);
 			});
 		});
+
+		describe('showFilePicker', function(){
+			it('Should call OCdialogs.filepicker', function(){
+				spyOn(OCdialogs, 'filepicker');
+				$scope.view. showFilePicker();
+				expect(OCdialogs.filepicker).toHaveBeenCalled();
+			});
+		});
 	});
 
 	describe('sendChatMsg', function () {

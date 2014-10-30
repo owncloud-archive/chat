@@ -1,0 +1,18 @@
+OC.L10N.register(
+    "chat",
+    {
+    "Chat" : "Obrolan",
+    "{displayname} attached {path} to this conversation" : "{displayname} melampirkan {path} ke percakapan ini",
+    "{displayname} removed {path} from this conversation" : "{displayname} menghapus {path} dari percakapan ini",
+    "Search in conversations" : "Telusuri percakapan",
+    "Add Person" : "Tambah Orang",
+    "View Attached files" : "Lihat berkas lampiran",
+    "Chat Message" : "Pesan Obrolan",
+    "Files attached to this conversation" : "Berkas dilampirkan ke percakapan ini",
+    "Download " : "Unduh",
+    "Attach more files" : "Lampirkan lebih banyak berkas",
+    "Search in users" : "Telusuri pengguna",
+    "There are no other users on this ownCloud." : "Tidak ada pengguna lain pada ownCloud ini.",
+    "In order to chat please create at least one user, it will appear on the left." : "Untuk dapat melakukan obrolan, silakan buat setidaknya satu pengguna lagi, yang akan tampak disebelah kiri."
+},
+"nplurals=1; plural=0;");

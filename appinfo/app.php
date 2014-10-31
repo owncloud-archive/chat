@@ -21,3 +21,5 @@ $chat = new Chat();
 $c = $chat->getContainer();
 $och = $c['OCH'];
 $chat->registerBackend($och);
+$xmpp = $c['XMPP'];
+$chat->registerBackend($xmpp);

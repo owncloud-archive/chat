@@ -12,6 +12,7 @@
 \OCP\Util::addScript('chat', 'vendor/cache');
 \OCP\Util::addScript('chat', 'vendor/time');
 \OCP\Util::addScript('chat', 'vendor/moment');
+\OCP\Util::addScript('chat', 'vendor/strophe');
 
 \OCP\Util::addScript('chat', 'main.min');
 

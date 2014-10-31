@@ -208,6 +208,10 @@ class Chat extends App{
 			return new OCH($app);
 		});
 
+		$container->registerService('XMPP', function($c) use ($app){
+			return new XMPP($app);
+		});
+
 	}
 
 	public function registerBackend(IBackend $chat){
@@ -317,25 +321,34 @@ class Chat extends App{
 
 		if(is_array($emails)){
 			$backend = array();
-			$backend['id'] = null;
+			$backend['id'] = 'email';
 			$backend['displayname'] = 'E-mail';
 			$backend['protocol'] = 'email';
 			$backend['namespace'] = ' email';
 			$backend['value'] = array($emails);
-			$backends['email'] = $backend;
+			$backends[] = $backend;
 		}
 
 		if(isset($impps)){
 			foreach($impps as $impp){
 				$backend = array();
 				$exploded = explode(":", $impp);
-				$info = $backendManager->getBackendByProtocol($exploded[0]);
-				$backend['id'] = null;
+				if(!isset($exploded[1])){
+					// protocol not provided -> xmpp
+					$info = $backendManager->getBackendByProtocol('xmpp');
+					$value = $exploded[0];
+					$protocol = 'xmpp';
+				} else {
+					$info = $backendManager->getBackendByProtocol($exploded[0]);
+					$value = $exploded[1];
+					$protocol = $exploded[0];
+				}
+				$backend['id'] = $info->getId();
 				$backend['displayname'] = $info->getDisplayName();
-				$backend['protocol'] = $exploded[0];
+				$backend['protocol'] = $protocol;
 				$backend['namespace'] = $info->getId();
-				$backend['value'] = $exploded[1];
-				$backends[$info->getId()] = $backend;
+				$backend['value'] = $value ;
+				$backends[] = $backend;
 			}
 		}
 

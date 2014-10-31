@@ -2,7 +2,8 @@
 
 namespace OCA\Chat\XMPP;
 
-use \OCP\Chat\IBackend;
+use \OCA\Chat\IBackend;
+use \OCA\Chat\App\Chat;
 
 class XMPP implements IBackend {
 

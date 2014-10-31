@@ -3,3 +3,5 @@ phpunit
 phpunit.phar
 /build
 node_modules
+js/main.min.js
+js/vendor

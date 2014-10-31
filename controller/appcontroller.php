@@ -34,8 +34,6 @@ class AppController extends Controller {
 	public function index() {
 		session_write_close();
 		$greet = $this->c['GreetCommand'];
-		var_export($this->app->getCurrentUser());
-		die();
 		$greet->setRequestData(array(
 			"timestamp" => time(),
 			"user" => $this->app->getCurrentUser(),

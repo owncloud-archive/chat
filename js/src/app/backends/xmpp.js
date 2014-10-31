@@ -1,4 +1,4 @@
-angular.module('chat').factory('xmpp', ['activeUser', 'convs', 'contacts', 'sessionId', function(activeUser, convs, contacts, sessionId) {
+angular.module('chat').factory('xmpp', ['convs', 'contacts', function(convs, contacts) {
 	$XMPP = {
 		on : {
 			chatMessage : function(msg, from){

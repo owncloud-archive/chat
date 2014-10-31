@@ -31,6 +31,7 @@ use OCA\Chat\OCH\Data\Messages;
 use OCA\Chat\OCH\Push\Get;
 use OCA\Chat\OCH\Push\Delete;
 use OCA\Chat\OCH\OCH;
+use OCA\Chat\XMPP\XMPP;
 use OCA\Chat\BackendManager;
 use OCA\Chat\IBackend;
 

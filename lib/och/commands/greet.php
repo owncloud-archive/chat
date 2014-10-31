@@ -27,7 +27,7 @@ class Greet extends ChatAPI {
 		$requestData = $this->getRequestData();
 		$sessionId = $this->generateSessionId($requestData['timestamp']);
 		$userOnline = new UserOnline();
-		$userOnline->setUser($requestData['user']['backends']['och']['value']);
+		$userOnline->setUser($requestData['user']['id']);
 		$userOnline->setSessionId($sessionId);
 		$userOnline->setLastOnline($requestData['timestamp']);
 		$mapper = $this->c['UserOnlineMapper'];
@@ -46,7 +46,7 @@ class Greet extends ChatAPI {
 
 		$pushMessageMapper = $this->c['PushMessageMapper'];
 		$pushMessageMapper->createForAllSessions(
-			$this->requestData['user']['backends']['och']['value'],
+			$this->requestData['user']['id'],
 			$command
 		);
 

@@ -27,6 +27,7 @@ module.exports = function(grunt) {
 					'js/vendor/time.js' : [ 'js/src/vendor/time.js'	],
 					'js/vendor/rangyinputs.js' : [ 'js/src/bower_components/rangyinputs-jquery-src/index.js'],
 					'js/vendor/moment.js' : [ 'js/src/bower_components/moment/moment.js'],
+					'js/vendor/strophe.js' : [ 'js/src/bower_components/strophejs/strophe.js']
 
 				}
 			}
@@ -37,13 +38,17 @@ module.exports = function(grunt) {
 					'css/main.min.css': ['css/src/*.css']
 				}
 			}
+		},
+		copy: {
+			main: {
+				src: 'js/src/bower_components/strophejs/strophe.js',
+				dest: 'js/vendor/strophe.js'
+			}
 		}
 	});
 
-	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	// Default task(s).
 	grunt.registerTask('default', ['uglify', 'cssmin']);
 
 };

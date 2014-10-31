@@ -30,7 +30,7 @@ class Messages extends ChatAPI {
 			$startpoint = 0;
 		}
 
-		$msgs = $messageMapper->getMessagesByConvId($this->requestData['conv_id'], $this->requestData['user']['backends']['och']['value'], $startpoint);
+		$msgs = $messageMapper->getMessagesByConvId($this->requestData['conv_id'], $this->requestData['user']['id'], $startpoint);
 
 		foreach($msgs as $msg){
 			$return[] = array(

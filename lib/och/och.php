@@ -122,7 +122,7 @@ class OCH implements IBackend {
 	}
 
 	public function isEnabled(){
-		return true;
+		return false;
 	}
 
 	public function getConfig(){

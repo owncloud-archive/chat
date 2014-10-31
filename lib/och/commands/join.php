@@ -36,7 +36,7 @@ class Join extends ChatAPI {
 		$user = new User();
 		$user->setConversationId($this->requestData['conv_id']);
 		$user->setJoined(time());
-		$user->setUser($this->requestData['user']['backends']['och']['value']);
+		$user->setUser($this->requestData['user']['id']);
 		$userMapper->insertUnique($user);
 
 		$getUsers = $this->c['GetUsersData'];
@@ -54,7 +54,7 @@ class Join extends ChatAPI {
 				)
 			));
 			$pushMessageMapper->createForAllUsersInConv(
-				$this->requestData['user']['backends']['och']['value'],
+				$this->requestData['user']['id'],
 				$this->requestData['conv_id'],
 				$command
 			);

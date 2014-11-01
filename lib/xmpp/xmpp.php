@@ -73,7 +73,7 @@ class XMPP implements IBackend {
 	}
 
 	public function isEnabled(){
-		return true;
+		return \OCP\Config::getAppValue('chat', 'backend_xmpp_enabled', true);
 	}
 
 	public function getConfig(){

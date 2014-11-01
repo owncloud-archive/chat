@@ -40,4 +40,6 @@ interface IBackendManager{
 	 */
 	public function getBackendByProtocol($protocol);
 
+
+	public function getBackends();
 }

@@ -57,7 +57,7 @@ class ApiController extends Controller {
 		if($httpType === "request"){
 			if(!empty($data['session_id'])){
 				if(!empty($data['user'])){
-					if($data['user']['backends']['och']['value'] === $this->c['UserSession']->getUser()->getUID()){
+					if($data['user']['id'] === $this->c['UserSession']->getUser()->getUID()){
 						try{
 							switch($requestType){
 								case "command":

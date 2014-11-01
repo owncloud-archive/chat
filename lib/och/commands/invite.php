@@ -34,11 +34,11 @@ class Invite extends ChatAPI {
 			throw new RequestDataInvalid(ApiController::NO_USER_TO_INVITE);
 		}
 
-		if($requestData['user']['backends']['och']['value'] === $requestData['user_to_invite']['backends']['och']['value']){
+		if($requestData['user']['id'] === $requestData['user_to_invite']){
 			throw new RequestDataInvalid(ApiController::USER_EQUAL_TO_USER_TO_INVITE);
 		}
 
-		if(!in_array($requestData['user_to_invite']['backends']['och']['value'], \OCP\User::getUsers())){
+		if(!in_array($requestData['user_to_invite']['id'], \OCP\User::getUsers())){
 			throw new RequestDataInvalid(ApiController::USER_TO_INVITE_NOT_OC_USER);
 		}
 
@@ -68,8 +68,8 @@ class Invite extends ChatAPI {
 
 		$pushMessageMapper = $this->c['PushMessageMapper'];
 		$pushMessageMapper->createForAllSessionsOfAUser(
-			$this->requestData['user_to_invite']['backends']['och']['value'],
-			$this->requestData['user']['backends']['och']['value'],
+			$this->requestData['user_to_invite']['id'],
+			$this->requestData['user']['id'],
 			$command
 		);
 

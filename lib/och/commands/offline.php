@@ -32,7 +32,7 @@ class Offline extends ChatAPI {
 	private function sendOfflineMsg(){
 		// first check if we're really offline
 		$mapper = $this->c['UserOnlineMapper'];
-		$sessions = $mapper->findByUser($this->requestData['user']['backends']['och']['value']);
+		$sessions = $mapper->findByUser($this->requestData['user']['id']);
 		if(count($sessions) === 0){
 			$command = json_encode(array(
 				'type' => 'offline',
@@ -45,7 +45,7 @@ class Offline extends ChatAPI {
 			$userOnlineMapper = $this->c['UserOnlineMapper'];
 			$users = $userOnlineMapper->getAll();
 
-			$sender = $this->requestData['user']['backends']['och']['value'];
+			$sender = $this->requestData['user']['id'];
 			$pushMessageMapper = $this->c['PushMessageMapper'];
 
 			foreach($users as $user){

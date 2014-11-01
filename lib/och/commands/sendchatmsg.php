@@ -45,7 +45,7 @@ class SendChatMsg extends ChatAPI {
 			)
 		));
 
-		$sender = $this->requestData['user']['backends']['och']['value'];
+		$sender = $this->requestData['user']['id'];
 		$pushMessageMapper = $this->c['PushMessageMapper'];
 
 		if(!isset($this->requestData['send_to_sender'])){
@@ -78,7 +78,7 @@ class SendChatMsg extends ChatAPI {
 		$message = new Message();
 		$message->setConvid($this->requestData['conv_id']);
 		$message->setTimestamp($this->requestData['timestamp']);
-		$message->setUser($this->requestData['user']['backends']['och']['value']);
+		$message->setUser($this->requestData['user']['id']);
 		$message->setMessage($this->requestData['chat_msg']);
 		$messageMapper->insert($message);
 	}

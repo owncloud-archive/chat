@@ -122,7 +122,7 @@ class OCH implements IBackend {
 	}
 
 	public function isEnabled(){
-		return false;
+		return \OCP\Config::getAppValue('chat', 'backend_och_enabled', true);
 	}
 
 	public function getConfig(){

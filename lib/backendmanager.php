@@ -47,4 +47,8 @@ class BackendManager implements IBackendManager {
 		}
 	}
 
+	public function getBackends(){
+		return self::$backends;
+	}
+
 }

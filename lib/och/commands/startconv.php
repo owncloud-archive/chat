@@ -28,10 +28,10 @@ class StartConv extends ChatAPI {
 		// (1) generate a conv id
 		$ids = array();
 		foreach($this->requestData['user_to_invite'] as $userToInvite){
-			$ids[] = $userToInvite['backends']['och']['value'];
+			$ids[] = $userToInvite['id'];
 		}
 		// always add our selve to the array for the conv id
-		$ids[] = $this->requestData['user']['backends']['och']['value'];
+		$ids[] = $this->requestData['user']['id'];
 
 		// (2) check if conv id exists
 		$convMapper = $this->c['ConversationMapper'];
@@ -55,7 +55,7 @@ class StartConv extends ChatAPI {
 		$requestData['conv_id'] = $id;
 		$requestData['user'] = $this->requestData['user'];
 		foreach($this->requestData['user_to_invite'] as $userToInvite){
-			if($userToInvite['backends']['och']['value'] !== $this->requestData['user']['backends']['och']['value']){
+			if($userToInvite['id'] !== $this->requestData['user']['id']){
 				$requestData['user_to_invite'] = $userToInvite;
 				$invite->setRequestData($requestData);
 				$invite->execute();

@@ -73,9 +73,9 @@ class RemoveFile extends ChatAPI {
             )
         ));
         foreach($users as $receiver) {
-            if($receiver->getUser() !== $this->requestData['user']['backends']['och']['value']) {
+            if($receiver->getUser() !== $this->requestData['user']['id']) {
                 $pushMessage = new PushMessage();
-                $pushMessage->setSender($this->requestData['user']['backends']['och']['value']);
+                $pushMessage->setSender($this->requestData['user']['id']);
                 $pushMessage->setReceiver($receiver->getUser());
                 $pushMessage->setReceiverSessionId($receiver->getSessionId());
                 $pushMessage->setCommand($command);

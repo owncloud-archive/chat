@@ -1,0 +1,25 @@
+.backend-config-header {
+	font-weight: bold;
+	margin-left:10px;
+}
+
+#app-settings-content{
+}
+
+.backend-config-value  {
+	width:150px !important;
+	margin: 0 !important;
+	float:left;
+}
+
+.backend-config-label {
+	width:80px !important;
+	margin: 0 !important;
+	float:left;
+	margin-top:8px !important;
+}
+
+.backend-config-save {
+	margin-left: 10px;
+	width:80px;
+}

@@ -31,10 +31,10 @@ class ConfigMapper extends Mapper {
 				WHERE
 					`user` = ?
 				AND
-					`backend` = 'xmpp'
+					`backend` = ?
 SQL;
 		$values = array();
-		$result = $this->findEntities($sql, array($this->user));
+		$result = $this->findEntities($sql, array($this->user, $backend));
 		foreach ($result as $r) {
 			$values[$r->getKey()]  = $r->getValue();
 		}
@@ -46,8 +46,20 @@ SQL;
 	 * @param $key key of the config value
 	 * @param $value the config value
 	 */
-	public function setConfigValue($backend, $key, $value){
-
+	public function set($backend, $key, $value){
+		$sql = <<<SQL
+				UPDATE
+					`*PREFIX*chat_config`
+				SET
+					`value` = ?
+				WHERE
+					`user` = ?
+				AND
+					`backend` = ?
+				AND
+					`key` = ?
+SQL;
+		$this->execute($sql, array($value, $this->user, $backend, $key));
 	}
 
 

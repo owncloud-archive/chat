@@ -4,7 +4,7 @@
  * See the COPYING file.
  */
 angular.module('chat', ['ngSanitize', 'bernhardposselt.enhancetext']);
-angular.module('chat').config(['enhanceTextFilterProvider', function (enhanceTextFilterProvider) {
+angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', function (enhanceTextFilterProvider, $httpProvider) {
 	enhanceTextFilterProvider.setOptions({
 		embeddedImagesHeight: '150px',
 		smilies: {
@@ -94,6 +94,7 @@ angular.module('chat').config(['enhanceTextFilterProvider', function (enhanceTex
 			':yum:' : OC.imagePath('chat', '/emoji/yum.png'),
 		}
 	});
+	$httpProvider.defaults.headers.common.requesttoken = oc_requesttoken;
 }]);
 function tran(id, vars){
 	var text = 	$('#' + id).text();

@@ -16,9 +16,15 @@ abstract class AbstractBackend implements IBackend {
 	 */
 	protected $c;
 
+	/**
+	 * @var \OCA\Chat\Db\ConfigMapper
+	 */
+	private $configMapper;
+
 	function __construct(Chat $app){
 		$this->app = $app;
 		$this->c = $app->getContainer();
+		$this->configMapper = $this->c['ConfigMapper'];
 	}
 
 	public function hasProtocol($protocol){
@@ -44,7 +50,8 @@ abstract class AbstractBackend implements IBackend {
 	}
 
 	public function getConfig(){
-		return array();
+		$config = $this->configMapper->getByBackend($this->getId());
+		return $config;
 	}
 
 }

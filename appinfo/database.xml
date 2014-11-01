@@ -194,4 +194,40 @@
             </field>
         </declaration>
     </table>
+    <table>
+        <name>*dbprefix*chat_config</name>
+        <declaration>
+            <field>
+                <name>id</name>
+                <type>integer</type>
+                <notnull>true</notnull>
+                <autoincrement>1</autoincrement>
+                <length>4</length>
+            </field>
+            <field>
+                <name>user</name>
+                <type>text</type>
+                <notnull>true</notnull>
+                <length>255</length>
+            </field>
+            <field>
+                <name>key</name>
+                <type>text</type>
+                <notnull>true</notnull>
+                <length>25555</length>
+            </field>
+            <field>
+                <name>value</name>
+                <type>text</type>
+                <notnull>true</notnull>
+                <length>25555</length>
+            </field>
+            <field>
+                <name>backend</name>
+                <type>text</type>
+                <notnull>true</notnull>
+                <length>25555</length>
+            </field>
+        </declaration>
+    </table>
 </database>

@@ -4,25 +4,9 @@ namespace OCA\Chat\XMPP;
 
 use \OCA\Chat\IBackend;
 use \OCA\Chat\App\Chat;
+use \OCA\Chat\AbstractBackend;
 
-class XMPP implements IBackend {
-
-	private static $initConvs = array();
-
-	/**
-	 * @var \OCA\Chat\App\Chat
-	 */
-	private $app;
-
-	/**
-	 * @var \OCP\AppFramework\IAppContainer
-	 */
-	private $c;
-
-	function __construct(Chat $app){
-		$this->app = $app;
-		$this->c = $app->getContainer();
-	}
+class XMPP extends AbstractBackend implements IBackend {
 
 	public function getId(){
 		return 'xmpp';
@@ -64,30 +48,5 @@ class XMPP implements IBackend {
 		);
 	}
 
-	public function hasProtocol($protocol){
-		if(in_array($protocol, $this->getProtocols())){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function isEnabled(){
-		return \OCP\Config::getAppValue('chat', 'backend_xmpp_enabled', true);
-	}
-
-	public function getConfig(){
-		return array();
-	}
-
-	public function toArray(){
-		$result = array();
-		$result['id'] = $this->getId();
-		$result['enabled'] = $this->isEnabled();
-		$result['displayname'] = $this->getDisplayName();
-		$result['protocols'] = $this->getProtocols();
-		$result['config'] = $this->getConfig();
-		return $result;
-	}
 
 }

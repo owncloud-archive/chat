@@ -46,6 +46,7 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 	<div id="app-content">
 		<?php print_unescaped($this->inc('part.chat')) ?>
 		<?php print_unescaped($this->inc('part.no-users')) ?>
+		<?php print_unescaped($this->inc('part.no-backends')) ?>
 	</div>
 	<?php print_unescaped($this->inc('part.invite')) ?>
 	<?php print_unescaped($this->inc('part.files')) ?>

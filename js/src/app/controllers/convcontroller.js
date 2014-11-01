@@ -217,7 +217,7 @@ angular.module('chat').controller(
 			$scope.convs =  convs.convs; // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
 
 			$scope.contacts = contacts.contacts  // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
-
+			$scope.backends = backends;
 
 			/**
 			 * @var {object} initConvs

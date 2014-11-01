@@ -4,26 +4,9 @@ namespace OCA\Chat\OCH;
 
 use \OCA\Chat\IBackend;
 use \OCA\Chat\App\Chat;
+use \OCA\Chat\AbstractBackend;
 
-class OCH implements IBackend {
-
-
-	private static $initConvs = array();
-
-	/**
-	 * @var \OCA\Chat\App\Chat
-	 */
-	private $app;
-
-	/**
-	 * @var \OCP\AppFramework\IAppContainer
-	 */
-	private $c;
-
-	function __construct(Chat $app){
-		$this->app = $app;
-		$this->c = $app->getContainer();
-	}
+class OCH extends AbstractBackend implements IBackend {
 
 	public function getId(){
 		return 'och';
@@ -113,32 +96,4 @@ class OCH implements IBackend {
 		return array('x-owncloud-handle');
 	}
 
-	public function hasProtocol($protocol){
-		if(in_array($protocol, $this->getProtocols())){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function isEnabled(){
-		return \OCP\Config::getAppValue('chat', 'backend_och_enabled', true);
-	}
-
-	public function getConfig(){
-		return array(
-			"file_attachments" => true,
-		);
-	}
-
-	public function toArray(){
-		$result = array();
-		$result['id'] = $this->getId();
-		$result['enabled'] = $this->isEnabled();
-		$result['displayname'] = $this->getDisplayName();
-		$result['protocols'] = $this->getProtocols();
-		$result['config'] = $this->getConfig();
-		return $result;
-	}
-	
 }

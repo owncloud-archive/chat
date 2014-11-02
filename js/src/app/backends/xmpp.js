@@ -1,4 +1,4 @@
-angular.module('chat').factory('xmpp', ['convs', 'contacts', function(convs, contacts) {
+angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function(convs, contacts, initvar) {
 	$XMPP = {
 		on : {
 			chatMessage : function(msg, from){
@@ -17,7 +17,9 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', function(convs, con
 			disconnected : function(){
 
 			}
-		}
+		},
+		jid: initvar.backends.xmpp.config.jid,
+		password: initvar.backends.xmpp.config.password
 	};
 	var onMessage = function(msg){
 		var to = msg.getAttribute('to');
@@ -37,17 +39,18 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', function(convs, con
 			log('Strophe is connecting.');
 		} else if (status == Strophe.Status.CONNFAIL) {
 			log('Strophe failed to connect.');
-			$('#connect').get(0).value = 'connect';
+			initvar.backends.xmpp.connected = false;
 		} else if (status == Strophe.Status.DISCONNECTING) {
 			log('Strophe is disconnecting.');
+			initvar.backends.xmpp.connected = false;
 		} else if (status == Strophe.Status.DISCONNECTED) {
 			log('Strophe is disconnected.');
-			$('#connect').get(0).value = 'connect';
+			initvar.backends.xmpp.connected = false;
 		} else if (status == Strophe.Status.CONNECTED) {
 			log('Strophe is connected.');
 			log('ECHOBOT: Send a message to ' + connection.jid +
 			' to talk to me.');
-
+			initvar.backends.xmpp.connected = true;
 			connection.addHandler(onMessage, null, 'message', null, null, null);
 			connection.send($pres().tree());
 		}
@@ -61,19 +64,16 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', function(convs, con
 
 	return {
 		BOSH_SERVICE : '/http-bind/',
-		jid: 'admin@33.33.33.66/test',
-		pass: 'admin',
 		init : function(){
 			// Create connection
 			connection = new Strophe.Connection(this.BOSH_SERVICE);
-			connection.connect(this.jid, this.pass, onConnect);
+			connection.connect($XMPP.jid, $XMPP.password, onConnect);
 		},
 		quit : function(){
 		},
 		sendChatMsg : function(convId, msg){
 			var reply = $msg({to: convId, from: this.jid , type: 'chat'}).c('body', null,msg
 			);
-			console.log(reply.toString());
 			connection.send(reply.tree());
 		},
 		invite : function(convId, userToInvite, groupConv, callback){
@@ -84,5 +84,11 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', function(convs, con
 		},
 		removeFile : function(convId, path){
 		},
+		configChanged : function(){
+			$XMPP.jid = initvar.backends.xmpp.config.jid;
+			$XMPP.password = initvar.backends.xmpp.config.password;
+			connection.disconnect();
+			this.init();
+		}
 	};
 }]);

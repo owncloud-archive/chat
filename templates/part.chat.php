@@ -61,7 +61,14 @@
 				<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 			</div>
 			<div id="chat-msg-input">
-				<textarea  id="chat-msg-input-field" autocomplete="off" ng-model="fields.chatMsg"  ng-enter="sendChatMsg()" placeholder="<?php p($l->t('Chat Message')); ?>"></textarea>
+				<textarea
+					id="chat-msg-input-field"
+					autocomplete="off"
+					ng-model="fields.chatMsg"
+					ng-enter="sendChatMsg()"
+					placeholder="<?php p($l->t('Chat Message')); ?>"
+					ng-disabled="$parent.backends[$parent.convs[$parent.$session.conv].backend.id].connected !== true"
+				></textarea>
 			</div>
 		</form>
 	</footer>

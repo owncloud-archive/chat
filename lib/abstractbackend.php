@@ -42,6 +42,7 @@ abstract class AbstractBackend implements IBackend {
 		$result['displayname'] = $this->getDisplayName();
 		$result['protocols'] = $this->getProtocols();
 		$result['config'] = $this->getConfig();
+		$result['connected'] = false;
 		return $result;
 	}
 

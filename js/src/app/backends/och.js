@@ -1,4 +1,4 @@
-angular.module('chat').factory('och', ['convs', 'contacts', 'session', function(convs, contacts, $session) {
+angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar', function(convs, contacts, $session, initvar) {
 	var api = {
 		command: {
 			attachFile : function(convId, paths, user){
@@ -242,6 +242,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', function(
 		init : function(){
 			api.util.longPoll();
 			setInterval(api.command.online, 6000);
+			initvar.backends.och.connected = true;
 		},
 		quit : function(){
 			api.command.offline();
@@ -273,6 +274,8 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', function(
 		},
 		removeFile : function(convId, path){
 			api.command.removeFile(convId, path);
+		},
+		configChanged : function(){
 		}
 	};
 }]);

@@ -31,6 +31,12 @@ angular.module('chat').controller(
 				$http.post(OC.generateUrl('/apps/chat/config/set'), {backends: $scope.backends}).
 					success(function(data, status, headers, config) {
 						$scope.status = 'saved';
+						// the backend configuration has changed
+						// inform the backend
+						for (var key in backends){
+							var backend = backends[key];
+							backend.handle.configChanged();
+						}
 					}).
 					error(function(data, status, headers, config) {
 						$scope.status = 'error';

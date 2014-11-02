@@ -3,6 +3,9 @@
 namespace OCA\Chat\Controller;
 
 use \OCP\AppFramework\Controller;
+use \OCP\AppFramework\Http\JSONResponse;
+use \OCP\AppFramework\Http;
+
 
 class ConfigController extends Controller {
 
@@ -28,6 +31,9 @@ class ConfigController extends Controller {
 				$this->configMapper->set($backend['id'], $key, $value);
 			}
 		}
-	}
 
+		$res = new JSONResponse();
+		$res->setStatus(Http::STATUS_OK);
+		return $res;
+	}
 }

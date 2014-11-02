@@ -2,6 +2,7 @@
 
 namespace OCA\Chat\Db;
 
+use OCP\AppFramework\Db\DoesNotExistException;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -47,7 +48,8 @@ SQL;
 	 * @param $value the config value
 	 */
 	public function set($backend, $key, $value){
-		$sql = <<<SQL
+		if($this->hasKey($backend, $key, $value)){
+			$sql = <<<SQL
 				UPDATE
 					`*PREFIX*chat_config`
 				SET
@@ -59,8 +61,47 @@ SQL;
 				AND
 					`key` = ?
 SQL;
-		$this->execute($sql, array($value, $this->user, $backend, $key));
+			$this->execute($sql, array($value, $this->user, $backend, $key));
+		} else {
+			$sql = <<<SQL
+				INSERT
+				INTO
+					`*PREFIX*chat_config`
+				(
+					`user`,
+					`key`,
+					`value`,
+					`backend`
+				) VALUES (
+					?,
+					?,
+					?,
+					?
+				)
+SQL;
+			$this->execute($sql, array($this->user, $key, $value, $backend));
+		}
 	}
 
-
+	public function hasKey($backend, $key, $value){
+		try {
+			$sql = <<<SQL
+			SELECT
+				*
+			FROM
+				`*PREFIX*chat_config`
+			WHERE
+				`backend` = ?
+			AND
+				`key` = ?
+			AND
+				`user` = ?
+SQL;
+			$this->findEntity($sql, array($backend, $key, $this->user));
+			return true;
+		} catch (DoesNotExistException $e){
+			return false;
+		}
+	}
+	
 }

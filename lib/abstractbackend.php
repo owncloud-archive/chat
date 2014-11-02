@@ -51,6 +51,12 @@ abstract class AbstractBackend implements IBackend {
 
 	public function getConfig(){
 		$config = $this->configMapper->getByBackend($this->getId());
+		$defaultConfig = $this->getDefaultConfig();
+
+		$configNotInDB = array_diff_key($defaultConfig, $config);
+		foreach ($configNotInDB as $key=>$value){
+			$config[$key] = $value;
+		}
 		return $config;
 	}
 

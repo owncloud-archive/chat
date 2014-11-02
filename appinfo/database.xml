@@ -219,7 +219,7 @@
             <field>
                 <name>value</name>
                 <type>text</type>
-                <notnull>true</notnull>
+                <notnull>false</notnull>
                 <length>25555</length>
             </field>
             <field>

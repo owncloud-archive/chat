@@ -54,4 +54,10 @@ interface IBackend{
 	 * @return array
 	 */
 	public function toArray();
+
+	/**
+	 * Default config values
+	 * @return array
+	 */
+	public function getDefaultConfig();
 }

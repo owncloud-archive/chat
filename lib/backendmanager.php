@@ -20,7 +20,6 @@ class BackendManager implements IBackendManager {
 			self::$backends[$backend->getId()] = $backend;
 		}
 	}
-
 	public static function unRegisterBackend(IBackend $backend){
 		unset(self::$backends[$backend->getId()]);
 	}

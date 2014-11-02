@@ -231,9 +231,9 @@ class Chat extends App{
 
 	}
 
-	public function registerBackend(IBackend $chat){
-		$backendManager =$this->c['BackendManager'];
-		$backendManager::registerBackend($chat);
+	public function registerBackend(IBackend $backend){
+		$backendManager = $this->c['BackendManager'];
+		$backendManager::registerBackend($backend);
 	}
 
 	/**

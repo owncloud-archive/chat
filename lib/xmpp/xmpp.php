@@ -48,5 +48,12 @@ class XMPP extends AbstractBackend implements IBackend {
 		);
 	}
 
+	public function getDefaultConfig(){
+		return array(
+			'jid' => null,
+			"password" => null
+		);
+	}
+
 
 }

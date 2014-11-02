@@ -96,4 +96,9 @@ class OCH extends AbstractBackend implements IBackend {
 		return array('x-owncloud-handle');
 	}
 
+
+	public function getDefaultConfig(){
+		return array(
+		);
+	}
 }

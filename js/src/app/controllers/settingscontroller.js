@@ -23,15 +23,17 @@ angular.module('chat').controller(
 
 			$scope.backends = backends;
 
+
+			$scope.status = null;
+
 			$scope.save = function(){
-				console.log($scope.backends.xmpp.config);
+				$scope.status = 'saving';
 				$http.post(OC.generateUrl('/apps/chat/config/set'), {backends: $scope.backends}).
 					success(function(data, status, headers, config) {
-						alert('success');
-						console.log(status);
+						$scope.status = 'saved';
 					}).
 					error(function(data, status, headers, config) {
-						alert('error');
+						$scope.status = 'error';
 					});
 			};
 		}

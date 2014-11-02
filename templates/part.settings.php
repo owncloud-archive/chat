@@ -21,12 +21,13 @@
 							<label class="backend-config-label">
 								{{ key }}
 							</label>
-							<input type="text" class="backend-config-value" ng-model="$parent.$parent.backend.config[key]" value="{{ value }}">
+							<input type="text" ng-disabled="$parent.$parent.status === 'saving'" class="backend-config-value" ng-model="$parent.$parent.backend.config[key]" value="{{ value }}">
 						</li>
 					</ul>
 				</il>
 			</ul>
-			<button class="primary backend-config-save">Save</button>
+			<button ng-if="status === 'saving'" class="primary backend-config-save" disabled="disabled">Saving</button>
+			<button ng-if="status !== 'saving'" class="primary backend-config-save">Save</button>
 		</form>
 	</div>
 </div>

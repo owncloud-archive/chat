@@ -11,6 +11,8 @@ $TRANSLATIONS = array(
 "Download " => "ダウンロード",
 "Attach more files" => "添付ファイルの追加",
 "Search in users" => "ユーザーを検索",
+"There are no Chat Backends enabled." => "有効なチャットのバックエンドがありません。",
+"In order to chat please enable at least one Chat backend." => "チャットをするには､少なくとも１つのチャットバックエンドを有効にしてください。",
 "There are no other users on this ownCloud." => "このownCloudには他のユーザーはいません。",
 "In order to chat please create at least one user, it will appear on the left." => "チャットする場合には、最低1名ユーザーを追加してください。ユーザーは左側に表示されます。"
 );

@@ -11,6 +11,10 @@ $TRANSLATIONS = array(
 "Download " => "Scarica",
 "Attach more files" => "Allegato altri file",
 "Search in users" => "Cerca tra gli utenti",
+"There are no Chat Backends enabled." => "Non è stato abilitato alcun motore di chat.",
+"In order to chat please enable at least one Chat backend." => "Per iniziare una chat, abilita almeno un motore di chat.",
+"With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." => "Con il motore 'OCH' puoi creare chat con gli altri utenti di ownCloud. Funziona senza alcuna configurazione.",
+"It can be enabled by running the following command in the root of your owncloud installation:" => "Può essere abilitato eseguendo il comando seguente nella radice della\ntua installazione di owncloud:",
 "There are no other users on this ownCloud." => "Non ci sono altri utenti in questo ownCloud.",
 "In order to chat please create at least one user, it will appear on the left." => "Per iniziare una chat, crea almeno un utente, apparirà a sinistra."
 );

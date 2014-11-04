@@ -19,6 +19,19 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', function($filt
 		*/
 		markOffline : function(id){
 			this.contacts[id].online = false;
+		},
+		findByBackendValue : function(backendId, value){
+			for (var key in this.contacts){
+				var contact = this.contacts[key];
+				for (var backendKey in contact.backends){
+					var backend = contact.backends[backendKey];
+
+					if (backend.id === backendId && backend.value === value){
+						console.log('contact ' + key);
+						return this.contacts[key];
+					}
+				}
+			}
 		}
 	};
 }]);

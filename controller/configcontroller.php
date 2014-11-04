@@ -25,6 +25,11 @@ class ConfigController extends Controller {
 		$this->configMapper = $this->c['ConfigMapper'];
 	}
 
+	/**
+	 * @NoAdminRequired
+	 * @param $backends
+	 * @return JSONResponse
+	 */
 	public function set($backends){
 		foreach($backends as $backend){
 			foreach($backend['config'] as $key=>$value){

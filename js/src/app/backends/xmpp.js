@@ -5,10 +5,10 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				var convId = from.substring(0, from.indexOf('/'));
 				convs.addChatMsg(
 					convId,
-					contacts.contacts[1],
+					contacts.findByBackendValue('xmpp', convId),
 					msg,
 					Time.now(),
-					'och'
+					'xmpp'
 				);
 			},
 			connected : function(){
@@ -19,7 +19,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 			}
 		},
 		jid: initvar.backends.xmpp.config.jid,
-		password: initvar.backends.xmpp.config.password
+		password: initvar.backends.xmpp.config.password,
+		conn : null
 	};
 	var onMessage = function(msg){
 		var to = msg.getAttribute('to');
@@ -48,11 +49,14 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 			initvar.backends.xmpp.connected = false;
 		} else if (status == Strophe.Status.CONNECTED) {
 			log('Strophe is connected.');
-			log('ECHOBOT: Send a message to ' + connection.jid +
+			log('ECHOBOT: Send a message to ' + $XMPP.con.jid +
 			' to talk to me.');
 			initvar.backends.xmpp.connected = true;
-			connection.addHandler(onMessage, null, 'message', null, null, null);
-			connection.send($pres().tree());
+			$XMPP.con.addHandler(onMessage, null, 'message', null, null, null);
+			$XMPP.con.send($pres().tree());
+		} else if (status == Strophe.Status.AUTHFAIL){
+			// TODO
+			alert('auth fail');
 		}
 	};
 
@@ -60,21 +64,26 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		console.log(msg);
 	}
 
-	var connection = null;
+	//var connection = null;
+
+	Strophe.log = function (level, msg) {
+		console.log(msg);
+	};
 
 	return {
 		BOSH_SERVICE : '/http-bind/',
 		init : function(){
-			// Create connection
-			connection = new Strophe.Connection(this.BOSH_SERVICE);
-			connection.connect($XMPP.jid, $XMPP.password, onConnect);
+			//$XMPP.
+			//Create connection
+			$XMPP.con = new Strophe.Connection(this.BOSH_SERVICE);
+			$XMPP.con.connect($XMPP.jid, $XMPP.password, onConnect);
 		},
 		quit : function(){
 		},
 		sendChatMsg : function(convId, msg){
-			var reply = $msg({to: convId, from: this.jid , type: 'chat'}).c('body', null,msg
+			var reply = $msg({to: convId, from: $XMPP.jid , type: 'chat'}).c('body', null,msg
 			);
-			connection.send(reply.tree());
+			$XMPP.con.send(reply.tree());
 		},
 		invite : function(convId, userToInvite, groupConv, callback){
 		},
@@ -87,7 +96,9 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		configChanged : function(){
 			$XMPP.jid = initvar.backends.xmpp.config.jid;
 			$XMPP.password = initvar.backends.xmpp.config.password;
-			connection.disconnect();
+			if($XMPP.con !== null) {
+				$XMPP.con.disconnect();
+			}
 			this.init();
 		}
 	};

@@ -11,6 +11,7 @@ $TRANSLATIONS = array(
 "Download " => "Скачать",
 "Attach more files" => "Прикрепить больше файлов",
 "Search in users" => "Поиск в пользователях",
+"It can be enabled by running the following command in the root of your owncloud installation:" => "Его можно включить, запустив следующую команду в корневой директории установленного owncloud:",
 "There are no other users on this ownCloud." => "У Вас нет других пользователей.",
 "In order to chat please create at least one user, it will appear on the left." => "Для использования чата, пожалуйста добавьте хотя бы одного пользователя, он появится слева."
 );

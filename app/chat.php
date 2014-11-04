@@ -450,7 +450,12 @@ class Chat extends App{
 	 * @return string current ownCloud user id
 	 */
 	public function getUserId(){
-		return $this->c['UserSession']->getUser()->getUID();
+		$user = $this->c['UserSession']->getUser();
+		if (is_object($user)){
+			return $user->getUID();
+		} else {
+			return null;
+		}
 	}
 
 }

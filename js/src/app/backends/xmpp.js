@@ -20,52 +20,48 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		},
 		jid: initvar.backends.xmpp.config.jid,
 		password: initvar.backends.xmpp.config.password,
-		conn : null
-	};
-	var onMessage = function(msg){
-		var to = msg.getAttribute('to');
-		var from = msg.getAttribute('from');
-		var type = msg.getAttribute('type');
-		var elems = msg.getElementsByTagName('body');
+		conn : null,
+		_onMessage : function(msg){
+			var to = msg.getAttribute('to');
+			var from = msg.getAttribute('from');
+			var type = msg.getAttribute('type');
+			var elems = msg.getElementsByTagName('body');
 
-		if (type == "chat" && elems.length > 0) {
-			var body = elems[0];
-			$XMPP.on.chatMessage(Strophe.getText(body), from);
-		}
-		return true;
-	};
-
-	var onConnect = function(status) {
-		if (status == Strophe.Status.CONNECTING) {
-			log('Strophe is connecting.');
-		} else if (status == Strophe.Status.CONNFAIL) {
-			log('Strophe failed to connect.');
-			initvar.backends.xmpp.connected = false;
-		} else if (status == Strophe.Status.DISCONNECTING) {
-			log('Strophe is disconnecting.');
-			initvar.backends.xmpp.connected = false;
-		} else if (status == Strophe.Status.DISCONNECTED) {
-			log('Strophe is disconnected.');
-			initvar.backends.xmpp.connected = false;
-		} else if (status == Strophe.Status.CONNECTED) {
-			log('Strophe is connected.');
-			log('ECHOBOT: Send a message to ' + $XMPP.con.jid +
-			' to talk to me.');
-			initvar.backends.xmpp.connected = true;
-			$XMPP.con.addHandler(onMessage, null, 'message', null, null, null);
-			$XMPP.con.send($pres().tree());
-		} else if (status == Strophe.Status.AUTHFAIL){
-			// TODO
-			alert('auth fail');
+			if (type == "chat" && elems.length > 0) {
+				var body = elems[0];
+				$XMPP.on.chatMessage(Strophe.getText(body), from);
+			}
+			return true;
+		},
+		_onConnect : function(status){
+			if (status == Strophe.Status.CONNECTING) {
+				log('Strophe is connecting.');
+			} else if (status == Strophe.Status.CONNFAIL) {
+				log('Strophe failed to connect.');
+				initvar.backends.xmpp.connected = false;
+			} else if (status == Strophe.Status.DISCONNECTING) {
+				log('Strophe is disconnecting.');
+				initvar.backends.xmpp.connected = false;
+			} else if (status == Strophe.Status.DISCONNECTED) {
+				log('Strophe is disconnected.');
+				initvar.backends.xmpp.connected = false;
+			} else if (status == Strophe.Status.CONNECTED) {
+				log('Strophe is connected.');
+				log('ECHOBOT: Send a message to ' + $XMPP.con.jid +
+				' to talk to me.');
+				initvar.backends.xmpp.connected = true;
+				$XMPP.con.addHandler($XMPP._onMessage, null, 'message', null, null, null);
+				$XMPP.con.send($pres().tree());
+			} else if (status == Strophe.Status.AUTHFAIL){
+				// TODO
+				alert('auth fail');
+			}
 		}
 	};
 
 	var log = function(msg){
 		console.log(msg);
 	}
-
-	//var connection = null;
-
 	Strophe.log = function (level, msg) {
 		console.log(msg);
 	};
@@ -76,7 +72,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 			//$XMPP.
 			//Create connection
 			$XMPP.con = new Strophe.Connection(this.BOSH_SERVICE);
-			$XMPP.con.connect($XMPP.jid, $XMPP.password, onConnect);
+			$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
 		},
 		quit : function(){
 		},

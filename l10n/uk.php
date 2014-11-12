@@ -11,6 +11,10 @@ $TRANSLATIONS = array(
 "Download " => "Скачати",
 "Attach more files" => "Додати більше файлів",
 "Search in users" => "Пошук користувачів",
+"There are no Chat Backends enabled." => "Не ввімкнено жодного додатку для Чату",
+"In order to chat please enable at least one Chat backend." => "Щоб розпочати чат, ввімкніть, будь ласка, хоча б один додаток Чату.",
+"With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." => "Користуючись додатком 'OCH', ви зможете спілкуватися з іншими користувачами ownCloud. Він працює без додаткових налаштувань.",
+"It can be enabled by running the following command in the root of your owncloud installation:" => "Його можна ввімкнути, запустивши наступну команду в кореневій теці owncloud:",
 "There are no other users on this ownCloud." => "Тут немае інших користувачів ownCloud.",
 "In order to chat please create at least one user, it will appear on the left." => "Для того, щоб побалакати будь ласка, створіть хоча б одного користувача, він з'явиться зліва."
 );

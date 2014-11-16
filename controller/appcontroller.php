@@ -25,7 +25,7 @@ class AppController extends Controller {
 		parent::__construct($appName, $request);
 		$this->app = $app;
 		$this->c = $app->getContainer();
-        $this->cm = $cm;
+		$this->cm = $cm;
 	}
 
 	/**
@@ -72,18 +72,17 @@ class AppController extends Controller {
 		return new JSONResponse($this->app->getContacts());
 	}
 
-    /**
-     * @NoAdminRequired
-     * @return JSONResponse
-     */
-    public function addContact($contacts){
-        var_export($contacts);
-        $result = array();
-        foreach ($contacts as $contact){
-            $r = $this->cm->createOrUpdate($contact, 'local:1');
-            $result[$r['id']] = $r;
-        }
-        return $result;
-    }
+	/**
+	 * @NoAdminRequired
+	 * @return JSONResponse
+	 */
+	public function addContact($contacts){
+		$result = array();
+		foreach ($contacts as $contact){
+			$r = $this->cm->createOrUpdate($contact, 'local:1');
+			$result[$r['id']] = $r;
+		}
+		return $result;
+	}
 
 }

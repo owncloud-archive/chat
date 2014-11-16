@@ -37,8 +37,7 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 		addContacts: function (contacts) {
 			$http.post(OC.generateUrl('/apps/chat/contacts/add/'), {contacts: contacts}).
 				success(function(data, status, headers, config) {
-					// this callback will be called asynchronously
-					// when the response is available
+					$.extend(this.contacts, data);
 				}).
 				error(function(data, status, headers, config) {
 					// called asynchronously if an error occurs

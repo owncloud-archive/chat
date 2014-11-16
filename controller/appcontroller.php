@@ -77,12 +77,21 @@ class AppController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function addContact($contacts){
-		$result = array();
+		// Create contacts
+		$ids = array();
 		foreach ($contacts as $contact){
 			$r = $this->cm->createOrUpdate($contact, 'local:1');
-			$result[$r['id']] = $r;
+			$ids[] = $r->getId();
 		}
-		return $result;
+
+		// Return just created contacts as contacts which can be used by the Chat app
+		$contacts =  $this->app->getContacts();
+		$newContacts = array();
+		foreach ($ids as $id){
+			$newContacts[$id] = $contacts['contactsObj'][$id];
+		}
+
+		return $newContacts;
 	}
 
 }

@@ -7,6 +7,7 @@
 
 namespace OCA\Chat\OCH\Push;
 
+use OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
 use \OCA\Chat\Db\DoesNotExistException;
@@ -17,39 +18,36 @@ class Get extends ChatAPI{
 
 	private $cycles = 0;
 
-	private $state;
+	private $pushMessages = array();
 	public function setRequestData(array $requestData){
 		$this->requestData = $requestData;
 	}
 
 	public function execute(){
 		session_write_close();
-		try {
-			if($this->cycles > (ini_get('max_execution_time') - 5)){
-				$this->state = 'TIME-EXCEEDED';
-			} else {
-				$mapper = $this->c['PushMessageMapper']; // inject API class for db access
-				$this->pushMessages = $mapper->findBysSessionId($this->requestData['session_id']);
+		$mapper = $this->c['PushMessageMapper'];
 
-				$this->state = 'PUSH';
+		do {
+			if ($this->cycles > 0){
+				sleep(1);
 			}
-		} catch(DoesNotExistException $e){
-			sleep(1);
+			try {
+				$this->pushMessages = $mapper->findBysSessionId($this->requestData['session_id']);
+				break;
+			} catch(DoesNotExistException $e){
+			}
 			$this->cycles++;
-			$this->execute();
-		}
+		} while ($this->cycles < 50);
 
-		if($this->state === 'TIME-EXCEEDED'){
-			// out of time
-			return new Error('push', 'get', 'TIME_EXCEEDED');
-		} else {
-			// Found push Messages
+		if(count($this->pushMessages) > 0) {
 			$commands = array();
-			foreach($this->pushMessages as $pushMessage){
+			foreach ($this->pushMessages as $pushMessage) {
 				$command = json_decode($pushMessage->getCommand());
 				$commands[$pushMessage->getId()] = $command;
 			}
 			return new JSONResponse(array('push_msgs' => $commands));
+		} else {
+			return new Error('push', 'get', ApiController::TIME_EXCEEDED);
 		}
 	}
 }

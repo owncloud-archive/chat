@@ -35,6 +35,7 @@ class ApiController extends Controller {
 	const NO_CHAT_MSG = 13;
 	const NO_USER = 14;
     const NOT_OWNER_OF_FILE =15;
+	const TIME_EXCEEDED = 16;
 
 	public function __construct($appName, IRequest $request,  Chat $app){
 		parent::__construct($appName, $request);

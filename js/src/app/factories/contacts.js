@@ -1,4 +1,4 @@
-angular.module('chat').factory('contacts', ['$filter', 'initvar', function($filter, initvar) {
+angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', function($filter, initvar, $http) {
 	return {
 		contacts : initvar.contactsObj,
 		getHighestOrder : function(){
@@ -32,6 +32,18 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', function($filt
 					}
 				}
 			}
+			return false;
+		},
+		addContacts: function (contacts) {
+			$http.post(OC.generateUrl('/apps/chat/contacts/add/'), {contacts: contacts}).
+				success(function(data, status, headers, config) {
+					// this callback will be called asynchronously
+					// when the response is available
+				}).
+				error(function(data, status, headers, config) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+				});
 		}
 	};
 }]);

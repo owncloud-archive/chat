@@ -29,10 +29,7 @@ if (version_compare($version, '0.2.0.0', '<=')) {
 <!--<div ng-app="chat" ng-controller="ConvController"  id="app">-->
 <!--</div>-->
 <div
-	ng-click="	view.hide('invite', $event, ['invite-no-hide', 'invite-button']);
-				view.hide('files', $event, ['files-no-hide', 'file-element', 'files-button']);
-				view.hide('emojiContainer', $event, ['emoji-no-hide']);
-			 "
+	ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button']);view.hide('files', $event, ['files-no-hide', 'file-element', 'files-button']);view.hide('emojiContainer', $event, ['emoji-no-hide']);"
 	ng-controller="ConvController"
 	ng-app="chat"
 	id="app"

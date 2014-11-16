@@ -70,7 +70,8 @@ class Chat extends App{
 			return new AppController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$app
+				$app,
+                $c->query('ContactsManager')
 			);
 		});
 

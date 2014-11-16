@@ -47,15 +47,41 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				initvar.backends.xmpp.connected = false;
 			} else if (status == Strophe.Status.CONNECTED) {
 				log('Strophe is connected.');
-				log('ECHOBOT: Send a message to ' + $XMPP.con.jid +
-				' to talk to me.');
 				initvar.backends.xmpp.connected = true;
+
 				$XMPP.con.addHandler($XMPP._onMessage, null, 'message', null, null, null);
-				$XMPP.con.send($pres().tree());
+
+				// Get roster information
+				var iq = $iq({type: "get"}).c('query', {xmlns: "jabber:iq:roster"});
+				$XMPP.con.sendIQ(iq, $XMPP._processRoster);
+
+
 			} else if (status == Strophe.Status.AUTHFAIL){
 				// TODO
 				alert('auth fail');
 			}
+		},
+		_processRoster : function (iq) {
+			var contactsToAdd = [];
+			$(iq).find('item').each(function () {
+				// for each contact in the roster
+
+				var jid = $(this).attr('jid');
+				console.log('found item in roster with jid ' + jid);
+				var bareJid = Strophe.getBareJidFromJid(jid);
+				var name = $(this).attr('name') || jid;
+			
+				// Check if the contact is know 
+				var result = contacts.findByBackendValue('xmpp', bareJid);
+				if (!result) {
+					console.log('contact does not exists');
+					contactsToAdd.push({
+						"FN": name,
+						"IMPP": bareJid
+					});
+				}
+			});
+			contacts.addContacts(contactsToAdd);
 		}
 	};
 
@@ -63,16 +89,19 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		console.log(msg);
 	}
 	Strophe.log = function (level, msg) {
-		console.log(msg);
+		//console.log(msg);
 	};
 
 	return {
-		BOSH_SERVICE : '/http-bind/',
+		BOSH_SERVICE : 'http://xmpp.ledfan.eu:5280/http-bind/',
 		init : function(){
 			//$XMPP.
 			//Create connection
-			$XMPP.con = new Strophe.Connection(this.BOSH_SERVICE);
-			$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
+			if ($XMPP.jid !== null && $XMPP.jid !== '' && $XMPP.password !== null && $XMPP.password !== '') {
+				$XMPP.con = new Strophe.Connection(this.BOSH_SERVICE);
+				// Connect to XMPP sever
+				$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
+			}
 		},
 		quit : function(){
 		},

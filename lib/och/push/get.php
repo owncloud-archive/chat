@@ -38,7 +38,6 @@ class Get extends ChatAPI{
 			$this->cycles++;
 			$this->execute();
 		}
-
 		if($this->state === 'TIME-EXCEEDED'){
 			// out of time
 			return new Error('push', 'get', 'TIME_EXCEEDED');

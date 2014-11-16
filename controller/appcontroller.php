@@ -13,6 +13,7 @@ use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCA\Chat\App\Chat;
+use \OCP\Contacts\IManager;
 
 class AppController extends Controller {
 
@@ -20,10 +21,11 @@ class AppController extends Controller {
 
 	private $c;
 
-	public function __construct($appName, IRequest $request,  Chat $app){
+	public function __construct($appName, IRequest $request,  Chat $app, IManager $cm){
 		parent::__construct($appName, $request);
 		$this->app = $app;
 		$this->c = $app->getContainer();
+        $this->cm = $cm;
 	}
 
 	/**
@@ -69,5 +71,19 @@ class AppController extends Controller {
 		session_write_close();
 		return new JSONResponse($this->app->getContacts());
 	}
+
+    /**
+     * @NoAdminRequired
+     * @return JSONResponse
+     */
+    public function addContact($contacts){
+        var_export($contacts);
+        $result = array();
+        foreach ($contacts as $contact){
+            $r = $this->cm->createOrUpdate($contact, 'local:1');
+            $result[$r['id']] = $r;
+        }
+        return $result;
+    }
 
 }

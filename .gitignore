@@ -5,3 +5,4 @@ phpunit.phar
 node_modules
 js/vendor
 js/main.min.js
+/.project

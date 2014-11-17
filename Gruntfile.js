@@ -44,11 +44,23 @@ module.exports = function(grunt) {
 				src: 'js/src/bower_components/strophejs/strophe.js',
 				dest: 'js/vendor/strophe.js'
 			}
+		},
+		concat : {
+			dist : {
+				src: [
+					'js/src/chat.js',
+					'js/src/**/*.js',
+					'!js/src/bower_components/**/*.js',
+					'!js/src/vendor/**/*.js'
+				],
+				dest : 'js/main.min.js'
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.registerTask('default', ['uglify', 'cssmin']);
 
 };

@@ -34,15 +34,39 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 			}
 			return false;
 		},
+		/**
+		 * @param backendId The backend id
+		 * @return array The contacts which supports this backend
+		 */
+		findByBackend : function (backendId) {
+			var result = [];
+			for (var key in this.contacts){
+				var contact = this.contacts[key];
+				for (var backendKey in contact.backends){
+					var backend = contact.backends[backendKey];
+					if (backend.id === backendId){
+						result[key] = contact;
+					}
+				}
+			}
+			return result;
+		},
 		addContacts: function (contacts) {
+			$this = this;
 			$http.post(OC.generateUrl('/apps/chat/contacts/add/'), {contacts: contacts}).
 				success(function(data, status, headers, config) {
-					$.extend(this.contacts, data);
+					$.extend($this.contacts, data);
 				}).
 				error(function(data, status, headers, config) {
 					// called asynchronously if an error occurs
 					// or server returns response with an error status.
 				});
+		},
+		/**
+		 * @return array the current ownCloud user as contact
+		 */
+		self : function () {
+			return this.contacts[OC.currentUser];
 		}
 	};
 }]);

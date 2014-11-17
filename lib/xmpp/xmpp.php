@@ -55,5 +55,4 @@ class XMPP extends AbstractBackend implements IBackend {
 		);
 	}
 
-
 }

@@ -81,8 +81,24 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 					});
 				}
 			});
+			// add the contacts from the roster to the contacts
 			contacts.addContacts(contactsToAdd);
-		}
+			$XMPP._generateConvs();
+		},
+		// this function creates conversations with XMPP contacts
+		// called after the roster is fetched and processed
+		_generateConvs : function () {
+			var XMPPContacts = contacts.findByBackend('xmpp');
+			for (var key in XMPPContacts) {
+				var XMPPContact = XMPPContacts[key];
+				for (var backendKey in XMPPContact.backends) {
+					var backend = XMPPContact.backends[backendKey];
+					if (backend.id === 'xmpp') {
+						convs.addConv(backend.value, [XMPPContact, contacts.self()], 'xmpp', [], []);
+					}
+				}
+			}
+		},
 	};
 
 	var log = function(msg){
@@ -93,7 +109,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 	};
 
 	return {
-		BOSH_SERVICE : 'http://xmpp.ledfan.eu:5280/http-bind/',
+		BOSH_SERVICE : 'http://xmpp.ledfan.eu:5280/http-bind',
 		init : function(){
 			//$XMPP.
 			//Create connection

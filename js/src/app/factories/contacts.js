@@ -51,11 +51,12 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 			}
 			return result;
 		},
-		addContacts: function (contacts) {
+		addContacts: function (contacts, success) {
 			$this = this;
 			$http.post(OC.generateUrl('/apps/chat/contacts/add/'), {contacts: contacts}).
 				success(function(data, status, headers, config) {
 					$.extend($this.contacts, data);
+					success();
 				}).
 				error(function(data, status, headers, config) {
 					// called asynchronously if an error occurs

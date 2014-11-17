@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', function(contacts, $filter, title, $session) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', function(contacts, $filter, title, $session, $injector) {
 	var convs = {};
 
 	return {
@@ -17,6 +17,13 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 					//$scope.contactsObj[user.id].order = order;
 				}
 			}
+
+			// check if backend is a string
+			if (typeof backend === "string"){
+				var backends = $injector.get('backends');
+				backend = backends[backend];
+			}
+
 			// end generate conv name
 			if(convs[id] === undefined) {
 				//get highest order

@@ -2,10 +2,13 @@ OC.L10N.register(
     "chat",
     {
     "Chat" : "Czat",
+    "{displayname} attached {path} to this conversation" : "{displayname} dodał {path} do tej rozmowy",
+    "{displayname} removed {path} from this conversation" : "{displayname} usunął {path} z tej rozmowy",
     "Search in conversations" : "Szukaj w rozmowach",
     "Add Person" : "Dodaj osobę",
     "View Attached files" : "Zobacz załączone pliki",
     "Chat Message" : "Wiadomość czatu",
+    "Files attached to this conversation" : "Pliki dołączone do tej rozmowy",
     "Download " : "Pobierz",
     "Attach more files" : "Dodaj więcej plików",
     "Search in users" : "Szukaj wśród użytkowników",

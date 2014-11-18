@@ -63,6 +63,19 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 					// or server returns response with an error status.
 				});
 		},
+		removeContacts: function (contacts, success) {
+			$this = this;
+			$http.post(OC.generateUrl('/apps/chat/contacts/remove/'), {contacts: contacts}).
+				success(function(data, status, headers, config) {
+					//$.extend($this.contacts, data);
+					//success();
+					alert('done');
+				}).
+				error(function(data, status, headers, config) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+				});
+		},
 		/**
 		 * @return array the current ownCloud user as contact
 		 */

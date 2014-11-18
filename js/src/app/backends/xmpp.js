@@ -64,6 +64,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		},
 		_processRoster : function (iq) {
 			var contactsToAdd = [];
+			var contactsToRemove = [];
 			$(iq).find('item').each(function () {
 				// for each contact in the roster
 
@@ -71,21 +72,36 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				console.log('found item in roster with jid ' + jid);
 				var bareJid = Strophe.getBareJidFromJid(jid);
 				var name = $(this).attr('name') || jid;
+				var subscription = $(this).attr('subscription');
 			
-				// Check if the contact is know 
-				var result = contacts.findByBackendValue('xmpp', bareJid);
-				if (!result) {
-					console.log('contact does not exists');
-					contactsToAdd.push({
-						"FN": name,
-						"IMPP": bareJid
-					});
+				// Check if the contact is know
+				var contact = contacts.findByBackendValue('xmpp', bareJid);
+				if (subscription === 'remove'){
+					// remove contact
+					contactsToRemove.push(contact.id);
+				} else {
+					if (!contact) {
+						// add contact
+						var oContact = {
+							"FN": name,
+							"IMPP": bareJid
+						};
+						if(contactsToAdd.indexOf(oContact) === -1){
+							contactsToAdd.push(oContact);
+						}
+					}
 				}
 			});
-			// add the contacts from the roster to the contacts
-			contacts.addContacts(contactsToAdd, function () {
-				$XMPP._generateConvs();
-			});
+			if (contactsToAdd.length > 0) {
+				// add the contacts from the roster to the contacts
+				contacts.addContacts(contactsToAdd, function () {
+					$XMPP._generateConvs();
+				});
+			}
+			if (contactsToRemove.length > 0){
+				contacts.removeContacts(contactsToRemove, function(){
+				});
+			}
 
 			return true; // Keep this handler
 		},

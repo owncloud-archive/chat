@@ -94,4 +94,17 @@ class AppController extends Controller {
 		return $newContacts;
 	}
 
+	/**
+	 * @NoAdminRequired
+	 * @return JSONResponse
+	 */
+	public function removeContact($contacts){
+		// Create contacts
+		$ids = array();
+		foreach ($contacts as $contact){
+			$this->cm->delete($contact, 'local:1');
+		}
+
+	}
+
 }

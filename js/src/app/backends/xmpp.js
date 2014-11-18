@@ -53,7 +53,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 
 				// Get roster information
 				var iq = $iq({type: "get"}).c('query', {xmlns: "jabber:iq:roster"});
-				$XMPP.con.sendIQ(iq, $XMPP._processRoster);
+				$XMPP.con.send(iq);
+				$XMPP.con.addHandler($XMPP._processRoster, 'jabber:iq:roster', 'iq');
 				$XMPP._generateConvs();
 
 			} else if (status == Strophe.Status.AUTHFAIL){
@@ -85,6 +86,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 			contacts.addContacts(contactsToAdd, function () {
 				$XMPP._generateConvs();
 			});
+
+			return true; // Keep this handler
 		},
 		// this function creates conversations with XMPP contacts
 		// called after the roster is fetched and processed

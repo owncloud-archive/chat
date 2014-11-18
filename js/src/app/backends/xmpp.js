@@ -100,6 +100,9 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				}
 			}
 		},
+		onRaw : function (data) {
+			console.log(data);
+		}
 	};
 
 	var log = function(msg){
@@ -118,6 +121,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				$XMPP.con = new Strophe.Connection(this.BOSH_SERVICE);
 				// Connect to XMPP sever
 				$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
+				$XMPP.con.rawInput = $XMPP.onRaw;
+				$XMPP.con.rawOutput = $XMPP.onRaw;
 			}
 		},
 		quit : function(){

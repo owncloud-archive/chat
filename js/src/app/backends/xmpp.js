@@ -65,6 +65,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		_processRoster : function (iq) {
 			var contactsToAdd = [];
 			var contactsToRemove = [];
+			var jidsInRoster = [];
 			$(iq).find('item').each(function () {
 				// for each contact in the roster
 
@@ -91,7 +92,12 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 						}
 					}
 				}
+
+				jidsInRoster.push(bareJid);
 			});
+
+
+
 			if (contactsToAdd.length > 0) {
 				// add the contacts from the roster to the contacts
 				contacts.addContacts(contactsToAdd, function () {
@@ -102,6 +108,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				contacts.removeContacts(contactsToRemove, function(){
 				});
 			}
+
 
 			return true; // Keep this handler
 		},
@@ -132,7 +139,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 	};
 
 	return {
-		BOSH_SERVICE : 'http://xmpp.ledfan.eu:5280/http-bind',
+		BOSH_SERVICE : 'http://bosh.metajack.im:5280/xmpp-httpbind',
 		init : function(){
 			//$XMPP.
 			//Create connection

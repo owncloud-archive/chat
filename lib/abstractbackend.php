@@ -2,6 +2,8 @@
 
 namespace OCA\Chat;
 
+use OCA\Chat\App\Chat;
+
 abstract class AbstractBackend implements IBackend {
 
 	protected static $initConvs = array();

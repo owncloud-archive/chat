@@ -65,7 +65,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		_processRoster : function (iq) {
 			var contactsToAdd = [];
 			var contactsToRemove = [];
-			var jidsInRoster = [];
 			$(iq).find('item').each(function () {
 				// for each contact in the roster
 
@@ -77,23 +76,16 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 			
 				// Check if the contact is know
 				var contact = contacts.findByBackendValue('xmpp', bareJid);
-				if (subscription === 'remove'){
-					// remove contact
-					contactsToRemove.push(contact.id);
-				} else {
-					if (!contact) {
-						// add contact
-						var oContact = {
-							"FN": name,
-							"IMPP": bareJid
-						};
-						if(contactsToAdd.indexOf(oContact) === -1){
-							contactsToAdd.push(oContact);
-						}
+				if (!contact) {
+					// add contact
+					var oContact = {
+						"FN": name,
+						"IMPP": bareJid
+					};
+					if(contactsToAdd.indexOf(oContact) === -1){
+						contactsToAdd.push(oContact);
 					}
 				}
-
-				jidsInRoster.push(bareJid);
 			});
 
 
@@ -104,12 +96,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 					$XMPP._generateConvs();
 				});
 			}
-			if (contactsToRemove.length > 0){
-				contacts.removeContacts(contactsToRemove, function(){
-				});
-			}
-
-
 			return true; // Keep this handler
 		},
 		// this function creates conversations with XMPP contacts

@@ -23,3 +23,9 @@ $och = $c['OCH'];
 $chat->registerBackend($och);
 $xmpp = $c['XMPP'];
 $chat->registerBackend($xmpp);
+// Disable the XMPP backend by default when there is no entry in the DB which enables it
+// you can manually enable it (https://github.com/owncloud/chat/wiki/FAQ#enabling-a-backend)
+$enabled =  \OCP\Config::getAppValue('chat', 'backend_xmpp_enabled');
+if ($enabled === null){
+	\OCP\Config::setAppValue('chat', 'backend_xmpp_enabled', false);
+}

@@ -23,3 +23,8 @@
 	margin-left: 10px;
 	width:80px;
 }
+
+.setting-error {
+	color: red;
+	font-weight: bold;
+}

@@ -49,7 +49,6 @@ class AppController extends Controller {
 			$backendsToArray[$backend->getId()] = $backend->toArray();
 		}
 		$initConvs = $this->app->getInitConvs();
-
 		$params = array(
 			"initvar" => json_encode(array(
 				"contacts" => $contacts['contacts'],

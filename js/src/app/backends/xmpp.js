@@ -20,6 +20,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		},
 		jid: initvar.backends.xmpp.config.jid,
 		password: initvar.backends.xmpp.config.password,
+		bosh_url: initvar.backends.xmpp.config.bosh_url,
 		conn : null,
 		_onMessage : function(msg){
 			var to = msg.getAttribute('to');
@@ -125,16 +126,36 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 	};
 
 	return {
-		BOSH_SERVICE : 'http://bosh.metajack.im:5280/xmpp-httpbind',
 		init : function(){
 			//$XMPP.
 			//Create connection
-			if ($XMPP.jid !== null && $XMPP.jid !== '' && $XMPP.password !== null && $XMPP.password !== '') {
-				$XMPP.con = new Strophe.Connection(this.BOSH_SERVICE);
-				// Connect to XMPP sever
-				$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
-				$XMPP.con.rawInput = $XMPP.onRaw;
-				$XMPP.con.rawOutput = $XMPP.onRaw;
+			initvar.backends.xmpp.configErrors = []; // Reset all errors
+			if (
+				$XMPP.jid !== null
+				&& $XMPP.jid !== ''
+				&& typeof $XMPP.jid !== 'undefined'
+				&& $XMPP.password !== null
+				&& $XMPP.password !== ''
+				&& typeof $XMPP.password !== 'undefined'
+				&& $XMPP.bosh_url !== null
+				&& $XMPP.bosh_url !== ''
+				&& typeof $XMPP.bosh_url !== 'undefined'
+			) {
+				try {
+					// Connect to XMPP sever
+					$XMPP.con = new Strophe.Connection($XMPP.bosh_url);
+					$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
+					$XMPP.con.rawInput = $XMPP.onRaw;
+					$XMPP.con.rawOutput = $XMPP.onRaw;
+				} catch (e) {
+					if (e.name === 'TypeError' && e.message === 'service is undefined') {
+						initvar.backends.xmpp.configErrors.push('Service is undefined');
+					}
+					console.log(e.name);
+					console.log(e.message);
+				}
+			} else {
+				initvar.backends.xmpp.configErrors.push('Fill in all the fields');
 			}
 		},
 		quit : function(){
@@ -155,7 +176,11 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		configChanged : function(){
 			$XMPP.jid = initvar.backends.xmpp.config.jid;
 			$XMPP.password = initvar.backends.xmpp.config.password;
-			if($XMPP.con !== null) {
+			$XMPP.bosh_url = initvar.backends.xmpp.config.bosh_url;
+			if(
+				typeof $XMPP.con !== 'undefined'
+				&& $XMPP.con !== null
+			) {
 				$XMPP.con.disconnect();
 			}
 			this.init();

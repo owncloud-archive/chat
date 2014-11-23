@@ -184,6 +184,19 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				$XMPP.con.disconnect();
 			}
 			this.init();
+		},
+		addContactToRoster : function (backendValue) {
+			var bareJid = Strophe.getBareJidFromJid(backendValue);
+			var contact = contacts.findByBackendValue('xmpp', bareJid);
+			var name = contact.displayname;
+			// add contact to roster
+			var iq = $iq({type: "set"}).c("query", {xmlns: "jabber:iq:roster"})
+				.c("item", {jid: bareJid, name: name});
+			$XMPP.con.sendIQ(iq);
+
+			var subscribe = $pres({to: bareJid, "type": "subscribe"});
+			$XMPP.con.send(subscribe);
+			// set subscription for presence
 		}
 	};
 }]);

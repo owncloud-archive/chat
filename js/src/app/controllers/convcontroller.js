@@ -180,7 +180,11 @@ angular.module('chat').controller(
                     var dir = '/';
                     var files = path;
                     OC.redirect(OC.generateUrl('/apps/files/ajax/download.php?dir={dir}&files={files}', {dir: dir, files:files}));
-                }
+                },
+				// Specific for XMPP
+				addContactToRoster: function (convId) {
+					backends.xmpp.handle.addContactToRoster(convId);
+				}
 			};
 
 			/**

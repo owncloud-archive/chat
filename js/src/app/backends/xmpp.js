@@ -1,4 +1,4 @@
-angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function(convs, contacts, initvar) {
+angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', function(convs, contacts, initvar, $session) {
 	$XMPP = {
 		on : {
 			chatMessage : function(msg, from){
@@ -54,8 +54,10 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 
 				// Get roster information
 				var iq = $iq({type: "get"}).c('query', {xmlns: "jabber:iq:roster"});
-				$XMPP.con.send(iq);
 				$XMPP.con.addHandler($XMPP._processRoster, 'jabber:iq:roster', 'iq');
+				$XMPP.con.send(iq);
+				$XMPP.con.addHandler($XMPP.onPresence, null, "presence")
+				$XMPP.con.send($pres());
 				$XMPP._generateConvs();
 
 			} else if (status == Strophe.Status.AUTHFAIL){
@@ -115,6 +117,42 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		},
 		onRaw : function (data) {
 			console.log(data);
+		},
+		/**
+		 * handles three things
+		 * 1. from asks to subscribe
+		 * 2. from is online
+		 * 3. from is offline
+		 * @param iq
+		 * @returns {boolean}
+		 */
+		onPresence : function (iq) {
+			var presenceType = $(iq).attr('type');
+			var from = $(iq).attr('from');
+			var contact = contacts.findByBackendValue('xmpp', Strophe.getBareJidFromJid(from));
+			var user =  Strophe.getNodeFromJid(from);
+
+			if (contact === false && user === $session.user.id){
+				// TODO
+				return true;
+			}
+
+			if (presenceType === 'subscribe') {
+				// TODO
+			} else if (presenceType !== 'error') {
+				if (presenceType === 'unavailable') {
+					contacts.markOffline(contact.id)
+				} else {
+					var show = $(iq).find("show").text();
+					if (show === "" || show === "chat") {
+						contacts.markOnline(contact.id);
+					} else {
+						contacts.markOffline(contact.id);
+					}
+				}
+			}
+
+			return true;
 		}
 	};
 

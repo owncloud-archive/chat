@@ -76,10 +76,14 @@ class AppController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function addContact($contacts){
+
+		$addressbooks = $this->cm->getAddressBooks();
+		$key = array_search('Contacts', $addressbooks);
+
 		// Create contacts
 		$ids = array();
 		foreach ($contacts as $contact){
-			$r = $this->cm->createOrUpdate($contact, 'local:1');
+			$r = $this->cm->createOrUpdate($contact, $key);
 			$ids[] = $r->getId();
 		}
 

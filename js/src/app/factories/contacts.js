@@ -1,4 +1,4 @@
-angular.module('chat').factory('contacts', ['$filter', 'initvar', function($filter, initvar) {
+angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', function($filter, initvar, $http) {
 	return {
 		contacts : initvar.contactsObj,
 		getHighestOrder : function(){
@@ -32,6 +32,55 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', function($filt
 					}
 				}
 			}
+			return false;
+		},
+		/**
+		 * @param backendId The backend id
+		 * @return array The contacts which supports this backend
+		 */
+		findByBackend : function (backendId) {
+			var result = [];
+			for (var key in this.contacts){
+				var contact = this.contacts[key];
+				for (var backendKey in contact.backends){
+					var backend = contact.backends[backendKey];
+					if (backend.id === backendId){
+						result[key] = contact;
+					}
+				}
+			}
+			return result;
+		},
+		addContacts: function (contacts, success) {
+			$this = this;
+			$http.post(OC.generateUrl('/apps/chat/contacts/add/'), {contacts: contacts}).
+				success(function(data, status, headers, config) {
+					$.extend($this.contacts, data);
+					success();
+				}).
+				error(function(data, status, headers, config) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+				});
+		},
+		removeContacts: function (contacts, success) {
+			$this = this;
+			$http.post(OC.generateUrl('/apps/chat/contacts/remove/'), {contacts: contacts}).
+				success(function(data, status, headers, config) {
+					//$.extend($this.contacts, data);
+					//success();
+					alert('done');
+				}).
+				error(function(data, status, headers, config) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+				});
+		},
+		/**
+		 * @return array the current ownCloud user as contact
+		 */
+		self : function () {
+			return this.contacts[OC.currentUser];
 		}
 	};
 }]);

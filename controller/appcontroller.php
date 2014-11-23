@@ -13,6 +13,7 @@ use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCA\Chat\App\Chat;
+use \OCP\Contacts\IManager;
 
 class AppController extends Controller {
 
@@ -20,10 +21,11 @@ class AppController extends Controller {
 
 	private $c;
 
-	public function __construct($appName, IRequest $request,  Chat $app){
+	public function __construct($appName, IRequest $request,  Chat $app, IManager $cm){
 		parent::__construct($appName, $request);
 		$this->app = $app;
 		$this->c = $app->getContainer();
+		$this->cm = $cm;
 	}
 
 	/**
@@ -47,7 +49,6 @@ class AppController extends Controller {
 			$backendsToArray[$backend->getId()] = $backend->toArray();
 		}
 		$initConvs = $this->app->getInitConvs();
-
 		$params = array(
 			"initvar" => json_encode(array(
 				"contacts" => $contacts['contacts'],
@@ -68,6 +69,45 @@ class AppController extends Controller {
 	public function contacts(){
 		session_write_close();
 		return new JSONResponse($this->app->getContacts());
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @return JSONResponse
+	 */
+	public function addContact($contacts){
+
+		$addressbooks = $this->cm->getAddressBooks();
+		$key = array_search('Contacts', $addressbooks);
+
+		// Create contacts
+		$ids = array();
+		foreach ($contacts as $contact){
+			$r = $this->cm->createOrUpdate($contact, $key);
+			$ids[] = $r->getId();
+		}
+
+		// Return just created contacts as contacts which can be used by the Chat app
+		$contacts =  $this->app->getContacts();
+		$newContacts = array();
+		foreach ($ids as $id){
+			$newContacts[$id] = $contacts['contactsObj'][$id];
+		}
+
+		return $newContacts;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @return JSONResponse
+	 */
+	public function removeContact($contacts){
+		// Create contacts
+		$ids = array();
+		foreach ($contacts as $contact){
+			$this->cm->delete($contact, 'local:1');
+		}
+
 	}
 
 }

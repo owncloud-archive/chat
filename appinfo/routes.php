@@ -31,6 +31,16 @@ $application->registerRoutes($this, array(
 			'name' => 'config#set',
 			'url' => '/config/set',
 			'verb' => 'post'
+		),
+		array(
+			'name' => 'app#addContact',
+			'url' => '/contacts/add/',
+			'verb' => 'post'
+		),
+		array(
+			'name' => 'app#removeContact',
+			'url' => '/contacts/remove/',
+			'verb' => 'post'
 		)
 	)
 ));

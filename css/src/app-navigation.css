@@ -53,9 +53,13 @@
 	height: 60px;
 }
 
+.conv-list-item-buttons div {
+	float:right;
+}
 .conv-list-item-buttons{
 	float:right;
-	width:20px;
+	width:40px;
+	height: 40px !important;
 }
 
 .heightInvite {

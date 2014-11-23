@@ -19,6 +19,16 @@
 			<div ng-click="view.inviteClick();" ng-if="conv.id == $session.conv && conv.users.length === 2" class="icon-add right icon-20 invite-button">
 				&nbsp;
 			</div>
+			<!-- BEGIN Specific for XMPP -->
+			<div
+				title="Add Contact To roster"
+				ng-click="view.addContactToRoster(conv.id);"
+				ng-if="conv.id == $session.conv && conv.backend.id === 'xmpp'"
+				class="icon-download right icon-20 "
+				>
+				&nbsp;
+			</div>
+			<!-- END Specific for XMPP-->
 			<div title="Show attached files" ng-click="view.showFiles();" ng-if="conv.id == $session.conv && conv.users.length === 2" class="icon-file right icon-20 files-button">
 				&nbsp;
 			</div>

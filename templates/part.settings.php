@@ -23,6 +23,12 @@
 							</label>
 							<input type="text" ng-disabled="$parent.$parent.status === 'saving'" class="backend-config-value" ng-model="$parent.$parent.backend.config[key]" value="{{ value }}">
 						</li>
+						<li
+							ng-repeat="error in backend.configErrors"
+							class="setting-error"
+						>
+							{{ error }}
+						</li>
 					</ul>
 				</il>
 			</ul>

@@ -1,4 +1,4 @@
-angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', function(convs, contacts, initvar, $session) {
+angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', 'authorize', function(convs, contacts, initvar, $session, authorize) {
 	$XMPP = {
 		on : {
 			chatMessage : function(msg, from){
@@ -129,7 +129,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 		onPresence : function (iq) {
 			var presenceType = $(iq).attr('type');
 			var from = $(iq).attr('from');
-			var contact = contacts.findByBackendValue('xmpp', Strophe.getBareJidFromJid(from));
+			var bareJid =  Strophe.getBareJidFromJid(from);
+			var contact = contacts.findByBackendValue('xmpp', bareJid);
 			var user =  Strophe.getNodeFromJid(from);
 
 			if (contact === false && user === $session.user.id){
@@ -138,7 +139,23 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			}
 
 			if (presenceType === 'subscribe') {
-				// TODO
+				authorize.jid = bareJid;
+				authorize.name = contact.displayname;
+				authorize.approve = function () {
+					$XMPP.con.send($pres({to: authorize.jid, "type": "subscribed"}));
+					$XMPP.con.send($pres({to: authorize.jid, "type": "subscribe"}));
+					authorize.show = false;
+					authorize.jid = null;
+					authorize.name = null;
+				};
+				authorize.deny = function () {
+					$XMPP.con.send($pres({to: authorize.jid, "type": "unsubscribed"}));
+					authorize.show = false;
+					authorize.jid = null;
+					authorize.name = null;;
+				};
+				authorize.show = true;
+
 			} else if (presenceType !== 'error') {
 				if (presenceType === 'unavailable') {
 					contacts.markOffline(contact.id)
@@ -153,7 +170,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			}
 
 			return true;
-		}
+		},
 	};
 
 	var log = function(msg){
@@ -235,6 +252,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			var subscribe = $pres({to: bareJid, "type": "subscribe"});
 			$XMPP.con.send(subscribe);
 			// set subscription for presence
-		}
+		},
 	};
 }]);

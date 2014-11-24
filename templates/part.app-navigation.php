@@ -21,10 +21,26 @@
 			</div>
 			<!-- BEGIN Specific for XMPP -->
 			<div
-				title="Add Contact To roster"
+				title="Add Contact to roster"
 				ng-click="view.addContactToRoster(conv.id);"
-				ng-if="conv.id == $session.conv && conv.backend.id === 'xmpp'"
+				ng-if="conv.id == $session.conv && conv.backend.id === 'xmpp' && !contactInRoster(conv.id)"
 				class="icon-download right icon-20 "
+				>
+				&nbsp;
+			</div>
+			<div
+				title="Add Contact to contacts"
+				ng-click="view.saveContact(conv.id);"
+				ng-if="conv.id == $session.conv && conv.backend.id === 'xmpp' && !contactInContacts(conv.id)"
+				class="icon-download right icon-20 "
+				>
+				&nbsp;
+			</div>
+			<div
+				title="Remove Contact from roster"
+				ng-click="view.removeContactFromRoster(conv.id);"
+				ng-if="conv.id == $session.conv && conv.backend.id === 'xmpp' && contactInRoster(conv.id)"
+				class="icon-delete right icon-20 "
 				>
 				&nbsp;
 			</div>

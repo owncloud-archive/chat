@@ -1,4 +1,4 @@
-angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function(convs, contacts, initvar) {
+angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', 'authorize', function(convs, contacts, initvar, $session, authorize) {
 	$XMPP = {
 		on : {
 			chatMessage : function(msg, from){
@@ -30,6 +30,23 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 
 			if (type == "chat" && elems.length > 0) {
 				var body = elems[0];
+				var convId = Strophe.getBareJidFromJid(from);
+				if (!convs.exists(convId)) {
+					var contact = {
+						"id" : convId,
+						"online": false,
+						"displayname" : convId,
+						"order" : 0,
+						"backends": [
+							{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": convId}
+						],
+						"address_book_id": "local",
+						"address_book_backend": "0",
+						"saved": false
+					};
+					contacts.contacts[convId] = contact;
+					convs.addConv(convId, [contact, contacts.self()], 'xmpp', [], []);
+				}
 				$XMPP.on.chatMessage(Strophe.getText(body), from);
 			}
 			return true;
@@ -54,8 +71,10 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 
 				// Get roster information
 				var iq = $iq({type: "get"}).c('query', {xmlns: "jabber:iq:roster"});
-				$XMPP.con.send(iq);
 				$XMPP.con.addHandler($XMPP._processRoster, 'jabber:iq:roster', 'iq');
+				$XMPP.con.send(iq);
+				$XMPP.con.addHandler($XMPP.onPresence, null, "presence")
+				$XMPP.con.send($pres());
 				$XMPP._generateConvs();
 
 			} else if (status == Strophe.Status.AUTHFAIL){
@@ -74,10 +93,12 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 				var bareJid = Strophe.getBareJidFromJid(jid);
 				var name = $(this).attr('name') || jid;
 				var subscription = $(this).attr('subscription');
-			
+				if ($XMPP.roster.indexOf(bareJid) === -1 && subscription !== 'remove') {
+					$XMPP.roster.push(bareJid);
+				}
 				// Check if the contact is know
 				var contact = contacts.findByBackendValue('xmpp', bareJid);
-				if (!contact) {
+				if (!contact && subscription !== 'remove') {
 					// add contact
 					var oContact = {
 						"FN": name,
@@ -115,7 +136,61 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 		},
 		onRaw : function (data) {
 			console.log(data);
-		}
+		},
+		/**
+		 * handles three things
+		 * 1. from asks to subscribe
+		 * 2. from is online
+		 * 3. from is offline
+		 * @param iq
+		 * @returns {boolean}
+		 */
+		onPresence : function (iq) {
+			var presenceType = $(iq).attr('type');
+			var from = $(iq).attr('from');
+			var bareJid =  Strophe.getBareJidFromJid(from);
+			var contact = contacts.findByBackendValue('xmpp', bareJid);
+			var user =  Strophe.getNodeFromJid(from);
+
+			if (contact === false && user === $session.user.id){
+				// TODO
+				return true;
+			}
+
+			if (presenceType === 'subscribe') {
+				authorize.jid = bareJid;
+				authorize.name = contact.displayname;
+				authorize.approve = function () {
+					$XMPP.con.send($pres({to: authorize.jid, "type": "subscribed"}));
+					$XMPP.con.send($pres({to: authorize.jid, "type": "subscribe"}));
+					authorize.show = false;
+					authorize.jid = null;
+					authorize.name = null;
+				};
+				authorize.deny = function () {
+					$XMPP.con.send($pres({to: authorize.jid, "type": "unsubscribed"}));
+					authorize.show = false;
+					authorize.jid = null;
+					authorize.name = null;;
+				};
+				authorize.show = true;
+
+			} else if (presenceType !== 'error') {
+				if (presenceType === 'unavailable') {
+					contacts.markOffline(contact.id)
+				} else {
+					var show = $(iq).find("show").text();
+					if (show === "" || show === "chat") {
+						contacts.markOnline(contact.id);
+					} else {
+						contacts.markOffline(contact.id);
+					}
+				}
+			}
+
+			return true;
+		},
+		roster : []
 	};
 
 	var log = function(msg){
@@ -197,6 +272,20 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', function
 			var subscribe = $pres({to: bareJid, "type": "subscribe"});
 			$XMPP.con.send(subscribe);
 			// set subscription for presence
+		},
+		removeContactFromRoster : function (backendValue) {
+			var iq = $iq({type: "set"}).c("query", {xmlns: Strophe.NS.ROSTER}).c("item", {jid: backendValue, subscription: "remove"});
+			$XMPP.con.sendIQ(iq);
+			// Remove contact from roster
+			var index = $XMPP.roster.indexOf(backendValue);
+			delete $XMPP.roster[index];
+		},
+		contactInRoster : function (id) {
+			if ($XMPP.roster.indexOf(id) === -1){
+				return false;
+			} else {
+				return true;
+			}
 		}
 	};
 }]);

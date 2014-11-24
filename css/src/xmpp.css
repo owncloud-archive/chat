@@ -1,0 +1,26 @@
+#xmpp-authorize-container  {
+	width:300px;
+	height:100px;
+	border:1px solid black;
+	z-index: 100;
+	background-color: white;
+	position:absolute;
+	border:1px solid #1D2D44;
+	border-radius: 3px;
+	background-color:#EEEEEE;
+	padding:10px;
+}
+
+#xmpp-authorize-container button {
+	width:120px;
+	position:absolute;
+	bottom:0px;
+}
+
+.approve {
+	right:10px;
+}
+
+.deny {
+	right:150px;
+}

@@ -271,6 +271,7 @@ class Chat extends App{
 				$data['online'] = in_array($r['id'], $usersOnline);
 				$data['displayname'] = $r['FN'];
 				$data['order'] = $order;
+				$data['saved'] = true;
 
 				if(!isset($r['EMAIL'])){
 					$r['EMAIL'] = array();

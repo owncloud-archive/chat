@@ -42,6 +42,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 						],
 						"address_book_id": "local",
 						"address_book_backend": "0",
+						"saved": false
 					};
 					contacts.contacts[convId] = contact;
 					convs.addConv(convId, [contact, contacts.self()], 'xmpp', [], []);

@@ -187,6 +187,15 @@ angular.module('chat').controller(
 				},
 				removeContactFromRoster : function (convId) {
 					backends.xmpp.handle.removeContactFromRoster(convId);
+				},
+				saveContact : function (contactId) {
+					var contact = contacts.contacts[contactId];
+					contacts.addContacts([{
+						"FN": contact.displayname,
+						"IMPP": contact.id
+					}], function (){
+						delete contacts.contacts[contactId];
+					});
 				}
 			};
 
@@ -379,6 +388,11 @@ angular.module('chat').controller(
 
 			$scope.contactInRoster = function (id) {
 				return backends.xmpp.handle.contactInRoster(id);
+			};
+
+			$scope.contactInContacts = function (convId) {
+				var contact = contacts.findByBackendValue('xmpp', convId);
+				return contact.saved;
 			};
 
 			init();

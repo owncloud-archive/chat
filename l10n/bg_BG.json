@@ -13,7 +13,6 @@
     "There are no Chat Backends enabled." : "Няма включени чат програми на сървъра.",
     "In order to chat please enable at least one Chat backend." : "За да можеш да чатиш, моля, разреши поне една чат програма на сървъра.",
     "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." : "Чрез 'OCH' сървъра може да чатите с други потребители на ownCloud. Работи без допълнителни настройки.",
-    "It can be enabled by running the following command in the root of your owncloud installation:" : "Може да бъде включено чрез изпълнение на следната команда в основната директория където е инсталиран owncloud:",
     "There are no other users on this ownCloud." : "Няма други потребители в този ownCloud.",
     "In order to chat please create at least one user, it will appear on the left." : "Моля, създай поне един потребител, за да можеш да чатваш. Той ще се появи в ляво."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

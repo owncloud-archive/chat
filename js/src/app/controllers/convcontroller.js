@@ -184,6 +184,9 @@ angular.module('chat').controller(
 				// Specific for XMPP
 				addContactToRoster: function (convId) {
 					backends.xmpp.handle.addContactToRoster(convId);
+				},
+				removeContactFromRoster : function (convId) {
+					backends.xmpp.handle.removeContactFromRoster(convId);
 				}
 			};
 
@@ -372,6 +375,11 @@ angular.module('chat').controller(
 					$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
 				},250);
 			}, true);
+
+
+			$scope.contactInRoster = function (id) {
+				return backends.xmpp.handle.contactInRoster(id);
+			};
 
 			init();
 		}

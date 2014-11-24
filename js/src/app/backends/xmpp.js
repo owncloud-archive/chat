@@ -30,6 +30,22 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 
 			if (type == "chat" && elems.length > 0) {
 				var body = elems[0];
+				var convId = Strophe.getBareJidFromJid(from);
+				if (!convs.exists(convId)) {
+					var contact = {
+						"id" : convId,
+						"online": false,
+						"displayname" : convId,
+						"order" : 0,
+						"backends": [
+							{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": convId}
+						],
+						"address_book_id": "local",
+						"address_book_backend": "0",
+					};
+					contacts.contacts[convId] = contact;
+					convs.addConv(convId, [contact, contacts.self()], 'xmpp', [], []);
+				}
 				$XMPP.on.chatMessage(Strophe.getText(body), from);
 			}
 			return true;
@@ -76,10 +92,12 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				var bareJid = Strophe.getBareJidFromJid(jid);
 				var name = $(this).attr('name') || jid;
 				var subscription = $(this).attr('subscription');
-			
+				if ($XMPP.roster.indexOf(bareJid) === -1 && subscription !== 'remove') {
+					$XMPP.roster.push(bareJid);
+				}
 				// Check if the contact is know
 				var contact = contacts.findByBackendValue('xmpp', bareJid);
-				if (!contact) {
+				if (!contact && subscription !== 'remove') {
 					// add contact
 					var oContact = {
 						"FN": name,
@@ -171,6 +189,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 
 			return true;
 		},
+		roster : []
 	};
 
 	var log = function(msg){
@@ -253,5 +272,19 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			$XMPP.con.send(subscribe);
 			// set subscription for presence
 		},
+		removeContactFromRoster : function (backendValue) {
+			var iq = $iq({type: "set"}).c("query", {xmlns: Strophe.NS.ROSTER}).c("item", {jid: backendValue, subscription: "remove"});
+			$XMPP.con.sendIQ(iq);
+			// Remove contact from roster
+			var index = $XMPP.roster.indexOf(backendValue);
+			delete $XMPP.roster[index];
+		},
+		contactInRoster : function (id) {
+			if ($XMPP.roster.indexOf(id) === -1){
+				return false;
+			} else {
+				return true;
+			}
+		}
 	};
 }]);

@@ -159,6 +159,13 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			convs[convId].files.splice(key, 1);
             this.addChatMsg(convId, user,  tran('translations-removed', {displayname: user.displayname, path: path}),
                 timestamp, 'och');
+		},
+		exists: function (convId) {
+			if (typeof convs[convId] === 'undefined'){
+				return false;
+			} else {
+				return true;
+			}
 		}
 	};
 }]);

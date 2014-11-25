@@ -15,6 +15,7 @@ OC.L10N.register(
     "There are no Chat Backends enabled." : "Es sind keine Chat-Backends aktiviert.",
     "In order to chat please enable at least one Chat backend." : "Zum chatten muss mindestens ein Chat-Backend aktiviert werden.",
     "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." : "Mit dem 'OCH'-Backend können Sie mit anderen ownCloud-Nutzern chatten. Dies funktioniert ohne Konfiguration.",
+    "It can be enabled by running the following command in the root of your ownCloud installation:" : "Dies kann aktiviert werden, indem der folgende Befehl im Root Ihrer ownCloud-Installation ausgeführt wird:",
     "There are no other users on this ownCloud." : "Es befinden sich keine anderen Nutzer in dieser ownCloud.",
     "In order to chat please create at least one user, it will appear on the left." : "Um zu chatten erstellen Sie bitte mindestens einen Benutzer, dieser wird auf der linken Seite angezeigt."
 },

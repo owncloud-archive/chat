@@ -1,33 +1,27 @@
 <?php
-// Fist load all style sheets
-\OCP\Util::addStyle('chat', 'main.min');
-
-// Second load all dependencies
-\OCP\Util::addScript('chat', 'vendor/angular');
-\OCP\Util::addScript('chat', 'vendor/angular-sanitize');
-\OCP\Util::addScript('chat', 'vendor/applycontactavatar');
-\OCP\Util::addScript('chat', 'vendor/angular-enhance-text');
-\OCP\Util::addScript('chat', 'vendor/rangyinputs');
-\OCP\Util::addScript('chat', 'vendor/jquery-autosize');
-\OCP\Util::addScript('chat', 'vendor/cache');
-\OCP\Util::addScript('chat', 'vendor/time');
-\OCP\Util::addScript('chat', 'vendor/moment');
-\OCP\Util::addScript('chat', 'vendor/strophe');
-
-\OCP\Util::addScript('chat', 'main.min');
+// First load dependencies
+vendor_script('chat', array(
+	'angular/angular.min',
+	'angular-enhance-text/build/angular-enhance-text.min',
+	'angular-resource/angular-resource.min',
+	'angular-sanitize/angular-sanitize.min',
+	'jquery-autosize/jquery.autosize.min',
+	'moment/min/moment.min',
+	'rangyinputs-jquery-src/index',
+	'strophe/strophe.min',
+));
 
 if (defined('DEBUG') && DEBUG) {
-	\OCP\Util::addScript('chat', 'src/bower_components/angular-mocks/angular-mocks');
+	vendor_script('chat','angular-mocks/angular-mocks');
 }
 
-$version = \OCP\Config::getAppValue('chat', 'installed_version');
-if (version_compare($version, '0.2.0.0', '<=')) {
-	\OCP\Util::addScript('chat', 'clear');
-}
+// Next load source
+\OCP\Util::addStyle('chat', 'main.min');
+\OCP\Util::addScript('chat', 'main.min');
+
 
 ?>
-<!--<div ng-app="chat" ng-controller="ConvController"  id="app">-->
-<!--</div>-->
+
 <div
 	ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button']);view.hide('files', $event, ['files-no-hide', 'file-element', 'files-button']);view.hide('emojiContainer', $event, ['emoji-no-hide']);"
 	ng-controller="ConvController"

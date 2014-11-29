@@ -1,0 +1,13 @@
+{
+  "name": "rangyinputs-jquery-src",
+  "_cacheHeaders": {
+    "ETag": "\"7ec1b18a01a2441c1249c59e55e7505abbf5fecb\"",
+    "Content-Length": "12823",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:7ec1b18a0",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/timdown/rangyinputs/master/rangyinputs-jquery-src.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/timdown/rangyinputs/master/rangyinputs-jquery-src.js"
+}

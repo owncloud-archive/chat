@@ -1,5 +1,6 @@
-build_dir=build/
+build_dir=../build/
 app_name=chat
+files_to_delete = ("bower.json" ".bowerrc")
 
 all:
 
@@ -7,8 +8,7 @@ clean:
 	rm -rf $(build_dir)
 
 dist: clean
-	mkdir $(build_dir)
-	git archive HEAD --format=zip --prefix=$(app_name)/ > $(build_dir)$(app_name).zip
+	sh build.sh
 
 test: php-unit js-unit
 

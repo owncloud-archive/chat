@@ -54,9 +54,9 @@
 			</div>
 			<div
 				ng-click="view.showEmojiPopover()"
-				class="chat-msg-emoji-button emoji-no-hide"
+				class="chat-msg-emoji-button emoji-no-hide emojione-1F603"
 				>
-				emoji
+				&nbsp;
 			</div>
 			<div class="chat-msg-send-button" >
 				<button  type="submit"><div class="icon-play">&nbsp;</div></button>

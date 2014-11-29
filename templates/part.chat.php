@@ -37,7 +37,7 @@
 							&nbsp;
 						</div>
 					</div>
-					<p class="chat-msg-msg" ng-bind-html="msg.msg | enhanceFiles | enhanceText">
+					<p class="chat-msg-msg" ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText">
 						&nbsp;
 					</p>
 				</div>

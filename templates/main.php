@@ -9,6 +9,12 @@ vendor_script('chat', array(
 	'moment/min/moment.min',
 	'rangyinputs-jquery-src/index',
 	'strophe/strophe.min',
+	'emojione/lib/js/emojione.min'
+));
+
+vendor_style('chat', array(
+	'emojione/assets/sprites/emojione.sprites',
+	'emojione/assets/css/emojione.min',
 ));
 
 if (defined('DEBUG') && DEBUG) {

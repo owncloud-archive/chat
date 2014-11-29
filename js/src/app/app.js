@@ -9,6 +9,8 @@ angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', fun
 		embeddedImagesHeight: '150px'
 	});
 	$httpProvider.defaults.headers.common.requesttoken = oc_requesttoken;
+	emojione.sprites = true;
+	emojione.ascii = true;
 }]);
 function tran(id, vars){
 	var text = 	$('#' + id).text();

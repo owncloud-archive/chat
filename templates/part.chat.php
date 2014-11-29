@@ -52,11 +52,12 @@
 			>
 				&nbsp;
 			</div>
-			<img
+			<div
 				ng-click="view.showEmojiPopover()"
-				src=" <?php echo \OCP\Util::imagePath('chat', 'emoji/smile.png'); ?>"
 				class="chat-msg-emoji-button emoji-no-hide"
 				>
+				emoji
+			</div>
 			<div class="chat-msg-send-button" >
 				<button  type="submit"><div class="icon-play">&nbsp;</div></button>
 			</div>
@@ -80,8 +81,8 @@
 			<input placeholder="Search" id="emoji-search" type="text" class="emoji-no-hide" ng-model="emojiSearch">
 		</div>
 		<ul id="emoji-list" class="emoji-no-hide">
-			<li ng-click="addEmoji(emoji.name)" ng-repeat="emoji in emojis | filter:emojiSearch" class="emoji-no-hide">
-				<img title="{{ emoji.name }}" src="{{ emoji.url }}" class="ec-emoji emoji-no-hide"">
+			<li ng-click="addEmoji(emoji.key)" ng-repeat="emoji in emojis | filter:emojiSearch" class="emoji-no-hide">
+				<div title="{{ emoji.key }}" class="emojione-{{ emoji.value.toUpperCase() }} emoji-no-hide"> </div>
 			</li>
 		</ul>
 	</div>

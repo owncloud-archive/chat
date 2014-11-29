@@ -35,6 +35,10 @@ angular.module('chat').controller(
 
 			Chat.scope = $scope;
 
+			$(document).ready(function(){
+				$scope.emojis = $filter('toEmojiArray')(emojione.emojioneList);
+			});
+
 			/**
 			 * Object used to interact with the view
 			 * @var {object} view

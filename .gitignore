@@ -2,6 +2,5 @@ coverage.clover
 phpunit
 phpunit.phar
 /build
-node_modules
 js/vendor
 js/main.min.js

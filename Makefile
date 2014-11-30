@@ -4,10 +4,7 @@ files_to_delete = ("bower.json" ".bowerrc")
 
 all:
 
-clean:
-	rm -rf $(build_dir)
-
-dist: clean
+dist:
 	sh build.sh
 
 test: php-unit js-unit

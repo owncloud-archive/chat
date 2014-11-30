@@ -48,7 +48,7 @@ Have chats in your ownCloud!
 
 ## Installation
 The Chat app depends on ownCloud 7.0.3 or newer. This means master (https://github.com/owncloud/core) can be used too.
-You can use the version in master only when you install grunt and run it. However packages are build every time a commit is pushed. ![Download the package](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip)
+You can use the version in master only when you install grunt and run it. However packages are build every time a commit is pushed. [Download the package](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip)
 
 ## Contribute
 Contriubtions are very welcome! You can contribute on many ways:

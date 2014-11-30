@@ -48,6 +48,7 @@
 			<div title="Show attached files" ng-click="view.showFiles();" ng-if="conv.id == $session.conv && conv.users.length === 2" class="icon-file right icon-20 files-button">
 				&nbsp;
 			</div>
+		</div>
 	</li>
 	<?php print_unescaped($this->inc('part.settings')) ?>
 </ul>

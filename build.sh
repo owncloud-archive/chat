@@ -7,7 +7,7 @@ rm -rf ../chat
 mkdir ../chat
 cp -r . ../chat
 
-../../node-v0.10.0-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
+../../../node-v0.10.0-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
 
 for file in ${files_to_delete[@]}
 do

@@ -17,5 +17,6 @@ done
 ls -al
 
 cd ../
+rm -rf build.zip
 zip -r build.zip  chat
 mv build.zip workspace/

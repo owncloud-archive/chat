@@ -5,7 +5,7 @@
 files_to_delete=("node_modules" ".bowerrc" "bower.json" ".git*" "./.scrutinizer.yml" "./.travis.yml" "Gruntfile.js" "karma.conf.js" "Makefile" "package.json" "build.sh" "tests")
 rm -rf ../chat
 mkdir ../chat
-../
+
 ../../node-v0.10.0-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
 cp -r . ../chat
 

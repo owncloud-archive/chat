@@ -18,4 +18,4 @@ ls -al
 
 cd ../
 zip -r build.zip  chat
-mv build.zip ownCloud-Chat/
+mv build.zip workspace/

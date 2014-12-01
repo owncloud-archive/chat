@@ -1,4 +1,7 @@
 <?php
+
+include(__DIR__ . '/../lib/compat.php');
+//
 // First load dependencies
 vendor_script('chat', array(
 	'angular/angular.min',
@@ -24,7 +27,6 @@ if (defined('DEBUG') && DEBUG) {
 // Next load source
 \OCP\Util::addStyle('chat', 'main.min');
 \OCP\Util::addScript('chat', 'main.min');
-
 
 ?>
 

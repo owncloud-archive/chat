@@ -14,8 +14,12 @@ Have chats in your ownCloud!
 | [Chat App Live Demo](#live-demo)  | [![Build Status](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/badge/icon)](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/) | 
 
 ## Install
+The Chat app depends on ownCloud 7.0.3 or newer. This means master (https://github.com/owncloud/core) can be used too.
+You can't directly use the Git repo without [building the CSS and JS code] (#important-run-grunt-when-you-change-js-files). You can use the package which is build every time a commit is pushed to the repository. [Download it here](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip)
 
 ## Live Demo
+There is a live demo hosted on [OpenShift](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip). You can use to test the Chat app. The demo is automatically updated every time a commit is pushed to this repository.
+**WARNING** Do not store any private information (passowrds!) in the App! 
 
 ## Screenshots
 **Initial screen**
@@ -55,10 +59,6 @@ Have chats in your ownCloud!
  - Notification in tab
  - Notification in left-bar when another conversation is active
 
-## Installation
-The Chat app depends on ownCloud 7.0.3 or newer. This means master (https://github.com/owncloud/core) can be used too.
-You can use the version in master only when you install grunt and run it. However packages are build every time a commit is pushed. [Download the package](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip)
-
 ## Contribute
 Contriubtions are very welcome! You can contribute on many ways:
  - Test the app (see [Installation](https://github.com/owncloud/chat#installation)) and report any issue and problem you encore in the [Issue tracker](https://github.com/owncloud/chat/issues)
@@ -67,7 +67,7 @@ Contriubtions are very welcome! You can contribute on many ways:
  - Solve bugs
 
 ### Important: run grunt when you change JS files
-Because the  javascript source files are minified to one single file, grunt must be run after every change and before every commit. To simply test this repo grunt isn't necessary!
+Because both the JavaScript and CSS source files are minified to one single file, grunt must be run after every change. The minified files are ignored by git. To simply test this repo see [Install](#install)
 To run grunt you'll need `NodeJS`. On Arch Linux this can be installed via:
 ````
 sudo pacman -S nodejs
@@ -75,14 +75,14 @@ sudo pacman -S nodejs
 On Ubuntu this can be installed via:
 ````
 sudo apt-get update
-sudo apt-get install nodejs
-sudo apt-get install npm
+sudo apt-get install nodejsn pm
 ````
-Now you'll have to install grunt and other dependenices for this app. First cd into the Chat directory and then run the following command:
+On OpenSUSE this can be installed via:
 ````
-npm install
-```
-Now you can grunt via:
+sudo zypper install nodejs
+````
+
+Now you can run `grunt` since the dependecies of this app are already included.
 ````
 grunt
 ````

@@ -10,8 +10,8 @@ Have chats in your ownCloud!
 | PHP Unit test coverage | [![Code Coverage](https://scrutinizer-ci.com/g/owncloud/chat/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/owncloud/chat/?branch=master) |
 | Scrutinizer Code Quality | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/owncloud/chat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/owncloud/chat/?branch=master) |
 | Development dependencies | [![devDependency Status](https://david-dm.org/owncloud/chat/dev-status.svg)](https://david-dm.org/owncloud/chat#info=devDependencies) |
-| [Chat App Pacakge](#Install) | [![Build Status](https://occjen-ledfan.rhcloud.com:443/buildStatus/icon?job=ownCloud-Chat)](https://occjen-ledfan.rhcloud.com:443/job/ownCloud-Chat/) |
-| [Chat App Live Demo](#Live-Demo)  | [![Build Status](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/badge/icon)](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/) | 
+| [Chat App Pacakge](#install) | [![Build Status](https://occjen-ledfan.rhcloud.com:443/buildStatus/icon?job=ownCloud-Chat)](https://occjen-ledfan.rhcloud.com:443/job/ownCloud-Chat/) |
+| [Chat App Live Demo](#live-demo)  | [![Build Status](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/badge/icon)](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/) | 
 
 ## Install
 

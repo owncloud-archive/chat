@@ -1,7 +1,7 @@
 #!/bin/bash
 # This file packages the ownCloud Chat app
 # This file is meant to run on the Jenkins server used by the Chat app. (https://occjen-ledfan.rhcloud.com)
-
+export HOME=/var/lib/openshift/547b566ee0b8cd470a000128/app-root/data/jobs/ownCloud-Chat/workspace
 files_to_delete=("node_modules" ".bowerrc" "bower.json" ".git*" "./.scrutinizer.yml" "./.travis.yml" "Gruntfile.js" "karma.conf.js" "Makefile" "package.json" "build.sh" "tests")
 rm -rf ../chat
 mkdir ../chat

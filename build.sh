@@ -7,7 +7,7 @@ rm -rf ../chat
 mkdir ../chat
 
 #../../../node-v0.10.0-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
-../../../node-v0.10.33-linux-x64/bin/node npm install
+../../../node-v0.10.33-linux-x64/bin/npm install
 ../../../node-v0.10.33-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
 
 

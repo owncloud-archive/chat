@@ -4,3 +4,4 @@ phpunit.phar
 /build
 js/main.min.js
 css/main.min.css
+node_modules

@@ -6,7 +6,8 @@ files_to_delete=("node_modules" ".bowerrc" "bower.json" ".git*" "./.scrutinizer.
 rm -rf ../chat
 mkdir ../chat
 
-../../../node-v0.10.0-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
+#../../../node-v0.10.0-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
+../../../node-v0.10.33-linux-x64/bin/node ../../../../repo/node_modules/grunt-cli/bin/grunt
 cp -r . ../chat
 
 for file in ${files_to_delete[@]}

@@ -14,6 +14,7 @@ $TRANSLATIONS = array(
 "There are no Chat Backends enabled." => "Det finns inget Chat backend aktiverat.",
 "In order to chat please enable at least one Chat backend." => "För att chatta, vänligen aktivera minst en Chat backend.",
 "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." => "Med den \"OCH\" backend kan du chatta med andra ownCloud användare. Det fungerar utan konfiguration.",
+"It can be enabled by running the following command in the root of your ownCloud installation:" => "Den kan aktiveras genom att köra följande kommando som root på din ownCloud server:",
 "There are no other users on this ownCloud." => "Det finns inga andra användare på denna ownCloud.",
 "In order to chat please create at least one user, it will appear on the left." => "För att chatta du skapa minst en användare, kommer den att visas på den vänstra."
 );

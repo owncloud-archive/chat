@@ -3,3 +3,4 @@ window.OC = {
 		return 'index.php/apps/' + app + path;
 	}
 };
+oc_requesttoken = 'abc123';

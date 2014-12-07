@@ -34,6 +34,11 @@ describe('ConvController', function(){
 	 */
 	beforeEach(inject(function($controller, $rootScope){
 		$scope = $rootScope.$new();
+		$scope.$session = {};
+		$scope.$session.id = 'CONV_ID_1411199664_37';
+		$scope.$session.user = {
+			id: "admin", online: true, displayname: "admin", order: 4, saved: true, backends: Array[2], address_book_id: "local", address_book_backend: ""
+		};
 		for(var key in backends) {
 			var backend = backends[key];
 			spyOn(backend.handle, 'init');
@@ -68,21 +73,12 @@ describe('ConvController', function(){
 			expect($scope.convs).toEqual(convs.convs);
 		});
 
-		it('Should attach activeUser to $scope.active.user', function () {
-			expect($scope.active.user).toEqual(activeUser);
-		});
-
 		it('Should attach initConvs to $scope.initConvs', function () {
 			expect($scope.initConvs).toEqual(initvar.initConvs);
 		});
 
 		it('Should attach initvar to $scope.initvar', function () {
 			expect($scope.initvar).toEqual(initvar);
-		});
-
-		it('Should attach the first backend to $scope.active.backend', function () {
-			for (var key in backends) break;
-			expect($scope.active.backend).toEqual(backends[key]);
 		});
 
 		describe('Should call the init() method', function () {
@@ -264,13 +260,6 @@ describe('ConvController', function(){
 				expect($scope.view.focusMsgInput).toHaveBeenCalled();
 			});
 
-			it('Should set $scope.active.conv to convId', function () {
-				var convId = '34q1235k452345234523452efsdg234523434edgasdg';
-				spyOn(convs, 'get').and.returnValue({'new_msg' : true});
-				$scope.view.makeActive(convId, $event, 'exception');
-				expect($scope.active.conv).toEqual(convId);
-			});
-
 			it('Should set new_msg to false of the conv', function () {
 				var conv = {'new_msg' : true};
 				spyOn(convs, 'get').and.returnValue(conv);
@@ -278,70 +267,5 @@ describe('ConvController', function(){
 				expect(conv.new_msg).toBeFalsy();
 			});
 		});
-		describe('unActive', function () {
-			it('Should set $scope.active.conv to null', function () {
-				$scope.view.unActive();
-				expect($scope.active.conv).toEqual(null);
-			});
-		});
-	});
-
-	describe('sendChatMsg', function () {
-		it('Should do nothing when $scope.fields.chatMsg is null', function () {
-			convs.addChatMsg.calls.reset();
-			$scope.fields.chatMsg = null;
-			$scope.sendChatMsg();
-			expect(convs.addChatMsg.calls.count()).toEqual(0);
-		});
-
-		it('Should do nothing when $scope.fields.chatMsg is \'\'', function () {
-			convs.addChatMsg.calls.reset();
-			$scope.fields.chatMsg = '';
-			$scope.sendChatMsg();
-			expect(convs.addChatMsg.calls.count()).toEqual(0);
-		});
-
-		it('Should call the convs.addChatMsg with the active.conv, active.user, fields.chatmsg. Time.now() and the backend', function () {
-			convs.addChatMsg.calls.reset();
-			$conv = {"id":"CONV_ID_1411199664_37","users":[{"id":"derp","online":false,"displayname":"derp","order":8,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"021"},{"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""}],"msgs":[],"backend":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4,"handle":{}},"new_msg":false,"raw_msgs":[],"order":3,"name":"derp ","$$hashKey":"00D"};
-			$chatMsg = 'Lipsum Lorepsem Derpy Test Message!';
-			$scope.active.conv = $conv.id;
-			$scope.active.user = activeUser;
-			$scope.fields.chatMsg = $chatMsg;
-			spyOn(Time, 'now').and.returnValue(32452135213);
-			spyOn(convs, 'get').and.returnValue($conv);
-			$scope.sendChatMsg();
-			expect(convs.addChatMsg).toHaveBeenCalledWith($conv.id, $scope.active.user, $chatMsg, 32452135213, 'och' );
-		});
-
-		it('Should call the sendChatMsg on the handle of the active backend with the active.conv and fields.chatMsg', function () {
-			spyOn(backends.och.handle, 'sendChatMsg');
-			$conv = {"id":"CONV_ID_1411199664_37","users":[{"id":"derp","online":false,"displayname":"derp","order":8,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"021"},{"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""}],"msgs":[],"backend":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4,"handle":{}},"new_msg":false,"raw_msgs":[],"order":3,"name":"derp ","$$hashKey":"00D"};
-			$chatMsg = 'Lipsum Lorepsem Derpy Test Message!';
-			$scope.active.conv = $conv.id;
-			$scope.active.user = activeUser;
-			$scope.fields.chatMsg = $chatMsg;
-			spyOn(Time, 'now').and.returnValue(32452135213);
-			spyOn(convs, 'get').and.returnValue($conv);
-			$scope.sendChatMsg();
-			expect(backends.och.handle.sendChatMsg).toHaveBeenCalledWith($conv.id, $chatMsg);
-		});
-
-		it('Should set $scope.fields.chatMsg to \'\'', function () {
-			$conv = {"id":"CONV_ID_1411199664_37","users":[{"id":"derp","online":false,"displayname":"derp","order":8,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}},"address_book_id":"local","address_book_backend":"","$$hashKey":"021"},{"id":"admin","online":true,"displayname":"admin","order":4,"backends":{"email":{"id":null,"displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},"och":{"id":null,"displayname":"ownCloud Handle","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}},"address_book_id":"local","address_book_backend":""}],"msgs":[],"backend":{"displayname":"ownCloud Handle","name":"och","enabled":true,"checked":null,"protocol":"x-owncloud-handle","id":4,"handle":{}},"new_msg":false,"raw_msgs":[],"order":3,"name":"derp ","$$hashKey":"00D"};
-			$chatMsg = 'Lipsum Lorepsem Derpy Test Message!';
-			$scope.active.conv = $conv.id;
-			$scope.active.user = activeUser;
-			$scope.fields.chatMsg = $chatMsg;
-			spyOn(Time, 'now').and.returnValue(32452135213);
-			spyOn(convs, 'get').and.returnValue($conv);
-			$scope.sendChatMsg();
-			expect($scope.fields.chatMsg).toEqual('');
-		});
-
-		it('Should set the order of every contacts inside the active.conv to +1 of the current highest order', function () {
-
-		});
-
 	});
 });

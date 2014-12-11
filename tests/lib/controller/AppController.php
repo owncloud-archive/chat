@@ -2,9 +2,12 @@
 
 namespace OCA\Chat\Controller;
 
+
 use \OCA\Chat\Utility\ControllerTestUtility;
 use \OCA\Chat\App\Chat;
 use \OCP\IRequest;
+use OCA\Chat\OCH\OCH;
+
 
 function time(){
 	return '2324';
@@ -47,7 +50,12 @@ class AppControllerTest extends ControllerTestUtility {
 			->will($this->returnCallback(function() use($c){
 				return $c;
 			}));
-		$this->controller = new AppController($this->appName, $this->request, $this->app);
+		$this->app->expects($this->any())
+			->method('getBackends')
+			->will($this->returnCallback(function() use($c){
+				return new OCH();
+			}));
+		$this->controller = new AppController($this->appName, $this->request, $this->app, new \OC\ContactsManager());
 	}
 
 

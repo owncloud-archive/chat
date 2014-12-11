@@ -13,7 +13,7 @@ mkdir ../chat
 cp -r . ../chat
 
 for file in ${files_to_delete[@]}
-dogit a
+do
     rm -rf ../chat/$file
 done
 

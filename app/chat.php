@@ -283,11 +283,11 @@ class Chat extends App{
 				$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
 				$addressbookKey = explode(':', $r['addressbook-key']);
 				if(count($addressbookKey) === 2){
-					$data['address_book_id'] = $addressbookKey[0];
-					$data['address_book_backend'] = $addressbookKey[1];
+					$data['address_book_id'] = $addressbookKey[1];
+					$data['address_book_backend'] = $addressbookKey[0];
 				} else {
-					$data['address_book_id'] = $addressbookKey[0];
-					$data['address_book_backend'] = '';
+					$data['address_book_id'] = '';
+					$data['address_book_backend'] = $addressbookKey[0];
 				}
 				$receivers[] = $data;
 				$contactsObj[$r['id']] = $data;
@@ -417,11 +417,11 @@ class Chat extends App{
 		$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
 		$addressbookKey = explode(':', $r['addressbook-key']);
 		if(count($addressbookKey) === 2){
-			$data['address_book_id'] = $addressbookKey[0];
-			$data['address_book_backend'] = $addressbookKey[1];
+			$data['address_book_id'] = $addressbookKey[1];
+			$data['address_book_backend'] = $addressbookKey[0];
 		} else {
-			$data['address_book_id'] = $addressbookKey[0];
-			$data['address_book_backend'] = '';
+			$data['address_book_id'] = '';
+			$data['address_book_backend'] = $addressbookKey[0];
 		}
 		return $data;
 	}

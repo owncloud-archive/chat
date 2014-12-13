@@ -23,7 +23,6 @@
 		} else {
 			// check if the contact is an ownCloud user or a contact
 			if (addressbookBackend === 'local' && addressBookId === ""){
-				console.log(id + ' is an owncloud user ');
 				// ownCloud user
 				var url = OC.generateUrl(
 					'/avatar/{user}/{size}?requesttoken={requesttoken}',
@@ -33,13 +32,11 @@
 						Cache.set(cacheId, {"noAvatar" : true}, cacheTime);
 						$div.imageplaceholder(displayname);
 					} else {
-						var cacheUrl = OC.generateUrl('/avatar/{user}/{size}',{user: id, size: size * window.devicePixelRatio});
-						Cache.set(cacheId, {"noAvatar" : false, "base64" : cacheUrl}, cacheTime);
+						Cache.set(cacheId, {"noAvatar" : false, "base64" : url}, cacheTime);
 						applyAvatar(url, size);
 					}
 				});
 			} else {
-				console.log(id + ' is a contact');
 				var url = OC.generateUrl('/apps/contacts/addressbook/{backend}/{addressbook_id}/contact/{contact_id}/photo?requesttoken={requesttoken}',
 					{backend: addressbookBackend, contact_id: id, addressbook_id: addressBookId, requesttoken: oc_requesttoken});
 				$.get(url, function(result) {
@@ -47,8 +44,7 @@
 						Cache.set(cacheId, {"noAvatar" : true}, cacheTime);
 						$div.imageplaceholder(displayname);
 					} else {
-						//var cacheUrl = OC.generateUrl('/avatar/{user}/{size}',{user: id, size: size * window.devicePixelRatio});
-						//Cache.set(cacheId, {"noAvatar" : false, "base64" : cacheUrl}, cacheTime);
+						Cache.set(cacheId, {"noAvatar" : false, "base64" : url}, cacheTime);
 						applyAvatar(url, size);
 					}
 				});

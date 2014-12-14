@@ -52,10 +52,10 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 			return result;
 		},
 		addContacts: function (contacts, success) {
-			$this = this;
+			$backend = this;
 			$http.post(OC.generateUrl('/apps/chat/contacts/add/'), {contacts: contacts}).
 				success(function(data, status, headers, config) {
-					$.extend($this.contacts, data);
+					$.extend($backend.contacts, data);
 					success();
 				}).
 				error(function(data, status, headers, config) {
@@ -64,10 +64,10 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 				});
 		},
 		removeContacts: function (contacts, success) {
-			$this = this;
+			$backend = this;
 			$http.post(OC.generateUrl('/apps/chat/contacts/remove/'), {contacts: contacts}).
 				success(function(data, status, headers, config) {
-					//$.extend($this.contacts, data);
+					//$.extend($backend.contacts, data);
 					//success();
 					alert('done');
 				}).

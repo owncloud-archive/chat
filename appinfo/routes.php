@@ -33,6 +33,16 @@ $application->registerRoutes($this, array(
 			'verb' => 'post'
 		),
 		array(
+			'name' => 'config#enableBackend',
+			'url' => '/backend/enable',
+			'verb' => 'post'
+		),
+		array(
+			'name' => 'config#disableBackend',
+			'url' => '/backend/disable',
+			'verb' => 'post'
+		),
+		array(
 			'name' => 'app#addContact',
 			'url' => '/contacts/add/',
 			'verb' => 'post'

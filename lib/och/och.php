@@ -101,4 +101,8 @@ class OCH extends AbstractBackend implements IBackend {
 		return array(
 		);
 	}
+
+	public function getHelp(){
+		return 'This Chat backend works without configuration. It can be used to chat with other ownCloud users';
+	}
 }

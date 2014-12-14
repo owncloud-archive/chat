@@ -60,4 +60,6 @@ interface IBackend{
 	 * @return array
 	 */
 	public function getDefaultConfig();
+
+	public function getHelp();
 }

@@ -15,20 +15,23 @@ class AdminController extends Controller {
 	private $c;
 
 	/**
-	 * @var \OCA\Chat\Db\ConfigMapper
+	 * @var \OCA\Chat\BackendManager
 	 */
-	private $configMapper;
+	private $backendManager;
 
 	public function __construct($appName, IRequest $request,  Chat $app){
 		parent::__construct($appName, $request);
 		$this->app = $app;
 		$this->c = $app->getContainer();
+		$this->backendManager = $this->c['BackendManager'];
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
 	public function index(){
-		return new TemplateResponse($this->appName, 'admin', array());
+		$params = [];
+		$params['backends'] = $this->backendManager->getBackends();
+		return new TemplateResponse($this->appName, 'admin', $params, 'blank');
 	}
 }

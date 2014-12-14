@@ -15,7 +15,11 @@ module.exports = function(grunt) {
 					'js/main.min.js': [
 						'js/src/chat.js',
 						'js/src/**/*.js',
-						'js/src/vendor/**/*.js'
+						'js/src/vendor/**/*.js',
+						'!js/admin/*'
+					],
+					'js/admin.min.js' : [
+						'js/admin/src/*.js'
 					]
 				}
 			}
@@ -23,7 +27,8 @@ module.exports = function(grunt) {
 		cssmin: {
 			combine: {
 				files: {
-					'css/main.min.css': ['css/src/*.css']
+					'css/main.min.css': ['css/src/*.css', '!css/admin'],
+					'css/admin.min.css' : ['css/admin/src/*.css']
 				}
 			}
 		},

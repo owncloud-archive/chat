@@ -3,5 +3,7 @@ phpunit
 phpunit.phar
 /build
 js/main.min.js
+js/admin.min.js
 css/main.min.css
+css/admin.min.css
 node_modules

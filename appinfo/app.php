@@ -29,3 +29,5 @@ $enabled =  \OCP\Config::getAppValue('chat', 'backend_xmpp_enabled');
 if ($enabled === null){
 	\OCP\Config::setAppValue('chat', 'backend_xmpp_enabled', false);
 }
+
+\OCP\App::registerAdmin('chat', 'lib/admin');

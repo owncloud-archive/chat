@@ -10,6 +10,7 @@ namespace OCA\Chat\App;
 use OCA\Chat\Controller\AppController;
 use OCA\Chat\Controller\OCH\ApiController;
 use OCA\Chat\Controller\ConfigController;
+use OCA\Chat\Controller\AdminController;
 use OCP\AppFramework\App;
 use OCA\Chat\OCH\Db\ConversationMapper;
 use OCA\Chat\OCH\Db\MessageMapper;
@@ -85,6 +86,14 @@ class Chat extends App{
 
 		$container->registerService('ConfigController', function ($c) use($app) {
 			return new ConfigController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$app
+			);
+		});
+
+		$container->registerService('AdminController', function ($c) use($app) {
+			return new AdminController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$app

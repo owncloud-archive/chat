@@ -50,4 +50,22 @@ class BackendManager implements IBackendManager {
 		return self::$backends;
 	}
 
+	public function enableBackend($backend){
+		$backends = $this->getBackends();
+		if(array_key_exists($backend,$backends)){
+			\OCP\Config::setAppValue('chat', 'backend_' . $backend . '_enabled', true);
+		} else {
+			throw new BackendNotFoundException('Backend not found', 404);
+		}
+	}
+
+	public function disableBackend($backend){
+		$backends = $this->getBackends();
+		if(array_key_exists($backend,$backends)){
+			\OCP\Config::setAppValue('chat', 'backend_' . $backend . '_enabled', false);
+			return true;
+		} else {
+			throw new BackendNotFoundException('Backend not found', 404);
+		}
+	}
 }

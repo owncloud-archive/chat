@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use OCA\Chat\BackendNotFoundException;
 
 class EnableBackend extends Command {
 
@@ -31,13 +32,10 @@ class EnableBackend extends Command {
 	public function execute(InputInterface $input, OutputInterface $output){
 		$backend = $input->getArgument('backend');
 		$backendManager = $this->app->c['BackendManager'];
-		$backends = $backendManager->getBackends();
-
-		// Check if backend exits
-		if(array_key_exists($backend,$backends)){
-			\OCP\Config::setAppValue('chat', 'backend_' . $backend . '_enabled', true);
+		try {
+			$backendManager->enableBackend($backend);
 			$output->writeln("Chat Backend '". $backend . "' is enabled.");
-		} else {
+		} Catch (BackendNotFoundException $e) {
 			$output->writeln("<error>Chat Backend does not exists.</error>");
 		}
 	}

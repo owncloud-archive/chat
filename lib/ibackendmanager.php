@@ -42,4 +42,8 @@ interface IBackendManager{
 
 
 	public function getBackends();
+
+	public function enableBackend($backend);
+
+	public function disableBackend($backend);
 }

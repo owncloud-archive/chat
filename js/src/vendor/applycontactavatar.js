@@ -27,18 +27,23 @@
 				var url = OC.generateUrl(
 					'/avatar/{user}/{size}?requesttoken={requesttoken}',
 					{user: id, size: size * window.devicePixelRatio, requesttoken: oc_requesttoken});
+				var urlWithoutRT = OC.generateUrl(
+					'/avatar/{user}/{size}',
+					{user: id, size: size * window.devicePixelRatio});
 				$.get(url, function(result) {
 					if (typeof(result) === 'object') {
 						Cache.set(cacheId, {"noAvatar" : true}, cacheTime);
 						$div.imageplaceholder(displayname);
 					} else {
-						Cache.set(cacheId, {"noAvatar" : false, "base64" : url}, cacheTime);
+						Cache.set(cacheId, {"noAvatar" : false, "base64" : urlWithoutRT}, cacheTime);
 						applyAvatar(url, size);
 					}
 				});
 			} else {
 				var url = OC.generateUrl('/apps/contacts/addressbook/{backend}/{addressbook_id}/contact/{contact_id}/photo?requesttoken={requesttoken}',
 					{backend: addressbookBackend, contact_id: id, addressbook_id: addressBookId, requesttoken: oc_requesttoken});
+				var urlWithoutRT = OC.generateUrl('/apps/contacts/addressbook/{backend}/{addressbook_id}/contact/{contact_id}/photo',
+					{backend: addressbookBackend, contact_id: id, addressbook_id: addressBookId});
 				$.get(url, function(result) {
 					if (typeof(result) === 'object') {
 						Cache.set(cacheId, {"noAvatar" : true}, cacheTime);

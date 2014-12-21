@@ -13,9 +13,15 @@ class ConfigMapper extends Mapper {
 	 */
 	private $user;
 
-	public function __construct(IDb $api, $user){
+	/**
+	 * @var \OCP\Security\ICrypto
+	 */
+	private $crypto;
+
+	public function __construct(IDb $api, $user, $crypto){
 		parent::__construct($api, 'chat_config');
 		$this->user = $user;
+		$this->crypto = $crypto;
 	}
 
 	/**
@@ -37,7 +43,7 @@ SQL;
 		$values = array();
 		$result = $this->findEntities($sql, array($this->user, $backend));
 		foreach ($result as $r) {
-			$values[$r->getKey()]  = $r->getValue();
+			$values[$r->getKey()]  = $this->crypto->decrypt($r->getValue());
 		}
 		return $values;
 	}
@@ -48,6 +54,7 @@ SQL;
 	 * @param $value the config value
 	 */
 	public function set($backend, $key, $value){
+		$value = $this->crypto->encrypt($value);
 		if($this->hasKey($backend, $key, $value)){
 			$sql = <<<SQL
 				UPDATE

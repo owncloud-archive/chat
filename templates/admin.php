@@ -1,6 +1,6 @@
 <?php
 script('chat', 'admin.min');
-style('chat', 'admin.min');
+//style('chat', 'admin.min');
 ?>
 
 <div class="section" id="news">

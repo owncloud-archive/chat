@@ -30,7 +30,7 @@ class AdminController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function index(){
-		$params = [];
+		$params = array();
 		$params['backends'] = $this->backendManager->getBackends();
 		return new TemplateResponse($this->appName, 'admin', $params, 'blank');
 	}

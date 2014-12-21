@@ -2,7 +2,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 	$XMPP = {
 		on : {
 			chatMessage : function(msg, from){
-				var convId = from.substring(0, from.indexOf('/'));
+				var convId = Strophe.getBareJidFromJid(from);
+				//var convId = from.substring(0, from.indexOf('/'));
 				convs.addChatMsg(
 					convId,
 					contacts.findByBackendValue('xmpp', convId),

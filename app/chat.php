@@ -142,7 +142,8 @@ class Chat extends App{
 		$container->registerService('ConfigMapper', function ($c) use ($app) {
 			return new ConfigMapper(
 				$c->query('ServerContainer')->getDb(),
-				$app->getUserId()
+				$app->getUserId(),
+				$c->query('ServerContainer')->getCrypto()
 			);
 		});
 
@@ -238,6 +239,7 @@ class Chat extends App{
 		$container->registerService('XMPP', function($c) use ($app){
 			return new XMPP($app);
 		});
+
 
 	}
 

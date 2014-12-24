@@ -5,7 +5,7 @@ namespace OCA\Chat\Controller;
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\Http\TemplateResponse;
-
+use \OCA\Chat\App\Chat;
 
 
 class AdminController extends Controller {

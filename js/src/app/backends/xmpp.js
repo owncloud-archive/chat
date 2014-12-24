@@ -41,8 +41,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 						"backends": [
 							{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": convId}
 						],
-						"address_book_id": "local",
-						"address_book_backend": "0",
+						"address_book_id": "-1",
+						"address_book_backend": "local",
 						"saved": false
 					};
 					contacts.contacts[convId] = contact;
@@ -253,8 +253,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				"backends": [
 					{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": bareJid}
 				],
-				"address_book_id": "local",
-				"address_book_backend": "0",
+				"address_book_id": "-1",
+				"address_book_backend": "local",
 				"saved": false
 			};
 			contacts.contacts[bareJid] = contact;

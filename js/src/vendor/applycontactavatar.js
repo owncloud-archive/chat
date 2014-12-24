@@ -22,7 +22,11 @@
 			}
 		} else {
 			// check if the contact is an ownCloud user or a contact
-			if (addressbookBackend === 'local' && addressBookId === ""){
+			if (addressbookBackend === 'local' && addressBookId === "-1") {
+				// This is a NOT saved contact
+				$div.imageplaceholder(displayname);
+			}
+			else if (addressbookBackend === 'local' && addressBookId === ""){
 				// ownCloud user
 				var url = OC.generateUrl(
 					'/avatar/{user}/{size}?requesttoken={requesttoken}',

@@ -200,6 +200,10 @@ angular.module('chat').controller(
 					}], function (){
 						delete contacts.contacts[contactId];
 					});
+				},
+				startInstantChat: function () {
+					backends.xmpp.handle.newConv($scope.fields.jid);
+					$scope.fields.jid = '';
 				}
 			};
 

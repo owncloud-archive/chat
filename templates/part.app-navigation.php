@@ -1,4 +1,7 @@
 <div id="filter-container">
+	<form ng-submit="view.startInstantChat()">
+		<input type="text" placeholder="<?php p($l->t('Jabber id'));?>" ng-model="fields.jid" >
+	</form>
 	<input class="filter-field" type="text" placeholder="<?php p($l->t('Search in conversations'));?>" ng-model="search.name">
 </div>
 <ul>

@@ -130,7 +130,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				for (var backendKey in XMPPContact.backends) {
 					var backend = XMPPContact.backends[backendKey];
 					if (backend.id === 'xmpp') {
-						convs.addConv(backend.value, [XMPPContact, contacts.self()], 'xmpp', [], []);
 					}
 				}
 			}
@@ -244,6 +243,23 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 		invite : function(convId, userToInvite, groupConv, callback){
 		},
 		newConv : function(userToInvite, success){
+			// add temp contact to the contacts
+			var bareJid = Strophe.getBareJidFromJid(userToInvite);
+			var contact = {
+				"id" : bareJid,
+				"online": false,
+				"displayname" : bareJid,
+				"order" : 0,
+				"backends": [
+					{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": bareJid}
+				],
+				"address_book_id": "local",
+				"address_book_backend": "0",
+				"saved": false
+			};
+			contacts.contacts[bareJid] = contact;
+			convs.addConv(bareJid, [contact, contacts.self()], 'xmpp', [], []);
+
 		},
 		attachFile : function(convId, paths, user){
 		},

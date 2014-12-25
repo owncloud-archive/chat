@@ -10,7 +10,7 @@
 	float: left;
 	width: 100%;
 	position: absolute;
-	top: 60px;
+	top: 100px;
 	bottom: 0;
 	height: auto !important;
 }
@@ -35,7 +35,7 @@
 }
 
 #filter-container {
-	height:60px;
+	height:100px;
 	padding:10px;
 	margin: 0;
 	background-color:#F5F5F5;
@@ -43,6 +43,7 @@
 #filter-container input {
 	margin:0;
 	width:215px;
+	margin-top:10px;
 }
 
 .conv-list-active {

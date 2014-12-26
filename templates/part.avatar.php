@@ -75,7 +75,10 @@
 			ng-repeat="(key, user) in conv.users | userFilter"
 			class="avatar-list-expanded-item"
 			>
-			<div class="online-dot-container">
+			<div
+				class="online-dot-container"
+				ng-if="$parent.$parent.avatarsEnabled === 'true'"
+				>
 				<div
 					tipsy
 					title="{{ user.displayname }}"
@@ -99,7 +102,19 @@
 					&nbsp;
 				</div>
 			</div>
+			<div
+				ng-if="$parent.$parent.avatarsEnabled === 'false'"
+				online
+				data-id="{{ user.id }}"
+				class="online-dot-displayname-nav online-dot-displayname-nav-expanded"
+				>
+				<!--
+				This is a place holder div for the green dot which is used to indicate the online status of the contact
+				-->
+				&nbsp;
+			</div>
 			{{ user.displayname }}
+
 		</li>
 		<li
 			class="avatar-list-expanded-button invite-button"

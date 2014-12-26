@@ -167,3 +167,9 @@
 #emoji-search {
 	width:265px;
 }
+
+.msg-displayname-container{
+	width:100px !important;
+	font-weight: bold;
+	position:relative;
+}

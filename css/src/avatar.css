@@ -64,6 +64,10 @@
 	float:left;
 }
 
+.online-dot-displayname {
+	margin-top:10px !important;
+}
+
 .avatar-list-expanded-item{
 	padding:0px !important;
 	margin:0px;

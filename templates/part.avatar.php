@@ -53,6 +53,18 @@
 	</div>
 	<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" ng-class="{bold : conv.new_msg === true}" >
 	</span>
+	<div
+		ng-if="$parent.$parent.avatarsEnabled === 'false'"
+		online
+		ng-repeat="(key, user) in conv.users | userFilter"
+		data-id="{{ user.id }}"
+		class="online-dot-displayname-nav"
+		>
+		<!--
+		This is a place holder div for the green dot which is used to indicate the online status of the contact
+		-->
+		&nbsp;
+	</div>
 </div>
 <div
 	class="conv-list-item-avatar"

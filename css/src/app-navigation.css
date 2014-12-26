@@ -67,3 +67,8 @@
 .heightInvite {
 	height: 100px;
 }
+
+.online-dot-displayname-nav {
+	position:static !important;
+	margin-top:7px !important;
+}

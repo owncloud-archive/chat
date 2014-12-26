@@ -20,17 +20,19 @@
 							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
 							data-size="40"
 							data-id="{{ msg.contact.id }}"
-							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
 							data-displayname="{{ msg.contact.displayname }}"
 							data-addressbook-backend="{{ msg.contact.address_book_backend }}"
 							data-addressbook-id="{{ msg.contact.address_book_id  }}"
 							avatar
-							online
                             tipsy
                             title="{{ msg.contact.displayname }}"
 						>
 						</div>
-						<div>
+						<div
+							online
+							data-id="{{ msg.contact.id }}"
+							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
+						>
 							<!--
 							This is a place holder div for the green dot which is used to indicate the online status of the contact
 							-->

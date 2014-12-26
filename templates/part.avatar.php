@@ -1,6 +1,11 @@
 <div ng-if="conv.id !== $parent.$session.conv || ( conv.id === $parent.$session.conv && conv.users.length === 2)" class="conv-list-item-avatar">
-	<div ng-if="conv.users.length === 2" class="avatar-list-container" >
-		<div class="online-dot-container">
+	<div
+		ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === 'true'"
+		class="avatar-list-container"
+	>
+		<div
+			class="online-dot-container"
+		>
 			<div
 				tipsy
 				title="{{ user.displayname }}"
@@ -13,10 +18,13 @@
 				data-displayname="{{ user.displayname }}"
 				data-addressbook-backend="{{ user.address_book_backend }}"
 				data-addressbook-id="{{ user.address_book_id  }}"
-				online
 			>
 			</div>
-			<div>
+			<div
+				online
+				ng-repeat="(key, user) in conv.users | userFilter"
+				data-id="{{ user.id }}"
+			>
 				<!--
 				This is a place holder div for the green dot which is used to indicate the online status of the contact
 				-->
@@ -24,7 +32,10 @@
 			</div>
 		</div>
 	</div>
-	<div ng-if="conv.users.length > 2" class="avatar-list-container" >
+	<div
+		ng-if="conv.users.length > 2  && $parent.$parent.avatarsEnabled === 'true'"
+		class="avatar-list-container"
+	>
 		<div
 			tipsy
 			title="{{ user.displayname }}"
@@ -63,10 +74,13 @@
 					data-displayname="{{ user.displayname }}"
 					data-addressbook-backend="{{ user.address_book_backend }}"
 					data-addressbook-id="{{ user.address_book_id  }}"
-					online
 				>
 				</div>
-				<div>
+				<div
+					online
+					ng-repeat="(key, user) in conv.users | userFilter"
+					data-id="{{ user.id }}"
+				>
 					<!--
 					This is a place holder div for the green dot which is used to indicate the online status of the contact
 					-->

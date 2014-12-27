@@ -1,17 +1,26 @@
+<!--
+	This div holds the content of the active conversation
+-->
 <div ng-if="view.elements.chat" >
+	<!--
+		This section holds the message list
+	-->
 	<section ng-click="focusMsgInput()" id="chat-window-body">
 		<div id="chat-window-msgs">
+			<!-- This div holds exactly one chat message	-->
 			<div
 				class="chat-msg-container"
 				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
 				ng-class="{'chat-msg-container-border': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 			>
+				<!-- This div holds the time of the chat message -->
 				<div
 					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
 					class="chat-msg-time"
 				>
 					{{ msg.time.hours }} : {{ msg.time.minutes }}
 				</div>
+				<!-- This div holds the Chat message and the avatar of the user which sends it-->
 				<div class="chat-msg">
 					<div
 						class="msg-avatar-container"
@@ -37,13 +46,19 @@
 							&nbsp;
 						</div>
 					</div>
-					<p class="chat-msg-msg" ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText">
+					<p
+						class="chat-msg-msg"
+						ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
+						>
 						&nbsp;
 					</p>
 				</div>
 			</div>
 		</div>
 	</section>
+	<!--
+		This element holds the Chat message input field, and the buttons to active the file picker and emoji picker
+	-->
 	<footer id="chat-window-footer">
 		<form id="chat-msg-form" ng-submit="sendChatMsg()">
 			<div
@@ -59,7 +74,11 @@
 				&nbsp;
 			</div>
 			<div class="chat-msg-send-button" >
-				<button  type="submit"><div class="icon-play">&nbsp;</div></button>
+				<button  type="submit">
+					<div class="icon-play">
+						&nbsp;
+					</div>
+				</button>
 			</div>
 			<div id="chat-msg-input">
 				<textarea
@@ -73,16 +92,40 @@
 			</div>
 		</form>
 	</footer>
-	<div ng-if="view.elements.emojiContainer" id="emoji-container" class="emoji-no-hide">
+	<!--
+		This div holds the emoji-picker only when it's active
+	-->
+	<div
+		ng-if="view.elements.emojiContainer"
+		id="emoji-container"
+		class="emoji-no-hide"
+		>
 		<div
 			id="emoji-container-search"
             class="emoji-no-hide"
 		>
-			<input placeholder="Search" id="emoji-search" type="text" class="emoji-no-hide" ng-model="emojiSearch">
+			<input
+				placeholder="Search"
+				id="emoji-search"
+				type="text"
+				class="emoji-no-hide"
+				ng-model="emojiSearch"
+				>
 		</div>
-		<ul id="emoji-list" class="emoji-no-hide">
-			<li ng-click="addEmoji(emoji.key)" ng-repeat="emoji in emojis | filter:emojiSearch" class="emoji-no-hide">
-				<div title="{{ emoji.key }}" class="emojione-{{ emoji.value.toUpperCase() }} emoji-no-hide"> </div>
+		<ul
+			id="emoji-list"
+			class="emoji-no-hide"
+			>
+			<li
+				ng-click="addEmoji(emoji.key)"
+				ng-repeat="emoji in emojis | filter:emojiSearch"
+				class="emoji-no-hide"
+				>
+				<div
+					title="{{ emoji.key }}"
+					class="emojione-{{ emoji.value.toUpperCase() }} emoji-no-hide"
+					>
+				</div>
 			</li>
 		</ul>
 	</div>

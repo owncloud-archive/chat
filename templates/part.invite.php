@@ -1,8 +1,26 @@
-<div invite-mobile ng-if="view.elements.invite" class="invite-no-hide" id="invite-container">
-<!--	<div id="invite-container-inner">-->
-		<div class="invite-contact-search invite-no-hide">
-			<input type="text" id="invite-search-field" class="filter-field invite-no-hide" type="text" placeholder="<?php p($l->t('Search in users'));?>" ng-model="inviteSearch.displayname">
+<!--
+	This div holds the invite popup used to add new contacts to a conversation
+-->
+<div
+	invite-mobile
+	ng-if="view.elements.invite"
+	class="invite-no-hide"
+	id="invite-container"
+	>
+		<!-- Search field to search in the Contacts -->
+		<div
+			class="invite-contact-search invite-no-hide"
+			>
+			<input
+				type="text"
+				id="invite-search-field"
+				class="filter-field invite-no-hide"
+				type="text"
+				placeholder="<?php p($l->t('Search in users'));?>"
+				ng-model="inviteSearch.displayname"
+				>
 		</div>
+		<!-- list with contacts -->
 		<ul>
 			<li
 				class="invite-contact invite-no-hide"
@@ -27,5 +45,4 @@
 				</div>
 			</li>
 		</ul>
-<!--	</div>-->
 </div>

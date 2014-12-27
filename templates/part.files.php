@@ -1,5 +1,14 @@
-<div ng-if="view.elements.files" class="files-no-hide" id="files-container">
-	<p class="files-title file-element"><?php p($l->t('Files attached to this conversation')); ?></p>
+<!-- This div holds an overview with the files attached to the conversation -->
+<div
+	ng-if="view.elements.files"
+	class="files-no-hide"
+	id="files-container"
+	>
+	<p
+		class="files-title file-element"
+		>
+		<?php p($l->t('Files attached to this conversation')); ?>
+	</p>
 	<table>
 		<tr class="file-element">
 			<th class="file-preview">

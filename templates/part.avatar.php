@@ -1,4 +1,20 @@
-<div ng-if="conv.id !== $parent.$session.conv || ( conv.id === $parent.$session.conv && conv.users.length === 2)" class="conv-list-item-avatar">
+<!--
+	This div shows the avatars + displayname of the conversation entry
+	This div is only visible when:
+ 		 - the conversation isn't active
+ 		 OR
+ 		 - the conversation is active
+ 		 - AND the conversation has only 2 users in it
+-->
+<div
+	ng-if="conv.id !== $parent.$session.conv || ( conv.id === $parent.$session.conv && conv.users.length === 2)"
+	class="conv-list-item-avatar"
+	>
+	<!--
+		This div shows the avatar of the Contact in the conversation + a green dot when it's online
+		This div is only visible when:
+			- the conversation has only 2 users in it
+	-->
 	<div ng-if="conv.users.length === 2" class="avatar-list-container" >
 		<div class="online-dot-container">
 			<div
@@ -24,6 +40,12 @@
 			</div>
 		</div>
 	</div>
+	<!--
+		This div shows the avatar of the Contacts in the conversation WITHOUT a green dot when it's online
+		This div is only visible when:
+			- the conversation has more than 2 users in it
+		There are maximum 4 avatars shown, which are all 1/4 size of the other avatars
+	-->
 	<div ng-if="conv.users.length > 2" class="avatar-list-container" >
 		<div
 			tipsy
@@ -40,13 +62,28 @@
 		>
 		</div>
 	</div>
-	<span displayname data-users="{{ conv.users }}" class="left avatar-list-displayname" ng-class="{bold : conv.new_msg === true}" >
+	<!--
+		This div shows the displayname of the conversation
+	-->
+	<span
+		displayname
+		data-users="{{ conv.users }}"
+		class="left avatar-list-displayname"
+		ng-class="{bold : conv.new_msg === true}"
+		>
 	</span>
 </div>
+<!--
+	This div shows the avatars + displayname of the conversation entry
+	This div is only visible when:
+ 		 - the conversation isn active
+ 		 - AND the conversation has more than 2 users in it
+-->
 <div
 	class="conv-list-item-avatar"
 	ng-if="conv.id === $parent.$session.conv && conv.users.length > 2"
 	>
+	<!-- This ul holds the list with avatars and the buttons -->
 	<ul>
 		<li
 			ng-repeat="(key, user) in conv.users | userFilter"

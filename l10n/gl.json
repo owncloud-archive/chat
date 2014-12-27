@@ -2,6 +2,7 @@
     "Chat" : "Conversas",
     "{displayname} attached {path} to this conversation" : "{displayname} anexado {path} a esta conversa",
     "{displayname} removed {path} from this conversation" : "{displayname} retirado {path} desta conversa",
+    "Start a chat with ..." : "Comezar unha conversa con ...",
     "Search in conversations" : "Buscar nas conversas",
     "Add Person" : "Engadir unha persoa",
     "View Attached files" : "Ver os ficheiros anexos",

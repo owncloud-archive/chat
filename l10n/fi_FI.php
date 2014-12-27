@@ -3,6 +3,7 @@ $TRANSLATIONS = array(
 "Chat" => "Keskustelu",
 "{displayname} attached {path} to this conversation" => "{displayname} liitti kohteen {path} tähän keskusteluun",
 "{displayname} removed {path} from this conversation" => "{displayname} poisti kohteen {path} tästä keskustelusta",
+"Start a chat with ..." => "Aloita keskustelu käyttäjän kanssa...",
 "Search in conversations" => "Etsi keskusteluista",
 "Add Person" => "Lisää henkilö",
 "View Attached files" => "Näytä liitetyt tiedostot",

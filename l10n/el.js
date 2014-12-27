@@ -4,6 +4,7 @@ OC.L10N.register(
     "Chat" : "Συνομιλία",
     "{displayname} attached {path} to this conversation" : "{προβαλλόμενο όνομα} συνημμένο {διαδρομή} σε αυτή τη συνομιλία",
     "{displayname} removed {path} from this conversation" : "{προβαλλόμενο όνομα} αφαιρέθηκε {διαδρομή} από αυτή τη συνομιλία",
+    "Start a chat with ..." : "Έναρξη συνομιλίας με ...",
     "Search in conversations" : "Αναζήτηση στις συζητήσεις",
     "Add Person" : "Προσθήκη Ατόμου",
     "View Attached files" : "Προβολή Συνημμένων αρχείων",

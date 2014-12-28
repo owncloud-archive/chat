@@ -4865,7 +4865,7 @@ Strophe.Websocket.prototype = {
         } else {
             var string = this._streamWrap(message.data);
             var elem = new DOMParser().parseFromString(string, "text/xml").documentElement;
-            this.socket.onmessage = this._onMessage.bind(this);
+            this.socket.onmessage = this.onMessage.bind(this);
             this._conn._connect_cb(elem, null, message.data);
         }
     },
@@ -5019,7 +5019,7 @@ Strophe.Websocket.prototype = {
         }
     },
 
-    /** PrivateFunction: _onMessage
+    /** PrivateFunction: onMessage
      * _Private_ function to handle websockets messages.
      *
      * This function parses each of the messages as if they are full documents. [TODO : We may actually want to use a SAX Push parser].
@@ -5031,7 +5031,7 @@ Strophe.Websocket.prototype = {
      * Parameters:
      * (string) message - The websocket message.
      */
-    _onMessage: function(message) {
+    onMessage: function(message) {
         var elem, data;
         // check for closing stream
         if (message.data === "</stream:stream>") {

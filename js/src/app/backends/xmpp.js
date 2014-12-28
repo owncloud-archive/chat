@@ -1,29 +1,10 @@
 angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', 'authorize', function(convs, contacts, initvar, $session, authorize) {
 	$XMPP = {
-		on : {
-			chatMessage : function(msg, from){
-				var convId = Strophe.getBareJidFromJid(from);
-				//var convId = from.substring(0, from.indexOf('/'));
-				convs.addChatMsg(
-					convId,
-					contacts.findByBackendValue('xmpp', convId),
-					msg,
-					Time.now(),
-					'xmpp'
-				);
-			},
-			connected : function(){
-
-			},
-			disconnected : function(){
-
-			}
-		},
 		jid: initvar.backends.xmpp.config.jid,
 		password: initvar.backends.xmpp.config.password,
 		bosh_url: initvar.backends.xmpp.config.bosh_url,
 		conn : null,
-		_onMessage : function(msg){
+		onMessage : function(msg){
 			var to = msg.getAttribute('to');
 			var from = msg.getAttribute('from');
 			var type = msg.getAttribute('type');
@@ -48,42 +29,39 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 					contacts.contacts[convId] = contact;
 					convs.addConv(convId, [contact, contacts.self()], 'xmpp', [], []);
 				}
-				$XMPP.on.chatMessage(Strophe.getText(body), from);
+				var convId = Strophe.getBareJidFromJid(from);
+				//var convId = from.substring(0, from.indexOf('/'));
+				convs.addChatMsg(
+					convId,
+					contacts.findByBackendValue('xmpp', convId),
+					Strophe.getText(body),
+					Time.now(),
+					'xmpp'
+				);
 			}
 			return true;
 		},
-		_onConnect : function(status){
-			if (status == Strophe.Status.CONNECTING) {
-				log('Strophe is connecting.');
-			} else if (status == Strophe.Status.CONNFAIL) {
-				log('Strophe failed to connect.');
-				initvar.backends.xmpp.connected = false;
-			} else if (status == Strophe.Status.DISCONNECTING) {
-				log('Strophe is disconnecting.');
-				initvar.backends.xmpp.connected = false;
-			} else if (status == Strophe.Status.DISCONNECTED) {
-				log('Strophe is disconnected.');
-				initvar.backends.xmpp.connected = false;
-			} else if (status == Strophe.Status.CONNECTED) {
-				log('Strophe is connected.');
+		onConnect : function(status){
+			if (status == Strophe.Status.CONNECTED) {
+				console.log('Strophe is connected.');
 				initvar.backends.xmpp.connected = true;
 
-				$XMPP.con.addHandler($XMPP._onMessage, null, 'message', null, null, null);
+				$XMPP.con.addHandler($XMPP.onMessage, null, 'message', null, null, null);
 
 				// Get roster information
 				var iq = $iq({type: "get"}).c('query', {xmlns: "jabber:iq:roster"});
-				$XMPP.con.addHandler($XMPP._processRoster, 'jabber:iq:roster', 'iq');
+				$XMPP.con.addHandler($XMPP.processRoster, 'jabber:iq:roster', 'iq');
 				$XMPP.con.send(iq);
 				$XMPP.con.addHandler($XMPP.onPresence, null, "presence")
 				$XMPP.con.send($pres());
-				$XMPP._generateConvs();
+				$XMPP.generateConvs();
 
 			} else if (status == Strophe.Status.AUTHFAIL){
 				// TODO
 				alert('auth fail');
 			}
 		},
-		_processRoster : function (iq) {
+		processRoster : function (iq) {
 			var contactsToAdd = [];
 			var contactsToRemove = [];
 			$(iq).find('item').each(function () {
@@ -111,19 +89,17 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				}
 			});
 
-
-
 			if (contactsToAdd.length > 0) {
 				// add the contacts from the roster to the contacts
 				contacts.addContacts(contactsToAdd, function () {
-					$XMPP._generateConvs();
+					$XMPP.generateConvs();
 				});
 			}
 			return true; // Keep this handler
 		},
 		// this function creates conversations with XMPP contacts
 		// called after the roster is fetched and processed
-		_generateConvs : function () {
+		generateConvs : function () {
 			var XMPPContacts = contacts.findByBackend('xmpp');
 			for (var key in XMPPContacts) {
 				var XMPPContact = XMPPContacts[key];
@@ -193,13 +169,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 		roster : []
 	};
 
-	var log = function(msg){
-		console.log(msg);
-	}
-	Strophe.log = function (level, msg) {
-		//console.log(msg);
-	};
-
 	return {
 		init : function(){
 			//$XMPP.
@@ -219,7 +188,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				try {
 					// Connect to XMPP sever
 					$XMPP.con = new Strophe.Connection($XMPP.bosh_url);
-					$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP._onConnect);
+					$XMPP.con.connect($XMPP.jid, $XMPP.password, $XMPP.onConnect);
 					$XMPP.con.rawInput = $XMPP.onRaw;
 					$XMPP.con.rawOutput = $XMPP.onRaw;
 				} catch (e) {

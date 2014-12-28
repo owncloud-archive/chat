@@ -4,6 +4,12 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 		password: initvar.backends.xmpp.config.password,
 		bosh_url: initvar.backends.xmpp.config.bosh_url,
 		conn : null,
+		/**
+		 * Called when we receive a new message
+		 * This function adds the message to the correct conversation if it exits otherwise it will create a new conversation first
+		 * @param msg XMLDocument
+		 * @returns true
+		 * */
 		onMessage : function(msg){
 			var to = msg.getAttribute('to');
 			var from = msg.getAttribute('from');
@@ -14,22 +20,11 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				var body = elems[0];
 				var convId = Strophe.getBareJidFromJid(from);
 				if (!convs.exists(convId)) {
-					var contact = {
-						"id" : convId,
-						"online": false,
-						"displayname" : convId,
-						"order" : 0,
-						"backends": [
-							{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": convId}
-						],
-						"address_book_id": "-1",
-						"address_book_backend": "local",
-						"saved": false
-					};
+					var contact = contacts.generateTempContact(convId, false, convId,
+						[{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": convId}]);
 					contacts.contacts[convId] = contact;
 					convs.addConv(convId, [contact, contacts.self()], 'xmpp', [], []);
 				}
-				var convId = Strophe.getBareJidFromJid(from);
 				convs.addChatMsg(
 					convId,
 					contacts.findByBackendValue('xmpp', convId),
@@ -40,6 +35,12 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			}
 			return true;
 		},
+		/**
+		 * This function is called when we are connected and authorized to the XMPP server
+		 * This function requests the XMPP roster
+		 * This function will call the generateConvs function to initialize the Conversation list
+		 * @param status
+		 */
 		onConnect : function(status){
 			if (status == Strophe.Status.CONNECTED) {
 				console.log('Strophe is connected.');
@@ -60,6 +61,16 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				alert('auth fail');
 			}
 		},
+		/**
+		 * This function process the roster when it's fetched from the XMPP server.
+		 * This can happen multiple times during a session. E.g. when a contact
+		 * was removed or added to the roster.
+		 * Each item in the roster which isn't in the Contacts app will be added
+		 * to the Contacts app/DB. It will also subscribe to the presence of
+		 * that contact.
+		 * @param iq XMLDocument
+		 * @returns true
+		 */
 		processRoster : function (iq) {
 			var contactsToAdd = [];
 			var contactsToRemove = [];
@@ -96,8 +107,10 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			}
 			return true; // Keep this handler
 		},
-		// this function creates conversations with XMPP contacts
-		// called after the roster is fetched and processed
+		/**
+		 * This function fetch all contacts which supports XMPP from the contacts app.
+		 * And it create conversations with all these contacts.
+		 */
 		generateConvs : function () {
 			var XMPPContacts = contacts.findByBackend('xmpp');
 			for (var key in XMPPContacts) {
@@ -105,6 +118,7 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				for (var backendKey in XMPPContact.backends) {
 					var backend = XMPPContact.backends[backendKey];
 					if (backend.id === 'xmpp') {
+						convs.addConv(backend.value, [XMPPContact, contacts.self()], 'xmpp', [], []);
 					}
 				}
 			}
@@ -113,12 +127,12 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			console.log(data);
 		},
 		/**
-		 * handles three things
-		 * 1. from asks to subscribe
-		 * 2. from is online
-		 * 3. from is offline
-		 * @param iq
-		 * @returns {boolean}
+		 * This function handles three things
+		 * 1. a contact asks to subscribe: we ask the user if he want to approve or deny this request
+		 * 2. a contact's presence has changed to online
+		 * 3. a contact's presence has changed to offline
+		 * @param iq XMLDocument
+		 * @returns true
 		 */
 		onPresence : function (iq) {
 			var presenceType = $(iq).attr('type');
@@ -162,7 +176,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 					}
 				}
 			}
-
 			return true;
 		},
 		roster : []
@@ -170,7 +183,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 
 	return {
 		init : function(){
-			//$XMPP.
 			//Create connection
 			initvar.backends.xmpp.configErrors = []; // Reset all errors
 			if (
@@ -213,18 +225,8 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 		newConv : function(userToInvite, success){
 			// add temp contact to the contacts
 			var bareJid = Strophe.getBareJidFromJid(userToInvite);
-			var contact = {
-				"id" : bareJid,
-				"online": false,
-				"displayname" : bareJid,
-				"order" : 0,
-				"backends": [
-					{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": bareJid}
-				],
-				"address_book_id": "-1",
-				"address_book_backend": "local",
-				"saved": false
-			};
+			var contact = contacts.generateTempContact(bareJid, false, bareJid,
+				[{"id": "xmpp", "displayname": "XMPP", "protocol": "xmpp", "namespace": "xmpp", "value": bareJid}]);
 			contacts.contacts[bareJid] = contact;
 			convs.addConv(bareJid, [contact, contacts.self()], 'xmpp', [], []);
 

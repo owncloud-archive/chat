@@ -81,6 +81,27 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 		 */
 		self : function () {
 			return this.contacts[OC.currentUser];
+		},
+		/**
+		 * This method is used to generate a contact to use in the active session.
+		 * This method is not used to generate a contact to save in the Contacts app/DB
+		 * @param id integer|string the id of the contact
+		 * @param online bool online state of the contact
+		 * @param displayName string
+		 * @param backends array
+		 * @return object
+		 */
+		generateTempContact : function (id, online, displayName, backends) {
+			return {
+				"id" : id,
+				"online": online,
+				"displayname" : displayName,
+				"order" : 0,
+				"backends": backends,
+				"address_book_id": "-1",
+				"address_book_backend": "local",
+				"saved": false
+			};
 		}
 	};
 }]);

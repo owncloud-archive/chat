@@ -4,6 +4,7 @@ OC.L10N.register(
     "Chat" : "Klepet",
     "{displayname} attached {path} to this conversation" : "Uporabnik {displayname} je priložil {path} v pogovor",
     "{displayname} removed {path} from this conversation" : "Uporabnik {displayname} je odstranil {path} iz pogovor",
+    "Start a chat with ..." : "Začni klepet z ...",
     "Search in conversations" : "Poišči v pogovorih",
     "Add Person" : "Dodaj osebo",
     "View Attached files" : "Poglej priložene datoteke",

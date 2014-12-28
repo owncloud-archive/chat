@@ -3,6 +3,7 @@ $TRANSLATIONS = array(
 "Chat" => "Chat",
 "{displayname} attached {path} to this conversation" => "{displayname} vedhæftede {path} til denne samtale",
 "{displayname} removed {path} from this conversation" => "{displayname} fjernede {path} fra denne samtale",
+"Start a chat with ..." => "Start en chat med ...",
 "Search in conversations" => "Søg i konversationer",
 "Add Person" => "Tilføj person",
 "View Attached files" => "Vis vedhæftede filer",

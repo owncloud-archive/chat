@@ -1,5 +1,5 @@
 angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', 'authorize', function(convs, contacts, initvar, $session, authorize) {
-	$XMPP = {
+	var $XMPP = {
 		jid: initvar.backends.xmpp.config.jid,
 		password: initvar.backends.xmpp.config.password,
 		bosh_url: initvar.backends.xmpp.config.bosh_url,
@@ -30,7 +30,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 					convs.addConv(convId, [contact, contacts.self()], 'xmpp', [], []);
 				}
 				var convId = Strophe.getBareJidFromJid(from);
-				//var convId = from.substring(0, from.indexOf('/'));
 				convs.addChatMsg(
 					convId,
 					contacts.findByBackendValue('xmpp', convId),

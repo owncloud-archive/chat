@@ -4,6 +4,7 @@ OC.L10N.register(
     "Chat" : "Chat",
     "{displayname} attached {path} to this conversation" : "{displayname} anexou {path} a esta conversa",
     "{displayname} removed {path} from this conversation" : "{displayname} removeu {path} desta conversa",
+    "Start a chat with ..." : "Iniciar uma conversação com ...",
     "Search in conversations" : "Procurar nas conversações",
     "Add Person" : "Adicionar Pessoa",
     "View Attached files" : "Ver ficheiros Anexados",

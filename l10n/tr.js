@@ -4,6 +4,7 @@ OC.L10N.register(
     "Chat" : "Sohbet",
     "{displayname} attached {path} to this conversation" : "{displayname}, bu konuşmaya {path} ekini yerleştirdi",
     "{displayname} removed {path} from this conversation" : "{displayname}, bu konuşmaya {path} ekini kaldırdı",
+    "Start a chat with ..." : "Sohbete şununla başla...",
     "Search in conversations" : "Konuşmalarda arama yap",
     "Add Person" : "Kişi Ekle",
     "View Attached files" : "Ekli dosyalara bak",

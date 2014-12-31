@@ -14,6 +14,7 @@ use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCA\Chat\App\Chat;
 use \OCP\Contacts\IManager;
+use \OCP\IConfig;
 
 class AppController extends Controller {
 
@@ -21,11 +22,17 @@ class AppController extends Controller {
 
 	private $c;
 
-	public function __construct($appName, IRequest $request,  Chat $app, IManager $cm){
+	/**
+	 * @var \OCP\IConfig
+	 */
+	private $config;
+
+	public function __construct($appName, IRequest $request,  Chat $app, IManager $cm, IConfig $config){
 		parent::__construct($appName, $request);
 		$this->app = $app;
 		$this->c = $app->getContainer();
 		$this->cm = $cm;
+		$this->config = $config;
 	}
 
 	/**
@@ -57,8 +64,9 @@ class AppController extends Controller {
 				"backends" => $backendsToArray,
 				"initConvs" => $initConvs,
 				"sessionId" => $sessionId['session_id'], // needs porting!
-			))
-		);
+			)),
+			"avatars-enabled" => $this->config->getSystemValue('enable_avatars')
+ 		);
 		return new TemplateResponse($this->appName, 'main', $params);
 	}
 

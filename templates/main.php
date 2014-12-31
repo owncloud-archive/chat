@@ -33,7 +33,10 @@ style('chat', 'main.min');
 >
 	<!-- Variables which are needed to boot up the Chat app in JS-->
 	<div style="display:none;" id="initvar">
-		<?php echo $_['initvar']?>
+		<?php echo $_['initvar'];?>
+	</div>
+	<div style="display:none" id="avatars-enabled">
+		<?php var_export($_["avatars-enabled"]);?>
 	</div>
 	<div id="app-navigation" >
 		<?php print_unescaped($this->inc('part.app-navigation')) ?>

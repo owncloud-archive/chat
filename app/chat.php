@@ -72,7 +72,8 @@ class Chat extends App{
 				$c->query('AppName'),
 				$c->query('Request'),
 				$app,
-				$c->query('ContactsManager')
+				$c->query('ContactsManager'),
+				$c->getServer()->getConfig()
 			);
 		});
 

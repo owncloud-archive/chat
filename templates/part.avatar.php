@@ -15,8 +15,13 @@
 		This div is only visible when:
 			- the conversation has only 2 users in it
 	-->
-	<div ng-if="conv.users.length === 2" class="avatar-list-container" >
-		<div class="online-dot-container">
+	<div
+		ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === 'true'"
+		 class="avatar-list-container"
+		>
+		<div
+			class="online-dot-container"
+			>
 			<div
 				tipsy
 				title="{{ user.displayname }}"
@@ -29,10 +34,13 @@
 				data-displayname="{{ user.displayname }}"
 				data-addressbook-backend="{{ user.address_book_backend }}"
 				data-addressbook-id="{{ user.address_book_id  }}"
-				online
 			>
 			</div>
-			<div>
+			<div
+				online
+				ng-repeat="(key, user) in conv.users | userFilter"
+				data-id="{{ user.id }}"
+			>
 				<!--
 				This is a place holder div for the green dot which is used to indicate the online status of the contact
 				-->
@@ -46,7 +54,10 @@
 			- the conversation has more than 2 users in it
 		There are maximum 4 avatars shown, which are all 1/4 size of the other avatars
 	-->
-	<div ng-if="conv.users.length > 2" class="avatar-list-container" >
+	<div
+		ng-if="conv.users.length > 2  && $parent.$parent.avatarsEnabled === 'true'"
+		class="avatar-list-container"
+	>
 		<div
 			tipsy
 			title="{{ user.displayname }}"
@@ -72,6 +83,18 @@
 		ng-class="{bold : conv.new_msg === true}"
 		>
 	</span>
+	<div
+		ng-if="$parent.$parent.avatarsEnabled === 'false'"
+		online
+		ng-repeat="(key, user) in conv.users | userFilter"
+		data-id="{{ user.id }}"
+		class="online-dot-displayname-nav"
+		>
+		<!--
+		This is a place holder div for the green dot which is used to indicate the online status of the contact
+		-->
+		&nbsp;
+	</div>
 </div>
 <!--
 	This div shows the avatars + displayname of the conversation entry
@@ -89,7 +112,10 @@
 			ng-repeat="(key, user) in conv.users | userFilter"
 			class="avatar-list-expanded-item"
 			>
-			<div class="online-dot-container">
+			<div
+				class="online-dot-container"
+				ng-if="$parent.$parent.avatarsEnabled === 'true'"
+				>
 				<div
 					tipsy
 					title="{{ user.displayname }}"
@@ -100,17 +126,32 @@
 					data-displayname="{{ user.displayname }}"
 					data-addressbook-backend="{{ user.address_book_backend }}"
 					data-addressbook-id="{{ user.address_book_id  }}"
-					online
 				>
 				</div>
-				<div>
+				<div
+					online
+					ng-repeat="(key, user) in conv.users | userFilter"
+					data-id="{{ user.id }}"
+				>
 					<!--
 					This is a place holder div for the green dot which is used to indicate the online status of the contact
 					-->
 					&nbsp;
 				</div>
 			</div>
+			<div
+				ng-if="$parent.$parent.avatarsEnabled === 'false'"
+				online
+				data-id="{{ user.id }}"
+				class="online-dot-displayname-nav online-dot-displayname-nav-expanded"
+				>
+				<!--
+				This is a place holder div for the green dot which is used to indicate the online status of the contact
+				-->
+				&nbsp;
+			</div>
 			{{ user.displayname }}
+
 		</li>
 		<li
 			class="avatar-list-expanded-button invite-button"

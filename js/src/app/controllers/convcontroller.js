@@ -33,6 +33,8 @@ angular.module('chat').controller(
 				$scope.quit();
 			});
 
+			$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
+
 			Chat.scope = $scope;
 
 			$(document).ready(function(){

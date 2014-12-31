@@ -47,7 +47,7 @@
 .online-dot {
 	position: absolute;
 	padding:0;
-	margin:0 !important;
+	margin:0;
 	right:3px !important;
 	bottom:3px;
 	border-radius: 50%;
@@ -62,6 +62,10 @@
 	height: 40px;
 	width: 40px;
 	float:left;
+}
+
+.online-dot-displayname {
+	margin-top:10px !important;
 }
 
 .avatar-list-expanded-item{
@@ -92,4 +96,8 @@
 	text-align: center;
 	line-height: 32px;
 	font-size: 17.6px;
+}
+
+.online-dot-displayname-nav-expanded {
+	float:left;
 }

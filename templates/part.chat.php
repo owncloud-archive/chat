@@ -39,6 +39,7 @@
 						>
 						</div>
 						<div
+							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 							online
 							data-id="{{ msg.contact.id }}"
 							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"

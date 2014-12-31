@@ -37,17 +37,6 @@
                             title="{{ msg.contact.displayname }}"
 						>
 						</div>
-						<div
-							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
-							online
-							data-id="{{ msg.contact.id }}"
-							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
-						>
-							<!--
-							This is a place holder div for the green dot which is used to indicate the online status of the contact
-							-->
-							&nbsp;
-						</div>
 					</div>
 					<div
 						class="msg-displayname-container"
@@ -55,17 +44,6 @@
 						>
 						<div>
 							{{ msg.contact.displayname }}
-						</div>
-						<div
-							class="online-dot-displayname"
-							online
-							data-id="{{ msg.contact.id }}"
-							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
-							>
-							<!--
-							This is a place holder div for the green dot which is used to indicate the online status of the contact
-							-->
-							&nbsp;
 						</div>
 					</div>
 					<p

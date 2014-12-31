@@ -6,7 +6,7 @@ use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCA\Chat\App\Chat;
-
+use \OCP\IRequest;
 
 class AdminController extends Controller {
 

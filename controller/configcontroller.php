@@ -5,7 +5,8 @@ namespace OCA\Chat\Controller;
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
-use OCP\JSON;
+use \OCP\IRequest;
+use \OCA\Chat\App\Chat;
 
 
 class ConfigController extends Controller {

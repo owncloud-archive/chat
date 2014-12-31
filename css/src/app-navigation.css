@@ -72,3 +72,8 @@
 	position:static !important;
 	margin-top:7px !important;
 }
+
+.expanded-icon{
+	margin-left: 10px;
+	margin-right: 20px;
+}

@@ -158,7 +158,7 @@
 			ng-click="$parent.view.inviteClick();"
 			>
 			<div
-				class="icon-add icon-20 avatar-list-avatar">
+				class="icon-add icon-20 avatar-list-avatar  expanded-icon">
 				&nbsp;
 			</div>
 			<?php p($l->t('Add Person')); ?>
@@ -168,7 +168,7 @@
 			ng-click="$parent.view.showFiles()"
 		>
 			<div
-				class="icon-file icon-20 avatar-list-avatar"
+				class="icon-file icon-20 avatar-list-avatar expanded-icon"
 			>
 				&nbsp;
 			</div>

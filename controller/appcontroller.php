@@ -65,7 +65,7 @@ class AppController extends Controller {
 				"initConvs" => $initConvs,
 				"sessionId" => $sessionId['session_id'], // needs porting!
 			)),
-			"avatars-enabled" => $this->config->getSystemValue('enable_avatars')
+			"avatars-enabled" => $this->config->getSystemValue('enable_avatars', true)
  		);
 		return new TemplateResponse($this->appName, 'main', $params);
 	}

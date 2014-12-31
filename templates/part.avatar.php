@@ -17,7 +17,7 @@
 	-->
 	<div
 		ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === 'true'"
-		 class="avatar-list-container"
+		class="avatar-list-container"
 		>
 		<div
 			class="online-dot-container"

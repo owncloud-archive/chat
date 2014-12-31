@@ -70,6 +70,7 @@
 						</div>
 					</div>
 					<p
+						ng-class="{'chat-msg-margin-left': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id === msg.contact.id}"
 						class="chat-msg-msg"
 						ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
 						>

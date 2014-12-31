@@ -11,7 +11,6 @@
 			<div
 				class="chat-msg-container"
 				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
-				ng-class="{'chat-msg-container-border': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 			>
 				<!-- This div holds the time of the chat message -->
 				<div

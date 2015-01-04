@@ -4,6 +4,7 @@ OC.L10N.register(
     "Chat" : "Chat",
     "{displayname} attached {path} to this conversation" : "{displayname} fäst fil {sökväg} till den här konversationen",
     "{displayname} removed {path} from this conversation" : "{displayname} tog bort {sökväg} från den här konversationen",
+    "Start a chat with ..." : "Starta en chat med ...",
     "Search in conversations" : "Sök i dialog",
     "Add Person" : "Lägg till person",
     "View Attached files" : "Visa Bifogade filer",

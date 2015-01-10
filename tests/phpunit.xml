@@ -10,7 +10,6 @@
             <directory>lib/controller/</directory>
             <directory>lib/db</directory>
             <directory>lib/lib/och/db/</directory>
-            <!--<directory>lib/lib/och/commands/</directory>-->
         </testsuite>
     </testsuites>
 </phpunit>

@@ -94,8 +94,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 													'value' => 'foo',
 												),
 										),
-									'address_book_id' => 'local',
-									'address_book_backend' => '',
+									'address_book_id' => '',
+									'address_book_backend' => 'local',
 								),
 							1 =>
 								array(
@@ -127,8 +127,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 													'value' => 'bar',
 												),
 										),
-									'address_book_id' => 'local',
-									'address_book_backend' => '',
+									'address_book_id' => '',
+									'address_book_backend' => 'local',
 								),
 							2 =>
 								array(
@@ -152,8 +152,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 														),
 												),
 										),
-									'address_book_id' => 'local',
-									'address_book_backend' => '1',
+									'address_book_id' => '1',
+									'address_book_backend' => 'local',
 								),
 						),
 					'contactsList' =>
@@ -194,8 +194,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 													'value' => 'foo',
 												),
 										),
-									'address_book_id' => 'local',
-									'address_book_backend' => '',
+									'address_book_id' => '',
+									'address_book_backend' => 'local',
 								),
 							'bar' =>
 								array(
@@ -227,8 +227,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 													'value' => 'bar',
 												),
 										),
-									'address_book_id' => 'local',
-									'address_book_backend' => '',
+									'address_book_id' => '',
+									'address_book_backend' => 'local',
 								),
 							1 =>
 								array(
@@ -252,8 +252,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 														),
 												),
 										),
-									'address_book_id' => 'local',
-									'address_book_backend' => '1',
+									'address_book_id' => '1',
+									'address_book_backend' => 'local',
 								),
 						),
 				)
@@ -414,8 +414,8 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 									'value' => 'foo',
 								),
 						),
-					'address_book_id' => 'local',
-					'address_book_backend' => '',
+					'address_book_id' => '',
+					'address_book_backend' => 'local',
 				),
 				'foo'
 			)

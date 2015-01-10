@@ -6,7 +6,7 @@
 		This section holds the message list
 	-->
 	<section ng-click="focusMsgInput()" id="chat-window-body">
-		<div id="chat-window-msgs">
+		<div id="chat-window-msgs" scroll>
 			<!-- This div holds exactly one chat message	-->
 			<div
 				class="chat-msg-container"

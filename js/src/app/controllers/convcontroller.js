@@ -389,9 +389,12 @@ angular.module('chat').controller(
 			/**
 			 * When there are new messages in the active conversation the chat window must be scroll to the bottom
 			 */
-			$scope.$watch('convs[active.conv].msgs', function(){
+			$scope.$watch('convs[$session.conv].msgs', function(){
 				setTimeout(function(){
-					$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
+					var msgs = document.getElementById("chat-window-msgs");
+					if (msgs !== null) {
+						msgs.scrollTop = msgs.scrollHeight;
+					}
 				},250);
 			}, true);
 

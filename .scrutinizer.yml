@@ -9,8 +9,8 @@ imports:
  - php
 
 tools:
-    external_code_coverage: false
-
+    external_code_coverage:
+      timeout: 600
 checks:
     php:
         duplication: false

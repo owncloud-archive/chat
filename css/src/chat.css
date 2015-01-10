@@ -1,14 +1,14 @@
 #chat-window-body {
 	position: absolute;
 	top: 0;
-	bottom: 80px;
+	bottom: 68px;
 	width: 100%;
 	background-color: white;
 }
 
 #chat-window-footer {
 	position: absolute;
-	height: 65px;
+	height: 68px;
 	bottom: 0;
 	width: 100%;
 	background-color: #EEE;

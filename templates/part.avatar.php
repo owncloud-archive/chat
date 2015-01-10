@@ -99,7 +99,7 @@
 <!--
 	This div shows the avatars + displayname of the conversation entry
 	This div is only visible when:
- 		 - the conversation isn active
+ 		 - the conversation is active
  		 - AND the conversation has more than 2 users in it
 -->
 <div
@@ -150,8 +150,9 @@
 				-->
 				&nbsp;
 			</div>
-			{{ user.displayname }}
-
+			<div class="avatar-list-displayname">
+				{{ user.displayname }}
+			</div>
 		</li>
 		<li
 			class="avatar-list-expanded-button invite-button"

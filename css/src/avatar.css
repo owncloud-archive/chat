@@ -32,13 +32,16 @@
 	float:left;
 }
 
-.avatar-list-displayname{
-	margin-left:10px;
+.avatar-list-displayname {
+	padding-top: 7px;
+	margin-left: 10px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 130px;
 }
+
+
 
 .avatar-list-container div,.avatar-list-container img {
 	right: 0;
@@ -71,7 +74,7 @@
 .avatar-list-expanded-item{
 	padding:0px !important;
 	margin:0px;
-	height:40px;
+	height:44px;
 	position:static !important;
 }
 

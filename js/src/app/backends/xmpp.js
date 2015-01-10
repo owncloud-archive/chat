@@ -43,7 +43,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 		 */
 		onConnect : function(status){
 			if (status == Strophe.Status.CONNECTED) {
-				console.log('Strophe is connected.');
 				initvar.backends.xmpp.connected = true;
 
 				$XMPP.con.addHandler($XMPP.onMessage, null, 'message', null, null, null);
@@ -78,7 +77,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 				// for each contact in the roster
 
 				var jid = $(this).attr('jid');
-				console.log('found item in roster with jid ' + jid);
 				var bareJid = Strophe.getBareJidFromJid(jid);
 				var name = $(this).attr('name') || jid;
 				var subscription = $(this).attr('subscription');
@@ -124,7 +122,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			}
 		},
 		onRaw : function (data) {
-			console.log(data);
 		},
 		/**
 		 * This function handles three things
@@ -206,8 +203,6 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 					if (e.name === 'TypeError' && e.message === 'service is undefined') {
 						initvar.backends.xmpp.configErrors.push('Service is undefined');
 					}
-					console.log(e.name);
-					console.log(e.message);
 				}
 			} else {
 				initvar.backends.xmpp.configErrors.push('Fill in all the fields');

@@ -14,7 +14,6 @@ angular.module('chat').directive('autoCenter', [function () {
 		link: function ($scope, element, attrs) {
 			center(element);
 			$(window).resize(function(){
-				console.log('resize');
 				center(element);
 			});
 		}

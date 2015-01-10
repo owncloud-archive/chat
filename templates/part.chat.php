@@ -6,12 +6,11 @@
 		This section holds the message list
 	-->
 	<section ng-click="focusMsgInput()" id="chat-window-body">
-		<div id="chat-window-msgs">
+		<div id="chat-window-msgs" scroll>
 			<!-- This div holds exactly one chat message	-->
 			<div
 				class="chat-msg-container"
 				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
-				ng-class="{'chat-msg-container-border': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 			>
 				<!-- This div holds the time of the chat message -->
 				<div
@@ -38,17 +37,6 @@
                             title="{{ msg.contact.displayname }}"
 						>
 						</div>
-						<div
-							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
-							online
-							data-id="{{ msg.contact.id }}"
-							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
-						>
-							<!--
-							This is a place holder div for the green dot which is used to indicate the online status of the contact
-							-->
-							&nbsp;
-						</div>
 					</div>
 					<div
 						class="msg-displayname-container"
@@ -57,19 +45,9 @@
 						<div>
 							{{ msg.contact.displayname }}
 						</div>
-						<div
-							class="online-dot-displayname"
-							online
-							data-id="{{ msg.contact.id }}"
-							isonline="{{ $parent.$parent.contactsObj[msg.contact.id].online }}"
-							>
-							<!--
-							This is a place holder div for the green dot which is used to indicate the online status of the contact
-							-->
-							&nbsp;
-						</div>
 					</div>
 					<p
+						ng-class="{'chat-msg-margin-left': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id === msg.contact.id}"
 						class="chat-msg-msg"
 						ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
 						>

@@ -11,7 +11,7 @@
 	width: 100%;
 	position: absolute;
 	top: 100px;
-	bottom: 0;
+	bottom: 44px;
 	height: auto !important;
 }
 
@@ -71,4 +71,9 @@
 .online-dot-displayname-nav {
 	position:static !important;
 	margin-top:7px !important;
+}
+
+.expanded-icon{
+	margin-left: 10px;
+	margin-right: 20px;
 }

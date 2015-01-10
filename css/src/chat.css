@@ -1,14 +1,14 @@
 #chat-window-body {
 	position: absolute;
 	top: 0;
-	bottom: 80px;
+	bottom: 68px;
 	width: 100%;
 	background-color: white;
 }
 
 #chat-window-footer {
 	position: absolute;
-	height: 65px;
+	height: 68px;
 	bottom: 0;
 	width: 100%;
 	background-color: #EEE;
@@ -33,6 +33,7 @@
 .chat-msg-container {
 	width: 100%;
 	float: left;
+	min-height: 44px;
 }
 .chat-msg-container-border {
 	border-top: 1px solid #EEEEEE;
@@ -172,4 +173,12 @@
 	width:100px !important;
 	font-weight: bold;
 	position:relative;
+}
+
+.chat-msg-margin-left{
+	padding-left:40px !important;
+}
+
+.chat-msg-msg {
+	margin-left:20px !important;
 }

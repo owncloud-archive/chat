@@ -61,5 +61,5 @@
 			</div>
 		</div>
 	</li>
-	<?php print_unescaped($this->inc('part.settings')) ?>
 </ul>
+<?php print_unescaped($this->inc('part.settings')) ?>

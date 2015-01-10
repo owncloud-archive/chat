@@ -1,9 +1,9 @@
 filter:
   excluded_paths:
     - 'l10n/*'
-    - 'js/vendor/*' # Minified from /js/src/bower_components
     - 'js/main.min.js' # Minified from /js/src/*
-    - 'js/src/bower_components/*' # thirdparty
+    - 'vendor/*' # thirdparty
+
 imports:
  - javascript
  - php
@@ -11,3 +11,7 @@ imports:
 tools:
     external_code_coverage:
         timeout: 600
+
+checks:
+    php:
+        duplication: false

@@ -27,7 +27,6 @@ angular.module('chat').factory('contacts', ['$filter', 'initvar', '$http', funct
 					var backend = contact.backends[backendKey];
 
 					if (backend.id === backendId && backend.value === value){
-						console.log('contact ' + key);
 						return this.contacts[key];
 					}
 				}

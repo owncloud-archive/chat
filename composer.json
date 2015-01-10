@@ -1,0 +1,12 @@
+{
+    "name": "owncloud/chat",
+    "require-dev": {
+        "phpunit/phpunit": "~4.4"
+    },
+    "authors": [
+        {
+            "name": "LEDfan",
+            "email": "tobia@ledfan.be"
+        }
+    ]
+}

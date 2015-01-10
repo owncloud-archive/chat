@@ -3,6 +3,7 @@ $TRANSLATIONS = array(
 "Chat" => "Chat",
 "{displayname} attached {path} to this conversation" => "{displayname} pridal {path} do tejto konverzácie",
 "{displayname} removed {path} from this conversation" => "{displayname} odstránil {path} z tejto konverzácie",
+"Start a chat with ..." => "Začať chat s ...",
 "Search in conversations" => "Vyhľadať v konverzáciách",
 "Add Person" => "Pridať osobu",
 "View Attached files" => "Zobraziť priložené súbory",

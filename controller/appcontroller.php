@@ -118,4 +118,35 @@ class AppController extends Controller {
 
 	}
 
+
+	/**
+	 * @NoAdminRequired
+	 * @return JSONResponse
+	 */
+	public function initVar(){
+		session_write_close();
+		$greet = $this->c['GreetCommand'];
+		$greet->setRequestData(array(
+			"timestamp" => time(),
+			"user" => $this->app->getCurrentUser(),
+		));
+		$sessionId = $greet->execute();
+
+		$contacts = $this->app->getContacts();
+		$backends = $this->app->getBackends();
+		$backendsToArray = array();
+		foreach($backends as $backend){
+			$backendsToArray[$backend->getId()] = $backend->toArray();
+		}
+		$initConvs = $this->app->getInitConvs();
+		return array(
+			"contacts" => $contacts['contacts'],
+			"contactsList" => $contacts['contactsList'],
+			"contactsObj" => $contacts['contactsObj'],
+			"backends" => $backendsToArray,
+			"initConvs" => $initConvs,
+			"sessionId" => $sessionId['session_id'], // needs porting!
+		);
+	}
+
 }

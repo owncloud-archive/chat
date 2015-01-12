@@ -44,6 +44,9 @@ use OCA\Chat\IBackend;
  */
 class Chat extends App{
 
+	const APP=1;
+	const INTEGRATED=2;
+
 	/**
 	 * @var array used to cache the parsed contacts for every request
 	 */
@@ -53,6 +56,8 @@ class Chat extends App{
 	 * @var \OCP\AppFramework\IAppContainer
 	 */
 	public $c;
+
+	public $viewType;
 
 	/**
 	 * @param array $urlParams
@@ -241,7 +246,16 @@ class Chat extends App{
 			return new XMPP($app);
 		});
 
+		$this->setViewType();
+	}
 
+	private function setViewType(){
+		$requestUri = \OCP\Util::getRequestUri();
+		if(substr($requestUri, -5) === 'chat/'){
+			$this->viewType = self::APP;
+		} else {
+			$this->viewType = self::INTEGRATED;
+		}
 	}
 
 	public function registerBackend(IBackend $backend){

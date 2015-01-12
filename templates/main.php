@@ -1,17 +1,7 @@
 <?php
 include(__DIR__ . '/../lib/compat.php');
 // Vendor client-side code
-vendor_script('chat', array(
-	'angular/angular.min',
-	'angular-enhance-text/build/angular-enhance-text.min',
-	'angular-resource/angular-resource.min',
-	'angular-sanitize/angular-sanitize.min',
-	'jquery-autosize/jquery.autosize.min',
-	'moment/min/moment.min',
-	'rangyinputs-jquery-src/index',
-	'strophe/strophe.min',
-	'emojione/lib/js/emojione.min'
-));
+vendor_script('chat', 'all.min');
 vendor_style('chat', array(
 	'emojione/assets/sprites/emojione.sprites',
 	'emojione/assets/css/emojione.min',
@@ -21,7 +11,7 @@ if (defined('DEBUG') && DEBUG) {
 }
 
 // Chat app client-side code
-script('chat', 'main.min');
+script('chat', 'app.min');
 style('chat', 'main.min');
 ?>
 
@@ -38,7 +28,7 @@ style('chat', 'main.min');
 	<div style="display:none" id="avatars-enabled">
 		<?php var_export($_["avatars-enabled"]);?>
 	</div>
-	<div id="app-navigation" >
+	<div id="chat-sidebar" >
 		<?php print_unescaped($this->inc('part.app-navigation')) ?>
 	</div>
 	<div id="app-content">

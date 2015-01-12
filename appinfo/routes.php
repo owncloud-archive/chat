@@ -51,6 +51,11 @@ $application->registerRoutes($this, array(
 			'name' => 'app#removeContact',
 			'url' => '/contacts/remove/',
 			'verb' => 'post'
+		),
+		array(
+			'name' => 'app#initVar',
+			'url' => '/initvar/',
+			'verb' => 'post'
 		)
 	)
 ));

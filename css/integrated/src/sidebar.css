@@ -1,0 +1,106 @@
+#chat-sidebar {
+	position:absolute;
+	background-color:#F5F5F5;
+	right:0;
+	top:45px;
+	z-index: 9000;
+	width:250px;
+	height:100%;
+}
+
+#chat-sidebar-toggle {
+	width: 10px;
+	height:100%;
+	position:absolute;
+	background-color:#DADADA;
+	top:45px;
+	z-index: 9000;
+}
+
+.chat-sidebar-toggle-visible {
+	right:250px;
+}
+
+.chat-sidebar-toggle-hidden {
+	right:0px;
+}
+
+#chat-sidebar ul li {
+	padding:10px;
+}
+
+#chat-sidebar > ul ul {
+	display: block;
+}
+
+#chat-sidebar > ul {
+	float: left;
+	width: 100%;
+	position: absolute;
+	top: 100px;
+	bottom: 44px;
+	height: auto !important;
+}
+
+/*#chat-sidebar {*/
+	/*float: left;*/
+	/*position:relative;*/
+/*}*/
+
+
+.filter-button {
+	margin: 1px 0px 5px;
+	display: inline-block;
+	float: left;
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px;
+	height: 30px !important;
+}
+
+.filter-field {
+	float:left;
+}
+
+#filter-container {
+	height:100px;
+	padding:10px;
+	margin: 0;
+	background-color:#F5F5F5;
+}
+#filter-container input {
+	margin:0;
+	width:215px;
+	margin-top:10px;
+}
+
+.conv-list-active {
+	background-color: #dadada !important;
+}
+
+.conv-list-item {
+	height: 60px;
+}
+
+.conv-list-item-buttons div {
+	float:right;
+}
+.conv-list-item-buttons {
+	width:40px;
+	height: 40px !important;
+	position: absolute;
+	right:0;
+}
+
+.heightInvite {
+	height: 100px;
+}
+
+.online-dot-displayname-nav {
+	position:static !important;
+	margin-top:7px !important;
+}
+
+.expanded-icon{
+	margin-left: 10px;
+	margin-right: 20px;
+}

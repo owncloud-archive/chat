@@ -4,10 +4,12 @@
  * This file is licensed under the AGPL version 3 or later.
  * See the COPYING file.
  */
-
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
+
+include(__DIR__ . '/../lib/compat.php');
+
 
 \OC::$server->getNavigationManager()->add(array(
 	'id' => 'chat',
@@ -31,3 +33,19 @@ if ($enabled === null){
 }
 
 \OCP\App::registerAdmin('chat', 'lib/admin');
+
+// When the "Integrated View" is loaded, include the CSS and JS code:
+if ($chat->viewType === Chat::INTEGRATED) {
+	if (\OCP\User::isLoggedIn()) {
+		vendor_script('chat', 'all.min');
+		vendor_style('chat', array(
+			'emojione/assets/sprites/emojione.sprites',
+			'emojione/assets/css/emojione.min',
+		));
+		script('chat', 'integrated.min');
+		style('chat', 'integrated/main.min');
+		if (defined('DEBUG') && DEBUG) {
+			vendor_script('chat', 'angular-mocks/angular-mocks');
+		}
+	}
+}

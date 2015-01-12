@@ -49,9 +49,17 @@ module.exports = function(grunt) {
 		cssmin: {
 			combine: {
 				files: {
-					'css/main.min.css': ['css/src/*.css', '!css/admin'],
-					'css/admin.min.css' : ['css/admin/src/*.css'],
-					'css/integrated/main.min.css' : ['css/integrated/src/*.css']
+					'css/main.min.css': [
+						'css/src/*.css',
+						'!css/admin',
+						'!css/integrated'
+					],
+					'css/admin.min.css' : [
+						'css/admin/src/*.css'
+					]					,
+					'css/integrated.min.css' : [
+						'css/integrated/src/*.css'
+					]
 				}
 			}
 		},

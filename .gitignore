@@ -1,11 +1,13 @@
 coverage.clover
 phpunit
 phpunit.phar
-/build
+build
+node_modules
 js/admin.min.js
 js/app.min.js
 js/integrated.min.js
+js/main.min.js
 css/main.min.css
+css/integrated.min.css
 css/admin.min.css
-node_modules
-/vendor/
+

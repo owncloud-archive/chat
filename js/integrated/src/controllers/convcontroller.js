@@ -33,7 +33,7 @@ angular.module('chat').controller(
 				$scope.quit();
 			});
 
-			$scope.avatarsEnabled = true;
+			$scope.avatarsEnabled = "true"; // Must be string!
 			//$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
 
 			Chat.scope = $scope;

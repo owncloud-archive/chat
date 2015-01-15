@@ -28,7 +28,7 @@ style('chat', 'main.min');
 	<div style="display:none" id="avatars-enabled">
 		<?php var_export($_["avatars-enabled"]);?>
 	</div>
-	<div id="chat-sidebar" >
+	<div id="app-navigation" >
 		<?php print_unescaped($this->inc('part.app-navigation')) ?>
 	</div>
 	<div id="app-content">

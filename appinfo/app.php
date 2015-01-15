@@ -43,7 +43,7 @@ if ($chat->viewType === Chat::INTEGRATED) {
 			'emojione/assets/css/emojione.min',
 		));
 		script('chat', 'integrated.min');
-		style('chat', 'integrated/main.min');
+		style('chat', 'integrated.min');
 		if (defined('DEBUG') && DEBUG) {
 			vendor_script('chat', 'angular-mocks/angular-mocks');
 		}

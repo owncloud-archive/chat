@@ -11,15 +11,16 @@ $(document).ready(function(){
 	$.post('/index.php/apps/chat/initvar', function (data) {
 		window.initVar = data;
 		$.get('/apps/chat/integrated.php', function ($chatHTML) {
+			//document.body.innerHTML += $chatHTML;
+			$('html').append($chatHTML);
 			angular.module('chat').run(function () {
-				document.body.innerHTML += $chatHTML;
 				var $compile = angular.injector(['ng']).get('$compile');
 				var $rootScope = angular.injector(['ng']).get('$rootScope');
 				document.addEventListener("DOMContentLoaded", function (event) {
 					$compile($chatHTML)($rootScope);
 				});
 			});
-			angular.bootstrap(document, ["chat"]);
+			angular.bootstrap($('#angular-wrapper'), ["chat"]);
 		});
 	});
 });

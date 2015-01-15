@@ -63,25 +63,17 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		concat : {
-			dist : {
-				src: [
-					'js/integrated/src/**/*.js',
-					'js/integrated/src/*.js',
-					'js/src/**/*.js',
-					'js/src/*.js',
-					'js/src/chat.js',
-					'js/src/**/*.js',
-					'js/src/vendor/**/*.js'
-				],
-				dest : 'js/integrated.min.js'
+		karma: {
+			unit: {
+				configFile: 'karma.conf.js'
 			}
 		}
+
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-karma');
 	grunt.registerTask('default', ['uglify', 'cssmin']);
 
 };

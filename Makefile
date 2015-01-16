@@ -13,7 +13,7 @@ php-unit:
 	phpunit -c tests/phpunit.xml --testsuite app --coverage-clover=coverage.clover
 
 js-unit:
-	./node_modules/karma/bin/karma start karma.conf.js
+	./node_modules/grunt-cli/bin/grunt karma
 
 travis-install-dep:
 	sudo apt-get -y install nodejs

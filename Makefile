@@ -13,6 +13,7 @@ php-unit:
 	phpunit -c tests/phpunit.xml --testsuite app --coverage-clover=coverage.clover
 
 js-unit:
+	./node_modules/grunt-cli/bin/grunt
 	./node_modules/grunt-cli/bin/grunt karma
 
 travis-install-dep:

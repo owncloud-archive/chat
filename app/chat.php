@@ -234,6 +234,14 @@ class Chat extends App{
 			return $c->getServer()->getUserSession();
 		});
 
+		$container->registerService('NavigationManager', function($c){
+			return $c->getServer()->getNavigationManager();
+		});
+
+		$container->registerService('Config', function($c){
+			return $c->getServer()->getConfig();
+		});
+
 		$container->registerService('BackendManager', function($c){
 			return new BackendManager();
 		});

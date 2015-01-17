@@ -7,45 +7,40 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
-
-include(__DIR__ . '/../lib/compat.php');
-
-
-\OC::$server->getNavigationManager()->add(array(
-	'id' => 'chat',
-	'order' => 10,
-	'href' => \OCP\Util::linkToRoute('chat.app.index'),
-	'icon' => \OCP\Util::imagePath('chat', 'chat.png'),
-	'name' => \OCP\Util::getL10n('chat')->t('Chat')
-));
+use \OCP\Util;
+use \OCP\App;
 
 $chat = new Chat();
-$c = $chat->getContainer();
-$och = $c['OCH'];
-$chat->registerBackend($och);
-$xmpp = $c['XMPP'];
-$chat->registerBackend($xmpp);
+$chat->c['NavigationManager']->add(array(
+	'id' => 'chat',
+	'order' => 10,
+	'href' => Util::linkToRoute('chat.app.index'),
+	'icon' => Util::imagePath('chat', 'chat.png'),
+	'name' => Util::getL10n('chat')->t('Chat')
+));
+$chat->registerBackend($chat->c['OCH']);
+$chat->registerBackend($chat->c['XMPP']);
+
 // Disable the XMPP backend by default when there is no entry in the DB which enables it
 // you can manually enable it (https://github.com/owncloud/chat/wiki/FAQ#enabling-a-backend)
-$enabled =  \OCP\Config::getAppValue('chat', 'backend_xmpp_enabled');
+$enabled =  $chat->c['Config']->getAppValue('chat', 'backend_xmpp_enabled');
 if ($enabled === null){
-	\OCP\Config::setAppValue('chat', 'backend_xmpp_enabled', false);
+	$chat->c['Config']->setAppValue('chat', 'backend_xmpp_enabled', false);
 }
 
-\OCP\App::registerAdmin('chat', 'lib/admin');
+App::registerAdmin('chat', 'lib/admin');
 
 // When the "Integrated View" is loaded, include the CSS and JS code:
 if ($chat->viewType === Chat::INTEGRATED) {
 	if (\OCP\User::isLoggedIn()) {
-		vendor_script('chat', 'all.min');
-		vendor_style('chat', array(
-			'emojione/assets/sprites/emojione.sprites',
-			'emojione/assets/css/emojione.min',
-		));
-		script('chat', 'integrated.min');
-		style('chat', 'integrated.min');
+	  Util::addStyle('chat', '../vendor/emojione/assets/sprites/emojione.sprites');
+	  Util::addStyle('chat', '../vendor/emojione/assets/css/emojione.min');
+	  Util::addScript('chat', '../vendor/all.min');
+	  Util::addScript('chat', 'integrated.min');
+	  Util::addStyle('chat', 'integrated.min');
+
 		if (defined('DEBUG') && DEBUG) {
-			vendor_script('chat', 'angular-mocks/angular-mocks');
+			Util::addScript('chat', '../vendor/angular-mocks/angular-mocks');
 		}
 	}
 }

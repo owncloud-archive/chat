@@ -9,7 +9,11 @@ namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\Conversation;
-use OCA\Chat\OCH\Db\ConversationMapper;
+use \OCA\Chat\OCH\Db\MessageMapper;
+use \OCA\Chat\OCH\Db\ConversationMapper;
+use \OCA\Chat\OCH\Data\GetUsers;
+use \OCA\Chat\OCH\Data\Messages;
+
 
 class StartConv extends ChatAPI {
 
@@ -43,11 +47,7 @@ class StartConv extends ChatAPI {
 	 */
 	private $messages;
 
-
-
-
 	public function __construct(
-		Chat $app,
 		MessageMapper $messageMapper,
 		ConversationMapper $conversationMapper,
 		Invite $invite,
@@ -55,7 +55,6 @@ class StartConv extends ChatAPI {
 		GetUsers $getUsers,
 		Messages $messages
 	){
-		$this->app = $app;
 		$this->messageMapper = $messageMapper;
 		$this->conversationMapper = $conversationMapper;
 		$this->invite = $invite;

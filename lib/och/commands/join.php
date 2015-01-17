@@ -36,12 +36,10 @@ class Join extends ChatAPI {
 	private $userMapper;
 
 	public function __construct(
-		Chat $app,
 		PushMessageMapper $pushMessageMapper,
 		GetUsers $getUsers,
 		UserMapper $userMapper
 	){
-		$this->app = $app;
 		$this->pushMessageMapper = $pushMessageMapper;
 		$this->getUsers = $getUsers;
 		$this->userMapper  = $userMapper;

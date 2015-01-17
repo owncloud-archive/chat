@@ -32,12 +32,10 @@ class Offline extends ChatAPI {
 	private $syncOnline;
 
 	public function __construct(
-		Chat $app,
 		PushMessageMapper $pushMessageMapper,
 		UserOnlineMapper $userOnlineMapper,
 		SynConline $syncOnline
 	){
-		$this->app = $app;
 		$this->pushMessageMapper = $pushMessageMapper;
 		$this->userOnlineMapper = $userOnlineMapper;
 		$this->syncOnline = $syncOnline;

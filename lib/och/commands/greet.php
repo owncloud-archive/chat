@@ -26,11 +26,9 @@ class Greet extends ChatAPI {
 	private $userOnlineMapper;
 
 	public function __construct(
-		Chat $app,
 		PushMessageMapper $pushMessageMapper,
 		UserOnlineMapper $userOnlineMapper
 	){
-		$this->app = $app;
 		$this->pushMessageMapper = $pushMessageMapper;
 		$this->userOnlineMapper = $userOnlineMapper;
 	}

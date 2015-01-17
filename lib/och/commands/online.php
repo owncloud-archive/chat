@@ -25,11 +25,9 @@ class Online extends ChatAPI {
 	private $syncOnline;
 
 	public function __construct(
-		Chat $app,
 		UserOnlineMapper $userOnlineMapper,
 		SynConline $syncOnline
 	){
-		$this->app = $app;
 		$this->userOnlineMapper = $userOnlineMapper;
 		$this->syncOnline = $syncOnline;
 

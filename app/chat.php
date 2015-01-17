@@ -155,7 +155,6 @@ class Chat extends App{
 		 */
 		$container->registerService('GreetCommand', function ($c) use($app) {
 			return new Greet(
-				$app,
 				$c->query('PushMessageMapper'),
 				$c->query('UserOnlineMapper')
 			);
@@ -163,7 +162,6 @@ class Chat extends App{
 
 		$container->registerService('InviteCommand', function ($c) use($app) {
 			return new Invite(
-				$app,
 				$c->query('PushMessageMapper'),
 				$c->query('JoinCommand'),
 				$c->query('GetUsersData')
@@ -172,7 +170,6 @@ class Chat extends App{
 
 		$container->registerService('JoinCommand', function ($c) use($app) {
 			return new Join(
-				$app,
 				$c->query('PushMessageMapper'),
 				$c->query('GetUsersData'),
 				$c->query('UserMapper')
@@ -181,7 +178,6 @@ class Chat extends App{
 
 		$container->registerService('OfflineCommand', function ($c) use($app) {
 			return new Offline(
-				$app,
 				$c->query('PushMessageMapper'),
 				$c->query('UserOnlineMapper'),
 				$c->query('SyncOnlineCommand')
@@ -190,7 +186,6 @@ class Chat extends App{
 
 		$container->registerService('OnlineCommand', function ($c) use($app) {
 			return new Online(
-				$app,
 				$c->query('UserOnlineMapper'),
 				$c->query('SyncOnlineCommand')
 			);
@@ -198,7 +193,6 @@ class Chat extends App{
 
 		$container->registerService('SendChatMsgCommand', function ($c) use($app) {
 			return new SendChatMsg(
-				$app,
 				$c->query('UserMapper'),
 				$c->query('PushMessageMapper'),
 				$c->query('MessageMapper')
@@ -207,7 +201,6 @@ class Chat extends App{
 
 		$container->registerService('StartConvCommand', function ($c) use($app) {
 			return new StartConv(
-				$app,
 				$c->query('MessageMapper'),
 				$c->query('ConversationMapper'),
 				$c->query('InviteCommand'),

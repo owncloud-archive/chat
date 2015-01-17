@@ -35,12 +35,10 @@ class SendChatMsg extends ChatAPI {
 	private $messageMapper;
 
 	public function __construct(
-		Chat $app,
 		UserMapper $userMapper,
 		PushMessageMapper $pushMessageMapper,
 		MessageMapper $messageMapper
 	){
-		$this->app = $app;
 		$this->userMapper = $userMapper;
 		$this->pushMessageMapper = $pushMessageMapper;
 		$this->messageMapper = $messageMapper;

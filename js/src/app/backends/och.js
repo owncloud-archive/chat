@@ -118,7 +118,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 		on: {
 			invite: function (data) {
 				// Here update the view
-				var backend = Chat.app.view.getBackends('och');
+				//var backend = Chat.app.view.getBackends('och');
 				var convId = data.conv_id;
 				// TODO check if data.user is a user or a contact
 				if (convs.get(convId) === undefined) {
@@ -126,7 +126,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 						// After we joined we should update the users array with all users in this conversation
 						var users = dataJoin.data.users;
 						var msgs = dataJoin.data.messages;
-						convs.addConv(convId, users, backend, msgs);
+						convs.addConv(convId, users, 'och', msgs);
 					});
 				}
 			},

@@ -34,12 +34,10 @@ class Invite extends ChatAPI {
 	private $getUsers;
 
 	public function __construct(
-		Chat $app,
 		PushMessageMapper $pushMessageMapper,
 		Join $join,
 		GetUsers $getUsers
 	){
-		$this->app = $app;
 		$this->pushMessageMapper = $pushMessageMapper;
 		$this->join = $join;
 		$this->getUsers = $getUsers;

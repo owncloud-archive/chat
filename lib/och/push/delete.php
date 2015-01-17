@@ -14,6 +14,17 @@ use \OCP\AppFramework\Http\JSONResponse;
 
 class Delete extends ChatAPI{
 
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	public function __construct(
+		PushMessageMapper $pushMessageMapper
+	) {
+		$this->pushMessageMapper = $pushMessageMapper;
+	}
+
 	public function setRequestData(array $requestData){
 		$this->requestData = $requestData;
 	}
@@ -22,8 +33,7 @@ class Delete extends ChatAPI{
 		foreach($this->requestData['ids'] as $id){
 			$pushMessage = new PushMessage();
 			$pushMessage->setId($id);
-			$mapper = $this->c['PushMessageMapper'];
-			$mapper->delete($pushMessage);
+			$this->pushMessageMapper->delete($pushMessage);
 		}
 		return new JSONResponse(array('status' => 'success'));
 	}

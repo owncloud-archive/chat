@@ -240,18 +240,25 @@ class Chat extends App{
 		 * Push API Requests
 		 */
 		$container->registerService('GetPush', function ($c) use($app) {
-			return new Get($app);
+			return new Get(
+				$c->query('PushMessageMapper')
+			);
 		});
 
 		$container->registerService('DeletePush', function ($c) use($app) {
-			return new Delete($app);
+			return new Delete(
+				$c->query('PushMessageMapper')
+			);
 		});
 
 		/**
 		 * Data API Requests
 		 */
 		$container->registerService('GetUsersData', function ($c) use($app) {
-			return new GetUsers($app);
+			return new GetUsers(
+				$app,
+				$c->query('UserMapper')
+			);
 		});
 
 		$container->registerService('MessagesData', function ($c) use($app) {

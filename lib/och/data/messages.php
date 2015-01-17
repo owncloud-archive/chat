@@ -22,10 +22,11 @@ class Messages extends ChatAPI {
 	) {
 		$this->messageMapper = $messageMapper;
 	}
-		/*
-		 * @param $requestData['user'] String user id of the client
-		 * @param $requestData['convid'] String session_id of the client
-		*/
+
+	/*
+	 * @param $requestData['user'] String user id of the client
+	 * @param $requestData['convid'] String session_id of the client
+	*/
 	public function setRequestData(array $requestData){
 	// TODO check if $requestData['user'] is in the $requestData['conv'od] conv
 		$this->requestData = $requestData;

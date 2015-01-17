@@ -73,7 +73,8 @@ class Chat extends App{
 				$c->query('Request'),
 				$app,
 				$c->query('ContactsManager'),
-				$c->getServer()->getConfig()
+				$c->getServer()->getConfig(),
+				$c->query('GreetCommand')
 			);
 		});
 
@@ -89,7 +90,8 @@ class Chat extends App{
 			return new ConfigController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$app
+				$c->query('ConfigMapper'),
+				$c->query('BackendManager')
 			);
 		});
 
@@ -97,7 +99,7 @@ class Chat extends App{
 			return new AdminController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$app
+				$c->query('BackendManager')
 			);
 		});
 

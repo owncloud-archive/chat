@@ -115,7 +115,7 @@ class Chat extends App{
 			return new ConversationMapper($c->query('ServerContainer')->getDb());
 		});
 
-		$container->registerService('messageMapper', function ($c) {
+		$container->registerService('MessageMapper', function ($c) {
 			return new MessageMapper($c->query('ServerContainer')->getDb());
 		});
 
@@ -154,43 +154,92 @@ class Chat extends App{
 		 * Command API Requests
 		 */
 		$container->registerService('GreetCommand', function ($c) use($app) {
-			return new Greet($app);
+			return new Greet(
+				$app,
+				$c->query('PushMessageMapper'),
+				$c->query('UserOnlineMapper')
+			);
 		});
 
 		$container->registerService('InviteCommand', function ($c) use($app) {
-			return new Invite($app);
+			return new Invite(
+				$app,
+				$c->query('PushMessageMapper'),
+				$c->query('JoinCommand'),
+				$c->query('GetUsersData')
+			);
 		});
 
 		$container->registerService('JoinCommand', function ($c) use($app) {
-			return new Join($app);
+			return new Join(
+				$app,
+				$c->query('PushMessageMapper'),
+				$c->query('GetUsersData'),
+				$c->query('UserMapper')
+			);
 		});
 
 		$container->registerService('OfflineCommand', function ($c) use($app) {
-			return new Offline($app);
+			return new Offline(
+				$app,
+				$c->query('PushMessageMapper'),
+				$c->query('UserOnlineMapper'),
+				$c->query('SyncOnlineCommand')
+			);
 		});
 
 		$container->registerService('OnlineCommand', function ($c) use($app) {
-			return new Online($app);
+			return new Online(
+				$app,
+				$c->query('UserOnlineMapper'),
+				$c->query('SyncOnlineCommand')
+			);
 		});
 
 		$container->registerService('SendChatMsgCommand', function ($c) use($app) {
-			return new SendChatMsg($app);
+			return new SendChatMsg(
+				$app,
+				$c->query('UserMapper'),
+				$c->query('PushMessageMapper'),
+				$c->query('MessageMapper')
+			);
 		});
 
 		$container->registerService('StartConvCommand', function ($c) use($app) {
-			return new StartConv($app);
+			return new StartConv(
+				$app,
+				$c->query('MessageMapper'),
+				$c->query('ConversationMapper'),
+				$c->query('InviteCommand'),
+				$c->query('JoinCommand'),
+				$c->query('GetUsersData'),
+				$c->query('MessagesData')
+			);
 		});
 
+
 		$container->registerService('SyncOnlineCommand', function ($c) use($app) {
-			return new SyncOnline($app);
+			return new SyncOnline(
+				$c->query('UserOnlineMapper')
+			);
 		});
 
 		$container->registerService('AttachFileCommand', function ($c) use($app) {
-			return new AttachFile($app);
+			return new AttachFile(
+				$app,
+				$c->query('UserMapper'),
+				$c->query('AttachmentMapper'),
+				$c->query('PushMessageMapper')
+			);
 		});
 
 		$container->registerService('RemoveFileCommand', function ($c) use($app) {
-			return new RemoveFile($app);
+			return new RemoveFile(
+				$app,
+				$c->query('PushMessageMapper'),
+				$c->query('AttachmentMapper'),
+				$c->query('UserMapper')
+			);
 		});
 
 
@@ -213,7 +262,9 @@ class Chat extends App{
 		});
 
 		$container->registerService('MessagesData', function ($c) use($app) {
-			return new Messages($app);
+			return new Messages(
+				$c->query('MessageMapper')
+			);
 		});
 
 		/**

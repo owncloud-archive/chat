@@ -9,15 +9,61 @@ namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\Conversation;
-use \OCA\Chat\OCH\Db\ConversationMapper;
-use \OCA\Chat\OCH\Commands\Join;
-use \OCA\Chat\OCH\Commands\Invite;
-use \OCA\Chat\OCH\Data\GetUsers;
-use \OCA\Chat\OCH\Data\Messages;
-use \OCA\Chat\OCH\Db\User;
-
+use OCA\Chat\OCH\Db\ConversationMapper;
 
 class StartConv extends ChatAPI {
+
+	/**
+	 * @var $messageMapper \OCA\Chat\OCH\Db\messageMapper
+	 */
+	private $messageMapper;
+
+	/**
+	 * @var $conversationMapper \OCA\Chat\OCH\Db\ConversationMapper
+	 */
+	private $conversationMapper;
+
+	/**
+	 * @var $invite \OCA\Chat\OCH\Commands\Invite;
+	 */
+	private $invite;
+
+	/**
+	 * @var $join \OCA\Chat\OCH\Commands\Join;
+	 */
+	private $join;
+
+	/**
+	 * @var $getUsers \OCA\Chat\OCH\Data\GetUsers
+	 */
+	private $getUsers;
+
+	/**
+	 * @var $messages \OCA\Chat\OCH\Data\Messages
+	 */
+	private $messages;
+
+
+
+
+	public function __construct(
+		Chat $app,
+		MessageMapper $messageMapper,
+		ConversationMapper $conversationMapper,
+		Invite $invite,
+		Join $join,
+		GetUsers $getUsers,
+		Messages $messages
+	){
+		$this->app = $app;
+		$this->messageMapper = $messageMapper;
+		$this->conversationMapper = $conversationMapper;
+		$this->invite = $invite;
+		$this->join = $join;
+		$this->getUsers = $getUsers;
+		$this->messages = $messages;
+	}
+
 
 	public function setRequestData(array $requestData) {
 		$this->requestData = $requestData;
@@ -34,9 +80,8 @@ class StartConv extends ChatAPI {
 		$ids[] = $this->requestData['user']['id'];
 
 		// (2) check if conv id exists
-		$convMapper = $this->c['ConversationMapper'];
 
-		if($id = $convMapper->existsByUsers($ids)){
+		if($id = $this->conversationMapper->existsByUsers($ids)){
 			$id = $id['conv_id'];
 		} else {
 			$id = $this->generateConvId();
@@ -44,43 +89,38 @@ class StartConv extends ChatAPI {
 			// (3) Create the conv
 			$conversation = new Conversation();
 			$conversation->setConversationId($id);
-			$mapper = $this->c['ConversationMapper'];
-			$mapper->insert($conversation);
+			$this->conversationMapper->insert($conversation);
 		}
 
 		// (5) invite the user_to_invite since we just created the conv
 		// foreach user to invite
-		$invite = $this->c['InviteCommand'];
 		$requestData = array();
 		$requestData['conv_id'] = $id;
 		$requestData['user'] = $this->requestData['user'];
 		foreach($this->requestData['user_to_invite'] as $userToInvite){
 			if($userToInvite['id'] !== $this->requestData['user']['id']){
 				$requestData['user_to_invite'] = $userToInvite;
-				$invite->setRequestData($requestData);
-				$invite->execute();
+				$this->invite->setRequestData($requestData);
+				$this->invite->execute();
 			}
 		}
 
 		// (4) join the just created conv
-		$join = $this->c['JoinCommand'];
 		$this->requestData['conv_id'] = $id;
-		$join->setRequestData($this->requestData);
-		$join->execute();
+		$this->join->setRequestData($this->requestData);
+		$this->join->execute();
 
 		// Fetch users in conv
-		$getUsers = $this->c['GetUsersData'];
-		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-		$users = $getUsers->execute();
+		$this->getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $this->getUsers->execute();
 		$users = $users['users'];
 
 		// Fetch messages in conv
-		$getMessages = $this->c['MessagesData'];
-		$getMessages->setRequestData(array(
+		$this->messages->setRequestData(array(
 			"conv_id" => $this->requestData['conv_id'],
 			'user' => $this->requestData['user']
 		));
-		$messages = $getMessages->execute();
+		$messages = $this->messages->execute();
 		$messages = $messages['messages'];
 
 		return array(
@@ -91,9 +131,8 @@ class StartConv extends ChatAPI {
 	}
 
 	private function generateConvId(){
-		$convMapper = $this->c['ConversationMapper'];
 		$id = 'CONV_ID_' . time() . '_' . rand(1, 99);
-		if($convMapper->existsByConvId($id)){
+		if($this->conversationMapper->existsByConvId($id)){
 			return $this->generateConvId();
 		} else {
 			return $id;

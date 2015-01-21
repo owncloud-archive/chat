@@ -71,19 +71,20 @@ class Chat extends App{
 		parent::__construct('chat', $urlParams);
 
 		$container = $this->getContainer();
+		$server = $container->getServer();
 		$this->c = $container;
 		$app = $this;
 
 		/**
 		 * Controllers
 		 */
-		$container->registerService('AppController', function ($c) use($app) {
+		$container->registerService('AppController', function ($c) use($app, $server) {
 			return new AppController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$app,
 				$c->query('ContactsManager'),
-				$c->getServer()->getConfig(),
+				$server->getConfig(),
 				$c->query('GreetCommand')
 			);
 		});
@@ -117,46 +118,56 @@ class Chat extends App{
 		 * DataMappers
 		 */
 
-		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('ConversationMapper', function ($c) use($server) {
+			return new ConversationMapper(
+				$server->getDb()
+			);
 		});
 
-		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('ConversationMapper', function ($c) use($server) {
+			return new ConversationMapper(
+				$server->getDb()
+			);
 		});
 
-		$container->registerService('MessageMapper', function ($c) {
-			return new MessageMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('MessageMapper', function ($c) use($server) {
+			return new MessageMapper(
+				$server->getDb()
+			);
 		});
 
-		$container->registerService('PushMessageMapper', function ($c) {
+		$container->registerService('PushMessageMapper', function ($c) use($server) {
 			return new PushMessageMapper(
-				$c->query('ServerContainer')->getDb(),
+				$server->getDb(),
 				$c['UserOnlineMapper'],
 				$c['UserMapper']
 			);
 		});
 
-		$container->registerService('UserMapper', function ($c) {
-			return new UserMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('UserMapper', function ($c) use($server) {
+			return new UserMapper(
+				$server->getDb()
+			);
 		});
 
-		$container->registerService('UserOnlineMapper', function ($c) {
-			return new UserOnlineMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('UserOnlineMapper', function ($c) use($server) {
+			return new UserOnlineMapper(
+				$server->getDb()
+			);
 		});
 
-		$container->registerService('AttachmentMapper', function ($c) use ($app) {
+		$container->registerService('AttachmentMapper', function ($c) use ($app, $server) {
 			return new AttachmentMapper(
-				$c->query('ServerContainer')->getDb(),
+				$server->getDb(),
 				$app
 			);
 		});
 
-		$container->registerService('ConfigMapper', function ($c) use ($app) {
+		$container->registerService('ConfigMapper', function ($c) use ($app, $server) {
 			return new ConfigMapper(
-				$c->query('ServerContainer')->getDb(),
+				$server->getDb(),
 				$app->getUserId(),
-				$c->query('ServerContainer')->getCrypto()
+				$server->getCrypto()
 			);
 		});
 
@@ -280,24 +291,24 @@ class Chat extends App{
 		/**
 		 * Manager
 		 */
-		$container->registerService('ContactsManager', function($c){
-			return $c->getServer()->getContactsManager();
+		$container->registerService('ContactsManager', function($c) use($server) {
+			return $server->getContactsManager();
 		});
 
-		$container->registerService('UserManager', function($c){
-			return $c->getServer()->getUserManager();
+		$container->registerService('UserManager', function($c) use($server) {
+			return $server->getUserManager();
 		});
 
-		$container->registerService('UserSession', function($c){
-			return $c->getServer()->getUserSession();
+		$container->registerService('UserSession', function($c) use($server) {
+			return $server->getUserSession();
 		});
 
-		$container->registerService('NavigationManager', function($c){
-			return $c->getServer()->getNavigationManager();
+		$container->registerService('NavigationManager', function($c) use($server) {
+			return $server->getNavigationManager();
 		});
 
-		$container->registerService('Config', function($c) {
-			return $c->getServer()->getConfig();
+		$container->registerService('Config', function($c) use($server) {
+			return $server->getConfig();
 		});
 
 		$container->registerService('BackendManager', function($c){

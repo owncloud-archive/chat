@@ -50,6 +50,16 @@ class Chat extends App{
 	private static $contacts;
 
 	/**
+	 * @var array used to cache the parsed initConvs for every request
+	 */
+	private static $initConvs;
+
+	/**
+	 * @var array used to cache the user id for every request
+	 */
+	private static $userId;
+
+	/**
 	 * @var \OCP\AppFramework\IAppContainer
 	 */
 	public $c;
@@ -295,11 +305,23 @@ class Chat extends App{
 		});
 
 		$container->registerService('OCH', function($c) use ($app){
-			return new OCH($app);
+			return new OCH(
+				$c->query('ConfigMapper'),
+				$c->query('Config'),
+				$c->query('UserMapper'),
+				$c->query('AttachmentMapper'),
+				$c->query('StartConvCommand'),
+				$c->query('MessagesData'),
+				$c->query('JoinCommand'),
+				$app
+			);
 		});
 
 		$container->registerService('XMPP', function($c) use ($app){
-			return new XMPP($app);
+			return new XMPP(
+				$c->query('ConfigMapper'),
+				$c->query('Config')
+			);
 		});
 
 
@@ -462,7 +484,7 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getCurrentUser(){
-		return $this->getUserasContact($this->c['UserSession']->getUser()->getUID());
+		return $this->getUserasContact($this->getUserId());
 	}
 
 	/**
@@ -470,45 +492,25 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getUserasContact($id){
-		$result = $this->c['ContactsManager']->search($id, array('id'));
-		// Finding the correct result
-		foreach($result as $contact){
-			if($contact['id'] ===  $id){
-				$r = $contact;
-			}
+		if(count(self::$contacts) == 0) {
+			$this->getContacts();
 		}
-		$data = array();
-		$data['id'] = $r['id'];
-		$data['displayname'] = $r['FN'];
-		if(!isset($r['EMAIL'])){
-			$r['EMAIL'] = array();
-		}
-
-		if(!isset($r['IMPP'])){
-			$r['IMPP'] = array();
-		}
-		$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
-		$addressbookKey = explode(':', $r['addressbook-key']);
-		if(count($addressbookKey) === 2){
-			$data['address_book_id'] = $addressbookKey[1];
-			$data['address_book_backend'] = $addressbookKey[0];
-		} else {
-			$data['address_book_id'] = '';
-			$data['address_book_backend'] = $addressbookKey[0];
-		}
-		return $data;
+		return self::$contacts['contactsObj'][$id];
 	}
 	/**
 	 * @return array
 	 * @todo porting
 	 */
 	public function getInitConvs(){
-		$backends = $this->getBackends();
-		$result = array();
-		foreach($backends as $backend){
-			$result[$backend->getId()] = $backend->getInitConvs();
+		if(count(self::$initConvs) == 0) {
+			$backends = $this->getBackends();
+			$result = array();
+			foreach($backends as $backend){
+				$result[$backend->getId()] = $backend->getInitConvs();
+			}
+			self::$initConvs = $result;
 		}
-		return $result;
+		return self::$initConvs;
 	}
 
 	/**
@@ -525,12 +527,16 @@ class Chat extends App{
 	 * @return string current ownCloud user id
 	 */
 	public function getUserId(){
-		$user = $this->c['UserSession']->getUser();
-		if (is_object($user)){
-			return $user->getUID();
-		} else {
-			return null;
+		if(is_null(self::$userId)){
+			$user = $this->c['UserSession']->getUser();
+			if (is_object($user)){
+				self::$userId = $user->getUID();
+			} else {
+				self::$userId = null;
+			}
 		}
+		return self::$userId;
+
 	}
 
 }

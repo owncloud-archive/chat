@@ -5,8 +5,64 @@ namespace OCA\Chat\OCH;
 use \OCA\Chat\IBackend;
 use \OCA\Chat\App\Chat;
 use \OCA\Chat\AbstractBackend;
+use \OCA\Chat\OCH\Db\UserMapper;
+use \OCA\Chat\Db\ConfigMapper;
+use \OCA\Chat\OCH\Db\AttachmentMapper;
+use \OCP\IConfig;
+use \OCA\Chat\OCH\Commands\StartConv;
+use \OCA\Chat\OCH\Commands\Join;
+use \OCA\Chat\OCH\Data\Messages;
 
 class OCH extends AbstractBackend implements IBackend {
+
+	/**
+	 * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
+	 */
+	private $userMapper;
+
+	/**
+	 * @var $attachmentMapper \OCA\Chat\OCH\Db\AttachmentMapper
+	 */
+	private $attachmentMapper;
+
+	/**
+	 * @var $messages \OCA\Chat\OCH\Data\Messages
+	 */
+	private $messages;
+
+	/**
+	 * @var $startconv \OCA\Chat\OCH\Commands\StartConv
+	 */
+	private $startconv;
+
+	/**
+	 * @var $join \OCA\Chat\OCH\Commands\Join
+	 */
+	private $join;
+
+	/**
+	 * @var $app \OCA\Chat\App\Chat
+	 */
+	private $app;
+
+	function __construct(
+		ConfigMapper $configMapper,
+		IConfig $config,
+		UserMapper $userMapper,
+		AttachmentMapper $attachmentMapper,
+		StartConv $startconv,
+		Messages $messages,
+		Join $join,
+		Chat $app
+	){
+		parent::__construct($configMapper, $config);
+		$this->userMapper = $userMapper;
+		$this->attachmentMapper = $attachmentMapper;
+		$this->startconv = $startconv;
+		$this->messages = $messages;
+		$this->join = $join;
+		$this->app = $app;
+	}
 
 	public function getId(){
 		return 'och';
@@ -21,23 +77,19 @@ class OCH extends AbstractBackend implements IBackend {
 
 	private function createInitConvs(){
 		$initConvs = array();
-		$userMapper = $this->c['UserMapper'];
-		$convs = $userMapper->findByUser($this->app->getUserId());
+		$convs = $this->userMapper->findByUser($this->app->getUserId());
 		$usersAllreadyInConv = array();
-		$join = $this->c['JoinCommand'];
 		foreach($convs as $conv){
-			$users = $userMapper->findUsersInConv($conv->getConversationId());
+			$users = $this->userMapper->findUsersInConv($conv->getConversationId());
 			// Find the correct contact for the correct user
-			$getMessages = $this->c['MessagesData'];
-			$getMessages->setRequestData(array(
+			$this->messages->setRequestData(array(
 				"conv_id" => $conv->getConversationId(),
 				'user' => $this->app->getCurrentUser()
 			));
-			$messages = $getMessages->execute();
+			$messages = $this->messages->execute();
 			$messages = $messages['messages'];
 
-			$attachmentMapper = $this->c['AttachmentMapper'];
-			$files = $attachmentMapper->findRawByConv($conv->getConversationId());
+			$files = $this->attachmentMapper->findRawByConv($conv->getConversationId());
 			$initConvs[$conv->getConversationId()] = array(
 				"id" => $conv->getConversationId(),
 				"users"=> $users,
@@ -53,26 +105,25 @@ class OCH extends AbstractBackend implements IBackend {
 				}
 			}
 
-			$join->setRequestData(array(
+			$this->join->setRequestData(array(
 				"conv_id" => $conv->getConversationId(),
 				"user" => $this->app->getCurrentUser(),
 			));
-			$join->execute();
+			$this->join->execute();
 		}
 
 		$allUsers = \OCP\User::getUsers();
 		$users = array_diff($allUsers, $usersAllreadyInConv);
 
-		$startConv = $this->c['StartConvCommand'];
 		foreach($users as $user){
 			if($user !== \OCP\User::getUser()){
-				$startConv->setRequestData(array(
+				$this->startconv->setRequestData(array(
 					"user" => $this->app->getCurrentUser(),
 					"user_to_invite" => array(
 						$this->app->getUserasContact($user),
 					)
 				));
-				$info =  $startConv->execute();
+				$info =  $this->startconv->execute();
 				$initConvs[$info['conv_id']] = array(
 					"id" => $info['conv_id'],
 					"users"=> array(

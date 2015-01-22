@@ -62,7 +62,12 @@ class Chat extends App{
 	/**
 	 * @var \OCP\AppFramework\IAppContainer
 	 */
-	public $c;
+	private $c;
+
+	/**
+	 * @var $name of the app
+	 */
+	private $name = 'chat';
 
 	/**
 	 * @param array $urlParams
@@ -71,27 +76,32 @@ class Chat extends App{
 		parent::__construct('chat', $urlParams);
 
 		$container = $this->getContainer();
-		$server = $container->getServer();
 		$this->c = $container;
 		$app = $this;
+
+		$this->c['AppName'] = 'chat';
+		$this->c['appName'] = 'chat';
+
+
+
 
 		/**
 		 * Controllers
 		 */
-		$container->registerService('AppController', function ($c) use($app, $server) {
+		$container->registerService('AppController', function ($c) use($app) {
 			return new AppController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
 				$app,
-				$c->query('ContactsManager'),
-				$server->getConfig(),
+				$c->query('OCP\Contacts\IManager'),
+				$c->query('OCP\IConfig'),
 				$c->query('GreetCommand')
 			);
 		});
 
 		$container->registerService('ApiController', function ($c) use($app) {
 			return new ApiController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
 				$app
 			);
@@ -99,7 +109,7 @@ class Chat extends App{
 
 		$container->registerService('ConfigController', function ($c) use($app) {
 			return new ConfigController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
 				$c->query('ConfigMapper'),
 				$c->query('BackendManager')
@@ -108,7 +118,7 @@ class Chat extends App{
 
 		$container->registerService('AdminController', function ($c) use($app) {
 			return new AdminController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
 				$c->query('BackendManager')
 			);
@@ -118,56 +128,56 @@ class Chat extends App{
 		 * DataMappers
 		 */
 
-		$container->registerService('ConversationMapper', function ($c) use($server) {
+		$container->registerService('ConversationMapper', function ($c) {
 			return new ConversationMapper(
-				$server->getDb()
+				$c->query('OCP\IDb')
 			);
 		});
 
-		$container->registerService('ConversationMapper', function ($c) use($server) {
+		$container->registerService('ConversationMapper', function ($c) {
 			return new ConversationMapper(
-				$server->getDb()
+				$c->query('OCP\IDb')
 			);
 		});
 
-		$container->registerService('MessageMapper', function ($c) use($server) {
+		$container->registerService('MessageMapper', function ($c) {
 			return new MessageMapper(
-				$server->getDb()
+				$c->query('OCP\IDb')
 			);
 		});
 
-		$container->registerService('PushMessageMapper', function ($c) use($server) {
+		$container->registerService('PushMessageMapper', function ($c) {
 			return new PushMessageMapper(
-				$server->getDb(),
+				$c->query('OCP\IDb'),
 				$c['UserOnlineMapper'],
 				$c['UserMapper']
 			);
 		});
 
-		$container->registerService('UserMapper', function ($c) use($server) {
+		$container->registerService('UserMapper', function ($c) {
 			return new UserMapper(
-				$server->getDb()
+				$c->query('OCP\IDb')
 			);
 		});
 
-		$container->registerService('UserOnlineMapper', function ($c) use($server) {
+		$container->registerService('UserOnlineMapper', function ($c) {
 			return new UserOnlineMapper(
-				$server->getDb()
+				$c->query('OCP\IDb')
 			);
 		});
 
-		$container->registerService('AttachmentMapper', function ($c) use ($app, $server) {
+		$container->registerService('AttachmentMapper', function ($c) use ($app) {
 			return new AttachmentMapper(
-				$server->getDb(),
+				$c->query('OCP\IDb'),
 				$app
 			);
 		});
 
-		$container->registerService('ConfigMapper', function ($c) use ($app, $server) {
+		$container->registerService('ConfigMapper', function ($c) use ($app) {
 			return new ConfigMapper(
-				$server->getDb(),
+				$c->query('OCP\IDb'),
 				$app->getUserId(),
-				$server->getCrypto()
+				$c->query('OCP\Security\ICrypto')
 			);
 		});
 
@@ -291,25 +301,25 @@ class Chat extends App{
 		/**
 		 * Manager
 		 */
-		$container->registerService('ContactsManager', function($c) use($server) {
-			return $server->getContactsManager();
-		});
+//		$container->registerService('ContactsManager', function($c) {
+//			return $c->query('OCP\Contacts\IManager');
+//		});
 
-		$container->registerService('UserManager', function($c) use($server) {
-			return $server->getUserManager();
-		});
-
-		$container->registerService('UserSession', function($c) use($server) {
-			return $server->getUserSession();
-		});
-
-		$container->registerService('NavigationManager', function($c) use($server) {
-			return $server->getNavigationManager();
-		});
-
-		$container->registerService('Config', function($c) use($server) {
-			return $server->getConfig();
-		});
+//		$container->registerService('UserManager', function($c) {
+//			return $server->getUserManager();
+//		});
+//
+//		$container->registerService('UserSession', function($c) {
+//			return $server->getUserSession();
+//		});
+//
+//		$container->registerService('NavigationManager', function($c) {
+//			return $server->getNavigationManager();
+//		});
+//
+//		$container->registerService('Config', function($c) {
+//			return $c->query('OCP\IConfig');
+//		});
 
 		$container->registerService('BackendManager', function($c){
 			return new BackendManager();
@@ -318,7 +328,7 @@ class Chat extends App{
 		$container->registerService('OCH', function($c) use ($app){
 			return new OCH(
 				$c->query('ConfigMapper'),
-				$c->query('Config'),
+				$c->query('OCP\IConfig'),
 				$c->query('UserMapper'),
 				$c->query('AttachmentMapper'),
 				$c->query('StartConvCommand'),
@@ -331,11 +341,15 @@ class Chat extends App{
 		$container->registerService('XMPP', function($c) use ($app){
 			return new XMPP(
 				$c->query('ConfigMapper'),
-				$c->query('Config')
+				$c->query('OCP\IConfig')
 			);
 		});
 
 
+	}
+
+	public function query($param){
+		return $this->getContainer()->query($param);
 	}
 
 	public function registerBackend(IBackend $backend){
@@ -360,7 +374,7 @@ class Chat extends App{
 			$syncOnline->execute();
 			// ***
 
-			$cm = $this->c['ContactsManager'];
+			$cm = $this->c->query('OCP\Contacts\IManager');
 			$result = $cm->search('',array('FN'));
 			$receivers = array();
 			$contactList = array();
@@ -529,7 +543,8 @@ class Chat extends App{
 	 * @return int id of the file
 	 */
 	public function getFileId($path){
-		$userFolder = $this->c->getServer()->getUserFolder(\OCP\User::getUser());
+//		$userFolder = \OC::$server->getUserFolder(\OCP\User::getUser());
+		$userFolder = $this->query('\OCP\IRootFolder')->getUserFolder();
 		$file = $userFolder->get($path);
 		return $file->getId();
 	}
@@ -539,7 +554,7 @@ class Chat extends App{
 	 */
 	public function getUserId(){
 		if(is_null(self::$userId)){
-			$user = $this->c['UserSession']->getUser();
+			$user = $this->query('OCP\IUserSession')->getUser();
 			if (is_object($user)){
 				self::$userId = $user->getUID();
 			} else {

@@ -26,7 +26,7 @@ class UserOnlineMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp(){
 		$this->app = new Chat();
-		$this->userOnlineMapper  = $this->app->c['UserOnlineMapper'];
+		$this->userOnlineMapper  = $this->app->query('UserOnlineMapper');
 	}
 
 	public function getOnlineUsersProvider(){

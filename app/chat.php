@@ -352,6 +352,11 @@ class Chat extends App{
 		return $this->getContainer()->query($param);
 	}
 
+	public function registerService($name, $callback){
+		return $this->getContainer()->registerService($name, $callback);
+	}
+	
+	
 	public function registerBackend(IBackend $backend){
 		$backendManager = $this->c['BackendManager'];
 		$backendManager::registerBackend($backend);

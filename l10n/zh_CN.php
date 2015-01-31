@@ -3,6 +3,7 @@ $TRANSLATIONS = array(
 "Chat" => "聊天",
 "{displayname} attached {path} to this conversation" => "{displayname} 将 {path} 附加到此对话",
 "{displayname} removed {path} from this conversation" => "{displayname} 从此会话中删除了 {path}",
+"Start a chat with ..." => "开始聊天 ...",
 "Search in conversations" => "在会话中搜索",
 "Add Person" => "添加用户",
 "View Attached files" => "查看附件",

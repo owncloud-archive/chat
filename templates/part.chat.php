@@ -19,6 +19,8 @@
 					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].time.minutes !== msg.time.minutes
 					&& $parent.convs[$parent.$session.conv].msgs[key-1].time.hours !== msg.time.houres"
 					class="chat-msg-time"
+					tipsy
+					title="{{ msg.time_read }}"
 				>
 					{{ msg.time.hours }} : {{ msg.time.minutes }}
 				</div>

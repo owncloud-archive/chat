@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', function(contacts, $filter, title, $session, $injector) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', 'time', function(contacts, $filter, title, $session, $injector, Time) {
 	var convs = {};
 
 	return {
@@ -87,9 +87,10 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			var contact = user;
 			convs[convId].msgs.push({
 				contact : contact,
-				msg : $.trim(msg),
+				msg : msg,
 				timestamp : timestamp,
-				time : Chat.app.util.timeStampToDate(timestamp),
+				time : Time.timestampToObject(timestamp),
+				time_read : Time.format(timestamp)
 			});
 
 			// Add raw msgs to raw_msgs

@@ -10,6 +10,8 @@
 			<!-- This div holds exactly one chat message	-->
 			<div
 				class="chat-msg-container"
+				ng-class="{'chat-msg-full-height': $parent.convs[$parent.$session.conv].msgs[key+1].contact.id !== msg.contact.id
+				&& $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
 			>
 				<!-- This div holds the time of the chat message -->
@@ -21,7 +23,9 @@
 					{{ msg.time.hours }} : {{ msg.time.minutes }}
 				</div>
 				<!-- This div holds the Chat message and the avatar of the user which sends it-->
-				<div class="chat-msg">
+				<div class="chat-msg"
+
+					>
 					<div
 						class="msg-avatar-container"
 						ng-if="$parent.$parent.avatarsEnabled === 'true'"

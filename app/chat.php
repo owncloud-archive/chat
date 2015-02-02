@@ -409,8 +409,7 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getUserasContact($id){
-		$result = $this->c['ContactsManager']->search($id, array('id'));
-		// Finding the correct result
+		$result = $this->c['ContactsManager']->search($id, array('id'), array('get'));		// Finding the correct result
 		foreach($result as $contact){
 			if($contact['id'] ===  $id){
 				$r = $contact;

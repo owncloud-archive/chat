@@ -12,6 +12,7 @@ angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', fun
 	emojione.sprites = true;
 	emojione.ascii = true;
 }]);
+
 function tran(id, vars){
 	var text = 	$('#' + id).text();
 	var _build = function (text, vars) {

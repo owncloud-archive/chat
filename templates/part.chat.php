@@ -14,7 +14,8 @@
 			>
 				<!-- This div holds the time of the chat message -->
 				<div
-					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
+					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].time.minutes !== msg.time.minutes
+					&& $parent.convs[$parent.$session.conv].msgs[key-1].time.hours !== msg.time.houres"
 					class="chat-msg-time"
 				>
 					{{ msg.time.hours }} : {{ msg.time.minutes }}

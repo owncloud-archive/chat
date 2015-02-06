@@ -51,6 +51,6 @@
   templates compile.  The !important is important given that there may be
   other selectors that are more specific or come later and might alter display.
  */
-.ng-cloack {
+[ng\:cloak], [ng-cloak], .ng-cloak {
 	display: none !important;
 }

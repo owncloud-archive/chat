@@ -26,6 +26,7 @@ style('chat', 'main.min');
 ?>
 
 <div
+	class="ng-cloack"
 	ng-cloack
 	ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button']);view.hide('files', $event, ['files-no-hide', 'file-element', 'files-button']);view.hide('emojiContainer', $event, ['emoji-no-hide']);"
 	ng-controller="ConvController"

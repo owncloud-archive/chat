@@ -26,7 +26,6 @@ style('chat', 'main.min');
 ?>
 
 <div
-	ng-app="chat"
 	ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button']);view.hide('files', $event, ['files-no-hide', 'file-element', 'files-button']);view.hide('emojiContainer', $event, ['emoji-no-hide']);"
 	ng-controller="ConvController"
 	id="app"

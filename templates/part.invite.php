@@ -6,6 +6,8 @@
 	ng-if="view.elements.invite"
 	class="invite-no-hide"
 	id="invite-container"
+	ng-cloak
+
 	>
 		<!-- Search field to search in the Contacts -->
 		<div

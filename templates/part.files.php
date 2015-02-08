@@ -3,6 +3,8 @@
 	ng-if="view.elements.files"
 	class="files-no-hide"
 	id="files-container"
+	ng-cloak
+
 	>
 	<p
 		class="files-title file-element"

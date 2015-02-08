@@ -51,6 +51,29 @@
   templates compile.  The !important is important given that there may be
   other selectors that are more specific or come later and might alter display.
  */
-[ng\:cloak], [ng-cloak], .ng-cloak {
+/*.splash {*/
+	/*display: none;*/
+/*}*/
+/**/
+#splash > .ng-cloak {
+	display: block !important;
+}
+
+#splash {
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+#splash > div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 10%;
+	width: 10%;
+	margin: -5% 0 0 -5%;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
 	display: none !important;
 }

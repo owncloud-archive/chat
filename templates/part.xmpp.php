@@ -3,6 +3,8 @@
 	id="xmpp-authorize-container"
 	ng-show="authorize.show === true"
 	auto-center
+	ng-cloak
+
 	>
 	{{ authorize.name}} ({{authorize.jid}}) wants to add you to his or her buddy list.
 

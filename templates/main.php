@@ -54,7 +54,8 @@ style('chat', 'main.min');
 	</div>
 	<div
 		id="splash"
-			class="ng-cloak icon-loading"
+		class="ng-cloak icon-loading"
+		>
 	</div>
 
 

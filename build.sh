@@ -4,12 +4,10 @@
 export HOME=/var/lib/openshift/547b566ee0b8cd470a000128/app-root/data/jobs/ownCloud-Chat/workspace
 files_to_delete=("vendor/emojione/assets/svg" "vendor/emojione/assets/png" ".npm" ".node-gyp" "node_modules" ".bowerrc" "bower.json" ".git*" "./.scrutinizer.yml" "./.travis.yml" "Gruntfile.js" "karma.conf.js" "Makefile" "package.json" "build.sh" "tests")
 rm -rf ../chat
-rm -rf .npm
-rm -rf .node-gyp
 rm -rf node_modules
 mkdir ../chat
 
-../../../node-v0.10.33-linux-x64/bin/npm install
+cp -r ../../../node-v0.10.33-linux-x64/chat/node_modules/ .
 ../../../node-v0.10.33-linux-x64/bin/node node_modules/grunt-cli/bin/grunt
 
 

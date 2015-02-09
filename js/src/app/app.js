@@ -12,12 +12,6 @@ angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', fun
 	emojione.sprites = true;
 	emojione.ascii = true;
 }]);
-window.onload=function(){
-	window.setTimeout(function(){
-		angular.bootstrap($('#app'),['chat']);
-	},4000);
-}
-
 function tran(id, vars){
 	var text = 	$('#' + id).text();
 	var _build = function (text, vars) {

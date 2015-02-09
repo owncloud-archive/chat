@@ -11,7 +11,7 @@
 			<div
 				class="chat-msg-container"
 				ng-class="{'chat-msg-full-height': $parent.convs[$parent.$session.conv].msgs[key+1].contact.id !== msg.contact.id
-				&& $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
+				&& $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id, 'chat-msg-margin-top':$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
 			>
 				<!-- This div holds the time of the chat message -->

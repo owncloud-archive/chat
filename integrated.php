@@ -4,13 +4,6 @@ header('Content-Type: text/html');
 <div  id="angular-wrapper">
 	<section id="app" 	ng-controller="ConvController">
 		<div
-			ng-class="{'chat-sidebar-toggle-visible':view.elements.sidebar, 'chat-sidebar-toggle-hidden':!view.elements.sidebar}"
-			class="chat-sidebar-toggle-visible"
-			id="chat-sidebar-toggle"
-			ng-click="view.toggle('sidebar')"
-			>
-		</div>
-		<div
 			id="chat-sidebar"
 			ng-show="view.elements.sidebar"
 			>
@@ -258,6 +251,17 @@ header('Content-Type: text/html');
 					</div>
 				</li>
 			</ul>
+			<div id="chat-window">
+				&nbsp;
+			</div>
+		</div>
+		<div
+			ng-class="{'chat-sidebar-toggle-visible':view.elements.sidebar, 'chat-sidebar-toggle-hidden':!view.elements.sidebar}"
+			class="chat-sidebar-toggle-visible"
+			id="chat-sidebar-toggle"
+			ng-click="view.toggle('sidebar')"
+			>
+			&nbsp;
 		</div>
 	</section>
 </div>

@@ -24,6 +24,7 @@ cd ../
 rm -rf build.zip
 zip -r build.zip  chat
 mv build.zip workspace/
+cd workspace
 echo $(git rev-parse HEAD) > commit
 cp -r build.zip $(git rev-parse HEAD)
 

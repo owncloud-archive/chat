@@ -10,7 +10,7 @@ angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', fun
 $(document).ready(function(){
 	$.post('/index.php/apps/chat/initvar', function (data) {
 		window.initVar = data;
-		$.get('/apps/chat/integrated.php', function ($chatHTML) {
+		$.get('/apps/chat/integrated.min.html', function ($chatHTML) {
 			//document.body.innerHTML += $chatHTML;
 			$('html').append($chatHTML);
 			angular.module('chat').run(function () {

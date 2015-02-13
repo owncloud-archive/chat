@@ -8,7 +8,7 @@
 	padding-bottom: 44px;
 	-moz-user-select: none;
 	position: fixed;
-	right:0;
+	right:0px;
 }
 
 #chat-sidebar-toggle {
@@ -41,7 +41,7 @@
 	width: 250px;
 	position: absolute;
 	top: 145px;
-	bottom: 250px;
+	bottom: 350px;
 	height: auto !important;
 	background-color: #F5F5F5;
 	overflow-y: auto;
@@ -113,14 +113,39 @@
 	margin-right: 20px;
 }
 #chat-window {
-	height: 250px;
+	height: 282px;
 	padding: 10px;
 	margin: 0px;
 	background-color: #ffffff;
 	z-index: 100;
-	bottom: 0px;
+	bottom: 68px;
 	position:fixed;
 	width:250px;
 	overflow-y: auto;
 	border-top: 10px solid #dadada;
+}
+
+#chat-window-footer {
+	position:fixed;
+	height: 68px;
+	bottom: 0;
+	width: 100%;
+	background-color: #EEE;
+	border-top: #D2D2D2 solid 1px;
+	z-index: 100;
+
+}
+
+
+#chat-window-footer textarea, #chat-window-footer button {
+	float:left;
+}
+
+#chat-window-footer textarea {
+	width:190px;
+}
+
+#chat-window-footer button {
+	width:55px;
+	height:55px;
 }

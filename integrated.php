@@ -303,6 +303,22 @@ header('Content-Type: text/html');
 					</div>
 				</div>
 			</div>
+			<footer id="chat-window-footer">
+				<form id="chat-msg-form" ng-submit="sendChatMsg()">
+					<textarea
+						id="chat-msg-input-field"
+						autocomplete="off"
+						ng-model="fields.chatMsg"
+						ng-enter="sendChatMsg()"
+						ng-disabled="backends[convs[$session.conv].backend.id].connected !== true"
+						></textarea>
+					<button  type="submit">
+						<div class="icon-play">
+							&nbsp;
+						</div>
+					</button>
+				</form>
+			</footer>
 		</div>
 		<div
 			ng-class="{'chat-sidebar-toggle-visible':view.elements.sidebar, 'chat-sidebar-toggle-hidden':!view.elements.sidebar}"

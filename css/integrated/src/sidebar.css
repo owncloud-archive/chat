@@ -3,15 +3,16 @@
 	z-index: 9000;
 	width: 250px;
 	height: 100%;
-	float: right;
 	box-sizing: border-box;
 	background-color: #F5F5F5;
 	padding-bottom: 44px;
 	-moz-user-select: none;
+	position: fixed;
+	right:0;
 }
 
 #chat-sidebar-toggle {
-	background-color: #DADADA;
+	background-color: #1D2D44;
 	height: 100%;
 	position: fixed;
 	width: 10px;

@@ -2,7 +2,7 @@
 header('Content-Type: text/html');
 ?>
 <div  id="angular-wrapper">
-	<section id="app" 	ng-controller="ConvController">
+	<section id="app" ng-controller="ConvController">
 		<div
 			id="chat-sidebar"
 			ng-show="view.elements.sidebar"
@@ -252,12 +252,60 @@ header('Content-Type: text/html');
 				</li>
 			</ul>
 			<div id="chat-window">
-				&nbsp;
+				<div id="chat-window-msgs" scroll>
+					<!-- This div holds exactly one chat message	-->
+					<div
+						class="chat-msg-container"
+						ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
+						>
+						<!-- This div holds the time of the chat message -->
+						<div
+							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
+							class="chat-msg-time"
+							>
+							{{ msg.time.hours }} : {{ msg.time.minutes }}
+						</div>
+						<!-- This div holds the Chat message and the avatar of the user which sends it-->
+						<div class="chat-msg">
+								<div
+									class="msg-avatar-container"
+									ng-if="avatarsEnabled === 'true'"
+									>
+									<div
+										ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
+										data-size="20"
+										data-id="{{ msg.contact.id }}"
+										data-displayname="{{ msg.contact.displayname }}"
+										data-addressbook-backend="{{ msg.contact.address_book_backend }}"
+										data-addressbook-id="{{ msg.contact.address_book_id  }}"
+										avatar
+										tipsy
+										title="{{ msg.contact.displayname }}"
+										>
+									</div>
+								</div>
+								<div
+									class="msg-displayname-container"
+									ng-if="$parent.$parent.avatarsEnabled === 'false' && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
+									>
+									<div>
+										{{ msg.contact.displayname }}
+									</div>
+								</div>
+								<p
+									ng-class="{'chat-msg-margin-left': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id === msg.contact.id}"
+									class="chat-msg-msg"
+									ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
+									>
+									&nbsp;
+								</p>
+							</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div
 			ng-class="{'chat-sidebar-toggle-visible':view.elements.sidebar, 'chat-sidebar-toggle-hidden':!view.elements.sidebar}"
-			class="chat-sidebar-toggle-visible"
 			id="chat-sidebar-toggle"
 			ng-click="view.toggle('sidebar')"
 			>

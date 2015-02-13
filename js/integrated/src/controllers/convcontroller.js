@@ -140,6 +140,7 @@ angular.module('chat').controller(
 				 * @param {string} element the element which should be made invisible (should be in the $scope.view.elements array )
 				 */
 				toggle : function(element){
+					console.log(element);
 					$scope.view.elements[element] = !$scope.view.elements[element];
 				},
 

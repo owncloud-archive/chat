@@ -92,9 +92,8 @@
 				<textarea
 					id="chat-msg-input-field"
 					autocomplete="off"
-					ng-model="fields.chatMsg"
-					ng-enter="sendChatMsg()"
 					placeholder="<?php p($l->t('Chat Message')); ?>"
+					update
 					ng-disabled="$parent.backends[$parent.convs[$parent.$session.conv].backend.id].connected !== true"
 				></textarea>
 			</div>

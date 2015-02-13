@@ -301,13 +301,11 @@
 				</div>
 			</div>
 			<footer id="chat-window-footer">
-				<form id="chat-msg-form" ng-submit="sendChatMsg()">
+				<form id="chat-msg-form" >
 					<textarea
 						id="chat-msg-input-field"
 						autocomplete="off"
-						ng-model="fields.chatMsg"
-						ng-enter="sendChatMsg()"
-						ng-disabled="backends[convs[$session.conv].backend.id].connected !== true"
+						update
 						></textarea>
 					<button  type="submit">
 						<div class="icon-play">

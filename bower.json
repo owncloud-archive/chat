@@ -9,14 +9,19 @@
   "license": "AGPL",
   "private": true,
   "dependencies": {
-    "angular-enhance-text": "~0.0.12",
-    "angular-mocks": "~1.2.24",
-    "angular-resource": "~1.2.24",
+    "angular": "*",
+    "angular-enhance-text": "*",
+    "angular-mocks": "*",
+    "angular-resource": "*",
     "jquery-autosize": "~1.18.12",
     "moment": "~2.8.3",
     "strophe": "~1.1.3",
     "rangyinputs-jquery-src": "https://raw.githubusercontent.com/timdown/rangyinputs/master/rangyinputs-jquery-src.js",
     "emojione": "~1.3.0",
     "angular-emoji-filter": "*"
+  },
+  "resolutions": {
+    "angular-sanitize": "~1.3.*",
+    "angular": "1.3.13"
   }
 }

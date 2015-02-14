@@ -219,12 +219,11 @@ angular.module('chat').controller(
 			 * This will empty the chat field
 			 * This will make the order of the contacts in the conv the highest
 			 */
-			$scope.sendChatMsg = function(){
-				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
+			$scope.sendChatMsg = function(msg){
+				if (msg !== '' && msg !== null){
 					var backend = convs.get($session.conv).backend.id;
-					convs.addChatMsg($session.conv, $session.user, $scope.fields.chatMsg, Time.now(), backend);
-					backends[backend].handle.sendChatMsg($session.conv, $scope.fields.chatMsg);
-					$scope.fields.chatMsg = '';
+					convs.addChatMsg($session.conv, $session.user, msg, Time.now(), backend);
+					backends[backend].handle.sendChatMsg($session.conv, msg);
 					setTimeout(function(){
 						$('#chat-msg-input-field').trigger('autosize.resize');
 					},1);

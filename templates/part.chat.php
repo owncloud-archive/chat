@@ -20,9 +20,9 @@
 					&& $parent.convs[$parent.$session.conv].msgs[key-1].time.hours !== msg.time.houres"
 					class="chat-msg-time"
 					tipsy
-					title="{{ msg.time_read }}"
+					title="{{::msg.time_read }}"
 				>
-					{{ msg.time.hours }} : {{ msg.time.minutes }}
+					{{::msg.time.hours }} : {{::msg.time.minutes }}
 				</div>
 				<!-- This div holds the Chat message and the avatar of the user which sends it-->
 				<div class="chat-msg"
@@ -35,13 +35,13 @@
 						<div
 							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 							data-size="40"
-							data-id="{{ msg.contact.id }}"
-							data-displayname="{{ msg.contact.displayname }}"
-							data-addressbook-backend="{{ msg.contact.address_book_backend }}"
-							data-addressbook-id="{{ msg.contact.address_book_id  }}"
+							data-id="{{::msg.contact.id }}"
+							data-displayname="{{::msg.contact.displayname }}"
+							data-addressbook-backend="{{::msg.contact.address_book_backend }}"
+							data-addressbook-id="{{::msg.contact.address_book_id  }}"
 							avatar
                             tipsy
-                            title="{{ msg.contact.displayname }}"
+                            title="{{::msg.contact.displayname }}"
 						>
 						</div>
 					</div>
@@ -50,7 +50,7 @@
 						ng-if="$parent.$parent.avatarsEnabled === 'false' && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 						>
 						<div>
-							{{ msg.contact.displayname }}
+							{{::msg.contact.displayname }}
 						</div>
 					</div>
 					<p
@@ -131,8 +131,8 @@
 				class="emoji-no-hide"
 				>
 				<div
-					title="{{ emoji.key }}"
-					class="emojione-{{ emoji.value.toUpperCase() }} emoji-no-hide"
+					title="{{::emoji.key }}"
+					class="emojione-{{::emoji.value.toUpperCase() }} emoji-no-hide"
 					>
 				</div>
 			</li>

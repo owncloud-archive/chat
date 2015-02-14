@@ -18,12 +18,12 @@
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === $session.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"
 		class="conv-list-item"
-		id="conv-list-{{ conv.id }}"
+		id="conv-list-{{::conv.id }}"
 		auto-height
-		data-item-count="{{ conv.users.length -1 }}"
+		data-item-count="{{::conv.users.length -1 }}"
 		data-item-height="50"
 		data-min-height="60"
-		data-conv-id="{{ conv.id }}"
+		data-conv-id="{{::conv.id }}"
 		>
 		<?php print_unescaped($this->inc('part.avatar')) ?>
 		<!-- These buttons are shown on the right side of the enty -->

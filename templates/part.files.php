@@ -3,8 +3,6 @@
 	ng-if="view.elements.files"
 	class="files-no-hide"
 	id="files-container"
-	ng-cloak
-
 	>
 	<p
 		class="files-title file-element"
@@ -34,32 +32,32 @@
 			ng-repeat="(key,file) in convs[$session.conv].files"
 		>
 			<td class="file-preview file-element">
-				<img class="file-element" src='/index.php/core/preview.png?file={{ file.path }}&x=40&y=40&forceIcon=1' >
+				<img class="file-element" src='/index.php/core/preview.png?file={{::file.path }}&x=40&y=40&forceIcon=1' >
 			</td>
 			<td class="file-owner file-element">
 				<div
 					class="file-element"
 					tipsy
-					title="{{ file.user.displayname }}"
+					title="{{::file.user.displayname }}"
 					class="avatar-list-avatar"
 					avatar
 					data-size="40"
-					data-id="{{ file.user.id }}"
-					data-displayname="{{ file.user.displayname }}"
-					data-addressbook-backend="{{ file.user.address_book_backend }}"
-					data-addressbook-id="{{ file.user.address_book_id  }}"
+					data-id="{{::file.user.id }}"
+					data-displayname="{{::file.user.displayname }}"
+					data-addressbook-backend="{{::file.user.address_book_backend }}"
+					data-addressbook-id="{{::file.user.address_book_id  }}"
 					online
 				>
 				</div>
 			</td>
 			<td class="file-time file-element"
 				time
-				data-timestamp="{{ file.timestamp }}"
+				data-timestamp="{{::file.timestamp }}"
 			>
 			</td>
-			<td title="<?php p($l->t('Download ')); ?>{{ file.path }}" tipsy class="file-path file-element ">
+			<td title="<?php p($l->t('Download ')); ?>{{::file.path }}" tipsy class="file-path file-element ">
 				<p class="file-element" ng-click="$parent.$parent.view.downloadFile(file.path)">
-					{{ file.path }}
+					{{::file.path }}
 				</p>
 			</td>
 			<th class="file-unshare file-element">

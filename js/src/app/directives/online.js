@@ -4,7 +4,11 @@ angular.module('chat').directive('online', ['contacts', function(contacts) {
 		link: function ($scope, element, attrs) {
 			element.online(attrs.isonline);
 			$scope.$watch('contacts', function(){
-				element.online(contacts.contacts[attrs.id].online);
+				if(contacts.contacts[attrs.id].online === 'true' || contacts.contacts[attrs.id].online === true){
+					element.addClass('online-dot');
+				} else {
+					element.removeClass('online-dot');
+				}
 			}, true);
 		}
 	};

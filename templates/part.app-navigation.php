@@ -1,7 +1,12 @@
 <div id="filter-container">
 	<!-- Field to start an instant chat via XMPP -->
 	<form ng-submit="view.startInstantChat()">
-		<input type="text" placeholder="<?php p($l->t('Start a chat with ...'));?>" ng-model="fields.jid" >
+		<input
+			type="text"
+			placeholder="<?php p($l->t('Start a chat with ...'));?>"
+			ng-model="fields.jid"
+			ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
+			>
 	</form>
 	<!-- Field to search in the conversations -->
 	<input class="filter-field" type="text" placeholder="<?php p($l->t('Search in conversations'));?>" ng-model="search.name">

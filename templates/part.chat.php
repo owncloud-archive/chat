@@ -94,6 +94,7 @@
 					autocomplete="off"
 					placeholder="<?php p($l->t('Chat Message')); ?>"
 					update
+					update-func="sendChatMsg"
 					ng-disabled="$parent.backends[$parent.convs[$parent.$session.conv].backend.id].connected !== true"
 				></textarea>
 			</div>
@@ -126,6 +127,7 @@
 			<li
 				ng-click="addEmoji(emoji.key)"
 				ng-repeat="emoji in emojis | filter:emojiSearch"
+				ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
 				class="emoji-no-hide"
 				>
 				<div

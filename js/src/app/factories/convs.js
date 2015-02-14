@@ -135,14 +135,9 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			}
 		},
 		makeActive : function(convId, $event, exception) {
-			$scope = $('#app').scope();
-			if (!$scope.$$phase) {
-				$scope.$apply(function () {
-					$scope.view.makeActive(convId, $event, exception);
-				});
-			} else {
-				$scope.view.makeActive(convId, $event, exception);
-			}
+			$session.conv = convId;
+			this.convs[convId].new_msg = false;
+			$('#chat-msg-input-field').focus();
 		},
 		attachFile : function(convId, path, timestamp, user){
 			if(timestamp === undefined){

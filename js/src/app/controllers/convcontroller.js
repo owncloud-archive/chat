@@ -53,7 +53,7 @@ angular.module('chat').controller(
 				 * @var {object} elements
 				 */
 				elements : {
-					"chat" : false,
+					"chat" : true,
 					"initDone" : false,
 					"settings" : false,
 					"emojiContainer" : false,
@@ -150,22 +150,22 @@ angular.module('chat').controller(
 				 * @param {string} exception - when this is provided the function call will be ignored when it was this param which was clicked
 				 */
 				makeActive : function(convId, $event, exception){
-					$scope.view.hide('emptyMsg');
-					$scope.view.show('chat', $event, exception);
+					//$scope.view.hide('emptyMsg');
+					//$scope.view.show('chat', $event, exception);
 					$session.conv = convId;
 					$scope.view.focusMsgInput();
 					convs.get(convId).new_msg = false;
-					$("#chat-msg-input-field").autosize({
-						callback : function(){
-							var height = $("#chat-msg-input-field").height();
-							height = height + 15;
-							$('#chat-window-footer').height(height);
-							$('#chat-window-body').css('bottom', height);
-							$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-							var height = $("#chat-window-footer").height();
-							$('#emoji-container').css('bottom', height + 20);
-						}
-					});
+					//$("#chat-msg-input-field").autosize({
+					//	callback : function(){
+					//		var height = $("#chat-msg-input-field").height();
+					//		height = height + 15;
+					//		$('#chat-window-footer').height(height);
+					//		$('#chat-window-body').css('bottom', height);
+					//		$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
+					//		var height = $("#chat-window-footer").height();
+					//		$('#emoji-container').css('bottom', height + 20);
+					//	}
+					//});
 				},
 				/**
 				 * This will unActive all conversations
@@ -177,7 +177,7 @@ angular.module('chat').controller(
 				 * This will focus the chat input field
 				 */
 				focusMsgInput : function(){
-					$('#chat-msg-input-field');
+					$('#chat-msg-input-field').focus();
 				},
 				unShare : function(convId, path, timestamp, user, key){
 					var backend = $scope.convs[convId].backend.id;

@@ -47,4 +47,27 @@ SQL;
 
 	}
 
+	public function getMessagesByConvIdLimit($convId, $user, $limit){
+		$sql = <<<SQL
+			SELECT
+				*
+			FROM
+				*PREFIX*chat_och_messages
+			WHERE
+				`convid` = ?
+			AND
+				`timestamp` > (
+					SELECT
+						`joined`
+					FROM
+						*PREFIX*chat_och_users_in_conversation
+					WHERE
+						`user` = ?
+					AND `conversation_id` = ?
+				)
+			LIMIT 0,?
+SQL;
+		return $this->findEntities($sql, array($convId, $user, $convId, $limit));
+	}
+
 }

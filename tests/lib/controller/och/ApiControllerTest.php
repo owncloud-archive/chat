@@ -47,25 +47,16 @@ class ApiControllerTest extends ControllerTestUtility {
 	public function setUp(){
 		$this->appName = 'chat';
 		$this->request = $this->getRequest();
-		$this->app = $this->getMockBuilder('\OCA\Chat\App\Chat')
-			->disableOriginalConstructor()
-			->getMock();
-		$app = new \OCP\AppFramework\App($this->appName, array());
-		$this->app->container = $app->getContainer();
-		$this->app->c = $this->app->container;
-		$c = $this->app->container;
-		$this->app->expects($this->any())
-			->method('getContainer')
-			->will($this->returnCallback(function() use($c){
-				return $c;
-			}));
+		$this->app = new Chat();
 		$this->controller = new ApiController($this->appName, $this->request, $this->app);
 
-		$this->app->c['UserSession'] = $this->getMockBuilder('OC\User\Session')
-			->disableOriginalConstructor()
-			->getMock();
+		$this->app->registerService('UserSession', function(){
+			return $this->getMockBuilder('OC\User\Session')
+				->disableOriginalConstructor()
+				->getMock();
+		});
 
-		$this->app->c['UserSession']->expects($this->any())
+		$this->app->query('UserSession')->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue(new UserMock()));
 
@@ -406,16 +397,18 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider commandExecutionProivder
 	 */
 	public function testCommandExecution($type, $data, $className, $requestType){
-		$this->app->c[ucfirst($className) . ucfirst($requestType)] = $this->getMockBuilder('\OCA\Chat\OCH\Commands\\' . $className)
+		$this->app->registerService(ucfirst($className) . ucfirst($requestType), function(){
+			$this->getMockBuilder('\OCA\Chat\OCH\Commands\\' . $className)
 				->disableOriginalConstructor()
 				->getMock();
+		});
 
-		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
 			->method('setRequestData')
 			->with($this->equalTo($data))
 			->will($this->returnValue(true));
 
-		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
 			->method('execute')
 			->will($this->returnValue(null));
 
@@ -471,16 +464,18 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider dataExecutionProvider
 	 */
 	public function testDataExecution($type, $data, $className, $requestType, $dummyData, $commandName){
-		$this->app->c[ucfirst($className) . ucfirst($requestType)] = $this->getMockBuilder('\OCA\Chat\OCH\Data\\' . $className)
-			->disableOriginalConstructor()
-			->getMock();
+		$this->app->registerService(ucfirst($className) . ucfirst($requestType), function(){
+			$this->getMockBuilder('\OCA\Chat\OCH\Data\\' . $className)
+				->disableOriginalConstructor()
+				->getMock();
+		});
 
-		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
 			->method('setRequestData')
 			->with($this->equalTo($data))
 			->will($this->returnValue(true));
 
-		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
 			->method('execute')
 			->will($this->returnValue($dummyData));
 
@@ -540,16 +535,19 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider pushExecutionProvider
 	 */
 	public function testPushExecution($type, $data, $className, $requestType, $dummyData){
-		$this->app->c[ucfirst($className) . ucfirst($requestType)] = $this->getMockBuilder('\OCA\Chat\OCH\Push\\' . $className)
-			->disableOriginalConstructor()
-			->getMock();
+		$this->app->registerService(ucfirst($className) . ucfirst($requestType), function(){
+			$this->getMockBuilder('\OCA\Chat\OCH\Push\\' . $className)
+				->disableOriginalConstructor()
+				->getMock();
 
-		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+		});
+
+		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
 			->method('setRequestData')
 			->with($this->equalTo($data))
 			->will($this->returnValue(true));
 
-		$this->app->c[ucfirst($className) . ucfirst($requestType)]->expects($this->once())
+		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
 			->method('execute')
 			->will($this->returnValue($dummyData));
 

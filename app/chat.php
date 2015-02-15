@@ -50,9 +50,24 @@ class Chat extends App{
 	private static $contacts;
 
 	/**
+	 * @var array used to cache the parsed initConvs for every request
+	 */
+	private static $initConvs;
+
+	/**
+	 * @var array used to cache the user id for every request
+	 */
+	private static $userId;
+
+	/**
 	 * @var \OCP\AppFramework\IAppContainer
 	 */
-	public $c;
+	private $c;
+
+	/**
+	 * @var $name of the app
+	 */
+	private $name = 'chat';
 
 	/**
 	 * @param array $urlParams
@@ -64,22 +79,29 @@ class Chat extends App{
 		$this->c = $container;
 		$app = $this;
 
+		$this->c['AppName'] = 'chat';
+		$this->c['appName'] = 'chat';
+
+
+
+
 		/**
 		 * Controllers
 		 */
 		$container->registerService('AppController', function ($c) use($app) {
 			return new AppController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
 				$app,
-				$c->query('ContactsManager'),
-				$c->getServer()->getConfig()
+				$c->query('OCP\Contacts\IManager'),
+				$c->query('OCP\IConfig'),
+				$c->query('GreetCommand')
 			);
 		});
 
 		$container->registerService('ApiController', function ($c) use($app) {
 			return new ApiController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
 				$app
 			);
@@ -87,17 +109,18 @@ class Chat extends App{
 
 		$container->registerService('ConfigController', function ($c) use($app) {
 			return new ConfigController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
-				$app
+				$c->query('ConfigMapper'),
+				$c->query('BackendManager')
 			);
 		});
 
 		$container->registerService('AdminController', function ($c) use($app) {
 			return new AdminController(
-				$c->query('AppName'),
+				$app->name,
 				$c->query('Request'),
-				$app
+				$c->query('BackendManager')
 			);
 		});
 
@@ -106,45 +129,55 @@ class Chat extends App{
 		 */
 
 		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper($c->query('ServerContainer')->getDb());
+			return new ConversationMapper(
+				$c->query('OCP\IDb')
+			);
 		});
 
 		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper($c->query('ServerContainer')->getDb());
+			return new ConversationMapper(
+				$c->query('OCP\IDb')
+			);
 		});
 
-		$container->registerService('messageMapper', function ($c) {
-			return new MessageMapper($c->query('ServerContainer')->getDb());
+		$container->registerService('MessageMapper', function ($c) {
+			return new MessageMapper(
+				$c->query('OCP\IDb')
+			);
 		});
 
 		$container->registerService('PushMessageMapper', function ($c) {
 			return new PushMessageMapper(
-				$c->query('ServerContainer')->getDb(),
+				$c->query('OCP\IDb'),
 				$c['UserOnlineMapper'],
 				$c['UserMapper']
 			);
 		});
 
 		$container->registerService('UserMapper', function ($c) {
-			return new UserMapper($c->query('ServerContainer')->getDb());
+			return new UserMapper(
+				$c->query('OCP\IDb')
+			);
 		});
 
 		$container->registerService('UserOnlineMapper', function ($c) {
-			return new UserOnlineMapper($c->query('ServerContainer')->getDb());
+			return new UserOnlineMapper(
+				$c->query('OCP\IDb')
+			);
 		});
 
 		$container->registerService('AttachmentMapper', function ($c) use ($app) {
 			return new AttachmentMapper(
-				$c->query('ServerContainer')->getDb(),
+				$c->query('OCP\IDb'),
 				$app
 			);
 		});
 
 		$container->registerService('ConfigMapper', function ($c) use ($app) {
 			return new ConfigMapper(
-				$c->query('ServerContainer')->getDb(),
+				$c->query('OCP\IDb'),
 				$app->getUserId(),
-				$c->query('ServerContainer')->getCrypto()
+				$c->query('OCP\Security\ICrypto')
 			);
 		});
 
@@ -152,43 +185,85 @@ class Chat extends App{
 		 * Command API Requests
 		 */
 		$container->registerService('GreetCommand', function ($c) use($app) {
-			return new Greet($app);
+			return new Greet(
+				$c->query('PushMessageMapper'),
+				$c->query('UserOnlineMapper')
+			);
 		});
 
 		$container->registerService('InviteCommand', function ($c) use($app) {
-			return new Invite($app);
+			return new Invite(
+				$c->query('PushMessageMapper'),
+				$c->query('JoinCommand'),
+				$c->query('GetUsersData')
+			);
 		});
 
 		$container->registerService('JoinCommand', function ($c) use($app) {
-			return new Join($app);
+			return new Join(
+				$c->query('PushMessageMapper'),
+				$c->query('GetUsersData'),
+				$c->query('UserMapper')
+			);
 		});
 
 		$container->registerService('OfflineCommand', function ($c) use($app) {
-			return new Offline($app);
+			return new Offline(
+				$c->query('PushMessageMapper'),
+				$c->query('UserOnlineMapper'),
+				$c->query('SyncOnlineCommand')
+			);
 		});
 
 		$container->registerService('OnlineCommand', function ($c) use($app) {
-			return new Online($app);
+			return new Online(
+				$c->query('UserOnlineMapper'),
+				$c->query('SyncOnlineCommand')
+			);
 		});
 
 		$container->registerService('SendChatMsgCommand', function ($c) use($app) {
-			return new SendChatMsg($app);
+			return new SendChatMsg(
+				$c->query('UserMapper'),
+				$c->query('PushMessageMapper'),
+				$c->query('MessageMapper')
+			);
 		});
 
 		$container->registerService('StartConvCommand', function ($c) use($app) {
-			return new StartConv($app);
+			return new StartConv(
+				$c->query('MessageMapper'),
+				$c->query('ConversationMapper'),
+				$c->query('InviteCommand'),
+				$c->query('JoinCommand'),
+				$c->query('GetUsersData'),
+				$c->query('MessagesData')
+			);
 		});
 
+
 		$container->registerService('SyncOnlineCommand', function ($c) use($app) {
-			return new SyncOnline($app);
+			return new SyncOnline(
+				$c->query('UserOnlineMapper')
+			);
 		});
 
 		$container->registerService('AttachFileCommand', function ($c) use($app) {
-			return new AttachFile($app);
+			return new AttachFile(
+				$app,
+				$c->query('UserMapper'),
+				$c->query('AttachmentMapper'),
+				$c->query('PushMessageMapper')
+			);
 		});
 
 		$container->registerService('RemoveFileCommand', function ($c) use($app) {
-			return new RemoveFile($app);
+			return new RemoveFile(
+				$app,
+				$c->query('PushMessageMapper'),
+				$c->query('AttachmentMapper'),
+				$c->query('UserMapper')
+			);
 		});
 
 
@@ -196,54 +271,72 @@ class Chat extends App{
 		 * Push API Requests
 		 */
 		$container->registerService('GetPush', function ($c) use($app) {
-			return new Get($app);
+			return new Get(
+				$c->query('PushMessageMapper')
+			);
 		});
 
 		$container->registerService('DeletePush', function ($c) use($app) {
-			return new Delete($app);
+			return new Delete(
+				$c->query('PushMessageMapper')
+			);
 		});
 
 		/**
 		 * Data API Requests
 		 */
 		$container->registerService('GetUsersData', function ($c) use($app) {
-			return new GetUsers($app);
+			return new GetUsers(
+				$app,
+				$c->query('UserMapper')
+			);
 		});
 
 		$container->registerService('MessagesData', function ($c) use($app) {
-			return new Messages($app);
+			return new Messages(
+				$c->query('MessageMapper')
+			);
 		});
 
 		/**
 		 * Manager
 		 */
-		$container->registerService('ContactsManager', function($c){
-			return $c->getServer()->getContactsManager();
-		});
-
-		$container->registerService('UserManager', function($c){
-			return $c->getServer()->getUserManager();
-		});
-
-		$container->registerService('UserSession', function($c){
-			return $c->getServer()->getUserSession();
-		});
-
 		$container->registerService('BackendManager', function($c){
 			return new BackendManager();
 		});
 
 		$container->registerService('OCH', function($c) use ($app){
-			return new OCH($app);
+			return new OCH(
+				$c->query('ConfigMapper'),
+				$c->query('OCP\IConfig'),
+				$c->query('UserMapper'),
+				$c->query('AttachmentMapper'),
+				$c->query('StartConvCommand'),
+				$c->query('MessagesData'),
+				$c->query('JoinCommand'),
+				$app
+			);
 		});
 
 		$container->registerService('XMPP', function($c) use ($app){
-			return new XMPP($app);
+			return new XMPP(
+				$c->query('ConfigMapper'),
+				$c->query('OCP\IConfig')
+			);
 		});
 
 
 	}
 
+	public function query($param){
+		return $this->getContainer()->query($param);
+	}
+
+	public function registerService($name, $callback){
+		return $this->getContainer()->registerService($name, $callback);
+	}
+	
+	
 	public function registerBackend(IBackend $backend){
 		$backendManager = $this->c['BackendManager'];
 		$backendManager::registerBackend($backend);
@@ -266,7 +359,7 @@ class Chat extends App{
 			$syncOnline->execute();
 			// ***
 
-			$cm = $this->c['ContactsManager'];
+			$cm = $this->c->query('OCP\Contacts\IManager');
 			$result = $cm->search('',array('FN'));
 			$receivers = array();
 			$contactList = array();
@@ -388,7 +481,7 @@ class Chat extends App{
 
 	/**
 	 * @param string $protocol
-	 * @return \OCP\Chat\IBackend
+	 * @return \OCA\Chat\IBackend
 	 */
 	private function getBackend($protocol){
 		$backendManager = $this->c['BackendManager'];
@@ -401,7 +494,7 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getCurrentUser(){
-		return $this->getUserasContact($this->c['UserSession']->getUser()->getUID());
+		return $this->getUserasContact($this->getUserId());
 	}
 
 	/**
@@ -409,44 +502,25 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getUserasContact($id){
-		$result = $this->c['ContactsManager']->search($id, array('id'), array('get'));		// Finding the correct result
-		foreach($result as $contact){
-			if($contact['id'] ===  $id){
-				$r = $contact;
-			}
+		if(count(self::$contacts) == 0) {
+			$this->getContacts();
 		}
-		$data = array();
-		$data['id'] = $r['id'];
-		$data['displayname'] = $r['FN'];
-		if(!isset($r['EMAIL'])){
-			$r['EMAIL'] = array();
-		}
-
-		if(!isset($r['IMPP'])){
-			$r['IMPP'] = array();
-		}
-		$data['backends'] =  $this->contactBackendToBackend($r['EMAIL'], $r['IMPP']);
-		$addressbookKey = explode(':', $r['addressbook-key']);
-		if(count($addressbookKey) === 2){
-			$data['address_book_id'] = $addressbookKey[1];
-			$data['address_book_backend'] = $addressbookKey[0];
-		} else {
-			$data['address_book_id'] = '';
-			$data['address_book_backend'] = $addressbookKey[0];
-		}
-		return $data;
+		return self::$contacts['contactsObj'][$id];
 	}
 	/**
 	 * @return array
 	 * @todo porting
 	 */
 	public function getInitConvs(){
-		$backends = $this->getBackends();
-		$result = array();
-		foreach($backends as $backend){
-			$result[$backend->getId()] = $backend->getInitConvs();
+		if(count(self::$initConvs) == 0) {
+			$backends = $this->getBackends();
+			$result = array();
+			foreach($backends as $backend){
+				$result[$backend->getId()] = $backend->getInitConvs();
+			}
+			self::$initConvs = $result;
 		}
-		return $result;
+		return self::$initConvs;
 	}
 
 	/**
@@ -454,7 +528,7 @@ class Chat extends App{
 	 * @return int id of the file
 	 */
 	public function getFileId($path){
-		$userFolder = $this->c->getServer()->getUserFolder(\OCP\User::getUser());
+		$userFolder = $this->query('\OCP\IRootFolder')->getUserFolder();
 		$file = $userFolder->get($path);
 		return $file->getId();
 	}
@@ -463,12 +537,16 @@ class Chat extends App{
 	 * @return string current ownCloud user id
 	 */
 	public function getUserId(){
-		$user = $this->c['UserSession']->getUser();
-		if (is_object($user)){
-			return $user->getUID();
-		} else {
-			return null;
+		if(is_null(self::$userId)){
+			$user = $this->query('OCP\IUserSession')->getUser();
+			if (is_object($user)){
+				self::$userId = $user->getUID();
+			} else {
+				self::$userId = null;
+			}
 		}
+		return self::$userId;
+
 	}
 
 }

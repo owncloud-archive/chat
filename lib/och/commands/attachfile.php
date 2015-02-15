@@ -8,11 +8,42 @@
 namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
-use OCA\Chat\OCH\Db\Attachment;
+use \OCA\Chat\OCH\Db\Attachment;
+use \OCA\Chat\OCH\Db\AttachmentMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
+use \OCA\Chat\OCH\Db\PushMessageMapper;
+use \OCA\Chat\OCH\Db\UserMapper;
+use \OCP\Share;
 
 class AttachFile extends ChatAPI {
 
+	/**
+	 * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
+	 */
+	private $userMapper;
+
+	/**
+	 * @var $attachmentMapper \OCA\Chat\OCH\Db\AttachmentMapper
+	 */
+	private $attachmentMapper;
+
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	public function __construct(
+		Chat $app,
+		UserMapper $userMapper,
+		AttachmentMapper $attachmentMapper,
+		PushMessageMapper $pushMessageMapper
+	){
+		$this->app = $app;
+		$this->userMapper = $userMapper;
+		$this->attachmentMapper = $attachmentMapper;
+		$this->pushMessageMapper = $pushMessageMapper;
+	}
+	
 	/*
 	 * @param $requestData['user'] String user id of the client
 	 * @param $requestData['session_id'] String session_id of the client
@@ -24,8 +55,7 @@ class AttachFile extends ChatAPI {
 
 	public function execute(){
 		$paths = $this->requestData['paths'];
-		$userMapper = $this->c['UserMapper'];
-		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
+		$users = $this->userMapper->findUsersInConv($this->requestData['conv_id']);
 		foreach ($paths as $path) {
 			$fileId = $this->app->getFileId($path);
 			$this->insertInDatabase(
@@ -48,9 +78,7 @@ class AttachFile extends ChatAPI {
 	}
 
 	private function sendPushMessage($path){
-		$userMapper = $this->c['UserMapper'];
-		$users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
-		$pushMessageMapper = $this->c['PushMessageMapper'];
+		$users = $this->userMapper->findSessionsByConversation($this->requestData['conv_id']);
 		$command = json_encode(array(
 			'type' => 'file_attached',
 			'data' => array(
@@ -67,7 +95,7 @@ class AttachFile extends ChatAPI {
 				$pushMessage->setReceiver($receiver->getUser());
 				$pushMessage->setReceiverSessionId($receiver->getSessionId());
 				$pushMessage->setCommand($command);
-				$pushMessageMapper->insert($pushMessage);
+				$this->pushMessageMapper->insert($pushMessage);
 			}
 		}
 	}
@@ -87,8 +115,7 @@ class AttachFile extends ChatAPI {
 		$attachment->setFileId($fileId);
 		$attachment->setTimestamp($timestamp);
 		$attachment->setConvId($convId);
-		$attachmentMapper = $this->c['AttachmentMapper'];
-		$attachmentMapper->insertUnique($attachment);
+		$this->attachmentMapper->insertUnique($attachment);
 	}
 
 	/**
@@ -97,7 +124,7 @@ class AttachFile extends ChatAPI {
 	 */
 	private function share($fileId, $shareWIth){
 		try {
-			\OCP\Share::shareItem('file', $fileId, \OCP\Share::SHARE_TYPE_USER, $shareWIth, \OCP\PERMISSION_ALL);
+			Share::shareItem('file', $fileId, \OCP\Share::SHARE_TYPE_USER, $shareWIth, \OCP\PERMISSION_ALL);
 		} Catch (\Exception $e){
 
 		}

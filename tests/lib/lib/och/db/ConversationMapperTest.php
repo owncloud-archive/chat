@@ -33,8 +33,8 @@ class ConversationMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp(){
 		$this->app = new Chat();
-		$this->conversationMapper = $this->app->c['ConversationMapper'];
-		$this->userMapper = $this->app->c['UserMapper'];
+		$this->conversationMapper = $this->app->query('ConversationMapper');
+		$this->userMapper = $this->app->query('UserMapper');
 	}
 
 	public function convProvider(){

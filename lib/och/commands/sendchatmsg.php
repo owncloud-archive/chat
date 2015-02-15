@@ -7,16 +7,44 @@
 
 namespace OCA\Chat\OCH\Commands;
 
-use OCA\Chat\Controller\OCH\ApiController;
+use \OCA\Chat\App\Chat;
+use \OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\UserMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
 use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use \OCA\Chat\OCH\Db\Message;
-use OCA\Chat\OCH\Db\MessageMapper;
+use \OCA\Chat\OCH\Db\MessageMapper;
 
 class SendChatMsg extends ChatAPI {
+
+	/**
+	 * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
+	 */
+	private $userMapper;
+
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	/**
+	 * @var $messageMapper \OCA\Chat\OCH\Db\messageMapper
+	 */
+	private $messageMapper;
+
+	public function __construct(
+		UserMapper $userMapper,
+		PushMessageMapper $pushMessageMapper,
+		MessageMapper $messageMapper
+	){
+		$this->userMapper = $userMapper;
+		$this->pushMessageMapper = $pushMessageMapper;
+		$this->messageMapper = $messageMapper;
+	}
+
+
 
 	public function setRequestData(array $requestData){
 		if(empty($requestData['conv_id'])){
@@ -32,8 +60,7 @@ class SendChatMsg extends ChatAPI {
 	}
 
 	public function execute(){
-		$userMapper = $this->c['UserMapper'];
-		$users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
+		$users = $this->userMapper->findSessionsByConversation($this->requestData['conv_id']);
 
 		$command = json_encode(array(
 			'type' => 'send_chat_msg',
@@ -46,7 +73,6 @@ class SendChatMsg extends ChatAPI {
 		));
 
 		$sender = $this->requestData['user']['id'];
-		$pushMessageMapper = $this->c['PushMessageMapper'];
 
 		if(!isset($this->requestData['send_to_sender'])){
 			$sendToSender = false;
@@ -61,25 +87,24 @@ class SendChatMsg extends ChatAPI {
 				$pushMessage->setReceiver($receiver->getUser());
 				$pushMessage->setReceiverSessionId($receiver->getSessionId());
 				$pushMessage->setCommand($command);
-				$pushMessageMapper->insert($pushMessage);
+				$this->pushMessageMapper->insert($pushMessage);
 			} else if ($sendToSender === true){
 				$pushMessage = new PushMessage();
 				$pushMessage->setSender($sender);
 				$pushMessage->setReceiver($receiver->getUser());
 				$pushMessage->setReceiverSessionId($receiver->getSessionId());
 				$pushMessage->setCommand($command);
-				$pushMessageMapper->insert($pushMessage);
+				$this->pushMessageMapper->insert($pushMessage);
 			}
 		}
 
 		// All done
 		// insert this chatMsg into the messages table
-		$messageMapper = $this->c['messageMapper'];
 		$message = new Message();
 		$message->setConvid($this->requestData['conv_id']);
 		$message->setTimestamp($this->requestData['timestamp']);
 		$message->setUser($this->requestData['user']['id']);
 		$message->setMessage($this->requestData['chat_msg']);
-		$messageMapper->insert($message);
+		$this->messageMapper->insert($message);
 	}
 }

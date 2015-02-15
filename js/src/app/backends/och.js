@@ -240,7 +240,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 	return {
 		init : function(){
 			api.util.longPoll();
-			setInterval(api.command.online, 6000);
+			setInterval(api.command.online, 30000);
 			initvar.backends.och.connected = true;
 		},
 		quit : function(){

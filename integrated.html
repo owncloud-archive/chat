@@ -19,12 +19,12 @@
 					ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === $session.conv}"
 					ng-click="view.makeActive(conv.id, $event, 'invite-button');"
 					class="conv-list-item"
-					id="conv-list-{{ conv.id }}"
+					id="conv-list-{{::conv.id }}"
 					auto-height
-					data-item-count="{{ conv.users.length -1 }}"
+					data-item-count="{{::conv.users.length -1 }}"
 					data-item-height="50"
 					data-min-height="60"
-					data-conv-id="{{ conv.id }}"
+					data-conv-id="{{::conv.id }}"
 					>
 					<!--
 		This div shows the avatars + displayname of the conversation entry
@@ -52,22 +52,22 @@
 								>
 								<div
 									tipsy
-									title="{{ user.displayname }}"
+									title="{{::user.displayname }}"
 									ng-if="key < 4"
 									ng-repeat="(key, user) in conv.users | userFilter"
 									class="avatar-list-avatar-big"
 									avatar
 									data-size="40"
-									data-id="{{ user.id }}"
-									data-displayname="{{ user.displayname }}"
-									data-addressbook-backend="{{ user.address_book_backend }}"
-									data-addressbook-id="{{ user.address_book_id  }}"
+									data-id="{{::user.id }}"
+									data-displayname="{{::user.displayname }}"
+									data-addressbook-backend="{{::user.address_book_backend }}"
+									data-addressbook-id="{{::user.address_book_id  }}"
 									>
 								</div>
 								<div
 									online
 									ng-repeat="(key, user) in conv.users | userFilter"
-									data-id="{{ user.id }}"
+									data-id="{{::user.id }}"
 									>
 									<!--
 									This is a place holder div for the green dot which is used to indicate the online status of the contact
@@ -88,16 +88,16 @@
 							>
 							<div
 								tipsy
-								title="{{ user.displayname }}"
+								title="{{::user.displayname }}"
 								ng-if="key < 4"
 								ng-repeat="(key, user) in conv.users | userFilter"
 								class="avatar-list-avatar"
 								avatar
 								data-size="20"
-								data-id="{{ user.id }}"
-								data-displayname="{{ user.displayname }}"
-								data-addressbook-backend="{{ user.address_book_backend }}"
-								data-addressbook-id="{{ user.address_book_id  }}"
+								data-id="{{::user.id }}"
+								data-displayname="{{::user.displayname }}"
+								data-addressbook-backend="{{::user.address_book_backend }}"
+								data-addressbook-id="{{::user.address_book_id  }}"
 								>
 							</div>
 						</div>
@@ -106,7 +106,7 @@
 						-->
 		<span
 			displayname
-			data-users="{{ conv.users }}"
+			data-users="{{::conv.users }}"
 			class="left avatar-list-displayname"
 			ng-class="{bold : conv.new_msg === true}"
 			>
@@ -115,7 +115,7 @@
 							ng-if="$parent.$parent.avatarsEnabled === 'false'"
 							online
 							ng-repeat="(key, user) in conv.users | userFilter"
-							data-id="{{ user.id }}"
+							data-id="{{::user.id }}"
 							class="online-dot-displayname-nav"
 							>
 							<!--
@@ -146,20 +146,20 @@
 									>
 									<div
 										tipsy
-										title="{{ user.displayname }}"
+										title="{{::user.displayname }}"
 										class="avatar-list-avatar"
 										avatar
 										data-size="40"
-										data-id="{{ user.id }}"
-										data-displayname="{{ user.displayname }}"
-										data-addressbook-backend="{{ user.address_book_backend }}"
-										data-addressbook-id="{{ user.address_book_id  }}"
+										data-id="{{::user.id }}"
+										data-displayname="{{::user.displayname }}"
+										data-addressbook-backend="{{::user.address_book_backend }}"
+										data-addressbook-id="{{::user.address_book_id  }}"
 										>
 									</div>
 									<div
 										online
 										ng-repeat="(key, user) in conv.users | userFilter"
-										data-id="{{ user.id }}"
+										data-id="{{::user.id }}"
 										>
 										<!--
 										This is a place holder div for the green dot which is used to indicate the online status of the contact
@@ -170,7 +170,7 @@
 								<div
 									ng-if="$parent.$parent.avatarsEnabled === 'false'"
 									online
-									data-id="{{ user.id }}"
+									data-id="{{::user.id }}"
 									class="online-dot-displayname-nav online-dot-displayname-nav-expanded"
 									>
 									<!--
@@ -179,7 +179,7 @@
 									&nbsp;
 								</div>
 								<div class="avatar-list-displayname">
-									{{ user.displayname }}
+									{{::user.displayname }}
 								</div>
 							</li>
 							<li
@@ -260,7 +260,7 @@
 							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
 							class="chat-msg-time"
 							>
-							{{ msg.time.hours }} : {{ msg.time.minutes }}
+							{{::msg.time.hours }} : {{::msg.time.minutes }}
 						</div>
 						<!-- This div holds the Chat message and the avatar of the user which sends it-->
 						<div class="chat-msg">
@@ -271,13 +271,13 @@
 									<div
 										ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 										data-size="20"
-										data-id="{{ msg.contact.id }}"
-										data-displayname="{{ msg.contact.displayname }}"
-										data-addressbook-backend="{{ msg.contact.address_book_backend }}"
-										data-addressbook-id="{{ msg.contact.address_book_id  }}"
+										data-id="{{::msg.contact.id }}"
+										data-displayname="{{::msg.contact.displayname }}"
+										data-addressbook-backend="{{::msg.contact.address_book_backend }}"
+										data-addressbook-id="{{::msg.contact.address_book_id  }}"
 										avatar
 										tipsy
-										title="{{ msg.contact.displayname }}"
+										title="{{::msg.contact.displayname }}"
 										>
 									</div>
 								</div>
@@ -286,7 +286,7 @@
 									ng-if="$parent.$parent.avatarsEnabled === 'false' && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 									>
 									<div>
-										{{ msg.contact.displayname }}
+										{{::msg.contact.displayname }}
 									</div>
 								</div>
 								<p

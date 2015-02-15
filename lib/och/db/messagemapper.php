@@ -65,9 +65,10 @@ SQL;
 						`user` = ?
 					AND `conversation_id` = ?
 				)
-			LIMIT 0,?
+			ORDER BY timestamp DESC
+			LIMIT ?,?
 SQL;
-		return $this->findEntities($sql, array($convId, $user, $convId, $limit));
+		return $this->findEntities($sql, array($convId, $user, $convId, $limit[0], $limit[1]));
 	}
 
 }

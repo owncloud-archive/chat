@@ -162,6 +162,6 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			} else {
 				return true;
 			}
-		}
+		},
 	};
 }]);

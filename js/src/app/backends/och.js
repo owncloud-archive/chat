@@ -1,5 +1,5 @@
 angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar', 'time', function(convs, contacts, $session, initvar, Time) {
-	var api = {
+	api = {
 		command: {
 			attachFile : function(convId, paths, user){
 				api.util.doRequest({
@@ -113,6 +113,19 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 						"conv_id": convId
 					}
 				}, success);
+			},
+			getOldMessages: function (convId, start, stop, success) {
+				api.util.doRequest({
+					"type": "data::messages::request",
+					"data": {
+						"user": $session.user,
+						"session_id": $session.id,
+						"conv_id": convId,
+						"limit": [start, stop]
+					}
+				}, function(data){
+					success(data.data.messages)
+				});
 			}
 		},
 		on: {
@@ -275,6 +288,9 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 			api.command.removeFile(convId, path);
 		},
 		configChanged : function(){
+		},
+		getOldMessages : function (convId, start, stop, success) {
+			api.command.getOldMessages(convId, start, stop, success);
 		}
 	};
 }]);

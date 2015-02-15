@@ -38,7 +38,7 @@ class Messages extends ChatAPI {
 		if(isset($this->requestData['startpoint']) && trim($this->requestData['startpoint']) !== ''){
 			$startpoint = $this->requestData['startpoint'];
 			$msgs = $this->messageMapper->getMessagesByConvId($this->requestData['conv_id'], $this->requestData['user']['id'], $startpoint);
-		} else if (isset($this->requestData['limit']) && trim($this->requestData['limit']) !== ''){
+		} else if (isset($this->requestData['limit']) && is_array($this->requestData['limit'])){
 			$msgs = $this->messageMapper->getMessagesByConvIdLimit($this->requestData['conv_id'], $this->requestData['user']['id'], $this->requestData['limit']);
 		} else {
 			$msgs = $this->messageMapper->getMessagesByConvId($this->requestData['conv_id'], $this->requestData['user']['id'], 0);

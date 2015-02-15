@@ -85,7 +85,7 @@ class OCH extends AbstractBackend implements IBackend {
 			$this->messages->setRequestData(array(
 				"conv_id" => $conv->getConversationId(),
 				'user' => $this->app->getCurrentUser(),
-				"limit" => 10
+				"limit" => array(0,10)
 			));
 			$messages = $this->messages->execute();
 			$messages = $messages['messages'];

@@ -8,6 +8,7 @@
 	<section ng-click="focusMsgInput()" id="chat-window-body">
 		<div id="chat-window-msgs" scroll>
 			<!-- This div holds exactly one chat message	-->
+			<button ng-click="loadOldMessages($session.conv)">Load new messages</button>
 			<div
 				class="chat-msg-container"
 				ng-class="{'chat-msg-full-height': $parent.convs[$parent.$session.conv].msgs[key+1].contact.id !== msg.contact.id

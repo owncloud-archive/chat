@@ -394,6 +394,20 @@ angular.module('chat').controller(
 				return contact.saved;
 			};
 
+			$scope.loadOldMessages = function (convId) {
+				// first count the current messages
+				var amount = convs.get(convId).msgs.length;
+				// next calculate the position of the next 10 messages
+				var backend = convs.get(convId).backend.id;
+				backends[backend].handle.getOldMessages(convId, amount, 10, function (msgs) {
+					console.log(msgs);
+					for (var key in msgs){
+						var msg = msgs[key];
+						convs.addChatMsg(convId, contacts.contacts[msg.user], msg.msg, msg.timestamp, backend);
+					}
+				});
+			};
+
 			init();
 		}
 	]

@@ -1,3 +1,6 @@
+angular-enhance-text (0.0.13)
+* Escape HTML instead of just sanitizing it to prevent users to enter HTML
+
 angular-enhance-text (0.0.12)
 * Further enhancements for smiley replacer
 

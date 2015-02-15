@@ -16,6 +16,7 @@ angular.module('chat').controller(
 		'backends',
 		'title',
 		'session',
+		'time',
 		function(
 			$scope,
 			$http,
@@ -26,7 +27,8 @@ angular.module('chat').controller(
 			contacts,
 			backends,
 			title,
-			$session
+			$session,
+			Time
 		){
 
 			$(window).unload(function(){
@@ -35,7 +37,7 @@ angular.module('chat').controller(
 
 			$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
 
-			Chat.scope = $scope;
+			$CCS = $scope;
 
 			$(document).ready(function(){
 				$scope.emojis = $filter('toEmojiArray')(emojione.emojioneList);
@@ -51,7 +53,7 @@ angular.module('chat').controller(
 				 * @var {object} elements
 				 */
 				elements : {
-					"chat" : false,
+					"chat" : true,
 					"initDone" : false,
 					"settings" : false,
 					"emojiContainer" : false,
@@ -148,22 +150,22 @@ angular.module('chat').controller(
 				 * @param {string} exception - when this is provided the function call will be ignored when it was this param which was clicked
 				 */
 				makeActive : function(convId, $event, exception){
-					$scope.view.hide('emptyMsg');
-					$scope.view.show('chat', $event, exception);
+					//$scope.view.hide('emptyMsg');
+					//$scope.view.show('chat', $event, exception);
 					$session.conv = convId;
 					$scope.view.focusMsgInput();
 					convs.get(convId).new_msg = false;
-					$("#chat-msg-input-field").autosize({
-						callback : function(){
-							var height = $("#chat-msg-input-field").height();
-							height = height + 15;
-							$('#chat-window-footer').height(height);
-							$('#chat-window-body').css('bottom', height);
-							$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-							var height = $("#chat-window-footer").height();
-							$('#emoji-container').css('bottom', height + 20);
-						}
-					});
+					//$("#chat-msg-input-field").autosize({
+					//	callback : function(){
+					//		var height = $("#chat-msg-input-field").height();
+					//		height = height + 15;
+					//		$('#chat-window-footer').height(height);
+					//		$('#chat-window-body').css('bottom', height);
+					//		$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
+					//		var height = $("#chat-window-footer").height();
+					//		$('#emoji-container').css('bottom', height + 20);
+					//	}
+					//});
 				},
 				/**
 				 * This will unActive all conversations
@@ -175,7 +177,7 @@ angular.module('chat').controller(
 				 * This will focus the chat input field
 				 */
 				focusMsgInput : function(){
-					$('#chat-msg-input-field');
+					$('#chat-msg-input-field').focus();
 				},
 				unShare : function(convId, path, timestamp, user, key){
 					var backend = $scope.convs[convId].backend.id;
@@ -216,12 +218,11 @@ angular.module('chat').controller(
 			 * This will empty the chat field
 			 * This will make the order of the contacts in the conv the highest
 			 */
-			$scope.sendChatMsg = function(){
-				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
+			$scope.sendChatMsg = function(msg){
+				if (msg !== '' && msg !== null){
 					var backend = convs.get($session.conv).backend.id;
-					convs.addChatMsg($session.conv, $session.user, $scope.fields.chatMsg, Time.now(), backend);
-					backends[backend].handle.sendChatMsg($session.conv, $scope.fields.chatMsg);
-					$scope.fields.chatMsg = '';
+					convs.addChatMsg($session.conv, $session.user, msg, Time.now(), backend);
+					backends[backend].handle.sendChatMsg($session.conv, msg);
 					setTimeout(function(){
 						$('#chat-msg-input-field').trigger('autosize.resize');
 					},1);
@@ -383,8 +384,6 @@ angular.module('chat').controller(
 				$scope.fields.chatMsg = textBefore + ' ' + name + ' ' + textAfter + ' ';
 				$scope.view.hide('emojiContainer');
 			};
-
-			$scope.emojis = Chat.app.util.emojis;
 
 			$scope.contactInRoster = function (id) {
 				return backends.xmpp.handle.contactInRoster(id);

@@ -19,7 +19,7 @@ angular.module('chat').controller(
 			$http
 		){
 
-			Chat.settings = $scope;
+			$SCS = $scope;
 
 			$scope.backends = backends;
 

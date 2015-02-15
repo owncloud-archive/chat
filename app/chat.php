@@ -301,26 +301,6 @@ class Chat extends App{
 		/**
 		 * Manager
 		 */
-//		$container->registerService('ContactsManager', function($c) {
-//			return $c->query('OCP\Contacts\IManager');
-//		});
-
-//		$container->registerService('UserManager', function($c) {
-//			return $server->getUserManager();
-//		});
-//
-//		$container->registerService('UserSession', function($c) {
-//			return $server->getUserSession();
-//		});
-//
-//		$container->registerService('NavigationManager', function($c) {
-//			return $server->getNavigationManager();
-//		});
-//
-//		$container->registerService('Config', function($c) {
-//			return $c->query('OCP\IConfig');
-//		});
-
 		$container->registerService('BackendManager', function($c){
 			return new BackendManager();
 		});
@@ -548,7 +528,6 @@ class Chat extends App{
 	 * @return int id of the file
 	 */
 	public function getFileId($path){
-//		$userFolder = \OC::$server->getUserFolder(\OCP\User::getUser());
 		$userFolder = $this->query('\OCP\IRootFolder')->getUserFolder();
 		$file = $userFolder->get($path);
 		return $file->getId();

@@ -33,7 +33,7 @@
 .chat-msg-container {
 	width: 100%;
 	float: left;
-	min-height: 44px;
+	height:20px;
 }
 .chat-msg-container-border {
 	border-top: 1px solid #EEEEEE;
@@ -181,4 +181,12 @@
 
 .chat-msg-msg {
 	margin-left:20px !important;
+}
+
+.chat-msg-full-height{
+	height:40px;
+}
+
+.chat-msg-margin-top{
+	margin-top:30px;
 }

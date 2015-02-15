@@ -1,4 +1,4 @@
-angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar', function(convs, contacts, $session, initvar) {
+angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar', 'time', function(convs, contacts, $session, initvar, Time) {
 	var api = {
 		command: {
 			attachFile : function(convId, paths, user){
@@ -118,7 +118,6 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 		on: {
 			invite: function (data) {
 				// Here update the view
-				//var backend = Chat.app.view.getBackends('och');
 				var convId = data.conv_id;
 				// TODO check if data.user is a user or a contact
 				if (convs.get(convId) === undefined) {

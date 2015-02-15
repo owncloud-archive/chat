@@ -12,14 +12,14 @@
 					ng-if="(backend.config | count) !== 0"
 				>
 					<span class="backend-config-header">
-						{{ backend.displayname }}
+						{{::backend.displayname }}
 					</span>
 					<ul>
 						<li
 							ng-repeat="(key, value) in backend.config"
 						>
 							<label class="backend-config-label">
-								{{ key }}
+								{{::key }}
 							</label>
 							<input type="text" ng-disabled="$parent.$parent.status === 'saving'" class="backend-config-value" ng-model="$parent.$parent.backend.config[key]" value="{{ value }}">
 						</li>

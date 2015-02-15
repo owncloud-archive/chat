@@ -6,6 +6,8 @@
 	ng-if="view.elements.invite"
 	class="invite-no-hide"
 	id="invite-container"
+	ng-cloak
+
 	>
 		<!-- Search field to search in the Contacts -->
 		<div
@@ -30,18 +32,18 @@
 				<div
 					data-size="20"
 					data-parent="true"
-					data-id="{{ contact.id }}"
-					data-displayname="{{ contact.displayname }}"
-					data-addressbook-backend="{{ contact.address_book_backend }}"
-					data-addressbook-id="{{ contact.address_book_id  }}"
+					data-id="{{::contact.id }}"
+					data-displayname="{{::contact.displayname }}"
+					data-addressbook-backend="{{::contact.address_book_backend }}"
+					data-addressbook-id="{{::contact.address_book_id  }}"
 					avatar
 					class="invite-contact-avatar invite-no-hide"
                     tipsy
-                    title="{{ contact.displayname }}"
+                    title="{{::contact.displayname }}"
 					>
 				</div>
 				<div class="invite-contact-name invite-no-hide">
-					{{ contact.displayname }}
+					{{::contact.displayname }}
 				</div>
 			</li>
 		</ul>

@@ -4,7 +4,8 @@
  * See the COPYING file.
  */
 angular.module('chat', ['ngSanitize', 'bernhardposselt.enhancetext']);
-angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', function (enhanceTextFilterProvider, $httpProvider) {
+angular.module('chat').config(['enhanceTextFilterProvider', '$httpProvider', '$compileProvider', function (enhanceTextFilterProvider, $httpProvider, $compileProvider) {
+	$compileProvider.debugInfoEnabled(false);
 	enhanceTextFilterProvider.setOptions({
 		embeddedImagesHeight: '150px'
 	});

@@ -5,7 +5,7 @@ angular.module('chat').directive('update', function () {
 				event.preventDefault();
 				var val = element.val()
 				element.val('');
-				scope.sendChatMsg(val);
+				scope[attrs.updateFunc](val);
 			}
 		});
 	};

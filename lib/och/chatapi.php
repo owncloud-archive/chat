@@ -14,13 +14,7 @@ use \OCA\Chat\App\Chat;
  */
 abstract class ChatAPI {
 
-	public $app;
 	protected $requestData;
-
-	public function __construct(Chat $app){
-		$this->app = $app;
-		$this->c = $app->getContainer();
-	}
 
 	abstract function setRequestData(array $requestData);
 

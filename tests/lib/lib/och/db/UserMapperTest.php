@@ -33,8 +33,8 @@ class UserMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp(){
 		$this->app = new Chat();
-		$this->userMapper = $this->app->c['UserMapper'];
-		$this->userOnlineMapper  = $this->app->c['UserOnlineMapper'];
+		$this->userMapper = $this->app->query('UserMapper');
+		$this->userOnlineMapper  = $this->app->query('UserOnlineMapper');
 	}
 
 	public function findSessionsByConversationProvider(){

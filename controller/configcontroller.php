@@ -2,18 +2,15 @@
 
 namespace OCA\Chat\Controller;
 
+use OCA\Chat\Db\ConfigMapper;
+use OCA\Chat\IBackendManager;
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\IRequest;
-use \OCA\Chat\App\Chat;
 
 
 class ConfigController extends Controller {
-
-	private $app;
-
-	private $c;
 
 	/**
 	 * @var \OCA\Chat\Db\ConfigMapper
@@ -25,12 +22,10 @@ class ConfigController extends Controller {
 	 */
 	private $backendManager;
 
-	public function __construct($appName, IRequest $request,  Chat $app){
+	public function __construct($appName, IRequest $request, ConfigMapper $configMapper, IBackendManager $backendManager){
 		parent::__construct($appName, $request);
-		$this->app = $app;
-		$this->c = $app->getContainer();
-		$this->configMapper = $this->c['ConfigMapper'];
-		$this->backendManager = $this->c['BackendManager'];
+		$this->configMapper = $configMapper;
+		$this->backendManager = $backendManager;
 	}
 
 	/**
@@ -44,7 +39,6 @@ class ConfigController extends Controller {
 				$this->configMapper->set($backend['id'], $key, $value);
 			}
 		}
-
 		$res = new JSONResponse();
 		$res->setStatus(Http::STATUS_OK);
 		return $res;

@@ -16,11 +16,11 @@ style('chat', 'main.min');
 ?>
 
 <div
+	ng-app="chat"
 	ng-click="view.hide('invite', $event, ['invite-no-hide', 'invite-button']);view.hide('files', $event, ['files-no-hide', 'file-element', 'files-button']);view.hide('emojiContainer', $event, ['emoji-no-hide']);"
 	ng-controller="ConvController"
-	ng-app="chat"
 	id="app"
->
+	>
 	<!-- Variables which are needed to boot up the Chat app in JS-->
 	<div style="display:none;" id="initvar">
 		<?php echo $_['initvar'];?>
@@ -28,14 +28,27 @@ style('chat', 'main.min');
 	<div style="display:none" id="avatars-enabled">
 		<?php var_export($_["avatars-enabled"]);?>
 	</div>
-	<div id="app-navigation" >
+	<div
+		id="app-navigation"
+		ng-cloak
+		>
 		<?php print_unescaped($this->inc('part.app-navigation')) ?>
 	</div>
-	<div id="app-content">
+	<div
+		id="app-content"
+		ng-cloak
+		>
 		<?php print_unescaped($this->inc('part.chat')) ?>
 		<?php print_unescaped($this->inc('part.no-users')) ?>
 		<?php print_unescaped($this->inc('part.no-backends')) ?>
 	</div>
+	<div
+		id="splash"
+		class="ng-cloak icon-loading"
+		>
+	</div>
+
+
 	<!-- popups -->
 	<?php print_unescaped($this->inc('part.invite')) ?>
 	<?php print_unescaped($this->inc('part.files')) ?>

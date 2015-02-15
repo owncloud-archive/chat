@@ -9,30 +9,48 @@ namespace OCA\Chat\Controller;
 
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
-use \OCP\AppFramework\IAppContainer;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http\TemplateResponse;
 use \OCA\Chat\App\Chat;
 use \OCP\Contacts\IManager;
 use \OCP\IConfig;
+use \OCA\Chat\OCH\Commands\Greet;
 
 class AppController extends Controller {
 
+	/**
+	 * @var Chat OCA\Chat\App\Chat;
+	 */
 	private $app;
-
-	private $c;
 
 	/**
 	 * @var \OCP\IConfig
 	 */
 	private $config;
 
-	public function __construct($appName, IRequest $request,  Chat $app, IManager $cm, IConfig $config){
+	/**
+	 * @var \OCP\IManager
+	 */
+	private $cm;
+
+	/**
+	 * @var \OCA\Chat\OCH\Commands\Greet
+	 */
+	private $greet;
+
+	public function __construct(
+		$appName,
+		IRequest $request,
+		Chat $app,
+		IManager $cm,
+		IConfig $config,
+		Greet $greet
+	){
 		parent::__construct($appName, $request);
 		$this->app = $app;
-		$this->c = $app->getContainer();
 		$this->cm = $cm;
 		$this->config = $config;
+		$this->greet = $greet;
 	}
 
 	/**
@@ -42,13 +60,11 @@ class AppController extends Controller {
 	 */
 	public function index() {
 		session_write_close();
-		$greet = $this->c['GreetCommand'];
-		$greet->setRequestData(array(
+		$this->greet->setRequestData(array(
 			"timestamp" => time(),
 			"user" => $this->app->getCurrentUser(),
 		));
-		$sessionId = $greet->execute();
-
+		$sessionId = $this->greet->execute();
 		$contacts = $this->app->getContacts();
 		$backends = $this->app->getBackends();
 		$backendsToArray = array();

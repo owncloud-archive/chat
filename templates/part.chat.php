@@ -10,17 +10,24 @@
 			<!-- This div holds exactly one chat message	-->
 			<div
 				class="chat-msg-container"
+				ng-class="{'chat-msg-full-height': $parent.convs[$parent.$session.conv].msgs[key+1].contact.id !== msg.contact.id
+				&& $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id, 'chat-msg-margin-top':$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
 				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
 			>
 				<!-- This div holds the time of the chat message -->
 				<div
-					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id"
+					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].time.minutes !== msg.time.minutes
+					&& $parent.convs[$parent.$session.conv].msgs[key-1].time.hours !== msg.time.houres"
 					class="chat-msg-time"
+					tipsy
+					title="{{::msg.time_read }}"
 				>
-					{{ msg.time.hours }} : {{ msg.time.minutes }}
+					{{::msg.time.hours }} : {{::msg.time.minutes }}
 				</div>
 				<!-- This div holds the Chat message and the avatar of the user which sends it-->
-				<div class="chat-msg">
+				<div class="chat-msg"
+
+					>
 					<div
 						class="msg-avatar-container"
 						ng-if="$parent.$parent.avatarsEnabled === 'true'"
@@ -28,13 +35,13 @@
 						<div
 							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 							data-size="40"
-							data-id="{{ msg.contact.id }}"
-							data-displayname="{{ msg.contact.displayname }}"
-							data-addressbook-backend="{{ msg.contact.address_book_backend }}"
-							data-addressbook-id="{{ msg.contact.address_book_id  }}"
+							data-id="{{::msg.contact.id }}"
+							data-displayname="{{::msg.contact.displayname }}"
+							data-addressbook-backend="{{::msg.contact.address_book_backend }}"
+							data-addressbook-id="{{::msg.contact.address_book_id  }}"
 							avatar
                             tipsy
-                            title="{{ msg.contact.displayname }}"
+                            title="{{::msg.contact.displayname }}"
 						>
 						</div>
 					</div>
@@ -43,7 +50,7 @@
 						ng-if="$parent.$parent.avatarsEnabled === 'false' && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 						>
 						<div>
-							{{ msg.contact.displayname }}
+							{{::msg.contact.displayname }}
 						</div>
 					</div>
 					<p
@@ -85,9 +92,9 @@
 				<textarea
 					id="chat-msg-input-field"
 					autocomplete="off"
-					ng-model="fields.chatMsg"
-					ng-enter="sendChatMsg()"
 					placeholder="<?php p($l->t('Chat Message')); ?>"
+					update
+					update-func="sendChatMsg"
 					ng-disabled="$parent.backends[$parent.convs[$parent.$session.conv].backend.id].connected !== true"
 				></textarea>
 			</div>
@@ -120,11 +127,12 @@
 			<li
 				ng-click="addEmoji(emoji.key)"
 				ng-repeat="emoji in emojis | filter:emojiSearch"
+				ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
 				class="emoji-no-hide"
 				>
 				<div
-					title="{{ emoji.key }}"
-					class="emojione-{{ emoji.value.toUpperCase() }} emoji-no-hide"
+					title="{{::emoji.key }}"
+					class="emojione-{{::emoji.value.toUpperCase() }} emoji-no-hide"
 					>
 				</div>
 			</li>

@@ -2,28 +2,22 @@
 
 namespace OCA\Chat\Controller;
 
+use OCA\Chat\IBackendManager;
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http;
 use \OCP\AppFramework\Http\TemplateResponse;
-use \OCA\Chat\App\Chat;
 use \OCP\IRequest;
 
 class AdminController extends Controller {
-
-	private $app;
-
-	private $c;
 
 	/**
 	 * @var \OCA\Chat\BackendManager
 	 */
 	private $backendManager;
 
-	public function __construct($appName, IRequest $request,  Chat $app){
+	public function __construct($appName, IRequest $request,  IBackendManager $backendManager){
 		parent::__construct($appName, $request);
-		$this->app = $app;
-		$this->c = $app->getContainer();
-		$this->backendManager = $this->c['BackendManager'];
+		$this->backendManager = $backendManager;
 	}
 
 	/**

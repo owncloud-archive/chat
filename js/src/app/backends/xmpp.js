@@ -1,4 +1,4 @@
-angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', 'authorize', function(convs, contacts, initvar, $session, authorize) {
+angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session', 'authorize', 'time', function(convs, contacts, initvar, $session, authorize, Time) {
 	var $XMPP = {
 		jid: initvar.backends.xmpp.config.jid,
 		password: initvar.backends.xmpp.config.password,

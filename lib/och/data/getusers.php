@@ -8,23 +8,38 @@
 namespace OCA\Chat\OCH\Data;
 
 use \OCA\Chat\OCH\ChatAPI;
+use \OCA\Chat\App\Chat;
+use \OCA\Chat\OCH\Db\UserMapper;
+
 
 class GetUsers extends ChatAPI {
+
+	/**
+	 * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
+	 */
+	private $userMapper;
+
+	public function __construct(
+		Chat $app,
+		UserMapper $userMapper
+	){
+		$this->app = $app;
+		$this->userMapper = $userMapper;
+	}
 
 	/*
 	 * @param $requestData['user'] String user id of the client
 	 * @param $requestData['convid'] String session_id of the client
-	*/
+	 */
 	public function setRequestData(array $requestData){
 		$this->requestData = $requestData;
 	}
 
 	public function execute(){
-		$userMapper = $this->c['UserMapper'];
 		$contacts = $this->app->getContacts();
 		$contacts = $contacts['contactsObj'];
 		
-		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
+		$users = $this->userMapper->findUsersInConv($this->requestData['conv_id']);
 		
 		$return = array();
 		foreach($users as $user){

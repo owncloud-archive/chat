@@ -16,12 +16,12 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public $app;
 
-	public function setUp() {
+	public function __construct(){
 		$this->app = new Chat();
 	}
 
 	public function contactsProvider() {
-		$OCHBackend = new OCH(new Chat());
+		$OCHBackend = $this->app->query('OCH');
 		return array(
 			array(
 				array(

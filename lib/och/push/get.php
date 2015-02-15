@@ -19,20 +19,30 @@ class Get extends ChatAPI{
 	private $cycles = 0;
 
 	private $pushMessages = array();
+
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	public function __construct(
+		PushMessageMapper $pushMessageMapper
+	) {
+		$this->pushMessageMapper = $pushMessageMapper;
+	}
+
 	public function setRequestData(array $requestData){
 		$this->requestData = $requestData;
 	}
 
 	public function execute(){
 		session_write_close();
-		$mapper = $this->c['PushMessageMapper'];
-
 		do {
 			if ($this->cycles > 0){
 				sleep(1);
 			}
 			try {
-				$this->pushMessages = $mapper->findBysSessionId($this->requestData['session_id']);
+				$this->pushMessages = $this->pushMessageMapper->findBysSessionId($this->requestData['session_id']);
 				break;
 			} catch(DoesNotExistException $e){
 			}

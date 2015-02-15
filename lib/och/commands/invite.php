@@ -9,6 +9,7 @@ namespace OCA\Chat\OCH\Commands;
 
 use OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
+use OCA\Chat\OCH\Data\GetUsers;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
@@ -16,7 +17,33 @@ use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use \OCA\Chat\OCH\Db\User;
 
 class Invite extends ChatAPI {
-	
+
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	/**
+	 * @var $join \OCA\Chat\OCH\Db\UserOnlineMapper
+	 */
+	private $join;
+
+	/**
+	 * @var $getUsers \OCA\Chat\OCH\Data\GetUsers
+	 */
+	private $getUsers;
+
+	public function __construct(
+		PushMessageMapper $pushMessageMapper,
+		Join $join,
+		GetUsers $getUsers
+	){
+		$this->pushMessageMapper = $pushMessageMapper;
+		$this->join = $join;
+		$this->getUsers = $getUsers;
+	}
+
+
 	/*
 	 * @param $requestData['user'] String user id of the client
 	 * @param $requestData['session_id'] String session_id of the client
@@ -49,13 +76,12 @@ class Invite extends ChatAPI {
 
 		// add the user to thx	e conv
 		// this is done by executing the join command
-		$join = $this->c['JoinCommand'];
 		$requestData = array(
 			"user" => $this->requestData['user_to_invite'],
 			"conv_id" => $this->requestData['conv_id']
 		);
-		$join->setRequestData($requestData);
-		$join->execute();
+		$this->join->setRequestData($requestData);
+		$this->join->execute();
 
 		$command = json_encode(array(
 			"type" => "invite",
@@ -66,16 +92,14 @@ class Invite extends ChatAPI {
 			)
 		));
 
-		$pushMessageMapper = $this->c['PushMessageMapper'];
-		$pushMessageMapper->createForAllSessionsOfAUser(
+		$this->pushMessageMapper->createForAllSessionsOfAUser(
 			$this->requestData['user_to_invite']['id'],
 			$this->requestData['user']['id'],
 			$command
 		);
 
-		$getUsers = $this->c['GetUsersData'];
-		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-		$users = $getUsers->execute();
+		$this->getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $this->getUsers->execute();
 		$users = $users['users'];
 
 		return array(

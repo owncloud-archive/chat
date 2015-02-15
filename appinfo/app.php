@@ -30,3 +30,18 @@ if ($enabled === null){
 }
 
 App::registerAdmin('chat', 'lib/admin');
+
+// When the "Integrated View" is loaded, include the CSS and JS code:
+if ($chat->viewType === Chat::INTEGRATED) {
+	if (\OCP\User::isLoggedIn()) {
+		Util::addStyle('chat', '../vendor/emojione/assets/sprites/emojione.sprites');
+		Util::addStyle('chat', '../vendor/emojione/assets/css/emojione.min');
+		Util::addScript('chat', '../vendor/all.min');
+		Util::addScript('chat', 'integrated.min');
+		Util::addStyle('chat', 'integrated.min');
+
+		if (defined('DEBUG') && DEBUG) {
+			Util::addScript('chat', '../vendor/angular-mocks/angular-mocks');
+		}
+	}
+}

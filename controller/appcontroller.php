@@ -141,12 +141,11 @@ class AppController extends Controller {
 	 */
 	public function initVar(){
 		session_write_close();
-		$greet = $this->c['GreetCommand'];
-		$greet->setRequestData(array(
+		$this->greet->setRequestData(array(
 			"timestamp" => time(),
 			"user" => $this->app->getCurrentUser(),
 		));
-		$sessionId = $greet->execute();
+		$sessionId = $this->greet->execute();
 
 		$contacts = $this->app->getContacts();
 		$backends = $this->app->getBackends();

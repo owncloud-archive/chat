@@ -6,16 +6,10 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-				preserveComments: function(){return true},
 				beautify: true,
 				mangle: false
 			},
 			build: {
-				options: {
-					banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-					preserveComments: function(){return true},
-					beautify: true
-				},
 				files: {
 					'js/app.min.js': [
 						'js/app/src/**/*.js',

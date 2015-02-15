@@ -306,29 +306,6 @@ class Chat extends App{
 		/**
 		 * Manager
 		 */
-<<<<<<< HEAD
-		$container->registerService('ContactsManager', function($c){
-			return $c->getServer()->getContactsManager();
-		});
-
-		$container->registerService('UserManager', function($c){
-			return $c->getServer()->getUserManager();
-		});
-
-		$container->registerService('UserSession', function($c){
-			return $c->getServer()->getUserSession();
-		});
-
-		$container->registerService('NavigationManager', function($c){
-			return $c->getServer()->getNavigationManager();
-		});
-
-		$container->registerService('Config', function($c){
-			return $c->getServer()->getConfig();
-		});
-
-=======
->>>>>>> master
 		$container->registerService('BackendManager', function($c){
 			return new BackendManager();
 		});

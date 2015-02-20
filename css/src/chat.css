@@ -1,11 +1,3 @@
-#chat-window-body {
-	position: absolute;
-	top: 0;
-	bottom: 68px;
-	width: 100%;
-	background-color: white;
-}
-
 #chat-window-footer {
 	position: absolute;
 	height: 68px;
@@ -29,57 +21,6 @@
 	padding-right: 10px;
 }
 
-
-.chat-msg-container {
-	width: 100%;
-	float: left;
-	height:20px;
-}
-.chat-msg-container-border {
-	border-top: 1px solid #EEEEEE;
-}
-
-.chat-msg-time {
-	color: #adadad;
-	float: right;
-	padding-right: 20px;
-}
-
-.chat-msg {
-	float: left;
-}
-
-.chat-msg div,.chat-msg p {
-	float: left;
-}
-
-.chat-msg p {
-	margin-left: 10px;
-	word-wrap: break-word;
-	white-space: pre-line;
-	font-size: 14px;
-	line-height: 1.6;
-}
-
-.chat-msg a {
-	border-bottom:1px dotted;
-	clear:left;
-}
-
-.msg-avatar-container img {
-	width: 40px;
-	height: 40px;
-}
-
-.chat-msg-msg video, .chat-msg-msg iframe, .chat-msg-msg > a > img {
-	display:block;
-}
-
-.chat-msg-msg > img {
-	height:20px;
-	width:20px;
-	vertical-align: middle;
-}
 
 #chat-msg-input {
 	margin-right: 65px;
@@ -167,25 +108,4 @@
 }
 #emoji-search {
 	width:265px;
-}
-
-.msg-displayname-container{
-	width:100px !important;
-	font-weight: bold;
-	position:relative;
-}
-
-.chat-msg-margin-left{
-	padding-left:40px !important;
-}
-
-.chat-msg-msg {
-	margin-left:20px !important;
-}
-.chat-msg-full-height{
-	height:40px;
-}
-
-.chat-msg-margin-top{
-	margin-top:30px;
 }

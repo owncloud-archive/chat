@@ -90,7 +90,7 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 				msg : msg,
 				timestamp : timestamp,
 				time : Time.timestampToObject(timestamp),
-				time_read : Time.format(timestamp)
+				time_read : Time.format(timestamp),
 			});
 
 			// Add raw msgs to raw_msgs

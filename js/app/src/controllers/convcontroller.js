@@ -159,17 +159,6 @@ angular.module('chat').controller(
 					$session.conv = convId;
 					$scope.view.focusMsgInput();
 					convs.get(convId).new_msg = false;
-					//$("#chat-msg-input-field").autosize({
-					//	callback : function(){
-					//		var height = $("#chat-msg-input-field").height();
-					//		height = height + 15;
-					//		$('#chat-window-footer').height(height);
-					//		$('#chat-window-body').css('bottom', height);
-					//		$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-					//		var height = $("#chat-window-footer").height();
-					//		$('#emoji-container').css('bottom', height + 20);
-					//	}
-					//});
 				},
 				/**
 				 * This will unActive all conversations

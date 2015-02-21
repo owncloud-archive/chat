@@ -5,10 +5,13 @@
 	<!--
 		This section holds the message list
 	-->
-		<div id="chat-wrapper">
+	<div class="nano" nano >
+		<div id="chat-wrapper" class="nano-content">
 			<div
 				ng-repeat="(key,msg) in msgs"
-				class="chat-row">
+				class="chat-row"
+
+				>
 				<div
 					class="chat-msg column"
 					ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
@@ -27,6 +30,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	<!--
 		This element holds the Chat message input field, and the buttons to active the file picker and emoji picker
 	-->

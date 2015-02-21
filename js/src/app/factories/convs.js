@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', 'time', function(contacts, $filter, title, $session, $injector, Time) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', 'time', '$rootScope', function(contacts, $filter, title, $session, $injector, Time, $rootScope) {
 	var convs = {};
 
 	return {
@@ -90,12 +90,13 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 				msg : msg,
 				timestamp : timestamp,
 				time : Time.timestampToObject(timestamp),
-				time_read : Time.format(timestamp),
+				time_read : Time.format(timestamp)
 			});
 
 			// Add raw msgs to raw_msgs
 			convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
 			convs[convId].order = this.getHighestOrder() +1;
+			$rootScope.$broadcast('scrollBottom');
 		},
 		/**
 		 * This will replace the users in an existing conversation

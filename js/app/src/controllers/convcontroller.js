@@ -408,6 +408,10 @@ angular.module('chat').controller(
 					}
 				});
 			};
+
+			$scope.toTrust = function(html_code) {
+				return $sce.trustAsHtml(html_code);
+			}
 			init();
 		}
 	]

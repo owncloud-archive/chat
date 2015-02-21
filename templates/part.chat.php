@@ -10,18 +10,30 @@
 			<div
 				ng-repeat="(key,msg) in msgs"
 				class="chat-row"
-
+				ng-class="{'height-40': msg.contact.id !== msgs[key-1].contact.id && msg.contact.id !== msgs[key+1].contact.id}"
 				>
 				<div
 					class="chat-msg column"
-					ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
+					ng-bind-html="msg.msg | enhanceFiles | emoji"
 					>
+					&nbsp;
 				</div>
 				<div
 					class="chat-avatar column"
-					ng-hide="msg.contact.id === msgs[key-1].contact.id"
+					ng-if="$parent.$parent.avatarsEnabled === 'true'"
 					>
-					{{::msg.contact.displayname }}
+					<div
+						ng-hide="msg.contact.id === msgs[key-1].contact.id"
+						data-size="40"
+						data-id="{{::msg.contact.id }}"
+						data-displayname="{{::msg.contact.displayname }}"
+						data-addressbook-backend="{{::msg.contact.address_book_backend }}"
+						data-addressbook-id="{{::msg.contact.address_book_id }}"
+						avatar
+						tipsy
+						title="{{::msg.contact.displayname }}"
+						>
+					</div>
 				</div>
 				<div
 					class="chat-time column"

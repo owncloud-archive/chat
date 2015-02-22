@@ -36,8 +36,6 @@ module.exports = function(grunt) {
 						'vendor/rangyinputs-jquery-src/index.js',
 						'vendor/strophe/strophe.min.js',
 						'vendor/emojione/lib/js/emojione.min.js',
-						'vendor/nanoscroller/bin/javascripts/jquery.nanoscroller.min.js',
-						'vendor/mousewheel/index.js',
 					]
 				}
 			}

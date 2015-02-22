@@ -2,6 +2,7 @@
 	padding-left: 60px;
 	padding-right: 140px;
 	min-height: 20px;
+	height: auto;
 }
 
 #chat-wrapper {

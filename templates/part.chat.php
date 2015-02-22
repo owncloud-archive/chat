@@ -10,11 +10,11 @@
 			<div
 				ng-repeat="(key,msg) in msgs"
 				class="chat-row"
-				ng-class="{'height-40': msg.contact.id !== msgs[key-1].contact.id && msg.contact.id !== msgs[key+1].contact.id}"
 				>
 				<div
 					class="chat-msg column"
 					ng-bind-html="msg.msg | enhanceFiles | emoji"
+					ng-class="{'height-40': msg.contact.id !== msgs[key-1].contact.id && msg.contact.id !== msgs[key+1].contact.id}"
 					>
 					&nbsp;
 				</div>

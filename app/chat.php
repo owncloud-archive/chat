@@ -363,7 +363,7 @@ class Chat extends App{
 	 * contacts as an associative array
 	 */
 	public function getContacts(){
-		if(count(self::$contacts) == 0){
+		if(count(self::$contacts) === 0){
 			// ***
 			// the following code should be ported
 			// so multiple backends are allowed
@@ -516,7 +516,7 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getUserasContact($id){
-		if(count(self::$contacts) == 0) {
+		if(count(self::$contacts) === 0) {
 			$this->getContacts();
 		}
 		return self::$contacts['contactsObj'][$id];
@@ -526,7 +526,7 @@ class Chat extends App{
 	 * @todo porting
 	 */
 	public function getInitConvs(){
-		if(count(self::$initConvs) == 0) {
+		if(count(self::$initConvs) === 0) {
 			$backends = $this->getBackends();
 			$result = array();
 			foreach($backends as $backend){

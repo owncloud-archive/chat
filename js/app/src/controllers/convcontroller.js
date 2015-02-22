@@ -245,6 +245,7 @@ angular.module('chat').controller(
 
 			$scope.$watch('$session.conv', function () {
 				$scope.msgs = $filter('orderBy')(convs.convs[$session.conv].msgs, 'timestamp');
+				$scope.$broadcast('scrollBottom');
 			});
 
 			/**

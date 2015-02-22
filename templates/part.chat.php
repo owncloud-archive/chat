@@ -37,6 +37,10 @@
 				</div>
 				<div
 					class="chat-time column"
+					ng-if=" msgs[key-1].time.minutes !== msg.time.minutes
+							|| msgs[key-1].time.hours !== msg.time.hours"
+					tipsy
+					title="{{::msg.time_read }}"
 					>
 					{{::msg.time.hours }} : {{::msg.time.minutes }}
 				</div>

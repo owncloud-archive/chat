@@ -248,6 +248,9 @@ angular.module('chat').controller(
 				$scope.$broadcast('scrollBottom');
 			});
 
+			window.onresize = function(event) {
+				$scope.$broadcast('scrollBottom');
+			};
 			/**
 			 * @var {object} initConvs
 			 */

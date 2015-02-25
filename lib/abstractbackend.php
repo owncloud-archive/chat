@@ -3,7 +3,6 @@
 namespace OCA\Chat;
 
 use \OCP\IConfig;
-use \OCA\Chat\App\Chat;
 use \OCA\Chat\Db\ConfigMapper;
 
 abstract class AbstractBackend implements IBackend {

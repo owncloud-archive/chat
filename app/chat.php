@@ -326,7 +326,8 @@ class Chat extends App{
 		$container->registerService('XMPP', function($c) use ($app){
 			return new XMPP(
 				$c->query('ConfigMapper'),
-				$c->query('OCP\IConfig')
+				$c->query('OCP\IConfig'),
+				$app
 			);
 		});
 

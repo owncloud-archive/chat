@@ -564,4 +564,49 @@ class Chat extends App{
 
 	}
 
+	private static $errors;
+
+	public function registerExceptionHandler(){
+		self::$errors = [
+			0 => [
+				"check" => function($msg) {
+					if (substr($msg, 0, 17) === 'js file not found') {
+						return true;
+					}
+					if (substr($msg, 0, 18) === 'css file not found') {
+						return true;
+					}
+					return false;
+				},
+				"brief" => 'JS or CSS files not generated',
+				"info" =>  <<<INFO
+There are two options to solve this problem: <br>
+	1. generate them yourself <br>
+	2. download packaged Chat app
+INFO
+				,"link" => "https://github.com/owncloud/chat#install"
+
+			]
+
+		];
+
+
+		set_exception_handler(function(\Exception $e){
+			foreach (self::$errors as $possibleError) {
+				if($possibleError['check']($e->getMessage())){
+					$brief = $possibleError["brief"];
+					$info = $possibleError["info"];
+					$link = $possibleError["link"];
+					$raw = $e->getMessage();
+				}
+			}
+
+
+
+			include(__DIR__ . "/../templates/error.php");
+			die();
+		});
+
+	}
+
 }

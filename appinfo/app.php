@@ -45,3 +45,5 @@ if ($chat->viewType === Chat::INTEGRATED) {
 		}
 	}
 }
+
+$chat->registerExceptionHandler();

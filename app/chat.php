@@ -37,6 +37,7 @@ use OCA\Chat\OCH\OCH;
 use OCA\Chat\XMPP\XMPP;
 use OCA\Chat\BackendManager;
 use OCA\Chat\IBackend;
+use OCA\Chat\Middleware\ErrorMiddleware;
 
 /**
  * Class Chat
@@ -331,6 +332,14 @@ class Chat extends App{
 			);
 		});
 
+		$container->registerService('ErrorMiddleware', function($c) use ($app){
+			return new ErrorMiddleware($app);
+		});
+
+		// executed in the order that it is registered
+		$container->registerMiddleware('ErrorMiddleware');
+
+
 		$this->setViewType();
 	}
 
@@ -564,9 +573,17 @@ class Chat extends App{
 
 	}
 
-	private static $errors;
 
 	public function registerExceptionHandler(){
+		set_exception_handler(function(\Exception $e){
+			$this->exceptionHandler($e);
+		});
+
+	}
+
+	private static $errors;
+
+	public function exceptionHandler(\Exception $e){
 		self::$errors = [
 			0 => [
 				"check" => function($msg) {
@@ -580,33 +597,57 @@ class Chat extends App{
 				},
 				"brief" => 'JS or CSS files not generated',
 				"info" =>  <<<INFO
-There are two options to solve this problem: <br>
-	1. generate them yourself <br>
-	2. download packaged Chat app
+	There are two options to solve this problem: <br>
+		1. generate them yourself <br>
+		2. download packaged Chat app
+
+	Click the "more information" button for more information.
 INFO
 				,"link" => "https://github.com/owncloud/chat#install"
 
+			],
+			1 => [
+				"check" => function($msg){
+					if (substr($msg, 0, 23) === '[404] Contact not found') {
+						return true;
+					}
+				},
+				"brief" => "Contact app failed to load some contacts",
+				"info" => <<<INFO
+	This is a bug in the Contacts app, which is fixed in the latest version of ownCloud and the Contacts app.<br>
+	Please open an issue if this issue keeps occurring after updating the Contacts app.
+INFO
+				,"link" => ""
+			],
+			2 => [
+				"check" => function($msg){
+					if(\OCP\App::isEnabled('user_ldap')){
+						return true;
+					}
+				},
+				"brief" => "Chat app doens't work with user_ldap enabled",
+				"info" => <<<INFO
+	There is an bug in core with user_ldap. Therefore the Chat app can't be used. This bug is solved in the latest version of the Chat app.
+INFO
+				,"link" => ""
 			]
 
+
 		];
-
-
-		set_exception_handler(function(\Exception $e){
-			foreach (self::$errors as $possibleError) {
-				if($possibleError['check']($e->getMessage())){
-					$brief = $possibleError["brief"];
-					$info = $possibleError["info"];
-					$link = $possibleError["link"];
-					$raw = $e->getMessage();
-				}
+		foreach (self::$errors as $possibleError) {
+			if($possibleError['check']($e->getMessage())){
+				$brief = $possibleError["brief"];
+				$info = $possibleError["info"];
+				$link = $possibleError["link"];
+				$raw = $e->getMessage();
 			}
+		}
+		$version = \OCP\App::getAppVersion('chat');
+		$requesttoken = \OC::$server->getSession()->get('requesttoken');
 
 
-
-			include(__DIR__ . "/../templates/error.php");
-			die();
-		});
-
+		include(__DIR__ . "/../templates/error.php");
+		die();
 	}
 
 }

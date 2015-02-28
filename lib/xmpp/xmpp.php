@@ -6,6 +6,7 @@ use \OCA\Chat\IBackend;
 use \OCA\Chat\App\Chat;
 use \OCA\Chat\AbstractBackend;
 use \OCA\Chat\Db\ConfigMapper;
+use \OCP\IConfig;
 
 class XMPP extends AbstractBackend implements IBackend {
 

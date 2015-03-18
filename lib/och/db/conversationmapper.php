@@ -107,7 +107,7 @@ SQL;
 
 		try{
 			$result = $this->execute($sql, $params);
-			$row = $result->fetchRow();
+			$row = $result->fetch();
 			return $row;
 		} catch (DoesNotExistException $exception) {
 			var_dump($exception);

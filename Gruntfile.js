@@ -26,6 +26,9 @@ module.exports = function(grunt) {
 					'js/admin.min.js' : [
 						'js/admin/src/*.js'
 					],
+					'js/error.min.js' : [
+						'js/error/src/*.js'
+					],
 					'vendor/all.min.js' : [
 						'vendor/angular/angular.min.js',
 						'vendor/angular-enhance-text/build/angular-enhance-text.min.js',
@@ -50,9 +53,12 @@ module.exports = function(grunt) {
 					],
 					'css/admin.min.css' : [
 						'css/admin/src/*.css'
-					]					,
+					],
 					'css/integrated.min.css' : [
 						'css/integrated/src/*.css'
+					],
+					'css/error.min.css' : [
+						'css/error/src/*.css'
 					]
 				}
 			}

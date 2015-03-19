@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', 'time', function(contacts, $filter, title, $session, $injector, Time) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', 'time', '$rootScope', '$sce', function(contacts, $filter, title, $session, $injector, Time, $rootScope, $sce) {
 	var convs = {};
 
 	return {
@@ -87,6 +87,7 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			var contact = user;
 			convs[convId].msgs.push({
 				contact : contact,
+				//msg.msg | enhanceFiles | emoji | enhanceText
 				msg : msg,
 				timestamp : timestamp,
 				time : Time.timestampToObject(timestamp),
@@ -96,6 +97,7 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			// Add raw msgs to raw_msgs
 			convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
 			convs[convId].order = this.getHighestOrder() +1;
+			$rootScope.$broadcast('scrollBottom');
 		},
 		/**
 		 * This will replace the users in an existing conversation
@@ -162,6 +164,6 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			} else {
 				return true;
 			}
-		}
+		},
 	};
 }]);

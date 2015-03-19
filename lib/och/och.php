@@ -84,7 +84,8 @@ class OCH extends AbstractBackend implements IBackend {
 			// Find the correct contact for the correct user
 			$this->messages->setRequestData(array(
 				"conv_id" => $conv->getConversationId(),
-				'user' => $this->app->getCurrentUser()
+				'user' => $this->app->getCurrentUser(),
+				"limit" => array(0,30)
 			));
 			$messages = $this->messages->execute();
 			$messages = $messages['messages'];

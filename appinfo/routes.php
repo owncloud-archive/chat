@@ -56,6 +56,6 @@ $application->registerRoutes($this, array(
 			'name' => 'app#initVar',
 			'url' => '/initvar/',
 			'verb' => 'post'
-		)
+		),
 	)
 ));

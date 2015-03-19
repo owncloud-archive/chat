@@ -149,7 +149,7 @@
 				<name>message</name>
 				<type>text</type>
 				<notnull>true</notnull>
-				<length>255</length>
+				<length>20000000</length>
 			</field>
 		</declaration>
 	</table>

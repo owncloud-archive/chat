@@ -5,65 +5,48 @@
 	<!--
 		This section holds the message list
 	-->
-	<section ng-click="focusMsgInput()" id="chat-window-body">
-		<div id="chat-window-msgs" scroll>
-			<!-- This div holds exactly one chat message	-->
+	<div class="nano" nano >
+		<div id="chat-wrapper" class="nano-content">
 			<div
-				class="chat-msg-container"
-				ng-class="{'chat-msg-full-height': $parent.convs[$parent.$session.conv].msgs[key+1].contact.id !== msg.contact.id
-				&& $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id, 'chat-msg-margin-top':$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id}"
-				ng-repeat="(key, msg) in convs[$session.conv].msgs | orderBy:'timestamp'"
-			>
-				<!-- This div holds the time of the chat message -->
+				ng-repeat="(key,msg) in msgs"
+				class="chat-row"
+				>
 				<div
-					ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].time.minutes !== msg.time.minutes
-					&& $parent.convs[$parent.$session.conv].msgs[key-1].time.hours !== msg.time.houres"
-					class="chat-msg-time"
+					class="chat-msg column"
+					ng-bind-html="msg.msg | enhanceFiles | emoji"
+					ng-class="{'height-40': msg.contact.id !== msgs[key-1].contact.id && msg.contact.id !== msgs[key+1].contact.id}"
+					>
+					&nbsp;
+				</div>
+				<div
+					class="chat-avatar column"
+					ng-if="$parent.$parent.avatarsEnabled === 'true'"
+					>
+					<div
+						ng-hide="msg.contact.id === msgs[key-1].contact.id"
+						data-size="40"
+						data-id="{{::msg.contact.id }}"
+						data-displayname="{{::msg.contact.displayname }}"
+						data-addressbook-backend="{{::msg.contact.address_book_backend }}"
+						data-addressbook-id="{{::msg.contact.address_book_id }}"
+						avatar
+						tipsy
+						title="{{::msg.contact.displayname }}"
+						>
+					</div>
+				</div>
+				<div
+					class="chat-time column"
+					ng-if=" msgs[key-1].time.minutes !== msg.time.minutes
+							|| msgs[key-1].time.hours !== msg.time.hours"
 					tipsy
 					title="{{::msg.time_read }}"
-				>
+					>
 					{{::msg.time.hours }} : {{::msg.time.minutes }}
-				</div>
-				<!-- This div holds the Chat message and the avatar of the user which sends it-->
-				<div class="chat-msg"
-
-					>
-					<div
-						class="msg-avatar-container"
-						ng-if="$parent.$parent.avatarsEnabled === 'true'"
-					>
-						<div
-							ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
-							data-size="40"
-							data-id="{{::msg.contact.id }}"
-							data-displayname="{{::msg.contact.displayname }}"
-							data-addressbook-backend="{{::msg.contact.address_book_backend }}"
-							data-addressbook-id="{{::msg.contact.address_book_id  }}"
-							avatar
-                            tipsy
-                            title="{{::msg.contact.displayname }}"
-						>
-						</div>
-					</div>
-					<div
-						class="msg-displayname-container"
-						ng-if="$parent.$parent.avatarsEnabled === 'false' && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
-						>
-						<div>
-							{{::msg.contact.displayname }}
-						</div>
-					</div>
-					<p
-						ng-class="{'chat-msg-margin-left': $parent.convs[$parent.$session.conv].msgs[key-1].contact.id === msg.contact.id}"
-						class="chat-msg-msg"
-						ng-bind-html="msg.msg | enhanceFiles | emoji | enhanceText"
-						>
-						&nbsp;
-					</p>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 	<!--
 		This element holds the Chat message input field, and the buttons to active the file picker and emoji picker
 	-->

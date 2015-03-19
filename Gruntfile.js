@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-				beautify: true,
+				beautify: false,
 				mangle: false
 			},
 			build: {
@@ -64,8 +64,55 @@ module.exports = function(grunt) {
 			}
 		},
 		karma: {
-			unit: {
-				configFile: 'karma.conf.js'
+			integrated: {
+				options: {
+					files: [
+						'vendor/jquery/dist/jquery.js',
+						'vendor/jquery-autosize/jquery.autosize.js',
+						'js/test/mocks/OC.js',
+						'vendor/all.min.js',
+						'vendor/angular-mocks/angular-mocks.js',
+						'js/test/true.js',
+						'js/integrated.min.js',
+						'js/test/integrated/**/*.js',
+					],
+					frameworks: [
+						'jasmine'
+					],
+					reporters: [
+						'progress'
+					],
+					port: 9876,
+					browsers: [
+						'Firefox'
+					],
+					singleRun: true,
+				}
+			},
+			app: {
+				options: {
+					files: [
+						'vendor/jquery/dist/jquery.js',
+						'vendor/jquery-autosize/jquery.autosize.js',
+						'js/test/mocks/OC.js',
+						'vendor/all.min.js',
+						'vendor/angular-mocks/angular-mocks.js',
+						'js/test/true.js',
+						'js/app.min.js',
+						'js/test/app/**/*.js',
+					],
+					frameworks: [
+						'jasmine'
+					],
+					reporters: [
+						'progress'
+					],
+					port: 9876,
+					browsers: [
+						'Firefox'
+					],
+					singleRun: true
+				}
 			}
 		},
 		htmlmin: {
@@ -79,7 +126,6 @@ module.exports = function(grunt) {
 				}
 			}
 		}
-
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');

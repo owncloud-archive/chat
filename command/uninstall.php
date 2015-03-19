@@ -30,14 +30,14 @@ class UnInstall extends Command {
 		$this->appManager->disableApp('chat');
 		$output->writeln("Chat app disabled");
 		$queries = array(
-			"DROP TABLE chat_attachments;",
-			"DROP TABLE chat_config;",
-			"DROP TABLE chat_och_conversations;",
-			"DROP TABLE chat_och_messages;",
-			"DROP TABLE chat_och_push_messages;",
-			"DROP TABLE chat_och_users_online;",
-			"DROP TABLE chat_och_users_in_conversation;",
-			"DELETE FROM appconfig WHERE appid='chat';"
+			"DROP TABLE *PREFIX*chat_attachments;",
+			"DROP TABLE *PREFIX*chat_config;",
+			"DROP TABLE *PREFIX*chat_och_conversations;",
+			"DROP TABLE *PREFIX*chat_och_messages;",
+			"DROP TABLE *PREFIX*chat_och_push_messages;",
+			"DROP TABLE *PREFIX*chat_och_users_online;",
+			"DROP TABLE *PREFIX*chat_och_users_in_conversation;",
+			"DELETE FROM *PREFIX*appconfig WHERE appid='chat';"
 		);
 		foreach ($queries as $qeury) {
 			$this->db->executeQuery($qeury);

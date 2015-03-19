@@ -7,11 +7,11 @@
 
 namespace OCA\Chat;
 
-use \OCA\Chat\App\Chat;
+use OCA\Chat\App\Container;
 
 // Note that action can't be used as keyword
-$application = new Chat();
-$application->registerRoutes($this, array(
+$container = new Container();
+$container->registerRoutes($this, array(
 	'routes' => array(
 		array(
 			'name' => 'app#index',

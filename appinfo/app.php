@@ -8,11 +8,13 @@
 namespace OCA\Chat;
 
 use \OCA\Chat\App\Chat;
+use \OCA\Chat\App\Container;
 use \OCP\Util;
 use \OCP\App;
 
-$chat = new Chat();
-$chat->query('OCP\INavigationManager')->add(function(){
+$container = new Container();
+
+$container->query('OCP\INavigationManager')->add(function(){
 	return array(
 		'id' => 'chat',
 		'order' => 10,
@@ -21,13 +23,14 @@ $chat->query('OCP\INavigationManager')->add(function(){
 		'name' => Util::getL10n('chat')->t('Chat')
 	);
 });
-$chat->registerBackend($chat->query('OCH'));
-$chat->registerBackend($chat->query('XMPP'));
+
+$container->query('Chat')->registerBackend($container->query('OCH'));
+$container->query('Chat')->registerBackend($container->query('XMPP'));
 
 App::registerAdmin('chat', 'lib/admin');
 
 // When the "Integrated View" is loaded, include the CSS and JS code:
-if ($chat->viewType === Chat::INTEGRATED) {
+if ($container->query('Chat')->viewType === Chat::INTEGRATED) {
 	if (\OCP\User::isLoggedIn()) {
 		Util::addStyle('chat', '../vendor/emojione/assets/sprites/emojione.sprites');
 		Util::addStyle('chat', '../vendor/emojione/assets/css/emojione.min');
@@ -40,4 +43,4 @@ if ($chat->viewType === Chat::INTEGRATED) {
 		}
 	}
 }
-$chat->registerExceptionHandler();
+$container->query('Chat')->registerExceptionHandler();

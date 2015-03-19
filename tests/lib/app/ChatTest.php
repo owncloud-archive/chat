@@ -16,14 +16,21 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public $app;
 
-	public function __construct(){
-		$this->app = new Chat();
-	}
-
 	public function contactsProvider() {
-		$OCHBackend = $this->app->query('OCH');
+		$app = new Chat(array(), true);
+		$OCHBackend = return new OCH(
+			$c->query('ConfigMapper'),
+			$c->query('OCP\IConfig'),
+			$c->query('UserMapper'),
+			$c->query('AttachmentMapper'),
+			$c->query('StartConvCommand'),
+			$c->query('MessagesData'),
+			$c->query('JoinCommand'),
+			$app
+		);
 		return array(
 			array(
+				$app,
 				array(
 					'foo'
 				),
@@ -264,35 +271,35 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider contactsProvider
 	 */
-	public function testGetContacts($onlineUsers, $OCHBackend, $rawContacts, $parsedContacts) {
-		$this->app->c['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
+	public function testGetContacts(Chat $app, $onlineUsers, $OCHBackend, $rawContacts, $parsedContacts) {
+		$app->c['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->app->c['UserOnlineMapper']->expects($this->any())
+		$app->c['UserOnlineMapper']->expects($this->any())
 			->method('getOnlineUsers')
 			->will($this->returnValue($onlineUsers));
 
-		$this->app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
+		$app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->app->c['BackendManager']->expects($this->any())
+		$app->c['BackendManager']->expects($this->any())
 			->method('getBackendByProtocol')
 			->will($this->returnValue($OCHBackend));
 
 
-		$this->app->c['SyncOnlineCommand'] = $this->getMockBuilder('\OCA\Chat\OCH\Commands\SyncOnline')
+		$app->c['SyncOnlineCommand'] = $this->getMockBuilder('\OCA\Chat\OCH\Commands\SyncOnline')
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+		$app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->app->c['ContactsManager']->expects($this->any())
+		$app->c['ContactsManager']->expects($this->any())
 			->method('search')
 			->will($this->returnValue($rawContacts));
 
-		$result = $this->app->getContacts();
+		$result = $app->getContacts();
 		$this->assertEquals($parsedContacts, $result);
 
 
@@ -307,21 +314,24 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider contactsProvider
 	 */
 	public function testGetContactsCache($onlineUsers, $OCHBackend, $rawContacts, $parsedContacts) {
-		$this->app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+		$app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->app->c['ContactsManager']->expects($this->never())
+		$app->c['ContactsManager']->expects($this->never())
 			->method('search');
 
-		$result = $this->app->getContacts();
+		$result = $app->getContacts();
 		$this->assertEquals($parsedContacts, $result);
 	}
 
 	public function backendProvider() {
+		$app = new Chat(array(), true);
+		$OCHBackend = $app->query('OCH');
 		return array(
 			array(
-				new OCH(new Chat())
+				$app,
+				$OCHBackend
 			)
 		);
 	}
@@ -329,20 +339,20 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider backendProvider
 	 */
-	public function testGetBackends($backend) {
-		$this->app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
+	public function testGetBackends($app, $backend) {
+		$app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
 			->disableOriginalConstructor()
 			->getMock();
 
 		// Mock the exist method so, that it returns true
-		$this->app->c['BackendManager']->expects($this->once())
+		$app->c['BackendManager']->expects($this->once())
 			->method('getEnabledBackends')
 			->will($this->returnValue(array($backend)));
 
 		$expectedResult = array();
 		$expectedResult[] = $backend;
 
-		$result = $this->app->getBackends();
+		$result = $app->getBackends();
 
 		$this->assertEquals($expectedResult, $result);
 
@@ -350,10 +360,11 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function userContactProvider() {
-		$OCHBackend = new OCH(new Chat());
-
+		$app = new Chat(array(), true);
+		$OCHBackend = $app->query('OCH');
 		return array(
 			array(
+				$app,
 				$OCHBackend,
 				array(
 					0 => array(
@@ -425,23 +436,23 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider userContactProvider
 	 */
-	public function testGetUserasContact($OCHBackend, $rawContacts, $expectedResult, $UID) {
-		$this->app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
+	public function testGetUserasContact($app, $OCHBackend, $rawContacts, $expectedResult, $UID) {
+		$app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->app->c['BackendManager']->expects($this->any())
+		$app->c['BackendManager']->expects($this->any())
 			->method('getBackendByProtocol')
 			->will($this->returnValue($OCHBackend));
 
-		$this->app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
+		$app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->app->c['ContactsManager']->expects($this->any())
+		$app->c['ContactsManager']->expects($this->any())
 			->method('search')
 			->will($this->returnValue($rawContacts));
 
-		$result = $this->app->getUserasContact($UID);
+		$result = $app->getUserasContact($UID);
 		$this->assertEquals($expectedResult, $result);
 	}
 

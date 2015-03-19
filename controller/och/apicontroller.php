@@ -37,10 +37,10 @@ class ApiController extends Controller {
     const NOT_OWNER_OF_FILE =15;
 	const TIME_EXCEEDED = 16;
 
-	public function __construct($appName, IRequest $request,  Chat $app){
+	public function __construct($appName, IRequest $request,  Chat $app, Container $container){
 		parent::__construct($appName, $request);
 		$this->app = $app;
-		$this->c = $app->getContainer();
+		$this->container = $container;
 	}
 
 	/**
@@ -64,7 +64,7 @@ class ApiController extends Controller {
 								case "command":
 									$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv', 'attach_file', 'remove_file');
 									if(in_array($action, $possibleCommands)){
-										$commandClass = $this->c[$this->convertClassName($action) . 'Command'];
+										$commandClass = $this->container->query($this->convertClassName($action) . 'Command');
 										$commandClass->setRequestData($data);
 										$data = $commandClass->execute();
 										if($data){
@@ -79,7 +79,7 @@ class ApiController extends Controller {
 								case "push":
 									$possibleCommands = array('get', 'delete');
 									if(in_array($action, $possibleCommands)){
-										$pushClass = $this->c[$this->convertClassName($action) . 'Push'];
+										$pushClass = $this->container->query($this->convertClassName($action) . 'Push');
 										$pushClass->setRequestData($data);
 										return $pushClass->execute();
 									} else {
@@ -89,7 +89,7 @@ class ApiController extends Controller {
 								case "data":
 									$possibleCommands = array('messages', 'get_users');
 									if(in_array($action, $possibleCommands)){
-										$dataClass = $this->c[$this->convertClassName($action) . 'Data'];
+										$dataClass = $this->container->query($this->convertClassName($action) . 'Data');
 										$dataClass->setRequestData($data);
 										$data = $dataClass->execute();
 										if($data){

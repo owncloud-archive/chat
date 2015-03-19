@@ -7,43 +7,20 @@
 
 namespace OCA\Chat\App;
 
-use OCA\Chat\Controller\AppController;
-use OCA\Chat\Controller\OCH\ApiController;
-use OCA\Chat\Controller\ConfigController;
-use OCA\Chat\Controller\AdminController;
-use OCP\AppFramework\App;
-use OCA\Chat\OCH\Db\ConversationMapper;
-use OCA\Chat\OCH\Db\MessageMapper;
-use OCA\Chat\OCH\Db\PushMessageMapper;
-use OCA\Chat\OCH\Db\UserMapper;
-use OCA\Chat\OCH\Db\UserOnlineMapper;
-use OCA\Chat\OCH\Db\AttachmentMapper;
-use OCA\Chat\Db\ConfigMapper;
-use OCA\Chat\OCH\Commands\Greet;
-use OCA\Chat\OCH\Commands\Invite;
-use OCA\Chat\OCH\Commands\Join;
-use OCA\Chat\OCH\Commands\Offline;
-use OCA\Chat\OCH\Commands\Online;
-use OCA\Chat\OCH\Commands\SendChatMsg;
-use OCA\Chat\OCH\Commands\StartConv;
-use OCA\Chat\OCH\Commands\SyncOnline;
-use OCA\Chat\OCH\Commands\AttachFile;
-use OCA\Chat\OCH\Commands\RemoveFile;
-use OCA\Chat\OCH\Data\GetUsers;
-use OCA\Chat\OCH\Data\Messages;
-use OCA\Chat\OCH\Push\Get;
-use OCA\Chat\OCH\Push\Delete;
-use OCA\Chat\OCH\OCH;
-use OCA\Chat\XMPP\XMPP;
-use OCA\Chat\BackendManager;
-use OCA\Chat\IBackend;
-use OCA\Chat\Middleware\ErrorMiddleware;
+use \OCA\Chat\IBackend;
+use \OCA\Chat\BackendManager;
+use \OCA\Chat\OCH\Db\UserOnlineMapper;
+use \OCA\Chat\OCH\Commands\SyncOnline;
+use \OCP\IUser;
+use \OCP\Contacts\IManager;
+use \OCP\Files\IRootFolder;
+
 
 /**
  * Class Chat
  * @package OCA\Chat\App
  */
-class Chat extends App{
+class Chat {
 
 	const APP=1;
 	const INTEGRATED=2;
@@ -63,283 +40,34 @@ class Chat extends App{
 	 */
 	private static $userId;
 
-	/**
-	 * @var \OCP\AppFramework\IAppContainer
-	 */
-	private $c;
+	private $backendManager;
 
-	/**
-	 * @var $name of the app
-	 */
-	private $name = 'chat';
+	private $userOnlineMapper;
+
+	private $syncOnline;
+
+	private $user;
+
+	private $contactsManager;
+
+	private $rootFolder;
 
 	public $viewType;
 
-	/**
-	 * @param array $urlParams
-	 */
-	public function __construct(array $urlParams = array()) {
-		parent::__construct('chat', $urlParams);
-
-		$container = $this->getContainer();
-		$this->c = $container;
-		$app = $this;
-
-		$this->c['AppName'] = 'chat';
-		$this->c['appName'] = 'chat';
-
-
-
-
-		/**
-		 * Controllers
-		 */
-		$container->registerService('AppController', function ($c) use($app) {
-			return new AppController(
-				$app->name,
-				$c->query('Request'),
-				$app,
-				$c->query('OCP\Contacts\IManager'),
-				$c->query('OCP\IConfig'),
-				$c->query('GreetCommand')
-			);
-		});
-
-		$container->registerService('ApiController', function ($c) use($app) {
-			return new ApiController(
-				$app->name,
-				$c->query('Request'),
-				$app
-			);
-		});
-
-		$container->registerService('ConfigController', function ($c) use($app) {
-			return new ConfigController(
-				$app->name,
-				$c->query('Request'),
-				$c->query('ConfigMapper'),
-				$c->query('BackendManager')
-			);
-		});
-
-		$container->registerService('AdminController', function ($c) use($app) {
-			return new AdminController(
-				$app->name,
-				$c->query('Request'),
-				$c->query('BackendManager')
-			);
-		});
-
-		/**
-		 * DataMappers
-		 */
-
-		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper(
-				$c->query('OCP\IDb')
-			);
-		});
-
-		$container->registerService('ConversationMapper', function ($c) {
-			return new ConversationMapper(
-				$c->query('OCP\IDb')
-			);
-		});
-
-		$container->registerService('MessageMapper', function ($c) {
-			return new MessageMapper(
-				$c->query('OCP\IDb')
-			);
-		});
-
-		$container->registerService('PushMessageMapper', function ($c) {
-			return new PushMessageMapper(
-				$c->query('OCP\IDb'),
-				$c['UserOnlineMapper'],
-				$c['UserMapper']
-			);
-		});
-
-		$container->registerService('UserMapper', function ($c) {
-			return new UserMapper(
-				$c->query('OCP\IDb')
-			);
-		});
-
-		$container->registerService('UserOnlineMapper', function ($c) {
-			return new UserOnlineMapper(
-				$c->query('OCP\IDb')
-			);
-		});
-
-		$container->registerService('AttachmentMapper', function ($c) use ($app) {
-			return new AttachmentMapper(
-				$c->query('OCP\IDb'),
-				$app
-			);
-		});
-
-		$container->registerService('ConfigMapper', function ($c) use ($app) {
-			return new ConfigMapper(
-				$c->query('OCP\IDb'),
-				$app->getUserId(),
-				$c->query('OCP\Security\ICrypto')
-			);
-		});
-
-		/**
-		 * Command API Requests
-		 */
-		$container->registerService('GreetCommand', function ($c) use($app) {
-			return new Greet(
-				$c->query('PushMessageMapper'),
-				$c->query('UserOnlineMapper')
-			);
-		});
-
-		$container->registerService('InviteCommand', function ($c) use($app) {
-			return new Invite(
-				$c->query('PushMessageMapper'),
-				$c->query('JoinCommand'),
-				$c->query('GetUsersData')
-			);
-		});
-
-		$container->registerService('JoinCommand', function ($c) use($app) {
-			return new Join(
-				$c->query('PushMessageMapper'),
-				$c->query('GetUsersData'),
-				$c->query('UserMapper')
-			);
-		});
-
-		$container->registerService('OfflineCommand', function ($c) use($app) {
-			return new Offline(
-				$c->query('PushMessageMapper'),
-				$c->query('UserOnlineMapper'),
-				$c->query('SyncOnlineCommand')
-			);
-		});
-
-		$container->registerService('OnlineCommand', function ($c) use($app) {
-			return new Online(
-				$c->query('UserOnlineMapper'),
-				$c->query('SyncOnlineCommand')
-			);
-		});
-
-		$container->registerService('SendChatMsgCommand', function ($c) use($app) {
-			return new SendChatMsg(
-				$c->query('UserMapper'),
-				$c->query('PushMessageMapper'),
-				$c->query('MessageMapper')
-			);
-		});
-
-		$container->registerService('StartConvCommand', function ($c) use($app) {
-			return new StartConv(
-				$c->query('MessageMapper'),
-				$c->query('ConversationMapper'),
-				$c->query('InviteCommand'),
-				$c->query('JoinCommand'),
-				$c->query('GetUsersData'),
-				$c->query('MessagesData')
-			);
-		});
-
-
-		$container->registerService('SyncOnlineCommand', function ($c) use($app) {
-			return new SyncOnline(
-				$c->query('UserOnlineMapper')
-			);
-		});
-
-		$container->registerService('AttachFileCommand', function ($c) use($app) {
-			return new AttachFile(
-				$app,
-				$c->query('UserMapper'),
-				$c->query('AttachmentMapper'),
-				$c->query('PushMessageMapper')
-			);
-		});
-
-		$container->registerService('RemoveFileCommand', function ($c) use($app) {
-			return new RemoveFile(
-				$app,
-				$c->query('PushMessageMapper'),
-				$c->query('AttachmentMapper'),
-				$c->query('UserMapper')
-			);
-		});
-
-
-		/**
-		 * Push API Requests
-		 */
-		$container->registerService('GetPush', function ($c) use($app) {
-			return new Get(
-				$c->query('PushMessageMapper')
-			);
-		});
-
-		$container->registerService('DeletePush', function ($c) use($app) {
-			return new Delete(
-				$c->query('PushMessageMapper')
-			);
-		});
-
-		/**
-		 * Data API Requests
-		 */
-		$container->registerService('GetUsersData', function ($c) use($app) {
-			return new GetUsers(
-				$app,
-				$c->query('UserMapper')
-			);
-		});
-
-		$container->registerService('MessagesData', function ($c) use($app) {
-			return new Messages(
-				$c->query('MessageMapper')
-			);
-		});
-
-		/**
-		 * Manager
-		 */
-		$container->registerService('BackendManager', function($c){
-			return new BackendManager();
-		});
-
-		$container->registerService('OCH', function($c) use ($app){
-			return new OCH(
-				$c->query('ConfigMapper'),
-				$c->query('OCP\IConfig'),
-				$c->query('UserMapper'),
-				$c->query('AttachmentMapper'),
-				$c->query('StartConvCommand'),
-				$c->query('MessagesData'),
-				$c->query('JoinCommand'),
-				$app
-			);
-		});
-
-		$container->registerService('XMPP', function($c) use ($app){
-			return new XMPP(
-				$c->query('ConfigMapper'),
-				$c->query('OCP\IConfig'),
-				$app
-			);
-		});
-
-		$container->registerService('ErrorMiddleware', function($c) use ($app){
-			return new ErrorMiddleware($app);
-		});
-
-		// executed in the order that it is registered
-		$container->registerMiddleware('ErrorMiddleware');
-
-
+	public function __construct(
+		BackendManager $backendManager,
+		UserOnlineMapper $userOnlineMapper,
+		SyncOnline $syncOnline,
+		IUser $user,
+		IManager $contactsManager,
+		IRootFolder $rootFolder
+	) {
+		$this->backendManager = $backendManager;
+		$this->userOnlineMapper = $userOnlineMapper;
+		$this->syncOnline = $syncOnline;
+		$this->user = $user;
+		$this->contactsManager = $contactsManager;
+		$this->rootFolder = $rootFolder;
 		$this->setViewType();
 	}
 
@@ -352,17 +80,8 @@ class Chat extends App{
 		}
 	}
 
-	public function query($param){
-		return $this->getContainer()->query($param);
-	}
-
-	public function registerService($name, $callback){
-		return $this->getContainer()->registerService($name, $callback);
-	}
-	
-	
 	public function registerBackend(IBackend $backend){
-		$backendManager = $this->c['BackendManager'];
+		$backendManager = $this->backendManager;
 		$backendManager::registerBackend($backend);
 	}
 
@@ -377,13 +96,13 @@ class Chat extends App{
 			// ***
 			// the following code should be ported
 			// so multiple backends are allowed
-			$userOnlineMapper = $this->c['UserOnlineMapper'];
+			$userOnlineMapper = $this->userOnlineMapper;
 			$usersOnline = $userOnlineMapper->getOnlineUsers();
-			$syncOnline = $this->c['SyncOnlineCommand'];
+			$syncOnline = $this->syncOnline;
 			$syncOnline->execute();
 			// ***
 
-			$cm = $this->c->query('OCP\Contacts\IManager');
+			$cm = $this->contactsManager;
 			$result = $cm->search('',array('FN'));
 			$receivers = array();
 			$contactList = array();
@@ -435,8 +154,7 @@ class Chat extends App{
 	 * @return array
 	 */
 	public function getBackends(){
-		$backendManager = $this->c['BackendManager'];
-		return $backendManager->getEnabledBackends();
+		return $this->backendManager->getEnabledBackends();
 	}
 
 	/**
@@ -465,7 +183,7 @@ class Chat extends App{
 	 */
 	private function contactBackendToBackend(array $emails=array(), array $impps=array()){
 		$backends = array();
-		$backendManager = $this->c['BackendManager'];
+		$backendManager = $this->backendManager;
 
 		if(is_array($emails)){
 			$backend = array();
@@ -508,9 +226,7 @@ class Chat extends App{
 	 * @return \OCA\Chat\IBackend
 	 */
 	private function getBackend($protocol){
-		$backendManager = $this->c['BackendManager'];
-		$backendManager->getBackendByProtocol($protocol);
-
+		$this->backendManager->getBackendByProtocol($protocol);
 	}
 
 	/**
@@ -552,7 +268,7 @@ class Chat extends App{
 	 * @return int id of the file
 	 */
 	public function getFileId($path){
-		$userFolder = $this->query('\OCP\IRootFolder')->getUserFolder();
+		$userFolder = $this->rootFolder->getUserFolder();
 		$file = $userFolder->get($path);
 		return $file->getId();
 	}
@@ -562,9 +278,9 @@ class Chat extends App{
 	 */
 	public function getUserId(){
 		if(is_null(self::$userId)){
-			$user = $this->query('OCP\IUserSession')->getUser();
+			$user = $this->user ;
 			if (is_object($user)){
-				self::$userId = $user->getUID();
+				self::$userId = $this->user->getUID();
 			} else {
 				self::$userId = null;
 			}

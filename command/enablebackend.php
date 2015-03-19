@@ -2,11 +2,11 @@
 
 namespace OCA\Chat\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use OCA\Chat\BackendNotFoundException;
+use \Symfony\Component\Console\Command\Command;
+use \Symfony\Component\Console\Input\InputArgument;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
+use \OCA\Chat\BackendNotFoundException;
 use \OCA\CHat\IBackendManager;
 
 

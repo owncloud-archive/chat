@@ -5,8 +5,17 @@ namespace OCA\Chat\XMPP;
 use \OCA\Chat\IBackend;
 use \OCA\Chat\App\Chat;
 use \OCA\Chat\AbstractBackend;
+use \OCA\Chat\Db\ConfigMapper;
+use \OCP\IConfig;
 
 class XMPP extends AbstractBackend implements IBackend {
+
+	private $app;
+
+	public function __construct(ConfigMapper $configMapper, IConfig $config, Chat $app){
+		parent::__construct($configMapper, $config);
+		$this->app = $app;
+	}
 
 	public function getId(){
 		return 'xmpp';

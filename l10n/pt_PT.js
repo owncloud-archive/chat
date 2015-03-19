@@ -13,9 +13,9 @@ OC.L10N.register(
     "Download " : "Transferir",
     "Attach more files" : "Anexar mais ficheiros",
     "Search in users" : "Procurar nos utilizadores",
-    "There are no Chat Backends enabled." : "Não existem Backends de Chat ativados.",
-    "In order to chat please enable at least one Chat backend." : "Para poder conversar, por favor, ative pelo menos um Backend de Chat.",
-    "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." : "Com o backend 'OCH' podes conversar com outros utilizadores ownCloud. Funciona sem configuração.",
+    "There are no Chat Backends enabled." : "Não existem Interfaces de Conversação ativadas.",
+    "In order to chat please enable at least one Chat backend." : "Para poder conversar, por favor, ative pelo menos uma interface de Conversação.",
+    "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." : "Com a interface 'OCH' pode conversar com os outros utilizadores da  ownCloud. Esta funciona sem configuração.",
     "It can be enabled by running the following command in the root of your ownCloud installation:" : "Isto pode ser ativado, executando o seguinte comando na raiz da sua instalação do ownCloud:",
     "There are no other users on this ownCloud." : "Não existem outros utilizadores nesta ownCloud",
     "In order to chat please create at least one user, it will appear on the left." : "Para poder conversar, por favor, crie pelo menos um utilizador, este irá aparecer na lista á esquerda."

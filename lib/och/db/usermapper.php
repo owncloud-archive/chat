@@ -63,7 +63,7 @@ SQL;
 		$result = $this->execute($sql, array($user));
 
 		$ids = array();
-		while($row = $result->fetchRow()){
+		while($row = $result->fetch()){
 			array_push($ids, $row['conversation_id']);
 		}
 

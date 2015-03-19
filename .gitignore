@@ -4,11 +4,18 @@ phpunit.phar
 build
 node_modules
 vendor
+
+## JS Files ##
 js/admin.min.js
 js/app.min.js
+js/error.min.js
 js/integrated.min.js
-js/main.min.js
-css/main.min.css
-css/integrated.min.css
-css/admin.min.css
+vendor/all.min.js
 
+## CSS Files ##
+css/error.min.css
+css/integrated.min.css
+css/main.min.css
+
+## HTML Files ##
+integrated.min.html

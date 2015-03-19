@@ -16,6 +16,7 @@ angular.module('chat').controller(
 		'backends',
 		'title',
 		'session',
+		'time',
 		function(
 			$scope,
 			$http,
@@ -26,7 +27,8 @@ angular.module('chat').controller(
 			contacts,
 			backends,
 			title,
-			$session
+			$session,
+			Time
 		){
 
 			$(window).unload(function(){
@@ -36,7 +38,6 @@ angular.module('chat').controller(
 			$scope.avatarsEnabled = "true"; // Must be string!
 			//$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
 
-			Chat.scope = $scope;
 
 			$(document).ready(function(){
 				$scope.emojis = $filter('toEmojiArray')(emojione.emojioneList);
@@ -140,6 +141,7 @@ angular.module('chat').controller(
 				 * @param {string} element the element which should be made invisible (should be in the $scope.view.elements array )
 				 */
 				toggle : function(element){
+					console.log(element);
 					$scope.view.elements[element] = !$scope.view.elements[element];
 				},
 
@@ -218,12 +220,11 @@ angular.module('chat').controller(
 			 * This will empty the chat field
 			 * This will make the order of the contacts in the conv the highest
 			 */
-			$scope.sendChatMsg = function(){
-				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
+			$scope.sendChatMsg = function(msg){
+				if (msg !== '' && msg !== null){
 					var backend = convs.get($session.conv).backend.id;
-					convs.addChatMsg($session.conv, $session.user, $scope.fields.chatMsg, Time.now(), backend);
-					backends[backend].handle.sendChatMsg($session.conv, $scope.fields.chatMsg);
-					$scope.fields.chatMsg = '';
+					convs.addChatMsg($session.conv, $session.user, msg, Time.now(), backend);
+					backends[backend].handle.sendChatMsg($session.conv, msg);
 					setTimeout(function(){
 						$('#chat-msg-input-field').trigger('autosize.resize');
 					},1);
@@ -385,8 +386,6 @@ angular.module('chat').controller(
 				$scope.fields.chatMsg = textBefore + ' ' + name + ' ' + textAfter + ' ';
 				$scope.view.hide('emojiContainer');
 			};
-
-			$scope.emojis = Chat.app.util.emojis;
 
 			$scope.contactInRoster = function (id) {
 				return backends.xmpp.handle.contactInRoster(id);

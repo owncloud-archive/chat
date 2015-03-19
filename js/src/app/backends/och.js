@@ -1,5 +1,5 @@
-angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar', function(convs, contacts, $session, initvar) {
-	var api = {
+angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar', 'time', function(convs, contacts, $session, initvar, Time) {
+	api = {
 		command: {
 			attachFile : function(convId, paths, user){
 				api.util.doRequest({
@@ -113,12 +113,24 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 						"conv_id": convId
 					}
 				}, success);
+			},
+			getOldMessages: function (convId, start, stop, success) {
+				api.util.doRequest({
+					"type": "data::messages::request",
+					"data": {
+						"user": $session.user,
+						"session_id": $session.id,
+						"conv_id": convId,
+						"limit": [start, stop]
+					}
+				}, function(data){
+					success(data.data.messages)
+				});
 			}
 		},
 		on: {
 			invite: function (data) {
 				// Here update the view
-				var backend = Chat.app.view.getBackends('och');
 				var convId = data.conv_id;
 				// TODO check if data.user is a user or a contact
 				if (convs.get(convId) === undefined) {
@@ -126,7 +138,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 						// After we joined we should update the users array with all users in this conversation
 						var users = dataJoin.data.users;
 						var msgs = dataJoin.data.messages;
-						convs.addConv(convId, users, backend, msgs);
+						convs.addConv(convId, users, 'och', msgs);
 					});
 				}
 			},
@@ -241,7 +253,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 	return {
 		init : function(){
 			api.util.longPoll();
-			setInterval(api.command.online, 6000);
+			setInterval(api.command.online, 30000);
 			initvar.backends.och.connected = true;
 		},
 		quit : function(){
@@ -276,6 +288,9 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 			api.command.removeFile(convId, path);
 		},
 		configChanged : function(){
+		},
+		getOldMessages : function (convId, start, stop, success) {
+			api.command.getOldMessages(convId, start, stop, success);
 		}
 	};
 }]);

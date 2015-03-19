@@ -34,9 +34,9 @@ class PushMessageMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp(){
 		$this->app = new Chat();
-		$this->pushMessageMapper = $this->app->c['PushMessageMapper'];
-		$this->userOnlineMapper = $this->app->c['UserOnlineMapper'];
-		$this->userMapper = $this->app->c['UserMapper'];
+		$this->pushMessageMapper = $this->app->query('PushMessageMapper');
+		$this->userOnlineMapper = $this->app->query('UserOnlineMapper');
+		$this->userMapper = $this->app->query('UserMapper');
 	}
 
 	public function pushMessageProvider(){

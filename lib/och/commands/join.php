@@ -7,20 +7,44 @@
 
 namespace OCA\Chat\OCH\Commands;
 
-use OCA\Chat\Controller\OCH\ApiController;
+use \OCA\Chat\Controller\OCH\ApiController;
 use \OCA\Chat\OCH\ChatAPI;
-use \OCA\Chat\Core\API;
 use \OCA\Chat\OCH\Db\User;
 use \OCA\Chat\OCH\Db\UserMapper;
-use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Db\PushMessageMapper;
-use OCA\Chat\OCH\Exceptions\RequestDataInvalid;
-use OCA\Chat\OCH\Db\InitConv;
+use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
+use \OCA\Chat\OCH\Db\InitConv;
 use \OCA\Chat\OCH\Data\GetUsers;
-use \OCA\Chat\OCH\Data\Messages;
+use \OCA\Chat\App\Chat;
 
 
 class Join extends ChatAPI {
+
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	/**
+	 * @var $getUsers \OCA\Chat\OCH\Data\GetUsers
+	 */
+	private $getUsers;
+
+	/**
+	 * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
+	 */
+	private $userMapper;
+
+	public function __construct(
+		PushMessageMapper $pushMessageMapper,
+		GetUsers $getUsers,
+		UserMapper $userMapper
+	){
+		$this->pushMessageMapper = $pushMessageMapper;
+		$this->getUsers = $getUsers;
+		$this->userMapper  = $userMapper;
+	}
+
 
 	public function setRequestData(array $requestData){
 		if(empty($requestData['conv_id'])){
@@ -32,20 +56,17 @@ class Join extends ChatAPI {
 	public function execute(){
 
 		// Add the user to the conversation
-		$userMapper = $this->c['UserMapper'];
 		$user = new User();
 		$user->setConversationId($this->requestData['conv_id']);
 		$user->setJoined(time());
 		$user->setUser($this->requestData['user']['id']);
-		$userMapper->insertUnique($user);
+		$this->userMapper->insertUnique($user);
 
-		$getUsers = $this->c['GetUsersData'];
-		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-		$users = $getUsers->execute();
+		$this->getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $this->getUsers->execute();
 		$users = $users['users'];
 		if(count($users) > 2){
 			// we are in a group conv this mean we have to let the other users now we joined it
-			$pushMessageMapper = $this->c['PushMessageMapper'];
 			$command = json_encode(array(
 				"type" => "joined",
 				"data" => array(
@@ -53,19 +74,16 @@ class Join extends ChatAPI {
 					"users" => $users
 				)
 			));
-			$pushMessageMapper->createForAllUsersInConv(
+			$this->pushMessageMapper->createForAllUsersInConv(
 				$this->requestData['user']['id'],
 				$this->requestData['conv_id'],
 				$command
 			);
 		}
 
-		$getUsers = $this->c['GetUsersData'];
-		$getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
-		$users = $getUsers->execute();
+		$this->getUsers->setRequestData(array("conv_id" => $this->requestData['conv_id']));
+		$users = $this->getUsers->execute();
 
 		return $users;
-		// Return users as contacts because this is needed for the client
-
 	}
 }

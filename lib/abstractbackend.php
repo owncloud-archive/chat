@@ -2,31 +2,26 @@
 
 namespace OCA\Chat;
 
-use OCA\Chat\App\Chat;
+use \OCP\IConfig;
+use \OCA\Chat\Db\ConfigMapper;
 
 abstract class AbstractBackend implements IBackend {
 
 	protected static $initConvs = array();
 
 	/**
-	 * @var \OCA\Chat\App\Chat
+	 * @var \OCP\IConfig
 	 */
-	protected $app;
-
-	/**
-	 * @var \OCP\AppFramework\IAppContainer
-	 */
-	protected $c;
+	private $config;
 
 	/**
 	 * @var \OCA\Chat\Db\ConfigMapper
 	 */
 	private $configMapper;
 
-	function __construct(Chat $app){
-		$this->app = $app;
-		$this->c = $app->getContainer();
-		$this->configMapper = $this->c['ConfigMapper'];
+	function __construct(ConfigMapper $configMapper, IConfig $config){
+		$this->configMapper = $configMapper;
+		$this->config = $config;
 	}
 
 	public function hasProtocol($protocol){
@@ -49,7 +44,7 @@ abstract class AbstractBackend implements IBackend {
 	}
 
 	public function isEnabled(){
-		return \OCP\Config::getAppValue('chat', 'backend_' . $this->getId() .  '_enabled', true);
+		return $this->config->getAppValue('chat', 'backend_' . $this->getId() .  '_enabled', true);
 	}
 
 	public function getConfig(){

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Chat" : "Чат",
     "{displayname} attached {path} to this conversation" : "{displayname} додав {path} до цієї розмови",
     "{displayname} removed {path} from this conversation" : "{displayname} видалив {path} з цієї розмови",
+    "Start a chat with ..." : "Почати чат з ...",
     "Search in conversations" : "Пошук в розмовах",
     "Add Person" : "Додати персону",
     "View Attached files" : "Переглянути Прикріплені файли",
@@ -15,6 +16,7 @@ OC.L10N.register(
     "There are no Chat Backends enabled." : "Не ввімкнено жодного додатку для Чату",
     "In order to chat please enable at least one Chat backend." : "Щоб розпочати чат, ввімкніть, будь ласка, хоча б один додаток Чату.",
     "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." : "Користуючись додатком 'OCH', ви зможете спілкуватися з іншими користувачами ownCloud. Він працює без додаткових налаштувань.",
+    "It can be enabled by running the following command in the root of your ownCloud installation:" : "Воно може бути включено, виконавши наступну команду в кореневому каталозі установки OwnCloud:",
     "There are no other users on this ownCloud." : "Тут немае інших користувачів ownCloud.",
     "In order to chat please create at least one user, it will appear on the left." : "Для того, щоб побалакати будь ласка, створіть хоча б одного користувача, він з'явиться зліва."
 },

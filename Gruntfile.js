@@ -6,6 +6,7 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+				beautify: false,
 				mangle: false
 			},
 			build: {
@@ -25,6 +26,9 @@ module.exports = function(grunt) {
 					'js/admin.min.js' : [
 						'js/admin/src/*.js'
 					],
+					'js/error.min.js' : [
+						'js/error/src/*.js'
+					],
 					'vendor/all.min.js' : [
 						'vendor/angular/angular.min.js',
 						'vendor/angular-enhance-text/build/angular-enhance-text.min.js',
@@ -34,7 +38,7 @@ module.exports = function(grunt) {
 						'vendor/moment/min/moment.min.js',
 						'vendor/rangyinputs-jquery-src/index.js',
 						'vendor/strophe/strophe.min.js',
-						'vendor/emojione/lib/js/emojione.min.js'
+						'vendor/emojione/lib/js/emojione.min.js',
 					]
 				}
 			}
@@ -49,9 +53,12 @@ module.exports = function(grunt) {
 					],
 					'css/admin.min.css' : [
 						'css/admin/src/*.css'
-					]					,
+					],
 					'css/integrated.min.css' : [
 						'css/integrated/src/*.css'
+					],
+					'css/error.min.css' : [
+						'css/error/src/*.css'
 					]
 				}
 			}
@@ -107,12 +114,24 @@ module.exports = function(grunt) {
 					singleRun: true
 				}
 			}
+		},
+		htmlmin: {
+			dist: {
+				options: {
+					removeComments: true,
+					collapseWhitespace: true
+				},
+				files: {
+					'integrated.min.html': 'integrated.html'
+				}
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-karma');
-	grunt.registerTask('default', ['uglify', 'cssmin']);
+	grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin']);
 
 };

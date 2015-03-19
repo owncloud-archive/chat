@@ -1,0 +1,47 @@
+.chat-row {
+	padding-left: 60px;
+	padding-right: 140px;
+	min-height: 20px;
+	height: auto;
+}
+
+#chat-wrapper {
+	min-height:44px;
+	padding-top:80px; /* must be equal as bottom */
+	bottom:80px; /* size of the footer */
+	position:absolute;
+	max-height:100%;
+	overflow-y:auto;
+	width:100%;
+	margin-right:13px;
+}
+
+
+#chat-wrapper * {
+	box-sizing: content-box;
+}
+
+.chat-row .column {
+	position: relative;
+	float: left;
+}
+.chat-msg {
+	padding: 0px 20px;
+	width: 100%;
+}
+
+.chat-avatar {
+	margin-left: -100%;
+	right: 100px;
+}
+
+.chat-time {
+	width: 80px;
+	padding: 0px 10px;
+	margin-right: -100%;
+	color: #adadad;
+}
+
+.height-40{
+	min-height: 40px;
+}

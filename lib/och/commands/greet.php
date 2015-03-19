@@ -10,9 +10,28 @@ namespace OCA\Chat\OCH\Commands;
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\UserOnline;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
-use \OCA\Chat\OCH\Db\PushMessage;
+use \OCA\CHat\OCH\Db\PushMessageMapper;
+use \OCA\Chat\App\Chat;
 
 class Greet extends ChatAPI {
+
+	/**
+	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+	 */
+	private $pushMessageMapper;
+
+	/**
+	 * @var $userOnlineMapper \OCA\Chat\OCH\Db\UserOnlineMapper
+	 */
+	private $userOnlineMapper;
+
+	public function __construct(
+		PushMessageMapper $pushMessageMapper,
+		UserOnlineMapper $userOnlineMapper
+	){
+		$this->pushMessageMapper = $pushMessageMapper;
+		$this->userOnlineMapper = $userOnlineMapper;
+	}
 
 	/*
 	 * @param $requestData['user'] String user id of the client
@@ -30,8 +49,7 @@ class Greet extends ChatAPI {
 		$userOnline->setUser($requestData['user']['id']);
 		$userOnline->setSessionId($sessionId);
 		$userOnline->setLastOnline($requestData['timestamp']);
-		$mapper = $this->c['UserOnlineMapper'];
-		$mapper->insert($userOnline);
+		$this->userOnlineMapper->insert($userOnline);
 
 
 		// The user is now online
@@ -44,8 +62,7 @@ class Greet extends ChatAPI {
 			)
 		));
 
-		$pushMessageMapper = $this->c['PushMessageMapper'];
-		$pushMessageMapper->createForAllSessions(
+		$this->pushMessageMapper->createForAllSessions(
 			$this->requestData['user']['id'],
 			$command
 		);

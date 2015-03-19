@@ -9,11 +9,41 @@ namespace OCA\Chat\OCH\Commands;
 
 use \OCA\Chat\OCH\ChatAPI;
 use \OCA\Chat\OCH\Db\Attachment;
+use OCA\Chat\OCH\Db\AttachmentMapper;
 use \OCA\Chat\OCH\Db\PushMessage;
 use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use \OCA\Chat\Controller\OCH\ApiController;
 
 class RemoveFile extends ChatAPI {
+
+    /**
+     * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
+     */
+    private $pushMessageMapper;
+
+    /**
+     * @var $attachmentMapper \OCA\Chat\OCH\Db\AttachmentMapper
+     */
+    private $attachmentMapper;
+
+    /**
+     * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
+     */
+    private $userMapper;
+
+    public function __construct(
+        Chat $app,
+        PushMessageMapper $pushMessageMapper,
+        AttachmentMapper $attachmentMapper,
+        UserMapper $userMapper
+    ){
+        $this->app = $app;
+        $this->pushMessageMapper = $pushMessageMapper;
+        $this->attachmentMapper = $attachmentMapper;
+        $this->userMapper = $userMapper;
+    }
+
+
 
 	/*
 	 * @param $requestData['user'] String user id of the client
@@ -22,8 +52,7 @@ class RemoveFile extends ChatAPI {
 	*/
 	public function setRequestData(array $requestData){
 		$this->requestData = $requestData;
-        $attachmentMapper = $this->c['AttachmentMapper'];
-        $attachment = $attachmentMapper->findByPathAndConvId($this->requestData['path'], $this->requestData['conv_id']);
+        $attachment = $this->attachmentMapper->findByPathAndConvId($this->requestData['path'], $this->requestData['conv_id']);
         if ($attachment->getOwner() !== $this->app->getUserId()){
             throw new RequestDataInvalid(ApiController::NOT_OWNER_OF_FILE);
         }
@@ -32,14 +61,12 @@ class RemoveFile extends ChatAPI {
 	public function execute(){
 
 		$fileId = $this->app->getFileId($this->requestData['path']);
-		$attachmentMapper = $this->c['AttachmentMapper'];
 		$file = new Attachment();
 		$file->setConvId($this->requestData['conv_id']);
 		$file->setFileId($fileId);
-		$attachmentMapper->deleteByConvAndFileID($file);
+		$this->attachmentMapper->deleteByConvAndFileID($file);
         $this->sendPushMessage($this->requestData['path']);
-		$userMapper = $this->c['UserMapper'];
-		$users = $userMapper->findUsersInConv($this->requestData['conv_id']);
+		$users = $this->userMapper->findUsersInConv($this->requestData['conv_id']);
 		foreach ($users as $user) {
 			if ($user !== $this->app->getUserId()) {
 				$this->unShare($fileId, $user);
@@ -60,9 +87,7 @@ class RemoveFile extends ChatAPI {
 	}
 
     private function sendPushMessage($path){
-        $userMapper = $this->c['UserMapper'];
-        $users = $userMapper->findSessionsByConversation($this->requestData['conv_id']);
-        $pushMessageMapper = $this->c['PushMessageMapper'];
+        $users = $this->userMapper->findSessionsByConversation($this->requestData['conv_id']);
         $command = json_encode(array(
             'type' => 'file_removed',
             'data' => array(
@@ -79,7 +104,7 @@ class RemoveFile extends ChatAPI {
                 $pushMessage->setReceiver($receiver->getUser());
                 $pushMessage->setReceiverSessionId($receiver->getSessionId());
                 $pushMessage->setCommand($command);
-                $pushMessageMapper->insert($pushMessage);
+                $this->pushMessageMapper->insert($pushMessage);
             }
         }
     }

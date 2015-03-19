@@ -2,19 +2,24 @@
 
 namespace OCA\Chat\Command;
 
-use OCP\AppFramework\App;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use OCA\Chat\BackendNotFoundException;
+use \Symfony\Component\Console\Command\Command;
+use \Symfony\Component\Console\Input\InputArgument;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
+use \OCA\Chat\BackendNotFoundException;
+use \OCA\CHat\IBackendManager;
+
 
 class EnableBackend extends Command {
 
-	private $app;
+	/**
+	 * @var BackendManager OCA\Chat\IBackendManager
+	 */
+	private $backendManager;
 
-	public function __construct(App $app){
-		$this->app = $app;
+
+	public function __construct(IBackendManager $backendManager){
+		$this->backendManager = $backendManager;
 		parent::__construct();
 	}
 	
@@ -31,9 +36,8 @@ class EnableBackend extends Command {
 
 	public function execute(InputInterface $input, OutputInterface $output){
 		$backend = $input->getArgument('backend');
-		$backendManager = $this->app->c['BackendManager'];
 		try {
-			$backendManager->enableBackend($backend);
+			$this->backendManager->enableBackend($backend);
 			$output->writeln("Chat Backend '". $backend . "' is enabled.");
 		} Catch (BackendNotFoundException $e) {
 			$output->writeln("<error>Chat Backend does not exists.</error>");

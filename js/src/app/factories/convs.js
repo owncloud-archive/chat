@@ -1,4 +1,4 @@
-angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', function(contacts, $filter, title, $session, $injector) {
+angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'session', '$injector', 'time', '$rootScope', '$sce', function(contacts, $filter, title, $session, $injector, Time, $rootScope, $sce) {
 	var convs = {};
 
 	return {
@@ -87,14 +87,17 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			var contact = user;
 			convs[convId].msgs.push({
 				contact : contact,
-				msg : $.trim(msg),
+				//msg.msg | enhanceFiles | emoji | enhanceText
+				msg : msg,
 				timestamp : timestamp,
-				time : Chat.app.util.timeStampToDate(timestamp),
+				time : Time.timestampToObject(timestamp),
+				time_read : Time.format(timestamp)
 			});
 
 			// Add raw msgs to raw_msgs
 			convs[convId].raw_msgs.push({"msg" : msg, "timestamp" : timestamp, "user" : user});
 			convs[convId].order = this.getHighestOrder() +1;
+			$rootScope.$broadcast('scrollBottom');
 		},
 		/**
 		 * This will replace the users in an existing conversation
@@ -134,14 +137,9 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			}
 		},
 		makeActive : function(convId, $event, exception) {
-			$scope = $('#app').scope();
-			if (!$scope.$$phase) {
-				$scope.$apply(function () {
-					$scope.view.makeActive(convId, $event, exception);
-				});
-			} else {
-				$scope.view.makeActive(convId, $event, exception);
-			}
+			$session.conv = convId;
+			this.convs[convId].new_msg = false;
+			$('#chat-msg-input-field').focus();
 		},
 		attachFile : function(convId, path, timestamp, user){
 			if(timestamp === undefined){
@@ -166,6 +164,6 @@ angular.module('chat').factory('convs', ['contacts', '$filter', 'title', 'sessio
 			} else {
 				return true;
 			}
-		}
+		},
 	};
 }]);

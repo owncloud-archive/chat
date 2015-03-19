@@ -1,7 +1,12 @@
 <div id="filter-container">
 	<!-- Field to start an instant chat via XMPP -->
 	<form ng-submit="view.startInstantChat()">
-		<input type="text" placeholder="<?php p($l->t('Start a chat with ...'));?>" ng-model="fields.jid" >
+		<input
+			type="text"
+			placeholder="<?php p($l->t('Start a chat with ...'));?>"
+			ng-model="fields.jid"
+			ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
+			>
 	</form>
 	<!-- Field to search in the conversations -->
 	<input class="filter-field" type="text" placeholder="<?php p($l->t('Search in conversations'));?>" ng-model="search.name">
@@ -13,12 +18,12 @@
 		ng-class="{heightInvite: view.elements.inviteInput, 'conv-list-active' : conv.id === $session.conv}"
 		ng-click="view.makeActive(conv.id, $event, 'invite-button');"
 		class="conv-list-item"
-		id="conv-list-{{ conv.id }}"
+		id="conv-list-{{::conv.id }}"
 		auto-height
-		data-item-count="{{ conv.users.length -1 }}"
+		data-item-count="{{::conv.users.length -1 }}"
 		data-item-height="50"
 		data-min-height="60"
-		data-conv-id="{{ conv.id }}"
+		data-conv-id="{{::conv.id }}"
 		>
 		<?php print_unescaped($this->inc('part.avatar')) ?>
 		<!-- These buttons are shown on the right side of the enty -->

@@ -16,6 +16,7 @@ angular.module('chat').controller(
 		'backends',
 		'title',
 		'session',
+		'time',
 		function(
 			$scope,
 			$http,
@@ -26,7 +27,8 @@ angular.module('chat').controller(
 			contacts,
 			backends,
 			title,
-			$session
+			$session,
+			Time
 		){
 
 			$(window).unload(function(){
@@ -35,11 +37,15 @@ angular.module('chat').controller(
 
 			$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
 
-			Chat.scope = $scope;
+			$CCS = $scope;
 
 			$(document).ready(function(){
 				$scope.emojis = $filter('toEmojiArray')(emojione.emojioneList);
 			});
+
+
+			//$scope.msgs = $filter('orderBy')([{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"test","timestamp":1424439328,"time":{"hours":14,"minutes":"35","seconds":28},"time_read":"February 20, 2015 2:35","avatar":true,"$$hashKey":"object:178"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"test","timestamp":1424439327,"time":{"hours":14,"minutes":"35","seconds":27},"time_read":"February 20, 2015 2:35","avatar":false,"$$hashKey":"object:177"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"test","timestamp":1424439325,"time":{"hours":14,"minutes":"35","seconds":25},"time_read":"February 20, 2015 2:35","avatar":false,"$$hashKey":"object:176"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus nulla ligula, sit amet semper leo pellentesque ut. Maecenas ac nulla luctus, auctor metus eu, dignissim ipsum. Sed gravida ipsum diam, et fermentum magna sodales in. Sed aliquam, mauris ac eleifend pulvinar, turpis est luctus eros, ut tristique nisl nisi ut velit. Praesent ornare libero at nibh pharetra, quis tristique ex tristique. Cras elementum imperdiet accumsan. Morbi lacinia a nisl eu volutpat. Aenean elementum libero vestibulum nulla sagittis hendrerit. In vulputate tortor quis ornare gravida. ","timestamp":1424438072,"time":{"hours":14,"minutes":"14","seconds":32},"time_read":"February 20, 2015 2:14","avatar":false,"$$hashKey":"object:175"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus nulla ligula, sit amet semper leo pellentesque ut. Maecenas ac nulla luctus, auctor metus eu, dignissim ipsum. Sed gravida ipsum diam, et fermentum magna sodales in. Sed aliquam, m","timestamp":1424438014,"time":{"hours":14,"minutes":"13","seconds":34},"time_read":"February 20, 2015 2:13","avatar":false,"$$hashKey":"object:174"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus nulla ligula, sit amet semper leo pellentesque ut. Maecenas ac nulla luctus, auctor metus eu, dignissim ipsum. Sed gravida ipsum diam, et fermentum magna sodales in. Sed aliquam, m","timestamp":1424437955,"time":{"hours":14,"minutes":"12","seconds":35},"time_read":"February 20, 2015 2:12","avatar":false,"$$hashKey":"object:173"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus nulla ligula, sit amet semper leo pellentesque ut. Maecenas ac nulla luctus, auctor metus eu, dignissim ipsum. Sed gravida ipsum diam, et fermentum magna sodales in. Sed aliquam, m","timestamp":1424437953,"time":{"hours":14,"minutes":"12","seconds":33},"time_read":"February 20, 2015 2:12","avatar":false,"$$hashKey":"object:172"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus nulla ligula, sit amet semper leo pellentesque ut. Maecenas ac nulla luctus, auctor metus eu, dignissim ipsum. Sed gravida ipsum diam, et fermentum magna sodales in. Sed aliquam, m","timestamp":1424437950,"time":{"hours":14,"minutes":"12","seconds":30},"time_read":"February 20, 2015 2:12","avatar":false,"$$hashKey":"object:171"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"test","timestamp":1424437922,"time":{"hours":14,"minutes":"12","seconds":2},"time_read":"February 20, 2015 2:12","avatar":false,"$$hashKey":"object:170"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test9","timestamp":1423994096,"time":{"hours":10,"minutes":"54","seconds":56},"time_read":"February 15, 2015 10:54","avatar":true,"$$hashKey":"object:168"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test10","timestamp":1423994096,"time":{"hours":10,"minutes":"54","seconds":56},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:169"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test8","timestamp":1423994095,"time":{"hours":10,"minutes":"54","seconds":55},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:167"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test7","timestamp":1423994094,"time":{"hours":10,"minutes":"54","seconds":54},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:166"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test6","timestamp":1423994093,"time":{"hours":10,"minutes":"54","seconds":53},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:165"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test5","timestamp":1423994092,"time":{"hours":10,"minutes":"54","seconds":52},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:164"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test4","timestamp":1423994091,"time":{"hours":10,"minutes":"54","seconds":51},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:163"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test","timestamp":1423994090,"time":{"hours":10,"minutes":"54","seconds":50},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:162"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test","timestamp":1423994088,"time":{"hours":10,"minutes":"54","seconds":48},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:161"},{"contact":{"id":"derp","online":false,"displayname":"derp","order":7,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"derp"}],"address_book_id":"","address_book_backend":"local","$$hashKey":"object:77"},"msg":"test1","timestamp":1423994087,"time":{"hours":10,"minutes":"54","seconds":47},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:160"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"59","timestamp":1423994054,"time":{"hours":10,"minutes":"54","seconds":14},"time_read":"February 15, 2015 10:54","avatar":true,"$$hashKey":"object:158"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"60","timestamp":1423994054,"time":{"hours":10,"minutes":"54","seconds":14},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:159"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"58","timestamp":1423994053,"time":{"hours":10,"minutes":"54","seconds":13},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:157"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"56","timestamp":1423994052,"time":{"hours":10,"minutes":"54","seconds":12},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:155"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"57","timestamp":1423994052,"time":{"hours":10,"minutes":"54","seconds":12},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:156"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"55","timestamp":1423994051,"time":{"hours":10,"minutes":"54","seconds":11},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:154"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"54","timestamp":1423994050,"time":{"hours":10,"minutes":"54","seconds":10},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:153"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"5","timestamp":1423994049,"time":{"hours":10,"minutes":"54","seconds":9},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:152"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"52","timestamp":1423994048,"time":{"hours":10,"minutes":"54","seconds":8},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:151"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"51","timestamp":1423994047,"time":{"hours":10,"minutes":"54","seconds":7},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:150"},{"contact":{"id":"admin","online":true,"displayname":"admin","order":1,"saved":true,"backends":[{"id":"email","displayname":"E-mail","protocol":"email","namespace":" email","value":[[]]},{"id":"och","displayname":"ownCloud Chat","protocol":"x-owncloud-handle","namespace":"och","value":"admin"}],"address_book_id":"","address_book_backend":"local"},"msg":"50","timestamp":1423994046,"time":{"hours":10,"minutes":"54","seconds":6},"time_read":"February 15, 2015 10:54","avatar":false,"$$hashKey":"object:149"}]
+			//	, 'timestamp');
 
 			/**
 			 * Object used to interact with the view
@@ -51,7 +57,7 @@ angular.module('chat').controller(
 				 * @var {object} elements
 				 */
 				elements : {
-					"chat" : false,
+					"chat" : true,
 					"initDone" : false,
 					"settings" : false,
 					"emojiContainer" : false,
@@ -148,22 +154,11 @@ angular.module('chat').controller(
 				 * @param {string} exception - when this is provided the function call will be ignored when it was this param which was clicked
 				 */
 				makeActive : function(convId, $event, exception){
-					$scope.view.hide('emptyMsg');
-					$scope.view.show('chat', $event, exception);
+					//$scope.view.hide('emptyMsg');
+					//$scope.view.show('chat', $event, exception);
 					$session.conv = convId;
 					$scope.view.focusMsgInput();
 					convs.get(convId).new_msg = false;
-					$("#chat-msg-input-field").autosize({
-						callback : function(){
-							var height = $("#chat-msg-input-field").height();
-							height = height + 15;
-							$('#chat-window-footer').height(height);
-							$('#chat-window-body').css('bottom', height);
-							$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-							var height = $("#chat-window-footer").height();
-							$('#emoji-container').css('bottom', height + 20);
-						}
-					});
 				},
 				/**
 				 * This will unActive all conversations
@@ -175,7 +170,7 @@ angular.module('chat').controller(
 				 * This will focus the chat input field
 				 */
 				focusMsgInput : function(){
-					$('#chat-msg-input-field');
+					$('#chat-msg-input-field').focus();
 				},
 				unShare : function(convId, path, timestamp, user, key){
 					var backend = $scope.convs[convId].backend.id;
@@ -216,12 +211,11 @@ angular.module('chat').controller(
 			 * This will empty the chat field
 			 * This will make the order of the contacts in the conv the highest
 			 */
-			$scope.sendChatMsg = function(){
-				if ($scope.fields.chatMsg !== '' && $scope.fields.chatMsg !== null){
+			$scope.sendChatMsg = function(msg){
+				if (msg !== '' && msg !== null){
 					var backend = convs.get($session.conv).backend.id;
-					convs.addChatMsg($session.conv, $session.user, $scope.fields.chatMsg, Time.now(), backend);
-					backends[backend].handle.sendChatMsg($session.conv, $scope.fields.chatMsg);
-					$scope.fields.chatMsg = '';
+					convs.addChatMsg($session.conv, $session.user, msg, Time.now(), backend);
+					backends[backend].handle.sendChatMsg($session.conv, msg);
 					setTimeout(function(){
 						$('#chat-msg-input-field').trigger('autosize.resize');
 					},1);
@@ -240,11 +234,23 @@ angular.module('chat').controller(
 			/**
 			 * @var {object} convs
 			 */
-			$scope.convs =  convs.convs; // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
-
-			$scope.contacts = contacts.contacts  // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
+			$scope.convs =  convs.convs; // DO NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE SO IT CAN BE USED IN THE VIEW
+			$scope.contacts = contacts.contacts // DO NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE SO IT CAN BE USED IN THE VIEW
 			$scope.backends = backends;
+			$scope.msgs = [];
 
+			$scope.$watch('convs', function () {
+				$scope.msgs = $filter('orderBy')(convs.convs[$session.conv].msgs, 'timestamp');
+			},true);
+
+			$scope.$watch('$session.conv', function () {
+				$scope.msgs = $filter('orderBy')(convs.convs[$session.conv].msgs, 'timestamp');
+				$scope.$broadcast('scrollBottom');
+			});
+
+			window.onresize = function(event) {
+				$scope.$broadcast('scrollBottom');
+			};
 			/**
 			 * @var {object} initConvs
 			 */
@@ -384,8 +390,6 @@ angular.module('chat').controller(
 				$scope.view.hide('emojiContainer');
 			};
 
-			$scope.emojis = Chat.app.util.emojis;
-
 			$scope.contactInRoster = function (id) {
 				return backends.xmpp.handle.contactInRoster(id);
 			};
@@ -395,6 +399,23 @@ angular.module('chat').controller(
 				return contact.saved;
 			};
 
+			$scope.loadOldMessages = function (convId) {
+				// first count the current messages
+				var amount = convs.get(convId).msgs.length;
+				// next calculate the position of the next 10 messages
+				var backend = convs.get(convId).backend.id;
+				backends[backend].handle.getOldMessages(convId, amount, 10, function (msgs) {
+					console.log(msgs);
+					for (var key in msgs){
+						var msg = msgs[key];
+						convs.addChatMsg(convId, contacts.contacts[msg.user], msg.msg, msg.timestamp, backend);
+					}
+				});
+			};
+
+			$scope.toTrust = function(html_code) {
+				return $sce.trustAsHtml(html_code);
+			}
 			init();
 		}
 	]

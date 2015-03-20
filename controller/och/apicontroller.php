@@ -13,8 +13,9 @@ use \OCA\Chat\OCH\Exceptions\RequestDataInvalid;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
-use OCA\Chat\Db\DBException;
-use OCA\Chat\App\Chat;
+use \OCA\Chat\Db\DBException;
+use \OCA\Chat\App\Chat;
+use \OCA\Chat\App\Container;
 
 class ApiController extends Controller {
 

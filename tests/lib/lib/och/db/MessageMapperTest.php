@@ -8,15 +8,15 @@
 
 namespace OCA\Chat\OCH\Db;
 
-use OCA\Chat\App\Chat;
+use OCA\Chat\App\Container;
 
 
 class MessageMapperTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var \OCA\Chat\App\Chat
+	 * @var \OCA\Chat\App\Container
 	 */
-	public $app;
+	public $container;
 
 	/**
 	 * @var \OCA\Chat\OCH\Db\MessageMapper
@@ -30,9 +30,9 @@ class MessageMapperTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function setUp(){
-		$this->app = new Chat();
-		$this->messageMapper = $this->app->query('MessageMapper');
-		$this->userMapper = $this->app->query('UserMapper');
+		$this->container = new Container();
+		$this->messageMapper = $this->container->query('MessageMapper');
+		$this->userMapper = $this->container->query('UserMapper');
 	}
 
 	public function messageProvider(){

@@ -7,34 +7,55 @@
 
 namespace OCA\Chat\App;
 
-use OCA\Chat\OCH\OCH;
-
 class ChatTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @var \OCA\Chat\App\Chat
-	 */
-	public $app;
+	public function setUp(){
+		$this->userOnlineMapper = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->och = $this->getMockBuilder('\OCA\Chat\OCH\OCH')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->syncOnline = $this->getMockBuilder('\OCA\Chat\OCH\Commands\SyncOnline')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->contactsManager = $this->getMockBuilder('\OCP\Contacts\IManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->backendManager = $this->getMockBuilder('\OCA\Chat\IBackendManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->user = $this->getMockBuilder('\OCP\IUser')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->rootFolder = $this->getMockBuilder('\OCP\Files\IRootFolder')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->chat =  new Chat(
+			$this->backendManager,
+			$this->userOnlineMapper,
+			$this->syncOnline,
+			$this->user,
+			$this->contactsManager,
+			$this->rootFolder
+		);
+
+
+	}
 
 	public function contactsProvider() {
-		$app = new Chat(array(), true);
-		$OCHBackend = return new OCH(
-			$c->query('ConfigMapper'),
-			$c->query('OCP\IConfig'),
-			$c->query('UserMapper'),
-			$c->query('AttachmentMapper'),
-			$c->query('StartConvCommand'),
-			$c->query('MessagesData'),
-			$c->query('JoinCommand'),
-			$app
-		);
 		return array(
 			array(
-				$app,
 				array(
 					'foo'
 				),
-				$OCHBackend,
 				array(
 					0 => array(
 						'id' => 'foo',
@@ -271,38 +292,29 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider contactsProvider
 	 */
-	public function testGetContacts(Chat $app, $onlineUsers, $OCHBackend, $rawContacts, $parsedContacts) {
-		$app->c['UserOnlineMapper'] = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
-			->disableOriginalConstructor()
-			->getMock();
-		$app->c['UserOnlineMapper']->expects($this->any())
+	public function testGetContacts($onlineUsers, $rawContacts, $parsedContacts) {
+		$this->userOnlineMapper->expects($this->any())
 			->method('getOnlineUsers')
 			->will($this->returnValue($onlineUsers));
 
-		$app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
-			->disableOriginalConstructor()
-			->getMock();
-		$app->c['BackendManager']->expects($this->any())
+		$this->och->expects($this->any())
+			->method('getId')
+			->will($this->returnValue('och'));
+
+		$this->och->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('ownCloud Chat'));
+
+		$this->backendManager->expects($this->any())
 			->method('getBackendByProtocol')
-			->will($this->returnValue($OCHBackend));
+			->will($this->returnValue($this->och));
 
-
-		$app->c['SyncOnlineCommand'] = $this->getMockBuilder('\OCA\Chat\OCH\Commands\SyncOnline')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$app->c['ContactsManager']->expects($this->any())
+		$this->contactsManager->expects($this->any())
 			->method('search')
 			->will($this->returnValue($rawContacts));
 
-		$result = $app->getContacts();
+		$result = $this->chat->getContacts();
 		$this->assertEquals($parsedContacts, $result);
-
-
 	}
 
 
@@ -312,60 +324,32 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @depends      testGetContacts
 	 * @dataProvider contactsProvider
-	 */
-	public function testGetContactsCache($onlineUsers, $OCHBackend, $rawContacts, $parsedContacts) {
-		$app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$app->c['ContactsManager']->expects($this->never())
+//	 */
+	public function testGetContactsCache($onlineUsers, $rawContacts, $parsedContacts) {
+		$this->contactsManager->expects($this->never())
 			->method('search');
 
-		$result = $app->getContacts();
+		$result = $this->chat->getContacts();
 		$this->assertEquals($parsedContacts, $result);
 	}
 
-	public function backendProvider() {
-		$app = new Chat(array(), true);
-		$OCHBackend = $app->query('OCH');
-		return array(
-			array(
-				$app,
-				$OCHBackend
-			)
-		);
-	}
 
-	/**
-	 * @dataProvider backendProvider
-	 */
-	public function testGetBackends($app, $backend) {
-		$app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
-			->disableOriginalConstructor()
-			->getMock();
-
-		// Mock the exist method so, that it returns true
-		$app->c['BackendManager']->expects($this->once())
+	public function testGetBackends() {
+		$this->backendManager->expects($this->once())
 			->method('getEnabledBackends')
-			->will($this->returnValue(array($backend)));
+			->will($this->returnValue(array($this->och)));
 
 		$expectedResult = array();
-		$expectedResult[] = $backend;
+		$expectedResult[] = $this->och;
 
-		$result = $app->getBackends();
-
+		$result = $this->chat->getBackends();
 		$this->assertEquals($expectedResult, $result);
-
 	}
 
 
 	public function userContactProvider() {
-		$app = new Chat(array(), true);
-		$OCHBackend = $app->query('OCH');
 		return array(
 			array(
-				$app,
-				$OCHBackend,
 				array(
 					0 => array(
 						'id' => 'foo',
@@ -400,6 +384,9 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 					)
 				),
 				array(
+					'online' => 1,
+					'order' => 1,
+    				'saved' => 1,
 					'id' => 'foo',
 					'displayname' => 'foo',
 					'backends' =>
@@ -436,103 +423,17 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider userContactProvider
 	 */
-	public function testGetUserasContact($app, $OCHBackend, $rawContacts, $expectedResult, $UID) {
-		$app->c['BackendManager'] = $this->getMockBuilder('\OCA\Chat\BackendManager')
-			->disableOriginalConstructor()
-			->getMock();
-		$app->c['BackendManager']->expects($this->any())
+	public function testGetUserasContact($rawContacts, $expectedResult, $UID) {
+		$this->backendManager->expects($this->any())
 			->method('getBackendByProtocol')
-			->will($this->returnValue($OCHBackend));
+			->will($this->returnValue($this->och));
 
-		$app->c['ContactsManager'] = $this->getMockBuilder('\OC\ContactsManager')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$app->c['ContactsManager']->expects($this->any())
+		$this->contactsManager->expects($this->any())
 			->method('search')
 			->will($this->returnValue($rawContacts));
 
-		$result = $app->getUserasContact($UID);
+		$result = $this->chat->getUserasContact($UID);
 		$this->assertEquals($expectedResult, $result);
 	}
-
-//	public function initConvsProvider(){
-//		$conv1 = new User();
-//		$conv1->setConversationId('CONV_ID_1408002874_42');
-//		$conv1->setUser('admin');
-//		$conv1->setJoined(329499626);
-//		$conv1->setId(1);
-//
-//		$conv2 = new User();
-//		$conv2->setConversationId('CONV_ID_1408002874_31');
-//		$conv2->setUser('admin');
-//		$conv2->setJoined(329443626);
-//		$conv2->setId(2);
-//
-//		$conv3 = new User();
-//		$conv3->setConversationId('CONV_ID_1408002874_26');
-//		$conv3->setUser('admin');
-//		$conv3->setJoined(324529443626);
-//		$conv3->setId(3);
-//
-//		$currentUser = array(
-//			'id' => 'admin',
-//			'displayname' => 'admin',
-//			'backends' => array (
-//				'email' => array (
-//					'id' => NULL,
-//					'displayname' => 'E-mail',
-//					'protocol' => 'email',
-//					'namespace' => ' email',
-//					'value' => array (
-//						0 => array (
-//						),
-//					),
-//				),
-//				'och' => array (
-//					'id' => NULL,
-//					'displayname' => 'ownCloud Handle',
-//					'protocol' => 'x-owncloud-handle',
-//					'namespace' => 'och',
-//					'value' => 'admin',
-//				),
-//			),
-//			'address_book_id' => 'local',
-//			'address_book_backend' => '',
-//		);
-//
-//		$joinRequestData1 = array(
-//			"conv_id" => "CONV_ID_1408002874_42",
-//			"user" => $currentUser
-//		);
-//
-//		$joinRequestData2 = array(
-//			"conv_id" => "CONV_ID_1408002874_31",
-//			"user" => $currentUser
-//		);
-//
-//		$joinRequestData3 = array(
-//			"conv_id" => "CONV_ID_1408002874_26",
-//			"user" => $currentUser
-//		);
-//
-//
-//		return array(
-//			array(
-//				array(
-//					$conv1,
-//					$conv2,
-//					$conv3
-//				),
-//				array(
-//					$joinRequestData1,
-//					$joinRequestData2,
-//					$joinRequestData3,
-//				),
-//				'admin'
-//			)
-//		);
-//	}
-
 
 }

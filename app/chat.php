@@ -8,7 +8,7 @@
 namespace OCA\Chat\App;
 
 use \OCA\Chat\IBackend;
-use \OCA\Chat\BackendManager;
+use \OCA\Chat\IBackendManager;
 use \OCA\Chat\OCH\Db\UserOnlineMapper;
 use \OCA\Chat\OCH\Commands\SyncOnline;
 use \OCP\IUser;
@@ -55,7 +55,7 @@ class Chat {
 	public $viewType;
 
 	public function __construct(
-		BackendManager $backendManager,
+		IBackendManager $backendManager,
 		UserOnlineMapper $userOnlineMapper,
 		SyncOnline $syncOnline,
 		IUser $user,

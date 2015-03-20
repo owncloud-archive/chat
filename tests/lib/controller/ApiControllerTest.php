@@ -4,7 +4,10 @@ namespace OCA\Chat\Controller\OCH;
 
 use \OCA\Chat\Utility\ControllerTestUtility;
 use \OCA\Chat\App\Chat;
+use \OCA\Chat\App\Container;
 use \OCP\IRequest;
+use \OCA\Chat\Controller\OCH\ApiController;
+
 
 function time(){
 	return '2324';
@@ -46,22 +49,29 @@ class ApiControllerTest extends ControllerTestUtility {
 
 	public function setUp(){
 		$this->appName = 'chat';
-		$this->request = $this->getRequest();
-		$this->app = new Chat();
-		$this->controller = new ApiController($this->appName, $this->request, $this->app);
+		$this->request =  $this->getMockBuilder('\OCP\IRequest')
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->app->registerService('UserSession', function(){
-			return $this->getMockBuilder('OC\User\Session')
-				->disableOriginalConstructor()
-				->getMock();
-		});
+		$this->container = $this->getMockBuilder('\OCA\Chat\App\Container')
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->app->query('UserSession')->expects($this->any())
-			->method('getUser')
-			->will($this->returnValue(new UserMock()));
+		$this->chat = $this->getMockBuilder('\OCA\Chat\App\Chat')
+			->disableOriginalConstructor()
+			->getMock();
 
+		$this->chatAPI = $this->getMockBuilder('\OCA\Chat\OCH\ChatAPI')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->controller = new ApiController(
+			$this->appName,
+			$this->request,
+			$this->chat,
+			$this->container
+		);
 	}
-
 
 	public function testRouteAnnotations(){
 		$expectedAnnotations = array('NoAdminRequired');
@@ -348,7 +358,16 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider routeProvider
 	 */
 	public function	testError($type, $data, $expectedData){
+		$this->chat->expects($this->any())
+			->method('getUserId')
+			->will($this->returnValue('foo'));
+
+		$this->container->expects($this->any())
+			->method('query')
+			->will($this->returnValue($this->chatAPI));
+
 		$response = $this->controller->route($type, $data);
+		$this->assertInstanceOf('\OCA\Chat\OCH\Responses\Error', $response);
 		$this->assertEquals($expectedData, $response->getData());
 	}
 
@@ -397,23 +416,32 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider commandExecutionProivder
 	 */
 	public function testCommandExecution($type, $data, $className, $requestType){
-		$this->app->registerService(ucfirst($className) . ucfirst($requestType), function(){
-			$this->getMockBuilder('\OCA\Chat\OCH\Commands\\' . $className)
-				->disableOriginalConstructor()
-				->getMock();
-		});
+		$this->chat->expects($this->any())
+			->method('getUserId')
+			->will($this->returnValue('foo'));
 
-		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
-			->method('setRequestData')
-			->with($this->equalTo($data))
-			->will($this->returnValue(true));
+		$this->container->expects($this->any())
+			->method('query')
+			->will($this->returnCallback(function() use($className, $requestType, $data){
+				$class = $this->getMockBuilder('\OCA\Chat\OCH\ChatAPI')
+					->disableOriginalConstructor()
+					->getMock();
 
-		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
-			->method('execute')
-			->will($this->returnValue(null));
+				$class->expects($this->once())
+					->method('setRequestData')
+					->with($this->equalTo($data))
+					->will($this->returnValue(true));
+
+				$class->expects($this->once())
+					->method('execute')
+					->will($this->returnValue(null));
+
+				return $class;
+			}));
+
 
 		$response = $this->controller->route($type, $data);
-		$this->assertEquals('OCA\Chat\OCH\Responses\Success', get_class($response));
+		$this->assertInstanceOf('\OCA\Chat\OCH\Responses\Success', $response);
 		$this->assertEquals(array("type" =>  $requestType . '::' . $className . '::response', "data" => array("status" => "success")), $response->getData());
 
 	}
@@ -464,20 +492,28 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider dataExecutionProvider
 	 */
 	public function testDataExecution($type, $data, $className, $requestType, $dummyData, $commandName){
-		$this->app->registerService(ucfirst($className) . ucfirst($requestType), function(){
-			$this->getMockBuilder('\OCA\Chat\OCH\Data\\' . $className)
-				->disableOriginalConstructor()
-				->getMock();
-		});
+		$this->chat->expects($this->any())
+			->method('getUserId')
+			->will($this->returnValue('foo'));
 
-		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
-			->method('setRequestData')
-			->with($this->equalTo($data))
-			->will($this->returnValue(true));
+		$this->container->expects($this->any())
+			->method('query')
+			->will($this->returnCallback(function() use($className, $requestType, $data, $dummyData){
+				$class = $this->getMockBuilder('\OCA\Chat\OCH\ChatAPI')
+					->disableOriginalConstructor()
+					->getMock();
 
-		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
-			->method('execute')
-			->will($this->returnValue($dummyData));
+				$class->expects($this->once())
+					->method('setRequestData')
+					->with($this->equalTo($data))
+					->will($this->returnValue(true));
+
+				$class->expects($this->once())
+					->method('execute')
+					->will($this->returnValue($dummyData));
+
+				return $class;
+			}));
 
 		$response = $this->controller->route($type, $data);
 		$expectedData = array(
@@ -485,7 +521,7 @@ class ApiControllerTest extends ControllerTestUtility {
 			"data" => $dummyData
 		);
 		$expectedData['data']["status"] = "success";
-		$this->assertEquals('OCA\Chat\OCH\Responses\Success', get_class($response));
+		$this->assertInstanceOf('\OCA\Chat\OCH\Responses\Success', $response);
 		$this->assertEquals($expectedData, $response->getData());
 
 	}
@@ -535,21 +571,28 @@ class ApiControllerTest extends ControllerTestUtility {
 	 * @dataProvider pushExecutionProvider
 	 */
 	public function testPushExecution($type, $data, $className, $requestType, $dummyData){
-		$this->app->registerService(ucfirst($className) . ucfirst($requestType), function(){
-			$this->getMockBuilder('\OCA\Chat\OCH\Push\\' . $className)
-				->disableOriginalConstructor()
-				->getMock();
+		$this->chat->expects($this->any())
+			->method('getUserId')
+			->will($this->returnValue('foo'));
 
-		});
+		$this->container->expects($this->any())
+			->method('query')
+			->will($this->returnCallback(function() use($className, $requestType, $data, $dummyData){
+				$class = $this->getMockBuilder('\OCA\Chat\OCH\ChatAPI')
+					->disableOriginalConstructor()
+					->getMock();
 
-		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
-			->method('setRequestData')
-			->with($this->equalTo($data))
-			->will($this->returnValue(true));
+				$class->expects($this->once())
+					->method('setRequestData')
+					->with($this->equalTo($data))
+					->will($this->returnValue(true));
 
-		$this->app->query(ucfirst($className) . ucfirst($requestType))->expects($this->once())
-			->method('execute')
-			->will($this->returnValue($dummyData));
+				$class->expects($this->once())
+					->method('execute')
+					->will($this->returnValue($dummyData));
+
+				return $class;
+			}));
 
 		$response = $this->controller->route($type, $data);
 		$expectedData = array(

@@ -45,25 +45,12 @@ use OCA\Chat\Middleware\ErrorMiddleware;
  */
 class Container extends App{
 
-
-	/**
-	 * @var \OCP\AppFramework\IAppContainer
-	 */
-	private $c; // ONLY PUBLIC FOR UNIT TESTING THIS CLASS
-
-	/**
-	 * @var $name of the app
-	 */
-	private $name = 'chat';
-
 	/**
 	 * @param array $urlParams
 	 */
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 		$container = $this->getContainer();
-		$this->c = $container;
-		$this->c['AppName'] = 'chat';
 		$container->registerMiddleware('ErrorMiddleware');
 
 		/**

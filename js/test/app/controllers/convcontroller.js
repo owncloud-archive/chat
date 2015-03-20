@@ -236,36 +236,36 @@ describe('ConvController', function(){
 				expect($scope.view.elements.dummy).toBeFalsy();
 			});
 		});
-		describe('makeActive', function () {
-			var $event = {
-				target: {
-					classList: {
-						contains: function(property){
-							return true;
-						}
-					}
-				}
-			};
-			it('Should show chat and pass $even and exception', function () {
-				spyOn($scope.view, 'show');
-				spyOn(convs, 'get').and.returnValue({'new_msg' : true});
-				$scope.view.makeActive('conv-id', $event, 'exception');
-				expect($scope.view.show).toHaveBeenCalledWith('chat', $event, 'exception');
-			});
-
-			it('Should call $scope.view.focusMsgInput', function () {
-				spyOn($scope.view, 'focusMsgInput');
-				spyOn(convs, 'get').and.returnValue({'new_msg' : true});
-				$scope.view.makeActive('conv-id', $event, 'exception');
-				expect($scope.view.focusMsgInput).toHaveBeenCalled();
-			});
-
-			it('Should set new_msg to false of the conv', function () {
-				var conv = {'new_msg' : true};
-				spyOn(convs, 'get').and.returnValue(conv);
-				$scope.view.makeActive('conv-id', $event, 'exception');
-				expect(conv.new_msg).toBeFalsy();
-			});
-		});
+		//describe('makeActive', function () {
+		//	var $event = {
+		//		target: {
+		//			classList: {
+		//				contains: function(property){
+		//					return true;
+		//				}
+		//			}
+		//		}
+		//	};
+		//	it('Should show chat and pass $even and exception', function () {
+		//		spyOn($scope.view, 'show');
+		//		spyOn(convs, 'get').and.returnValue({'new_msg' : true});
+		//		$scope.view.makeActive('conv-id', $event, 'exception');
+		//		expect($scope.view.show).toHaveBeenCalledWith('chat', $event, 'exception');
+		//	});
+		//
+		//	it('Should call $scope.view.focusMsgInput', function () {
+		//		spyOn($scope.view, 'focusMsgInput');
+		//		spyOn(convs, 'get').and.returnValue({'new_msg' : true});
+		//		$scope.view.makeActive('conv-id', $event, 'exception');
+		//		expect($scope.view.focusMsgInput).toHaveBeenCalled();
+		//	});
+		//
+		//	it('Should set new_msg to false of the conv', function () {
+		//		var conv = {'new_msg' : true};
+		//		spyOn(convs, 'get').and.returnValue(conv);
+		//		$scope.view.makeActive('conv-id', $event, 'exception');
+		//		expect(conv.new_msg).toBeFalsy();
+		//	});
+		//});
 	});
 });

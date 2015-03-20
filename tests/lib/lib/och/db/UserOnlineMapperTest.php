@@ -8,16 +8,16 @@
 
 namespace OCA\Chat\OCH\Db;
 
-use \OCA\Chat\App\Chat;
+use \OCA\Chat\App\Container;
 use \OCA\Chat\OCH\Db\User;
 use \OCA\Chat\OCH\Db\UserMapper;
 
 class UserOnlineMapperTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var \OCA\Chat\App\Chat
+	 * @var \OCA\Chat\App\Container
 	 */
-	public $app;
+	public $container;
 
 	/**
 	 * @var \OCA\Chat\OCH\Db\UserOnlineMapper
@@ -25,7 +25,7 @@ class UserOnlineMapperTest extends \PHPUnit_Framework_TestCase {
 	public $userOnlineMapper;
 
 	public function setUp(){
-		$this->app = new Chat();
+		$this->app = new Container();
 		$this->userOnlineMapper  = $this->app->query('UserOnlineMapper');
 	}
 

@@ -33,29 +33,67 @@ class AppControllerTest extends ControllerTestUtility {
 	/**
 	 * @var \OCA\Chat\App\Chat
 	 */
-	private $app;
+	private $chat;
 
 	public function setUp(){
 		$this->appName = 'chat';
-		$this->request = $this->getRequest();
-		$this->app = $this->getMockBuilder('\OCA\Chat\App\Chat')
+		$this->request =  $this->getMockBuilder('\OCP\IRequest')
 			->disableOriginalConstructor()
 			->getMock();
-		$app = new \OCP\AppFramework\App($this->appName, array());
-		$this->app->container = $app->getContainer();
-		$this->app->c = $this->app->container;
-		$c = $this->app->container;
-		$this->app->expects($this->any())
-			->method('getContainer')
-			->will($this->returnCallback(function() use($c){
-				return $c;
-			}));
-		$this->app->expects($this->any())
-			->method('getBackends')
-			->will($this->returnCallback(function() use($c){
-				return new OCH();
-			}));
-		$this->controller = new AppController($this->appName, $this->request, $this->app, new \OC\ContactsManager());
+
+		$this->userOnlineMapper = $this->getMockBuilder('\OCA\Chat\OCH\Db\UserOnlineMapper')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->och = $this->getMockBuilder('\OCA\Chat\OCH\OCH')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->syncOnline = $this->getMockBuilder('\OCA\Chat\OCH\Commands\SyncOnline')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->contactsManager = $this->getMockBuilder('\OCP\Contacts\IManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->backendManager = $this->getMockBuilder('\OCA\Chat\IBackendManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->user = $this->getMockBuilder('\OCP\IUser')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->rootFolder = $this->getMockBuilder('\OCP\Files\IRootFolder')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->greet = $this->getMockBuilder('\OCA\Chat\OCH\Commands\Greet')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->greet = $this->getMockBuilder('\OCP\IConfig')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->chat =  new Chat(
+			$this->backendManager,
+			$this->userOnlineMapper,
+			$this->syncOnline,
+			$this->user,
+			$this->contactsManager,
+			$this->rootFolder
+		);
+
+		$this->controller = new AppController(
+			$this->appName,
+			$this->request,
+			$this->chat,
+			$this->contactsManager,
+			$this->config,
+			$this->greet
+		);
 	}
 
 
@@ -69,7 +107,7 @@ class AppControllerTest extends ControllerTestUtility {
 		$this->assertAnnotations($this->controller, 'index', $expectedAnnotations);
 	}
 
-
+//
 	public function indexProvider(){
 		return array(
 			array(
@@ -150,33 +188,28 @@ class AppControllerTest extends ControllerTestUtility {
 	 * @dataProvider indexProvider
 	 */
 	public function testIndex($currentUser, $greetRequestData, $contacts, $backends, $initConvs, $sessionId){
-		$this->app->expects($this->once())
+		$this->chat->expects($this->once())
 			->method('getCurrentUser')
 			->will($this->returnValue($currentUser));
 
-		$this->app->expects($this->once())
+		$this->chat->expects($this->once())
 			->method('getContacts')
 			->will($this->returnValue($contacts));
 
-		$this->app->expects($this->once())
+		$this->chat->expects($this->once())
 			->method('getBackends')
 			->will($this->returnValue($backends));
 
-		$this->app->expects($this->once())
+		$this->chat->expects($this->once())
 			->method('getInitConvs')
 			->will($this->returnValue($initConvs));
 
-
-		$this->app->c['GreetCommand'] = $this->getMockBuilder('OCA\Chat\OCH\Commands\Greet')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->app->c['GreetCommand']->expects($this->once())
+		$this->greet->expects($this->once())
 			->method('setRequestData')
 			->with($greetRequestData)
 			->will($this->returnValue(true));
 
-		$this->app->c['GreetCommand']->expects($this->once())
+		$this->greet->expects($this->once())
 			->method('execute')
 			->will($this->returnValue($sessionId));
 
@@ -196,8 +229,8 @@ class AppControllerTest extends ControllerTestUtility {
 		$this->assertEquals('main', $response->getTemplateName());
 		$this->assertEquals($expectedParams, $response->getParams());
 	}
-
-
+//
+//
 	public function contactsProvider(){
 		return array(
 			array(
@@ -214,7 +247,7 @@ class AppControllerTest extends ControllerTestUtility {
 	 * @dataProvider contactsProvider
 	 */
 	public function testContacts($contacts){
-		$this->app->expects($this->once())
+		$this->chat->expects($this->once())
 			->method('getContacts')
 			->will($this->returnValue($contacts));
 

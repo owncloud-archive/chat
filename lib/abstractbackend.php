@@ -19,7 +19,7 @@ abstract class AbstractBackend implements IBackend {
 	 */
 	private $configMapper;
 
-	function __construct(ConfigMapper $configMapper, IConfig $config){
+	public function __construct(ConfigMapper $configMapper, IConfig $config){
 		$this->configMapper = $configMapper;
 		$this->config = $config;
 	}

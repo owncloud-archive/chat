@@ -45,7 +45,7 @@ class OCH extends AbstractBackend implements IBackend {
 	 */
 	private $app;
 
-	function __construct(
+	public function __construct(
 		ConfigMapper $configMapper,
 		IConfig $config,
 		UserMapper $userMapper,

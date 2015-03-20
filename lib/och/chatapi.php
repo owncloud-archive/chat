@@ -16,7 +16,7 @@ abstract class ChatAPI {
 
 	protected $requestData;
 
-	abstract function setRequestData(array $requestData);
+	abstract public function setRequestData(array $requestData);
 
 	public function getRequestData(){
 		return $this->requestData;

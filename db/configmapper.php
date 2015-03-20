@@ -2,7 +2,6 @@
 
 namespace OCA\Chat\Db;
 
-use OCP\AppFramework\Db\DoesNotExistException;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 

@@ -29,7 +29,7 @@ class AppController extends Controller {
 	private $config;
 
 	/**
-	 * @var \OCP\IManager
+	 * @var \OCP\Contacts\IManager
 	 */
 	private $cm;
 

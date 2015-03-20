@@ -27,14 +27,14 @@ interface IBackend{
 	public function getDisplayName();
 
 	/**
-	 * @return supported protocols by this backend
+	 * @return array supported protocols by this backend
 	 */
 	public function getProtocols();
 
 	/**
 	 * Check whether this backend supports $protocol
 	 * @param $protocol
-	 * @return nulll
+	 * @return bool
 	 */
 	public function hasProtocol($protocol);
 

@@ -36,20 +36,38 @@ class Chat {
 	private static $initConvs;
 
 	/**
-	 * @var array used to cache the user id for every request
+	 * @var string used to cache the user id for every request
 	 */
 	private static $userId;
 
+	/**
+	 * @var IBackendManager
+	 */
 	private $backendManager;
 
+	/**
+	 * @var UserOnlineMapper
+	 */
 	private $userOnlineMapper;
 
+	/**
+	 * @var SyncOnline
+	 */
 	private $syncOnline;
 
+	/**
+	 * @var IUser
+	 */
 	private $user;
 
+	/**
+	 * @var IManager
+	 */
 	private $contactsManager;
 
+	/**
+	 * @var IRootFolder
+	 */
 	private $rootFolder;
 
 	public $viewType;

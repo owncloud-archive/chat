@@ -2,12 +2,13 @@
 
 namespace OCA\Chat\Controller;
 
-use OCA\Chat\Db\ConfigMapper;
-use OCA\Chat\IBackendManager;
+use \OCA\Chat\Db\ConfigMapper;
+use \OCA\Chat\IBackendManager;
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http\JSONResponse;
 use \OCP\AppFramework\Http;
 use \OCP\IRequest;
+use \OCA\Chat\BackendNotFoundException;
 
 
 class ConfigController extends Controller {

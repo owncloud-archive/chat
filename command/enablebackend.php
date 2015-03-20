@@ -13,7 +13,7 @@ use \OCA\CHat\IBackendManager;
 class EnableBackend extends Command {
 
 	/**
-	 * @var BackendManager OCA\Chat\IBackendManager
+	 * @var \OCA\Chat\IBackendManager
 	 */
 	private $backendManager;
 

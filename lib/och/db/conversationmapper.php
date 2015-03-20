@@ -110,7 +110,6 @@ SQL;
 			$row = $result->fetch();
 			return $row;
 		} catch (DoesNotExistException $exception) {
-			var_dump($exception);
 			return false;
 		}
 	}

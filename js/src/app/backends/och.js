@@ -184,6 +184,7 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 					headers: {'Content-Type': 'application/json'},
 					async: true
 				});
+
 			},
 			longPoll: function () {
 				api.util.getPushMessages(function (data) {

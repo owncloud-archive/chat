@@ -183,15 +183,15 @@ angular.module('chat').factory('xmpp', ['convs', 'contacts', 'initvar', 'session
 			//Create connection
 			initvar.backends.xmpp.configErrors = []; // Reset all errors
 			if (
-				$XMPP.jid !== null
-				&& $XMPP.jid !== ''
-				&& typeof $XMPP.jid !== 'undefined'
-				&& $XMPP.password !== null
-				&& $XMPP.password !== ''
-				&& typeof $XMPP.password !== 'undefined'
-				&& $XMPP.bosh_url !== null
-				&& $XMPP.bosh_url !== ''
-				&& typeof $XMPP.bosh_url !== 'undefined'
+				$XMPP.jid !== null &&
+				$XMPP.jid !== '' &&
+				typeof $XMPP.jid !== 'undefined' &&
+				$XMPP.password !== null &&
+				$XMPP.password !== '' &&
+				typeof $XMPP.password !== 'undefined' &&
+				$XMPP.bosh_url !== null &&
+				$XMPP.bosh_url !== '' &&
+				typeof $XMPP.bosh_url !== 'undefined'
 			) {
 				try {
 					// Connect to XMPP sever

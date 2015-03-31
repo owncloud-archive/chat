@@ -125,13 +125,57 @@ module.exports = function(grunt) {
 					'integrated.min.html': 'integrated.html'
 				}
 			}
+		},
+		copy: {
+			main: {
+				files: [
+					{
+						expand: true, src: ['./**'], dest: 'dist/'
+					}
+				]
+			}
+		},
+		clean : [
+			"dist/upload.sh",
+			"dist/composer.json",
+			"dist/composer.lock",
+			"dist/vendor/emojione/assets/svg",
+			"dist/vendor/emojione/assets/png",
+			"dist/.npm",
+			"dist/.node-gyp",
+			"dist/node_modules",
+			"dist/.bowerrc",
+			"dist/bower.json",
+			"dist/.git*",
+			"dist/.scrutinizer.yml",
+			"dist/.travis.yml",
+			"dist/Gruntfile.js",
+			"dist/karma.conf.js",
+			"dist/Makefile",
+			"dist/package.json",
+			"dist/build.sh",
+			"dist/tests",
+		],
+		compress : {
+			main: {
+				options: {
+					"archive": "build.zip"
+				},
+				"files": [
+					{expand: true,src: ['**'], cwd: "dist", dest: 'chat/'}
+				]
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-karma');
-	grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin']);
+	grunt.registerTask('dev', ['uglify', 'cssmin', 'htmlmin']);
+	grunt.registerTask('dist', ['uglify', 'cssmin', 'htmlmin', 'copy', 'clean', 'compress']);
 
 };

@@ -175,7 +175,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-karma');
-	grunt.registerTask('dev', ['uglify', 'cssmin', 'htmlmin']);
+	grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin']);
 	grunt.registerTask('dist', ['uglify', 'cssmin', 'htmlmin', 'copy', 'clean', 'compress']);
 
 };

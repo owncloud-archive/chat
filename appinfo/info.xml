@@ -6,6 +6,6 @@
 	<licence>AGPL</licence>
 	<author>Tobia De Koninck and Christopher Schäpers</author>
 	<version>0.4.0</version>
-	<require>7.0.1</require>
+	<require>8.1</require>
 	<ocsid>166443</ocsid>
 </info>

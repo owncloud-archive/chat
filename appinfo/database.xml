@@ -31,7 +31,6 @@
 				<type>text</type>
 				<notnull>true</notnull>
 				<length>64</length>
-				/length>
 			</field>
 			<field>
 				<name>command</name>

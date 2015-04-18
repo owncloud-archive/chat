@@ -34,7 +34,7 @@ install:
   # install owncloud
   - cd ..
   - ocdev setup core --dir owncloud --branch $BRANCH --no-history
-  - mv app-tutorial owncloud/apps/chat
+  - mv chat owncloud/apps/chat
   - phpenv config-add owncloud/apps/chat/tests/travis/php.ini
   - cd owncloud
   - ocdev ci $DB

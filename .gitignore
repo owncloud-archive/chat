@@ -5,6 +5,7 @@ build
 node_modules
 vendor
 dist
+build.zip
 
 ## JS Files ##
 js/admin.min.js

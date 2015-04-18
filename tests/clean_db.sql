@@ -1,5 +1,0 @@
-DELETE FROM owncloud.oc_chat_och_conversations;
-DELETE FROM owncloud.oc_chat_och_messages;
-DELETE FROM owncloud.oc_chat_och_push_messages;
-DELETE FROM owncloud.oc_chat_och_users_in_conversation;
-DELETE FROM owncloud.oc_chat_och_users_online;

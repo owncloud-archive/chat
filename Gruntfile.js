@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 
-	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		uglify: {
@@ -9,58 +8,54 @@ module.exports = function(grunt) {
 				beautify: false,
 				mangle: false
 			},
-			build: {
-				files: {
-					'js/app.min.js': [
-						'js/app/src/**/*.js',
-						'js/app/src/*.js',
-						'js/src/**/*.js',
-						'js/src/*.js',
-					],
-					'js/integrated.min.js': [
-						'js/integrated/src/**/*.js',
-						'js/integrated/src/*.js',
-						'js/src/**/*.js',
-						'js/src/*.js',
-					],
-					'js/admin.min.js' : [
-						'js/admin/src/*.js'
-					],
-					'js/error.min.js' : [
-						'js/error/src/*.js'
-					],
-					'vendor/all.min.js' : [
-						'vendor/angular/angular.min.js',
-						'vendor/angular-enhance-text/build/angular-enhance-text.min.js',
-						'vendor/angular-resource/angular-resource.min.js',
-						'vendor/angular-sanitize/angular-sanitize.min.js',
-						'vendor/jquery-autosize/jquery.autosize.min.js',
-						'vendor/moment/min/moment.min.js',
-						'vendor/rangyinputs-jquery-src/index.js',
-						'vendor/strophe/strophe.min.js',
-						'vendor/emojione/lib/js/emojione.min.js',
-					]
-				}
+			files: {
+				'js/app.min.js': [
+					'js/app/src/**/*.js',
+					'js/app/src/*.js',
+					'js/src/**/*.js',
+					'js/src/*.js',
+				],
+				'js/integrated.min.js': [
+					'js/integrated/src/**/*.js',
+					'js/integrated/src/*.js',
+					'js/src/**/*.js',
+					'js/src/*.js',
+				],
+				'js/admin.min.js' : [
+					'js/admin/src/*.js'
+				],
+				'js/error.min.js' : [
+					'js/error/src/*.js'
+				],
+				'vendor/all.min.js' : [
+					'vendor/angular/angular.min.js',
+					'vendor/angular-enhance-text/build/angular-enhance-text.min.js',
+					'vendor/angular-resource/angular-resource.min.js',
+					'vendor/angular-sanitize/angular-sanitize.min.js',
+					'vendor/jquery-autosize/jquery.autosize.min.js',
+					'vendor/moment/min/moment.min.js',
+					'vendor/rangyinputs-jquery-src/index.js',
+					'vendor/strophe/strophe.min.js',
+					'vendor/emojione/lib/js/emojione.min.js',
+				]
 			}
 		},
 		cssmin: {
-			combine: {
-				files: {
-					'css/main.min.css': [
-						'css/src/*.css',
-						'!css/admin',
-						'!css/integrated'
-					],
-					'css/admin.min.css' : [
-						'css/admin/src/*.css'
-					],
-					'css/integrated.min.css' : [
-						'css/integrated/src/*.css'
-					],
-					'css/error.min.css' : [
-						'css/error/src/*.css'
-					]
-				}
+			files: {
+				'css/main.min.css': [
+					'css/src/*.css',
+					'!css/admin',
+					'!css/integrated'
+				],
+				'css/admin.min.css' : [
+					'css/admin/src/*.css'
+				],
+				'css/integrated.min.css' : [
+					'css/integrated/src/*.css'
+				],
+				'css/error.min.css' : [
+					'css/error/src/*.css'
+				]
 			}
 		},
 		karma: {
@@ -116,14 +111,12 @@ module.exports = function(grunt) {
 			}
 		},
 		htmlmin: {
-			dist: {
-				options: {
-					removeComments: true,
-					collapseWhitespace: true
-				},
-				files: {
-					'integrated.min.html': 'integrated.html'
-				}
+			options: {
+				removeComments: true,
+				collapseWhitespace: true
+			},
+			files: {
+				'integrated.min.html': 'integrated.html'
 			}
 		},
 		copy: {
@@ -169,6 +162,25 @@ module.exports = function(grunt) {
 		watch: {
 			files: ['./**.*', '!./**.min.*'],
 			tasks: ['uglify', 'cssmin', 'htmlmin']
+		},
+		phpunit: {
+			unit: {
+				dir: './tests/unit/app',
+				dir: './tests/unit/controller',
+				options: {
+					bootstrap: './tests/unit/autoloader.php'
+				}
+			},
+			integration: {
+				dir: './tests/integration/lib/och/db',
+				options: {
+					bootstrap: '../../lib/base.php'
+				}
+			},
+			options: {
+				bin: './vendor/bin/phpunit',
+				noConfiguration: true
+			}
 		}
 	});
 
@@ -179,8 +191,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-phpunit');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin']);
 	grunt.registerTask('dist', ['uglify', 'cssmin', 'htmlmin', 'copy', 'clean', 'compress']);
-
+	grunt.registerTask('tests', ['uglify', 'cssmin', 'htmlmin','phpunit', 'karma']);
 };

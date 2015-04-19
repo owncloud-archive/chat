@@ -77,14 +77,14 @@ describe('XMPP', function() {
 
     }));
 
-    describe('Public API',function(){
-        describe('Initialization', function () {
-            it('Should clear the configErrors array', function () {
-                xmpp.init();
-                expect($initvar.backends.xmpp.configErrors).toBe([]);
-
-            });
-        });
-    });
+    //describe('Public API',function(){
+    //    describe('Initialization', function () {
+    //        it('Should clear the configErrors array', function () {
+    //            xmpp.init();
+    //            expect($initvar.backends.xmpp.configErrors).toBe([]);
+	//
+     //       });
+     //   });
+    //});
 
 });

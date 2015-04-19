@@ -72,9 +72,8 @@ module.exports = function(grunt) {
 						'js/test/mocks/OC.js',
 						'vendor/all.min.js',
 						'vendor/angular-mocks/angular-mocks.js',
-						'js/test/true.js',
 						'js/integrated.min.js',
-						'js/test/integrated/**/*.js',
+						'js/test/**/*.js',
 					],
 					frameworks: [
 						'jasmine'
@@ -97,9 +96,8 @@ module.exports = function(grunt) {
 						'js/test/mocks/OC.js',
 						'vendor/all.min.js',
 						'vendor/angular-mocks/angular-mocks.js',
-						'js/test/true.js',
 						'js/app.min.js',
-						'js/test/app/**/*.js',
+						'js/test/**/*.js',
 					],
 					frameworks: [
 						'jasmine'

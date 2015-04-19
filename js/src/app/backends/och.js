@@ -126,6 +126,17 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 				}, function(data){
 					success(data.data.messages)
 				});
+			},
+			saveLastConv: function (convId) {
+				console.log('conv changed');
+				api.util.doRequest({
+					"type": "command::save_last_conv::request",
+					"data": {
+						"user": $session.user,
+						"session_id": $session.id,
+						"conv_id": convId
+					}
+				}, function(){});
 			}
 		},
 		on: {
@@ -292,6 +303,9 @@ angular.module('chat').factory('och', ['convs', 'contacts', 'session', 'initvar'
 		},
 		getOldMessages : function (convId, start, stop, success) {
 			api.command.getOldMessages(convId, start, stop, success);
+		},
+		activeConvChanged: function (convId) {
+			api.command.saveLastConv(convId);
 		}
 	};
 }]);

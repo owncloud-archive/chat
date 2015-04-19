@@ -35,9 +35,9 @@ angular.module('chat').controller(
 				$scope.quit();
 			});
 
-			$scope.avatarsEnabled = "true"; // Must be string!
-			//$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
+			$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
 
+			$CCS = $scope;
 
 			$(document).ready(function(){
 				$scope.emojis = $filter('toEmojiArray')(emojione.emojioneList);
@@ -53,13 +53,12 @@ angular.module('chat').controller(
 				 * @var {object} elements
 				 */
 				elements : {
-					"chat" : false,
+					"chat" : true,
 					"initDone" : false,
 					"settings" : false,
 					"emojiContainer" : false,
 					"invite" : false,
-					"files" : false,
-					"sidebar" : true,
+					"files" : false
 				},
 				/**
 				 * Called when an invite button is clicked
@@ -141,7 +140,6 @@ angular.module('chat').controller(
 				 * @param {string} element the element which should be made invisible (should be in the $scope.view.elements array )
 				 */
 				toggle : function(element){
-					console.log(element);
 					$scope.view.elements[element] = !$scope.view.elements[element];
 				},
 
@@ -152,22 +150,11 @@ angular.module('chat').controller(
 				 * @param {string} exception - when this is provided the function call will be ignored when it was this param which was clicked
 				 */
 				makeActive : function(convId, $event, exception){
-					$scope.view.hide('emptyMsg');
-					$scope.view.show('chat', $event, exception);
+					//$scope.view.hide('emptyMsg');
+					//$scope.view.show('chat', $event, exception);
 					$session.conv = convId;
 					$scope.view.focusMsgInput();
 					convs.get(convId).new_msg = false;
-					$("#chat-msg-input-field").autosize({
-						callback : function(){
-							var height = $("#chat-msg-input-field").height();
-							height = height + 15;
-							$('#chat-window-footer').height(height);
-							$('#chat-window-body').css('bottom', height);
-							$('#chat-window-msgs').scrollTop($('#chat-window-msgs')[0].scrollHeight);
-							var height = $("#chat-window-footer").height();
-							$('#emoji-container').css('bottom', height + 20);
-						}
-					});
 				},
 				/**
 				 * This will unActive all conversations
@@ -179,7 +166,7 @@ angular.module('chat').controller(
 				 * This will focus the chat input field
 				 */
 				focusMsgInput : function(){
-					$('#chat-msg-input-field');
+					$('#chat-msg-input-field').focus();
 				},
 				unShare : function(convId, path, timestamp, user, key){
 					var backend = $scope.convs[convId].backend.id;
@@ -243,11 +230,23 @@ angular.module('chat').controller(
 			/**
 			 * @var {object} convs
 			 */
-			$scope.convs =  convs.convs; // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
-
-			$scope.contacts = contacts.contacts  // DON NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE
+			$scope.convs =  convs.convs; // DO NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE SO IT CAN BE USED IN THE VIEW
+			$scope.contacts = contacts.contacts // DO NOT USE THIS! ONLY FOR ATTACHING TO THE SCOPE SO IT CAN BE USED IN THE VIEW
 			$scope.backends = backends;
+			$scope.msgs = [];
 
+			$scope.$watch('convs', function () {
+				$scope.msgs = $filter('orderBy')(convs.convs[$session.conv].msgs, 'timestamp');
+			},true);
+
+			$scope.$watch('$session.conv', function () {
+				$scope.msgs = $filter('orderBy')(convs.convs[$session.conv].msgs, 'timestamp');
+				$scope.$broadcast('scrollBottom');
+			});
+
+			window.onresize = function(event) {
+				$scope.$broadcast('scrollBottom');
+			};
 			/**
 			 * @var {object} initConvs
 			 */
@@ -396,6 +395,23 @@ angular.module('chat').controller(
 				return contact.saved;
 			};
 
+			$scope.loadOldMessages = function (convId) {
+				// first count the current messages
+				var amount = convs.get(convId).msgs.length;
+				// next calculate the position of the next 10 messages
+				var backend = convs.get(convId).backend.id;
+				backends[backend].handle.getOldMessages(convId, amount, 10, function (msgs) {
+					console.log(msgs);
+					for (var key in msgs){
+						var msg = msgs[key];
+						convs.addChatMsg(convId, contacts.contacts[msg.user], msg.msg, msg.timestamp, backend);
+					}
+				});
+			};
+
+			$scope.toTrust = function(html_code) {
+				return $sce.trustAsHtml(html_code);
+			}
 			init();
 		}
 	]

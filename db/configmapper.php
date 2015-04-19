@@ -2,6 +2,7 @@
 
 namespace OCA\Chat\Db;
 
+use \OCP\AppFramework\Db\DoesNotExistException;
 use \OCP\AppFramework\Db\Mapper;
 use \OCP\IDb;
 
@@ -45,6 +46,27 @@ SQL;
 			$values[$r->getKey()]  = $this->crypto->decrypt($r->getValue());
 		}
 		return $values;
+	}
+
+	public function get($backend, $key){
+		try {
+			$sql = <<<SQL
+			SELECT
+				*
+			FROM
+				`*PREFIX*chat_config`
+			WHERE
+				`backend` = ?
+			AND
+				`key` = ?
+			AND
+				`user` = ?
+SQL;
+			$q = $this->findEntity($sql, array($backend, $key, $this->user));
+			return $this->crypto->decrypt($q->getValue());
+		} catch (DoesNotExistException $e){
+			return null;
+		}
 	}
 
 	/**

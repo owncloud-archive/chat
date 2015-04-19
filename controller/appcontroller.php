@@ -7,6 +7,7 @@
 
 namespace OCA\Chat\Controller;
 
+use OCA\Chat\Db\ConfigMapper;
 use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\AppFramework\Http\JSONResponse;
@@ -44,13 +45,15 @@ class AppController extends Controller {
 		Chat $app,
 		IManager $cm,
 		IConfig $config,
-		Greet $greet
+		Greet $greet,
+		ConfigMapper $configMapper
 	){
 		parent::__construct($appName, $request);
 		$this->app = $app;
 		$this->cm = $cm;
 		$this->config = $config;
 		$this->greet = $greet;
+		$this->configMapper = $configMapper;
 	}
 
 	/**
@@ -79,7 +82,8 @@ class AppController extends Controller {
 				"contactsObj" => $contacts['contactsObj'],
 				"backends" => $backendsToArray,
 				"initConvs" => $initConvs,
-				"sessionId" => $sessionId['session_id'], // needs porting!
+				"sessionId" => $sessionId['session_id'], // needs porting!,
+				"last_active_conv" => $this->configMapper->get('och', 'last_active_conv')
 			)),
 			"avatars-enabled" => $this->config->getSystemValue('enable_avatars', true)
  		);

@@ -63,7 +63,7 @@ class ApiController extends Controller {
 						try{
 							switch($requestType){
 								case "command":
-									$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv', 'attach_file', 'remove_file');
+									$possibleCommands = array('greet', 'join', 'invite', 'send_chat_msg', 'online', 'offline', 'start_conv', 'delete_init_conv', 'attach_file', 'remove_file', 'save_last_conv');
 									if(in_array($action, $possibleCommands)){
 										$commandClass = $this->container->query($this->convertClassName($action) . 'Command');
 										$commandClass->setRequestData($data);

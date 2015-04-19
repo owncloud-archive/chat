@@ -11,6 +11,7 @@ use OCA\Chat\Controller\AppController;
 use OCA\Chat\Controller\OCH\ApiController;
 use OCA\Chat\Controller\ConfigController;
 use OCA\Chat\Controller\AdminController;
+use OCA\Chat\OCH\Commands\SaveLastConv;
 use OCP\AppFramework\App;
 use OCA\Chat\OCH\Db\ConversationMapper;
 use OCA\Chat\OCH\Db\MessageMapper;
@@ -51,7 +52,7 @@ class Container extends App{
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 		$container = $this->getContainer();
-		$container->registerMiddleware('ErrorMiddleware');
+//		$container->registerMiddleware('ErrorMiddleware');
 
 		/**
 		 * Chat Class
@@ -77,7 +78,8 @@ class Container extends App{
 				$c->query('Chat'),
 				$c->query('OCP\Contacts\IManager'),
 				$c->query('OCP\IConfig'),
-				$c->query('GreetCommand')
+				$c->query('GreetCommand'),
+				$c->query('ConfigMapper')
 			);
 		});
 
@@ -246,6 +248,12 @@ class Container extends App{
 				$c->query('PushMessageMapper'),
 				$c->query('AttachmentMapper'),
 				$c->query('UserMapper')
+			);
+		});
+
+		$container->registerService('SaveLastConvCommand', function ($c) {
+			return new SaveLastConv(
+				$c->query('ConfigMapper')
 			);
 		});
 

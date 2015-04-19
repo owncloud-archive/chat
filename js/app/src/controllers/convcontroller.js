@@ -150,11 +150,7 @@ angular.module('chat').controller(
 				 * @param {string} exception - when this is provided the function call will be ignored when it was this param which was clicked
 				 */
 				makeActive : function(convId, $event, exception){
-					//$scope.view.hide('emptyMsg');
-					//$scope.view.show('chat', $event, exception);
-					$session.conv = convId;
-					$scope.view.focusMsgInput();
-					convs.get(convId).new_msg = false;
+					convs.makeActive(convId, $event, exception);
 				},
 				/**
 				 * This will unActive all conversations
@@ -291,7 +287,12 @@ angular.module('chat').controller(
 						}
 					}
 				}
-				$scope.makeFirstConvActive();
+
+				if ($scope.initvar.last_active_conv !== null){
+					$scope.view.makeActive($scope.initvar.last_active_conv);
+				} else {
+					$scope.makeFirstConvActive();
+				}
 				$scope.$session = $session;
 			}
 

@@ -52,7 +52,7 @@ class Container extends App{
 	public function __construct(array $urlParams = array()) {
 		parent::__construct('chat', $urlParams);
 		$container = $this->getContainer();
-//		$container->registerMiddleware('ErrorMiddleware');
+		$container->registerMiddleware('ErrorMiddleware');
 
 		/**
 		 * Chat Class

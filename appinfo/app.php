@@ -43,4 +43,4 @@ if ($container->query('Chat')->viewType === Chat::INTEGRATED) {
 		}
 	}
 }
-//$container->query('Chat')->registerExceptionHandler();
+$container->query('Chat')->registerExceptionHandler();

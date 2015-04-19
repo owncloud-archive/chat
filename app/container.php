@@ -86,7 +86,7 @@ class Container extends App{
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('Chat'),
-				$c
+				$this
 			);
 		});
 

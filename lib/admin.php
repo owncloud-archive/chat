@@ -2,9 +2,8 @@
 
 namespace OCA\Chat\Admin;
 
-use OCA\Chat\App\Chat;
+use OCA\Chat\App\Container;
 
-$app = new Chat();
-$container = $app->getContainer();
+$container = new Container();
 $response = $container->query('AdminController')->index();
 return $response->render();

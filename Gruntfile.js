@@ -8,56 +8,61 @@ module.exports = function(grunt) {
 				beautify: false,
 				mangle: false
 			},
-			files: {
-				'js/app.min.js': [
-					'js/app/src/**/*.js',
-					'js/app/src/*.js',
-					'js/src/**/*.js',
-					'js/src/*.js',
-				],
-				'js/integrated.min.js': [
-					'js/integrated/src/**/*.js',
-					'js/integrated/src/*.js',
-					'js/src/**/*.js',
-					'js/src/*.js',
-				],
-				'js/admin.min.js' : [
-					'js/admin/src/*.js'
-				],
-				'js/error.min.js' : [
-					'js/error/src/*.js'
-				],
-				'vendor/all.min.js' : [
-					'vendor/angular/angular.min.js',
-					'vendor/angular-enhance-text/build/angular-enhance-text.min.js',
-					'vendor/angular-resource/angular-resource.min.js',
-					'vendor/angular-sanitize/angular-sanitize.min.js',
-					'vendor/jquery-autosize/jquery.autosize.min.js',
-					'vendor/moment/min/moment.min.js',
-					'vendor/rangyinputs-jquery-src/index.js',
-					'vendor/strophe/strophe.min.js',
-					'vendor/emojione/lib/js/emojione.min.js',
-				]
+			build: {
+				files: {
+					'js/app.min.js': [
+						'js/app/src/**/*.js',
+						'js/app/src/*.js',
+						'js/src/**/*.js',
+						'js/src/*.js',
+					],
+					'js/integrated.min.js': [
+						'js/integrated/src/**/*.js',
+						'js/integrated/src/*.js',
+						'js/src/**/*.js',
+						'js/src/*.js',
+					],
+					'js/admin.min.js' : [
+						'js/admin/src/*.js'
+					],
+					'js/error.min.js' : [
+						'js/error/src/*.js'
+					],
+					'vendor/all.min.js' : [
+						'vendor/angular/angular.min.js',
+						'vendor/angular-enhance-text/build/angular-enhance-text.min.js',
+						'vendor/angular-resource/angular-resource.min.js',
+						'vendor/angular-sanitize/angular-sanitize.min.js',
+						'vendor/jquery-autosize/jquery.autosize.min.js',
+						'vendor/moment/min/moment.min.js',
+						'vendor/rangyinputs-jquery-src/index.js',
+						'vendor/strophe/strophe.min.js',
+						'vendor/emojione/lib/js/emojione.min.js',
+					]
+				}
 			}
 		},
 		cssmin: {
-			files: {
-				'css/main.min.css': [
-					'css/src/*.css',
-					'!css/admin',
-					'!css/integrated'
-				],
-				'css/admin.min.css' : [
-					'css/admin/src/*.css'
-				],
-				'css/integrated.min.css' : [
-					'css/integrated/src/*.css'
-				],
-				'css/error.min.css' : [
-					'css/error/src/*.css'
-				]
+			combine: {
+				files: {
+					'css/main.min.css': [
+						'css/src/*.css',
+						'!css/admin',
+						'!css/integrated'
+					],
+					'css/admin.min.css' : [
+						'css/admin/src/*.css'
+					],
+					'css/integrated.min.css' : [
+						'css/integrated/src/*.css'
+					],
+					'css/error.min.css' : [
+						'css/error/src/*.css'
+					]
+				}
 			}
-		},
+		},	
+		
 		karma: {
 			integrated: {
 				options: {
@@ -111,12 +116,14 @@ module.exports = function(grunt) {
 			}
 		},
 		htmlmin: {
-			options: {
-				removeComments: true,
-				collapseWhitespace: true
-			},
-			files: {
-				'integrated.min.html': 'integrated.html'
+			dist: {
+				options: {
+					removeComments: true,
+					collapseWhitespace: true
+				},
+				files: {
+					'integrated.min.html': 'integrated.html'
+				}
 			}
 		},
 		copy: {

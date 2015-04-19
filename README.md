@@ -94,7 +94,12 @@ On OpenSUSE this can be installed via:
 sudo zypper install nodejs
 ````
 
-Now you can run `grunt` since the dependecies of this app are already included.
+Install the dependencies (run from inside the Chat app folder)
+````
+npm install
+````
+
+Now you can run `grunt` (also inside the Chat app folder)
 ````
 grunt
 ````

@@ -39,7 +39,7 @@ install:
   - phpenv config-add owncloud/apps/chat/tests/travis/php.ini
   - cd owncloud
   - ocdev ci $DB
-  - php -f console.php app:enable CHAT
+  - php -f console.php app:enable chat
 
 before_script:
   - cd apps/chat

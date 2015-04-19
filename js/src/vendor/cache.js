@@ -7,7 +7,7 @@ var Cache = (function () {
 	var cache = {};
 
 	function time(){
-		return parseInt(new Date().getTime() / 1000);
+		return Math.floor(Date.now() / 1000);
 	}
 
 	function init(){

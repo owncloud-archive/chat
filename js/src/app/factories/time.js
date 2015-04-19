@@ -1,7 +1,7 @@
 angular.module('chat').factory('time', [function() {
     return {
         now: function () {
-            return new Date().getTime() / 1000;
+			return Math.floor(Date.now() / 1000);
         },
         timestampToObject: function (timestamp) {
             var date = new Date(timestamp * 1000);

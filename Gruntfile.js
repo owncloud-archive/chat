@@ -195,5 +195,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin']);
 	grunt.registerTask('dist', ['uglify', 'cssmin', 'htmlmin', 'copy', 'clean', 'compress']);
-	grunt.registerTask('tests', ['uglify', 'cssmin', 'htmlmin','karma', 'phpunit']);
+	grunt.registerTask('tests', ['karma', 'phpunit']);
 };

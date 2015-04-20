@@ -35,7 +35,7 @@ angular.module('chat').controller(
 				$scope.quit();
 			});
 
-			$scope.avatarsEnabled = $.trim($('#avatars-enabled').text());
+			$scope.avatarsEnabled = initvar.avatars_enabled;
 
 			$CCS = $scope;
 

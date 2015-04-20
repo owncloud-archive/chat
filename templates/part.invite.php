@@ -30,6 +30,7 @@
 				ng-click="invite(contact)"
 			>
 				<div
+					ng-if="$parent.$parent.avatarsEnabled === true"
 					data-size="20"
 					data-parent="true"
 					data-id="{{::contact.id }}"

@@ -20,7 +20,7 @@
 				</div>
 				<div
 					class="chat-avatar column"
-					ng-if="$parent.$parent.avatarsEnabled === 'true'"
+					ng-if="$parent.$parent.avatarsEnabled === true"
 					>
 					<div
 						ng-hide="msg.contact.id === msgs[key-1].contact.id"
@@ -33,6 +33,16 @@
 						tipsy
 						title="{{::msg.contact.displayname }}"
 						>
+					</div>
+				</div>
+				<div
+					class="chat-avatar column"
+					ng-if="$parent.$parent.avatarsEnabled === false"
+					>
+					<div
+						ng-hide="msg.contact.id === msgs[key-1].contact.id"
+					>
+						{{::msg.contact.displayname}}
 					</div>
 				</div>
 				<div

@@ -25,9 +25,6 @@ style('chat', 'main.min');
 	<div style="display:none;" id="initvar">
 		<?php echo $_['initvar'];?>
 	</div>
-	<div style="display:none" id="avatars-enabled">
-		<?php var_export($_["avatars-enabled"]);?>
-	</div>
 	<div
 		id="app-navigation"
 		ng-cloak

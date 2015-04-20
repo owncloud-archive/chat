@@ -44,7 +44,7 @@
 								- the conversation has only 2 users in it
 						-->
 						<div
-							ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === 'true'"
+							ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === true"
 							class="avatar-list-container"
 							>
 							<div
@@ -83,7 +83,7 @@
 							There are maximum 4 avatars shown, which are all 1/4 size of the other avatars
 						-->
 						<div
-							ng-if="conv.users.length > 2  && $parent.$parent.avatarsEnabled === 'true'"
+							ng-if="conv.users.length > 2  && $parent.$parent.avatarsEnabled === true"
 							class="avatar-list-container"
 							>
 							<div
@@ -104,15 +104,15 @@
 						<!--
 							This div shows the displayname of the conversation
 						-->
-		<span
-			displayname
-			data-users="{{::conv.users }}"
-			class="left avatar-list-displayname"
-			ng-class="{bold : conv.new_msg === true}"
-			>
-		</span>
+						<span
+							displayname
+							data-users="{{::conv.users }}"
+							class="left avatar-list-displayname"
+							ng-class="{bold : conv.new_msg === true}"
+							>
+						</span>
 						<div
-							ng-if="$parent.$parent.avatarsEnabled === 'false'"
+							ng-if="$parent.$parent.avatarsEnabled === false"
 							online
 							ng-repeat="(key, user) in conv.users | userFilter"
 							data-id="{{::user.id }}"
@@ -142,7 +142,7 @@
 								>
 								<div
 									class="online-dot-container"
-									ng-if="$parent.$parent.avatarsEnabled === 'true'"
+									ng-if="$parent.$parent.avatarsEnabled === true"
 									>
 									<div
 										tipsy
@@ -168,7 +168,7 @@
 									</div>
 								</div>
 								<div
-									ng-if="$parent.$parent.avatarsEnabled === 'false'"
+									ng-if="$parent.$parent.avatarsEnabled === false"
 									online
 									data-id="{{::user.id }}"
 									class="online-dot-displayname-nav online-dot-displayname-nav-expanded"
@@ -266,7 +266,7 @@
 						<div class="chat-msg">
 								<div
 									class="msg-avatar-container"
-									ng-if="avatarsEnabled === 'true'"
+									ng-if="avatarsEnabled === true"
 									>
 									<div
 										ng-if="$parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
@@ -283,7 +283,8 @@
 								</div>
 								<div
 									class="msg-displayname-container"
-									ng-if="$parent.$parent.avatarsEnabled === 'false' && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
+									ng-if="avatarsEnabled === false
+									 && $parent.convs[$parent.$session.conv].msgs[key-1].contact.id !== msg.contact.id "
 									>
 									<div>
 										{{::msg.contact.displayname }}

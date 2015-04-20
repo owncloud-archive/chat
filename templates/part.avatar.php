@@ -16,7 +16,7 @@
 			- the conversation has only 2 users in it
 	-->
 	<div
-		ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === 'true'"
+		ng-if="conv.users.length === 2 && $parent.$parent.avatarsEnabled === true"
 		class="avatar-list-container"
 		>
 		<div
@@ -54,7 +54,7 @@
 		There are maximum 4 avatars shown, which are all 1/4 size of the other avatars
 	-->
 	<div
-		ng-if="conv.users.length > 2  && $parent.$parent.avatarsEnabled === 'true'"
+		ng-if="conv.users.length > 2  && $parent.$parent.avatarsEnabled === true"
 		class="avatar-list-container"
 		>
 		<div
@@ -83,7 +83,7 @@
 		>
 	</span>
 	<div
-		ng-if="$parent.$parent.avatarsEnabled === 'false'"
+		ng-if="$parent.$parent.avatarsEnabled === false"
 		online
 		ng-repeat="(key, user) in conv.users | userFilter"
 		data-id="{{::user.id }}"
@@ -113,7 +113,7 @@
 			>
 			<div
 				class="online-dot-container"
-				ng-if="$parent.$parent.avatarsEnabled === 'true'"
+				ng-if="$parent.$parent.avatarsEnabled === true"
 				>
 				<div
 					tipsy
@@ -138,7 +138,7 @@
 				</div>
 			</div>
 			<div
-				ng-if="$parent.$parent.avatarsEnabled === 'false'"
+				ng-if="$parent.$parent.avatarsEnabled === false"
 				online
 				data-id="{{::user.id }}"
 				class="online-dot-displayname-nav online-dot-displayname-nav-expanded"

@@ -79,9 +79,9 @@ class AppController extends Controller {
 				"contactsObj" => $contacts['contactsObj'],
 				"backends" => $backendsToArray,
 				"initConvs" => $initConvs,
-				"sessionId" => $sessionId['session_id'], // needs porting!
+				"sessionId" => $sessionId['session_id'],
+				"avatars_enabled" => $this->config->getSystemValue('enable_avatars', true)
 			)),
-			"avatars-enabled" => $this->config->getSystemValue('enable_avatars', true)
  		);
 		return new TemplateResponse($this->appName, 'main', $params);
 	}
@@ -160,7 +160,8 @@ class AppController extends Controller {
 			"contactsObj" => $contacts['contactsObj'],
 			"backends" => $backendsToArray,
 			"initConvs" => $initConvs,
-			"sessionId" => $sessionId['session_id'], // needs porting!
+			"sessionId" => $sessionId['session_id'],
+			"avatars_enabled" => $this->config->getSystemValue('enable_avatars', true)
 		);
 	}
 

@@ -29,8 +29,8 @@ install:
   - npm install
   - grunt
   # install ocdev
-  - easy_install3 requests
-  - easy_install3 ocdev
+  - pip install requests
+  - pip install ocdev
   # set up postgresql
   - createuser -U travis -s oc_autotest
   # set up mysql

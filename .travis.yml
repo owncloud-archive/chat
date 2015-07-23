@@ -29,8 +29,8 @@ install:
   - npm install
   - grunt
   # install ocdev
-  - pip install requests
-  - pip install ocdev
+  - sudo pip install requests
+  - sudo pip install ocdev
   # set up postgresql
   - createuser -U travis -s oc_autotest
   # set up mysql

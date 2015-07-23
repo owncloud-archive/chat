@@ -207,7 +207,6 @@ class Container extends App{
 
 		$container->registerService('SendChatMsgCommand', function ($c) {
 			return new SendChatMsg(
-				$c->query('UserMapper'),
 				$c->query('PushMessageMapper'),
 				$c->query('MessageMapper')
 			);

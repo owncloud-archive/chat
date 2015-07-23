@@ -48,9 +48,12 @@ class PushMessageMapper extends Mapper {
 		}
 	}
 
-	public function createForAllUsersInConv($sender, $convId, $command){
+	public function createForAllUsersInConv($sender, $convId, $command, $exception=null){
 		$sessions = $this->userMapper->findSessionsByConversation($convId);
 		foreach($sessions as $session){
+			if($exception === $session->getUser()){
+				continue;
+			}
 			$pushMessage = new PushMessage();
 			$pushMessage->setSender($sender);
 			$pushMessage->setCommand($command);

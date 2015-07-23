@@ -20,11 +20,6 @@ use \OCA\Chat\OCH\Db\MessageMapper;
 class SendChatMsg extends ChatAPI {
 
 	/**
-	 * @var $userMapper \OCA\Chat\OCH\Db\UserMapper
-	 */
-	private $userMapper;
-
-	/**
 	 * @var $pushMessageMapper \OCA\Chat\OCH\Db\PushMessageMapper
 	 */
 	private $pushMessageMapper;
@@ -35,11 +30,9 @@ class SendChatMsg extends ChatAPI {
 	private $messageMapper;
 
 	public function __construct(
-		UserMapper $userMapper,
 		PushMessageMapper $pushMessageMapper,
 		MessageMapper $messageMapper
 	){
-		$this->userMapper = $userMapper;
 		$this->pushMessageMapper = $pushMessageMapper;
 		$this->messageMapper = $messageMapper;
 	}
@@ -60,8 +53,6 @@ class SendChatMsg extends ChatAPI {
 	}
 
 	public function execute(){
-		$users = $this->userMapper->findSessionsByConversation($this->requestData['conv_id']);
-
 		$command = json_encode(array(
 			'type' => 'send_chat_msg',
 			'data' => array(
@@ -72,31 +63,12 @@ class SendChatMsg extends ChatAPI {
 			)
 		));
 
-		$sender = $this->requestData['user']['id'];
-
-		if(!isset($this->requestData['send_to_sender'])){
-			$sendToSender = false;
-		} else {
-			$sendToSender = $this->requestData['send_to_sender'];
-		}
-
-		foreach($users as $receiver){
-			if($sendToSender === false && $receiver->getUser() !== $sender){
-				$pushMessage = new PushMessage();
-				$pushMessage->setSender($sender);
-				$pushMessage->setReceiver($receiver->getUser());
-				$pushMessage->setReceiverSessionId($receiver->getSessionId());
-				$pushMessage->setCommand($command);
-				$this->pushMessageMapper->insert($pushMessage);
-			} else if ($sendToSender === true){
-				$pushMessage = new PushMessage();
-				$pushMessage->setSender($sender);
-				$pushMessage->setReceiver($receiver->getUser());
-				$pushMessage->setReceiverSessionId($receiver->getSessionId());
-				$pushMessage->setCommand($command);
-				$this->pushMessageMapper->insert($pushMessage);
-			}
-		}
+		$this->pushMessageMapper->createForAllUsersInConv(
+			$this->requestData['user']['id'],
+			$this->requestData['conv_id'],
+			$command,
+			$this->requestData['user']['id']
+		);
 
 		// All done
 		// insert this chatMsg into the messages table

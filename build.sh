@@ -4,3 +4,4 @@ rm -rf node_modules
 mkdir ../chat
 cp -r ../../../node-v0.10.33-linux-x64/chat/node_modules/ .
 ../../../node-v0.10.33-linux-x64/bin/node node_modules/grunt-cli/bin/grunt dist
+echo $(git rev-parse HEAD) > commit

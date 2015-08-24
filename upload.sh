@@ -3,5 +3,5 @@ rm -rf build.zip
 rm -rf commit
 wget https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip
 wget https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/commit
-mv build.zip $(cat commit).zip
+cp -r build.zip $(cat commit).zip
 rm -rf commit

@@ -61,7 +61,7 @@ class Container extends App{
 				$c->query('BackendManager'),
 				$c->query('UserOnlineMapper'),
 				$c->query('SyncOnlineCommand'),
-				$c->query('OCP\IUserSession')->getUser(),
+				$c->query('UserId'),
 				$c->query('OCP\Contacts\IManager'),
 				$c->query('OCP\Files\IRootFolder')
 			);

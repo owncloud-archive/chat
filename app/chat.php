@@ -56,7 +56,7 @@ class Chat {
 	private $syncOnline;
 
 	/**
-	 * @var IUser
+	 * @var string Current user
 	 */
 	private $user;
 
@@ -76,7 +76,7 @@ class Chat {
 		IBackendManager $backendManager,
 		UserOnlineMapper $userOnlineMapper,
 		SyncOnline $syncOnline,
-		IUser $user,
+		$user,
 		IManager $contactsManager,
 		IRootFolder $rootFolder
 	) {
@@ -295,16 +295,7 @@ class Chat {
 	 * @return string current ownCloud user id
 	 */
 	public function getUserId(){
-		if(is_null(self::$userId)){
-			$user = $this->user ;
-			if (is_object($user)){
-				self::$userId = $this->user->getUID();
-			} else {
-				self::$userId = null;
-			}
-		}
-		return self::$userId;
-
+		return $this->user;
 	}
 
 

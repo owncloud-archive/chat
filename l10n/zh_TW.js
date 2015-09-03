@@ -15,7 +15,7 @@ OC.L10N.register(
     "There are no Chat Backends enabled." : "沒有啟用背景聊天。",
     "In order to chat please enable at least one Chat backend." : "請至少開啟一個背景聊天來聊天。",
     "With the 'OCH' backend you can chat with other ownCloud users. It works without configuration." : "在 OwnCloud 背景聊天中您可以跟其他 ownCloud 使用者聊天，這個動作是不需要設定的。",
-    "There are no other users on this ownCloud." : "沒有其他使用者在這個ownCloud。",
+    "There are no other users on this ownCloud." : "沒有其他使用者在這個 ownCloud。",
     "In order to chat please create at least one user, it will appear on the left." : "請建立至少一個使用者來進行聊天，他將會出現在左邊。"
 },
 "nplurals=1; plural=0;");

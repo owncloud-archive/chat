@@ -73,7 +73,7 @@ There are enough users on the ownCloud instance to give it a good test:
 
 ## Contribute
 Contriubtions are very welcome! You can contribute on many ways:
- - Test the app (see [Installation](https://github.com/owncloud/chat#installation)) and report any issue and problem you encore in the [Issue tracker](https://github.com/owncloud/chat/issues)
+ - Test the app (see [Installation](https://github.com/owncloud/chat#install)) and report any issue and problem you encore in the [Issue tracker](https://github.com/owncloud/chat/issues)
  - Improve code or add new features
  - Help with design by commenting on issues
  - Solve bugs

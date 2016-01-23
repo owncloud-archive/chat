@@ -18,7 +18,7 @@ The Chat app depends on ownCloud 7.0.3 or newer. This means master (https://gith
 You can't directly use the Git repo without [building the CSS and JS code] (#important-run-grunt-when-you-change-js-files). You can use the package which is build every time a commit is pushed to the repository. [Download it here](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip)
 
 ## Live Demo
-There is a live demo hosted on [OpenShift](https://oc-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip). You can use to test the Chat app. The demo is automatically updated every time a commit is pushed to this repository.
+There is a live demo hosted on [OpenShift](https://oc-ledfan.rhcloud.com/). You can use to test the Chat app. The demo is automatically updated every time a commit is pushed to this repository.
 **WARNING** Do not store any private information (passowrds!) in the App! 
 
 ### Credentials

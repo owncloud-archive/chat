@@ -6,36 +6,10 @@ Have chats in your ownCloud!
 
 Because this app was never released as production ready, and there was a good Chat app we decided to stop developing this app and instead create a Chat backend for https://github.com/owncloud/jsxc.chat. 
 
-## Status
-
-| What | Status |
-| ---- | --- |
-| JavaScript and PHP Unit tests | [![Build Status](https://travis-ci.org/owncloud/chat.svg?branch=master)](https://travis-ci.org/owncloud/chat) |
-| PHP Unit test coverage | [![Code Coverage](https://scrutinizer-ci.com/g/owncloud/chat/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/owncloud/chat/?branch=master) |
-| Scrutinizer Code Quality | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/owncloud/chat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/owncloud/chat/?branch=master) |
-| Development dependencies | [![devDependency Status](https://david-dm.org/owncloud/chat/dev-status.svg)](https://david-dm.org/owncloud/chat#info=devDependencies) |
-| [Chat App Package](#install) | [![Build Status](https://occjen-ledfan.rhcloud.com:443/buildStatus/icon?job=ownCloud-Chat)](https://occjen-ledfan.rhcloud.com:443/job/ownCloud-Chat/) |
-| [Chat App Live Demo](#live-demo)  | [![Build Status](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/badge/icon)](https://occjen-ledfan.rhcloud.com:443/job/chat-deploy/) | 
-
 ## Install
 The Chat app depends on ownCloud 7.0.3 or newer. This means master (https://github.com/owncloud/core) can be used too.
 You can't directly use the Git repo without [building the CSS and JS code] (#important-run-grunt-when-you-change-js-files). You can use the package which is build every time a commit is pushed to the repository. [Download it here](https://occjen-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip)
 
-## Live Demo
-There is a live demo hosted on [OpenShift](https://oc-ledfan.rhcloud.com/job/ownCloud-Chat/ws/build.zip). You can use to test the Chat app. The demo is automatically updated every time a commit is pushed to this repository.
-**WARNING** Do not store any private information (passowrds!) in the App! 
-
-### Credentials
-There are enough users on the ownCloud instance to give it a good test:
-
-| Username | Password |
-| --- | --- |
-| derp | derp |
-| herp | herp |
-| foo | foo |
-| bar | bar | 
-| foobar | foobar |
-| barfoo | barfoo |
 
 ## Screenshots
 **Initial screen**

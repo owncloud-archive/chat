@@ -2,6 +2,10 @@ Chat
 ====
 Have chats in your ownCloud!
 
+# This app is deprecated! 
+
+Because this app was never released as production ready, and there was a good Chat app we decided to stop developing this app and instead create a Chat backend for https://github.com/owncloud/jsxc.chat. 
+
 ## Status
 
 | What | Status |

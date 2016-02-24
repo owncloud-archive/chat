@@ -11,6 +11,8 @@
     "Download " : "Elŝuti",
     "Attach more files" : "Kunligi pli da dosieroj",
     "Search in users" : "Serĉi inter uzantoj",
+    "There are no Chat Backends enabled." : "Neniu babilmotoro kapablas.",
+    "In order to chat please enable at least one Chat backend." : "Por babili, bonvolu kapabligu almenaŭ unu babilmotoron.",
     "There are no other users on this ownCloud." : "Estas neniu alia uzanto en ĉi tiu ownCloud.",
     "In order to chat please create at least one user, it will appear on the left." : "Por babili, bonvolu krei almenaŭ unu uzanton; ĝi aperos maldekstre."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
